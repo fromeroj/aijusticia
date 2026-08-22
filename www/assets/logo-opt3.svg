@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 40" role="img" aria-label="AI Justicia - Opción 3">
+  <!-- OP3: Llave-escudo (soberanía de datos + justicia) en escudo -->
+  <g transform="translate(4,4)">
+    <path d="M16 1 L30 6 L30 17 Q30 26 16 31 Q2 26 2 17 L2 6 Z" fill="#047857"/>
+    <path d="M16 1 L30 6 L30 17 Q30 26 16 31 Q2 26 2 17 L2 6 Z" fill="none" stroke="#064e3b" stroke-width="1"/>
+    <!-- Llave -->
+    <circle cx="16" cy="13" r="4" fill="none" stroke="#ffffff" stroke-width="2"/>
+    <rect x="15" y="16" width="2" height="9" fill="#ffffff"/>
+    <rect x="13.5" y="21" width="2" height="2" fill="#ffffff"/>
+    <rect x="16.5" y="23" width="2" height="2" fill="#ffffff"/>
+    <circle cx="16" cy="13" r="1.4" fill="#c81e1e"/>
+  </g>
+  <text x="48" y="20" font-family="Fraunces, Georgia, serif" font-size="18" font-weight="700" fill="#0f172a">AI Justicia</text>
+  <text x="48" y="31" font-family="Inter, sans-serif" font-size="7" font-weight="500" fill="#64748b" letter-spacing="0.5">DERECHO MEXICANO · IA VERIFICABLE</text>
+</svg>

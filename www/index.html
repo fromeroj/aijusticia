@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Justicia — Justicia precisa, verificable y al alcance de todos</title>
+  <meta name="description" content="Plataforma de inteligencia artificial jurídica para México. Respuestas con citas verificadas contra fuentes oficiales, abogados con cédula y pago hasta en OXXO.">
+  <meta name="theme-color" content="#047857">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ============ HEADER ============ -->
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="brand" aria-label="AI Justicia, inicio">
+        <img src="assets/logo.svg" alt="AI Justicia" class="brand-logo">
+      </a>
+      <nav class="nav-links" aria-label="Navegación principal">
+        <a href="para-ti.html">Para ti</a>
+        <a href="para-abogados.html">Para abogados</a>
+        <a href="para-buffetes.html">Para buffetes</a>
+        <a href="producto.html">Producto</a>
+        <a href="precios.html">Precios</a>
+        <a href="seguridad.html">Seguridad</a>
+        <a href="recursos.html">Recursos</a>
+      </nav>
+      <div class="nav-cta">
+        <a href="contacto.html" class="btn btn-ghost">Iniciar sesión</a>
+        <a href="para-ti.html" class="btn btn-verde">Haz tu pregunta</a>
+        <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-links">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-text">
+          <span class="section-eyebrow">IA jurídica de México</span>
+          <h1>Justicia <span class="accent">precisa, verificable</span> y al alcance de todos.</h1>
+          <p class="hero-sub">Resuelve tu duda legal en minutos. La IA orienta con citas a fuentes oficiales y un abogado con cédula valida tu respuesta. Paga con tarjeta, transferencia o en efectivo en tu OXXO.</p>
+          <div class="hero-ctas">
+            <a href="para-ti.html" class="btn btn-primary btn-lg">Haz tu pregunta · $100</a>
+            <a href="para-abogados.html" class="btn btn-outline btn-lg">Soy abogado</a>
+          </div>
+          <div class="hero-badges">
+            <span class="badge badge-verde">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+              Citas verificadas
+            </span>
+            <span class="badge badge-verde">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+              Cifrado extremo a extremo
+            </span>
+            <span class="badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M5 8h14M5 16h14"/></svg>
+              Pago en OXXO
+            </span>
+            <span class="badge">NOM-151</span>
+            <span class="badge">LFPDPPP 2025</span>
+          </div>
+        </div>
+
+        <!-- Mockup de chat -->
+        <div class="hero-visual">
+          <div class="chat-mock">
+            <div class="chat-mock-head">
+              <div class="chat-avatar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 017 7c0 3-2 5-4 7l-3 4-3-4c-2-2-4-4-4-7a7 7 0 017-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              </div>
+              <div>
+                <div class="name">AI Justicia</div>
+                <div class="status">Abogado en línea · responde en minutos</div>
+              </div>
+            </div>
+            <div class="chat-msg user">
+              <div class="chat-bubble">Me cobraron una comisión que no acepté en mi tarjeta. ¿Qué puedo hacer?</div>
+            </div>
+            <div class="chat-msg bot">
+              <div class="chat-bubble">
+                Presenta tu reclamación ante CONDUSEF. Tienes derecho a la devolución si el cargo no fue autorizado.
+                <span class="chat-cite">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+                  Art. 14 Ley Fintech · UNE
+                </span>
+              </div>
+            </div>
+            <div class="chat-input-mock">
+              Escribe tu pregunta… <span style="margin-left:auto;color:var(--verde);font-weight:600">Enviar</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SELECTOR DE NIVEL ============ -->
+    <section class="section bg-fondo" id="niveles">
+      <div class="container">
+        <div class="center mb-4">
+          <span class="section-eyebrow">Un producto, tres niveles</span>
+          <h2 class="section-titulo">Elige cómo te sirve AI Justicia</h2>
+          <p class="section-sub">Mismo motor de IA jurídica mexicana, adaptado al ciudadano, al abogado y al gran buffete.</p>
+        </div>
+
+        <div class="level-selector">
+          <div class="level-tabs" role="tablist" aria-label="Niveles de servicio">
+            <button class="level-tab active" data-level="ciudadano" role="tab" aria-selected="true">Ciudadano</button>
+            <button class="level-tab" data-level="abogado" role="tab" aria-selected="false">Abogado</button>
+            <button class="level-tab" data-level="buffete" role="tab" aria-selected="false">Buffete</button>
+          </div>
+
+          <!-- Panel ciudadano -->
+          <div class="level-panel active" id="level-ciudadano" role="tabpanel">
+            <div class="level-card">
+              <div>
+                <span class="section-eyebrow">Nivel 0 · Para ti</span>
+                <h3>La pregunta pagada hasta en OXXO</h3>
+                <div class="precio-dest">$100–$150 MXN</div>
+                <div class="precio-nota">pago único por consulta · efectivo, tarjeta o SPEI</div>
+                <ul class="level-features">
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Orientación con IA y respuesta validada por un abogado con cédula</li>
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Pago en efectivo en más de 23,000 tiendas OXXO</li>
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> El abogado revisa, edita y firma; queda trazabilidad total</li>
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Tu historial, cifrado y bajo tu control</li>
+                </ul>
+                <a href="para-ti.html" class="btn btn-primary">Haz tu pregunta</a>
+              </div>
+              <div class="level-visual">
+                <div class="big-num">$100</div>
+                <div class="big-label">precio inicial de una consulta validada por abogado</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel abogado -->
+          <div class="level-panel" id="level-abogado" role="tabpanel">
+            <div class="level-card">
+              <div>
+                <span class="section-eyebrow">Nivel 1 · Profesional</span>
+                <h3>Asistente con citas verificables y clientes derivados</h3>
+                <div class="precio-dest">desde $250 MXN /mes</div>
+                <div class="precio-nota">dos planes: Básico $250/mes · Pro con expedientes y casos ilimitados $350/mes</div>
+                <ul class="level-features">
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Asistente de citas verificadas contra SJF, DOF y LeyesBiblio</li>
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Bandeja de casos calificados provenientes del Nivel 0</li>
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Expediente cifrado de extremo a extremo con tus llaves</li>
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Plan Pro: manejo y resguardo de expedientes + casos ilimitados</li>
+                </ul>
+                <a href="para-abogados.html" class="btn btn-verde">Probar 7 días gratis</a>
+              </div>
+              <div class="level-visual">
+                <div class="big-num">10%</div>
+                <div class="big-label">del precio de CoCounsel, en pesos y con clientes incluidos</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel buffete -->
+          <div class="level-panel" id="level-buffete" role="tabpanel">
+            <div class="level-card">
+              <div>
+                <span class="section-eyebrow">Nivel 2 · Empresarial</span>
+                <h3>El LLM y el archivo, dentro de tu firewall</h3>
+                <div class="precio-dest">Licencia anual</div>
+                <div class="precio-nota">despliegue on-premise o VPC privada · precio a medida</div>
+                <ul class="level-features">
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Modelo destilado servido localmente; los datos no salen del edificio</li>
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> OCR masivo del acervo histórico y búsqueda de texto completo</li>
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Corpus oficial mexicano actualizado y firmado cada día</li>
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Bitácora de auditoría de cada interacción</li>
+                </ul>
+                <a href="para-buffetes.html" class="btn btn-verde">Agendar demo</a>
+              </div>
+              <div class="level-visual">
+                <div class="big-num">0</div>
+                <div class="big-label">datos del cliente que salen a la nube del proveedor</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROBLEMA ============ -->
+    <section class="section">
+      <div class="container">
+        <div class="split">
+          <div class="split-text">
+            <span class="section-eyebrow">El problema</span>
+            <h2>La mayoría de los mexicanos no busca asesoría legal. No porque no la necesite.</h2>
+            <p>El World Justice Project encontró que <strong>49% de los mexicanos tuvo un problema legal en dos años</strong>, pero <strong>solo 23% buscó asesoría</strong>. Las razones son de precio, de lenguaje, de horarios y de desconfianza.</p>
+            <ul class="checks">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Un abogado tradicional cobra $1,500–$3,000 por hora</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> 85% de los adultos usa efectivo en compras de hasta $500</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Casi 1 de cada 4 no tiene cuenta bancaria</li>
+            </ul>
+            <p>AI Justicia ataca las cuatro causas: precio bajo, lenguaje llano, respuesta inmediata y pago en efectivo en la tienda de la esquina.</p>
+          </div>
+          <div class="split-visual">
+            <svg class="big" viewBox="0 0 360 280" fill="none" aria-hidden="true">
+              <rect x="20" y="20" width="320" height="240" rx="16" fill="#ffffff" stroke="#e2e8f0"/>
+              <text x="180" y="56" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" font-weight="600" fill="#334155">Problemas legales en 2 años</text>
+              <!-- Barra 49% -->
+              <rect x="50" y="80" width="180" height="28" rx="6" fill="#c81e1e"/>
+              <text x="240" y="99" font-family="Fraunces,serif" font-size="16" font-weight="700" fill="#0f172a">49%</text>
+              <text x="50" y="124" font-family="Inter,sans-serif" font-size="11" fill="#64748b">tuvo un problema legal</text>
+              <!-- Barra 23% -->
+              <rect x="50" y="150" width="85" height="28" rx="6" fill="#047857"/>
+              <text x="145" y="169" font-family="Fraunces,serif" font-size="16" font-weight="700" fill="#0f172a">23%</text>
+              <text x="50" y="194" font-family="Inter,sans-serif" font-size="11" fill="#64748b">buscó asesoría legal</text>
+              <!-- Brecha -->
+              <text x="180" y="238" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#991b1b" font-weight="600">77% no accedió a la justicia</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SOLUCIÓN / CAPACIDADES ============ -->
+    <section class="section bg-fondo">
+      <div class="container">
+        <div class="center mb-4">
+          <span class="section-eyebrow">La solución</span>
+          <h2 class="section-titulo">Todo lo que necesitas, con verificación de origen</h2>
+          <p class="section-sub">No es un chat genérico: cada afirmación se ancla a una fuente oficial mexicana verificable con un clic.</p>
+        </div>
+        <div class="grid grid-3">
+          <div class="card">
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></div>
+            <h3>Citas verificadas</h3>
+            <p>Cada afirmación se resuelve contra el SJF, el DOF o LeyesBiblio. Si no tiene respaldo, se marca y se elimina.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></div>
+            <h3>Expediente cifrado E2E</h3>
+            <p>Tus documentos se cifran de extremo a extremo con tus llaves. Ni la plataforma puede leerlos.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/></svg></div>
+            <h3>OCR documental</h3>
+            <p>Sube la foto de tu contrato, multa o escritura. El sistema lee, estructura y responde sobre papel real.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l9 4v6c0 5-3.5 9-9 10-5.5-1-9-5-9-10V6l9-4z"/></svg></div>
+            <h3>Sellado NOM-151</h3>
+            <p>Convierte tu expediente digital en evidencia con valor probatorio pleno mediante sello de tiempo RFC 3161.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/></svg></div>
+            <h3>Pago en efectivo</h3>
+            <p>Paga tu consulta en más de 23,000 tiendas OXXO y miles de corresponsales. Sin tarjeta, sin cuenta.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/></svg></div>
+            <h3>Abogado validador</h3>
+            <p>Un abogado con cédula verificada ante la SEP revisa y firma tu respuesta. La responsabilidad es suya.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CÓMO FUNCIONA ============ -->
+    <section class="section">
+      <div class="container">
+        <div class="center mb-4">
+          <span class="section-eyebrow">Cómo funciona</span>
+          <h2 class="section-titulo">De la pregunta a la respuesta firmada</h2>
+          <p class="section-sub">Cuatro pasos. La IA acelera; el juicio es del abogado.</p>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <h4>Plantea tu pregunta</h4>
+            <p>Escribe o sube una foto. La IA identifica la materia, la jurisdicción y la vigencia aplicable.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <h4>La IA orienta</h4>
+            <p>Entrega una orientación con citas a fuentes oficiales y un resumen estructurado del caso.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <h4>El abogado valida</h4>
+            <p>Un abogado con cédula revisa, edita y firma. Pagas cuando decides requerir validación.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <h4>Respuesta trazable</h4>
+            <p>Recibes la respuesta, las citas verificadas y el registro completo de qué hizo la IA y qué el abogado.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MOTOR DE IA ============ -->
+    <section class="section bg-verde">
+      <div class="container">
+        <div class="split">
+          <div class="split-text">
+            <span class="section-eyebrow">El motor de precisión</span>
+            <h2>LLM destilado + RAG con verificación de citas</h2>
+            <p>En derecho mexicano, los modelos frontera fallan: citan textos derogados con total confianza. Por eso construimos un motor propio en tres capas: conocimiento, razonamiento y garantías.</p>
+            <ul class="checks">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Modelo especializado que ya supera a los generalistas en tareas jurídicas</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> RAG sobre el corpus oficial completo y vigente</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Reducción de alucinaciones de 71% a 89% frente a un sistema sin guardarraíles</li>
+            </ul>
+            <a href="motor-ia.html" class="btn btn-white">Conoce el motor →</a>
+          </div>
+          <div class="split-visual" style="background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.15)">
+            <div style="text-align:center;color:#fff">
+              <div style="font-family:var(--font-serif);font-size:4rem;font-weight:700;line-height:1;color:#a7f3d0">&lt;2%</div>
+              <p style="color:#d1fae5;margin-top:12px;max-width:240px;margin-left:auto;margin-right:auto">meta de tasa de citas verificadas incorrectas, anclada en evidencia</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ STATS ============ -->
+    <section class="section-sm">
+      <div class="container">
+        <div class="stats">
+          <div class="stat"><div class="num">23,000+</div><div class="label">tiendas OXXO para pagar en efectivo</div></div>
+          <div class="stat"><div class="num">445,000</div><div class="label">abogados en ejercicio en México</div></div>
+          <div class="stat"><div class="num">71–89%</div><div class="label">menos alucinaciones con verificación</div></div>
+          <div class="stat"><div class="num">100%</div><div class="label">fuentes oficiales: DOF, SJF, LeyesBiblio</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SEGURIDAD ============ -->
+    <section class="section bg-fondo">
+      <div class="container">
+        <div class="center mb-4">
+          <span class="section-eyebrow">Confianza por diseño</span>
+          <h2 class="section-titulo">Cumplimiento mexicano, no solo marketing</h2>
+          <p class="section-sub">Las normas que importan para tu secreto profesional y tus datos personales.</p>
+        </div>
+        <div class="trust-grid">
+          <div class="trust-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
+            <h4>Cifrado E2E</h4>
+            <p>El expediente se cifra con llaves del usuario. Nosotros somos solo el conducto.</p>
+          </div>
+          <div class="trust-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l9 4v6c0 5-3.5 9-9 10-5.5-1-9-5-9-10V6l9-4z"/></svg>
+            <h4>NOM-151</h4>
+            <p>Sello de tiempo y conservación de datos con valor probatorio pleno.</p>
+          </div>
+          <div class="trust-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-6 9 6v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>
+            <h4>LFPDPPP 2025</h4>
+            <p>Sanciones hasta $36 M MXN. Cumplimos como encargados, no entrenamos con tus datos.</p>
+          </div>
+          <div class="trust-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg>
+            <h4>Cédula SEP</h4>
+            <p>Cada abogado validador se verifica contra el registro profesional de la SEP.</p>
+          </div>
+        </div>
+        <div class="center mt-4">
+          <a href="seguridad.html" class="btn btn-outline">Ver seguridad y cumplimiento →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PRECIOS RESUMEN ============ -->
+    <section class="section">
+      <div class="container">
+        <div class="center mb-4">
+          <span class="section-eyebrow">Precios</span>
+          <h2 class="section-titulo">Tres formas de empezar</h2>
+          <p class="section-sub">Desde la consulta única pagada en OXXO hasta la licencia empresarial on-premise.</p>
+        </div>
+        <div class="pricing-grid">
+          <div class="plan">
+            <div class="plan-nivel">Nivel 0 · Ciudadano</div>
+            <h3>Consulta única</h3>
+            <p class="plan-desc">Para resolver una duda legal concreta, sin suscripción.</p>
+            <div class="plan-precio">$100–$150 <small>MXN</small></div>
+            <div class="plan-unidad">pago único por pregunta</div>
+            <ul>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> IA + abogado validador con cédula</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Pago en OXXO, tarjeta o SPEI</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Citas verificadas y trazabilidad</li>
+            </ul>
+            <a href="para-ti.html" class="btn btn-outline btn-block">Haz tu pregunta</a>
+          </div>
+
+          <div class="plan destacado">
+            <span class="plan-flag">Más popular</span>
+            <div class="plan-nivel">Nivel 1 · Abogado</div>
+            <h3>Profesional</h3>
+            <p class="plan-desc">Dos planes para el abogado independiente.</p>
+            <div class="plan-precio">$250–$350 <small>MXN</small></div>
+            <div class="plan-unidad">por usuario / mes · Básico o Pro</div>
+            <ul>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Básico $250: citas verificables + bandeja de casos</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Pro $350: manejo y resguardo de expedientes</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Pro: casos ilimitados + expediente cifrado E2E</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> OCR y sellado NOM-151 opcional</li>
+            </ul>
+            <a href="para-abogados.html" class="btn btn-verde btn-block">Probar 7 días gratis</a>
+          </div>
+
+          <div class="plan">
+            <div class="plan-nivel">Nivel 2 · Buffete</div>
+            <h3>Empresarial</h3>
+            <p class="plan-desc">IA y archivo dentro del firewall del buffete.</p>
+            <div class="plan-precio">A medida</div>
+            <div class="plan-unidad">licencia anual + instalación + OCR</div>
+            <ul>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Despliegue on-premise o VPC privada</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Digitalización del archivo histórico</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Auditoría y soporte dedicado</li>
+            </ul>
+            <a href="para-buffetes.html" class="btn btn-outline btn-block">Agendar demo</a>
+          </div>
+        </div>
+        <div class="center mt-3">
+          <p class="form-note">Métodos de pago:</p>
+          <div class="pay-methods">
+            <span class="pay-badge oxxo">OXXO Pay</span>
+            <span class="pay-badge">Visa / Mastercard</span>
+            <span class="pay-badge">SPEI</span>
+            <span class="pay-badge">Mercado Pago</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TESTIMONIAL / QUOTE ============ -->
+    <section class="section bg-verde-claro">
+      <div class="container">
+        <blockquote class="quote">
+          "El secreto no es el modelo más grande, sino el que mejor conoce el derecho mexicano y cita sus fuentes. Ahí es donde un sistema especializado supera a los gigantes."
+          <span class="quote-cite">— Tesis del proyecto AI Justicia, basada en SaulLM-7B y los benchmarks de LegalBench</span>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section class="section">
+      <div class="container">
+        <div class="center mb-4">
+          <span class="section-eyebrow">Preguntas frecuentes</span>
+          <h2 class="section-titulo">Lo que quizá te preguntas</h2>
+        </div>
+        <div class="faq">
+          <div class="faq-item">
+            <button class="faq-q">¿Esto es asesoría legal? <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+            <div class="faq-a"><div class="faq-a-inner">La orientación inicial de la IA es informativa, no asesoría legal. En México, la "simple consulta" ya es ejercicio profesional reservado a titulados con cédula. Cuando solicitas validación, un abogado con cédula revisa y firma tu respuesta, y la responsabilidad profesional pasa a ser suya.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">¿Puedo pagar en efectivo sin tarjeta? <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+            <div class="faq-a"><div class="faq-a-inner">Sí. Generamos una referencia que pagas en más de 23,000 tiendas OXXO y miles de corresponsales. Es ideal para quienes no tienen tarjeta, no tienen cuenta bancaria o prefieren no dejar datos en línea. También aceptamos tarjeta y SPEI.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">¿Quién responde si algo sale mal? <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+            <div class="faq-a"><div class="faq-a-inner">En el Nivel 0, el abogado que valida y firma. La validación humana no es un añadido, es el producto. En los niveles para abogados y buffetes, la herramienta es de apoyo y el juicio es siempre del profesional que la usa.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">¿Las citas son reales o las inventa la IA? <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+            <div class="faq-a"><div class="faq-a-inner">Cada cita se resuelve contra registros reales: el número de registro digital del Semanario Judicial de la Federación, la fecha de reforma en LeyesBiblio o la fecha de publicación en el DOF. Además, una prueba de implicación verifica que el pasaje citado realmente sostenga la afirmación. Si la evidencia es insuficiente, el sistema se abstiene en lugar de inventar.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">¿Mis datos están seguros? <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+            <div class="faq-a"><div class="faq-a-inner">Tu expediente se cifra de extremo a extremo con tus llaves. Cumplimos la LFPDPPP 2025 como encargados, no entrenamos con tus datos y ofrecemos sellado NOM-151 para dar valor probatorio a tus documentos. En el Nivel 2, los datos no salen del firewall del buffete.</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WAITLIST / CTA FINAL ============ -->
+    <section class="section">
+      <div class="container">
+        <div class="waitlist">
+          <h2>Sé de los primeros en usar AI Justicia</h2>
+          <p>Únete a la lista de espera y recibe acceso anticipado, casos de uso y la apertura en tu ciudad.</p>
+          <form class="waitlist-form" data-validate novalidate>
+            <input type="email" name="email" placeholder="tu@correo.com" aria-label="Tu correo electrónico" required>
+            <button type="submit" class="btn btn-primary btn-lg">Unirme</button>
+          </form>
+          <p style="font-size:0.78rem;color:#a7d4c2;margin-top:18px">No spam. Cancela cuando quieras. Consulta nuestro <a href="aviso-privacidad.html" style="color:#d1fae5;text-decoration:underline">Aviso de Privacidad</a>.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ DISCLAIMER ============ -->
+  <div class="disclaimer-bar">
+    <div class="container">
+      AI Justicia es una plataforma de orientación jurídica. No sustituye la asesoría legal formal ni crea relación abogado-cliente. La validación de un abogado con cédula es indispensable para asesoría formal.
+    </div>
+  </div>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="brand">
+            <img src="assets/logo.svg" alt="AI Justicia" class="brand-mark">
+          </a>
+          <p>Justicia precisa, verificable y al alcance de todos. IA jurídica especializada en derecho mexicano.</p>
+          <div class="footer-social">
+            <a href="#" aria-label="X / Twitter"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h3l-7 8 8 12h-6l-5-7-6 7H2l8-9L2 2h6l4 6 6-6z"/></svg></a>
+            <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zM8 17H5v-7h3v7zM6.5 8.7A1.7 1.7 0 116.5 5.3a1.7 1.7 0 010 3.4zM19 17h-3v-3.8c0-1.4-1.2-1.6-1.5-1.6-.3 0-1.5.2-1.5 1.6V17h-3v-7h3v1.2c.5-.9 1.5-1.2 2.5-1.2 1.7 0 3.5 1.3 3.5 4V17z"/></svg></a>
+            <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h5>Producto</h5>
+          <ul>
+            <li><a href="producto.html">Visión general</a></li>
+            <li><a href="motor-ia.html">Motor de IA</a></li>
+            <li><a href="para-ti.html">Para ti</a></li>
+            <li><a href="para-abogados.html">Para abogados</a></li>
+            <li><a href="para-buffetes.html">Para buffetes</a></li>
+            <li><a href="precios.html">Precios</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Empresa</h5>
+          <ul>
+            <li><a href="nosotros.html">Nosotros</a></li>
+            <li><a href="seguridad.html">Seguridad</a></li>
+            <li><a href="recursos.html">Recursos</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Legal</h5>
+          <ul>
+            <li><a href="aviso-privacidad.html">Aviso de Privacidad</a></li>
+            <li><a href="terminos.html">Términos y condiciones</a></li>
+            <li><a href="cookies.html">Cookies</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>© <span data-year>2026</span> AI Justicia. Hecho en México 🇲🇽</div>
+        <div class="footer-legal">
+          <a href="aviso-privacidad.html">Privacidad</a>
+          <a href="terminos.html">Términos</a>
+          <a href="cookies.html">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

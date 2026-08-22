@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto — AI Justicia</title>
+  <meta name="description" content="¿Tienes una pregunta legal, quieres unirte como abogado o agendar una demo para tu buffete? Escríbenos.">
+  <meta name="theme-color" content="#047857">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="brand"><img src="assets/logo.svg" alt="AI Justicia" class="brand-mark"></a>
+      <nav class="nav-links" aria-label="Navegación principal">
+        <a href="para-ti.html">Para ti</a>
+        <a href="para-abogados.html">Para abogados</a>
+        <a href="para-buffetes.html">Para buffetes</a>
+        <a href="producto.html">Producto</a>
+        <a href="precios.html">Precios</a>
+        <a href="seguridad.html">Seguridad</a>
+        <a href="recursos.html">Recursos</a>
+      </nav>
+      <div class="nav-cta">
+        <a href="contacto.html" class="btn btn-ghost">Iniciar sesión</a>
+        <a href="para-ti.html" class="btn btn-verde">Haz tu pregunta</a>
+        <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-header">
+      <div class="container">
+        <div class="breadcrumbs"><a href="index.html">Inicio</a> › Contacto</div>
+        <span class="section-eyebrow">Contacto</span>
+        <h1>Hablemos</h1>
+        <p>¿Tienes una pregunta legal, quieres unirte como abogado validador o agendar una demo para tu buffete? Cuéntanos y te respondemos.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="split" style="align-items:start">
+          <!-- Formulario -->
+          <div>
+            <div class="form-success">
+              ¡Gracias! Recibimos tu mensaje. Te responderemos a la brevedad.
+            </div>
+            <form class="form" data-validate novalidate>
+              <div class="form-row">
+                <div class="field">
+                  <label for="nombre">Nombre *</label>
+                  <input type="text" id="nombre" name="nombre" required>
+                  <span class="error">Tu nombre es obligatorio.</span>
+                </div>
+                <div class="field">
+                  <label for="email">Correo electrónico *</label>
+                  <input type="email" id="email" name="email" required>
+                  <span class="error">Ingresa un correo válido.</span>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="field">
+                  <label for="tipo">¿Qué eres? *</label>
+                  <select id="tipo" name="tipo" required>
+                    <option value="">Selecciona…</option>
+                    <option value="ciudadano">Ciudadano con una duda</option>
+                    <option value="abogado">Abogado independiente</option>
+                    <option value="buffete">Buffete o área legal corporativa</option>
+                    <option value="inversor">Inversor / socio</option>
+                    <option value="prensa">Prensa / medios</option>
+                    <option value="otro">Otro</option>
+                  </select>
+                  <span class="error">Selecciona una opción.</span>
+                </div>
+                <div class="field">
+                  <label for="telefono">Teléfono (opcional)</label>
+                  <input type="tel" id="telefono" name="telefono">
+                </div>
+              </div>
+              <div class="field">
+                <label for="mensaje">Mensaje *</label>
+                <textarea id="mensaje" name="mensaje" placeholder="Cuéntanos en qué podemos ayudarte…" required></textarea>
+                <span class="error">Tu mensaje es obligatorio.</span>
+              </div>
+              <div class="field">
+                <label class="check">
+                  <input type="checkbox" name="consentimiento" required>
+                  <span>He leído y acepto el <a href="aviso-privacidad.html">Aviso de Privacidad</a> y autorizo el tratamiento de mis datos para responder esta solicitud.</span>
+                </label>
+                <span class="error">Debes aceptar el Aviso de Privacidad.</span>
+              </div>
+              <div>
+                <button type="submit" class="btn btn-verde btn-lg">Enviar mensaje</button>
+              </div>
+              <p class="form-note">Respondemos en un máximo de 2 días hábiles. Para urgencias legales, contacta directamente a las autoridades (PROFECO, CONDUSEF, IFDP) o a un abogado de tu confianza.</p>
+            </form>
+          </div>
+
+          <!-- Info lateral -->
+          <div class="stack">
+            <div class="card">
+              <h3>¿Tienes una duda legal ya?</h3>
+              <p>No esperes nuestra respuesta. La orientación con IA y citas verificadas es inmediata.</p>
+              <a href="para-ti.html" class="btn btn-primary mt-2">Haz tu pregunta ahora →</a>
+            </div>
+
+            <div class="card">
+              <h3>Otras vías</h3>
+              <p style="margin-bottom:14px"><strong>Correo:</strong> hola@aijusticia.mx<br>
+              <strong>Ventas (Nivel 2):</strong> ventas@aijusticia.mx<br>
+              <strong>Prensa:</strong> prensa@aijusticia.mx</p>
+              <p style="margin-bottom:0"><strong>Redes:</strong></p>
+              <div class="footer-social" style="margin-top:8px">
+                <a href="#" aria-label="X / Twitter" style="background:var(--verde-tinte);color:var(--verde-osc)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h3l-7 8 8 12h-6l-5-7-6 7H2l8-9L2 2h6l4 6 6-6z"/></svg></a>
+                <a href="#" aria-label="LinkedIn" style="background:var(--verde-tinte);color:var(--verde-osc)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zM8 17H5v-7h3v7zM6.5 8.7A1.7 1.7 0 116.5 5.3a1.7 1.7 0 010 3.4zM19 17h-3v-3.8c0-1.4-1.2-1.6-1.5-1.6-.3 0-1.5.2-1.5 1.6V17h-3v-7h3v1.2c.5-.9 1.5-1.2 2.5-1.2 1.7 0 3.5 1.3 3.5 4V17z"/></svg></a>
+                <a href="#" aria-label="Instagram" style="background:var(--verde-tinte);color:var(--verde-osc)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+              </div>
+            </div>
+
+            <div class="callout callout-verde">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+              <div>Este formulario no es para asesoría legal inmediata. Si necesitas orientación ahora, usa la <a href="para-ti.html" style="color:var(--verde-osc);font-weight:600;text-decoration:underline">plataforma</a>.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="disclaimer-bar"><div class="container">El envío de este formulario no crea relación abogado-cliente ni constituye asesoría legal. Para asesoría formal, usa la plataforma con validación de un abogado con cédula.</div></div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="brand"><img src="assets/logo.svg" alt="AI Justicia" class="brand-mark"></a>
+          <p>Justicia precisa, verificable y al alcance de todos. IA jurídica especializada en derecho mexicano.</p>
+          <div class="footer-social">
+            <a href="#" aria-label="X / Twitter"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h3l-7 8 8 12h-6l-5-7-6 7H2l8-9L2 2h6l4 6 6-6z"/></svg></a>
+            <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zM8 17H5v-7h3v7zM6.5 8.7A1.7 1.7 0 116.5 5.3a1.7 1.7 0 010 3.4zM19 17h-3v-3.8c0-1.4-1.2-1.6-1.5-1.6-.3 0-1.5.2-1.5 1.6V17h-3v-7h3v1.2c.5-.9 1.5-1.2 2.5-1.2 1.7 0 3.5 1.3 3.5 4V17z"/></svg></a>
+            <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+          </div>
+        </div>
+        <div class="footer-col"><h5>Producto</h5><ul><li><a href="producto.html">Visión general</a></li><li><a href="motor-ia.html">Motor de IA</a></li><li><a href="para-ti.html">Para ti</a></li><li><a href="para-abogados.html">Para abogados</a></li><li><a href="para-buffetes.html">Para buffetes</a></li><li><a href="precios.html">Precios</a></li></ul></div>
+        <div class="footer-col"><h5>Empresa</h5><ul><li><a href="nosotros.html">Nosotros</a></li><li><a href="seguridad.html">Seguridad</a></li><li><a href="recursos.html">Recursos</a></li><li><a href="contacto.html">Contacto</a></li></ul></div>
+        <div class="footer-col"><h5>Legal</h5><ul><li><a href="aviso-privacidad.html">Aviso de Privacidad</a></li><li><a href="terminos.html">Términos y condiciones</a></li><li><a href="cookies.html">Cookies</a></li></ul></div>
+      </div>
+      <div class="footer-bottom"><div>© <span data-year>2026</span> AI Justicia. Hecho en México 🇲🇽</div><div class="footer-legal"><a href="aviso-privacidad.html">Privacidad</a><a href="terminos.html">Términos</a><a href="cookies.html">Cookies</a></div></div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

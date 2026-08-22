@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Motor de IA — AI Justicia</title>
+  <meta name="description" content="LLM destilado + RAG con verificación de citas. Tres capas: conocimiento, razonamiento y garantías. Alucinaciones reducidas 71–89%.">
+  <meta name="theme-color" content="#047857">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="brand"><img src="assets/logo.svg" alt="AI Justicia" class="brand-mark"></a>
+      <nav class="nav-links" aria-label="Navegación principal">
+        <a href="para-ti.html">Para ti</a>
+        <a href="para-abogados.html">Para abogados</a>
+        <a href="para-buffetes.html">Para buffetes</a>
+        <a href="producto.html">Producto</a>
+        <a href="precios.html">Precios</a>
+        <a href="seguridad.html">Seguridad</a>
+        <a href="recursos.html">Recursos</a>
+      </nav>
+      <div class="nav-cta">
+        <a href="contacto.html" class="btn btn-ghost">Iniciar sesión</a>
+        <a href="para-ti.html" class="btn btn-verde">Haz tu pregunta</a>
+        <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-header">
+      <div class="container">
+        <div class="breadcrumbs"><a href="index.html">Inicio</a> › <a href="producto.html">Producto</a> › Motor de IA</div>
+        <span class="section-eyebrow">El motor de precisión</span>
+        <h1>LLM destilado + RAG con verificación de citas</h1>
+        <p>¿Por qué confiar en un modelo propio y pequeño en lugar de rentar GPT o Claude? Porque en un dominio cerrado como el derecho mexicano, un modelo especializado ya supera a los generalistas, y la verificación convierte las alucinaciones residuales en abstenciones detectadas.</p>
+      </div>
+    </section>
+
+    <!-- POR QUÉ FALLAN LOS FRONTERA -->
+    <section class="section">
+      <div class="container">
+        <div class="center mb-4">
+          <span class="section-eyebrow">El problema</span>
+          <h2 class="section-titulo">Tres debilidades de los modelos frontera</h2>
+        </div>
+        <div class="grid grid-3">
+          <div class="card">
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
+            <h3>Cobertura</h3>
+            <p>Su entrenamiento incluye poco derecho mexicano y casi nada de legislación estatal. Lo que no está en los pesos, lo inventan con fluidez.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+            <h3>Vigencia</h3>
+            <p>El marco normativo mexicano cambia con frecuencia. Un modelo congelado en su fecha de entrenamiento citará textos derogados con total confianza.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007 0l-7-7a5 5 0 000 7z"/><path d="M8 11l-4 4M16 9l4-4"/></svg></div>
+            <h3>Trazabilidad</h3>
+            <p>Un modelo general no puede vincular cada afirmación a un registro oficial. Stanford HAI midió 17–34% de alucinación de citas en los líderes.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRES CAPAS -->
+    <section class="section bg-fondo">
+      <div class="container">
+        <div class="center mb-4">
+          <span class="section-eyebrow">La arquitectura</span>
+          <h2 class="section-titulo">Tres capas con responsabilidades separadas</h2>
+          <p class="section-sub">El valor no reside en el modelo (reemplazable), sino en el conocimiento y las garantías.</p>
+        </div>
+        <div class="grid grid-3">
+          <div class="card" style="border-top:4px solid var(--verde)">
+            <div class="plan-nivel">Capa 1 · Conocimiento</div>
+            <h3>RAG</h3>
+            <p>Corpus oficial estructurado con ingesta diaria, índice híbrido BM25 + vectorial y metadatos de vigencia, fuente y jerarquía.</p>
+            <p style="margin-top:10px;font-size:0.88rem;color:var(--verde-osc);font-weight:600">Resuelve: cobertura y vigencia</p>
+          </div>
+          <div class="card" style="border-top:4px solid var(--verde)">
+            <div class="plan-nivel">Capa 2 · Razonamiento</div>
+            <h3>LLM destilado</h3>
+            <p>Modelo base <strong>Qwen3.6-35B-A3B</strong> (35B parámetros, ~3B activos por token gracias a su arquitectura MoE) sobre pesos abiertos con licencia Apache 2.0, especializado por pre-entrenamiento continuado, instrucciones jurídicas y destilación.</p>
+            <p style="margin-top:10px;font-size:0.88rem;color:var(--verde-osc);font-weight:600">Resuelve: calidad del razonamiento a costo bajo</p>
+          </div>
+          <div class="card" style="border-top:4px solid var(--verde)">
+            <div class="plan-nivel">Capa 3 · Garantías</div>
+            <h3>Verificación</h3>
+            <p>Resolvedor de citas contra registros reales, prueba de implicación (NLI), umbrales de abstención y trazabilidad completa.</p>
+            <p style="margin-top:10px;font-size:0.88rem;color:var(--verde-osc);font-weight:600">Resuelve: alucinaciones detectadas y bloqueadas</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PIPELINE DE INFERENCIA -->
+    <section class="section">
+      <div class="container">
+        <div class="center mb-4">
+          <span class="section-eyebrow">Pipeline de inferencia</span>
+          <h2 class="section-titulo">Cinco etapas en tiempo de respuesta</h2>
+        </div>
+        <div class="pipeline">
+          <div class="pipe-step">
+            <div class="pipe-step-num">1</div>
+            <div>
+              <h4>Análisis de la consulta</h4>
+              <p>Se extraen materia, jurisdicción (federal o entidad), vigencia requerida y entidades. En México es crítica: la respuesta correcta en Nuevo León puede ser incorrecta en Chiapas.</p>
+            </div>
+          </div>
+          <div class="pipe-step">
+            <div class="pipe-step-num">2</div>
+            <div>
+              <h4>Recuperación híbrida</h4>
+              <p>BM25 (coincidencia exacta de artículos y registros) + vectorial (similitud semántica), filtrada por fuente, jerarquía y vigencia. Mejora la precisión del anclaje ~20% frente a la puramente semántica.</p>
+            </div>
+          </div>
+          <div class="pipe-step">
+            <div class="pipe-step-num">3</div>
+            <div>
+              <h4>Reranking jurídico</h4>
+              <p>Un reordenador prioriza los pasajes por relevancia jurídica real (jerarquía del artículo 133 constitucional, precedente vinculante vs. persuasivo), no solo por similitud de texto.</p>
+            </div>
+          </div>
+          <div class="pipe-step">
+            <div class="pipe-step-num">4</div>
+            <div>
+              <h4>Generación anclada</h4>
+              <p>El modelo redacta la respuesta exclusivamente desde los pasajes recuperados, con una cita en línea por oración. Si un enunciado no tiene pasaje, se marca como NO SUSTENTADO.</p>
+            </div>
+          </div>
+          <div class="pipe-step">
+            <div class="pipe-step-num">5</div>
+            <div>
+              <h4>Verificación de cada cita</h4>
+              <p>Resolución contra registro real + prueba de implicación (NLI). Si la proporción de oraciones con respaldo cae bajo el umbral, el sistema se abstiene y ofrece derivar a un abogado.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EVIDENCIA -->
+    <section class="section bg-verde">
+      <div class="container">
+        <div class="center mb-4">
+          <span class="section-eyebrow">La evidencia</span>
+          <h2 class="section-titulo">El patrón mejor documentado de la industria</h2>
+          <p class="section-sub">No es conjetura: un modelo especializado pequeño puede igualar y superar a los frontera.</p>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="num">11%</div><div class="label">mejora de SaulLM-7B sobre el mejor modelo abierto en LegalBench-Instruct</div></div>
+          <div class="stat"><div class="num">72.6%</div><div class="label">de R1-Distill-Qwen-32B en AIME 2024, superando a o1-mini (63.6%)</div></div>
+          <div class="stat"><div class="num">92.5%</div><div class="label">precisión con RAG vs. 38–40% de GPT-4o sin RAG (SimpleQA)</div></div>
+          <div class="stat"><div class="num">71–89%</div><div class="label">menos alucinaciones con RAG + verificación estricta</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ECONOMÍA -->
+    <section class="section">
+      <div class="container">
+        <div class="split">
+          <div class="split-text">
+            <span class="section-eyebrow">La economía</span>
+            <h2>La eficiencia del modelo habilita el negocio</h2>
+            <p>Servir un modelo propio de 35B cuesta una fracción de la API de un frontera: al ser MoE, Qwen3.6-35B-A3B activa solo ~3B de parámetros por token, así que el costo por consulta queda en centavos de peso, frente a varios pesos por llamada con contexto largo.</p>
+            <ul class="checks">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Habilita el precio de $100 en el Nivel 0</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Respuesta en segundos en hardware modesto</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Pesos abiertos Apache 2.0: cero licencia, cero dependencia</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Condición de posibilidad del Nivel 2 (dentro del firewall)</li>
+            </ul>
+          </div>
+          <div class="split-visual">
+            <div style="text-align:center">
+              <div style="font-family:var(--font-serif);font-size:3.5rem;font-weight:700;color:var(--verde);line-height:1">¢</div>
+              <p style="margin-top:12px;max-width:240px;margin-left:auto;margin-right:auto;color:var(--tinta-2)">costo de inferencia por consulta: centavos de peso</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- META -->
+    <section class="section bg-fondo">
+      <div class="container">
+        <div class="center">
+          <span class="section-eyebrow">La meta de producto</span>
+          <h2 class="section-titulo">Cero alucinaciones no existe. La verificabilidad, sí.</h2>
+          <p class="section-sub" style="max-width:680px">Nuestra meta: tasa de citas verificadas incorrectas inferior al 2%. Cada afirmación, verificable con un clic. Cada incertidumbre, declarada en lugar de disimulada.</p>
+          <blockquote class="quote mt-3" style="text-align:left;max-width:680px">
+            "Cero alucinaciones absolutas no existe en ningún sistema de lenguaje; lo que sí existe es un sistema donde toda afirmación es verificable con un clic y toda incertidumbre se declara en lugar de disimularse."
+            <span class="quote-cite">— Tesis técnica de AI Justicia</span>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-band">
+      <div class="container">
+        <h2>Pruébalo con tu propia pregunta</h2>
+        <p>La orientación inicial de la IA es gratuita. Solo pagas si decides requerir la validación de un abogado.</p>
+        <div class="hero-ctas">
+          <a href="para-ti.html" class="btn btn-primary btn-lg">Haz tu pregunta · $100</a>
+          <a href="contacto.html" class="btn btn-outline btn-lg">Hablar con ventas</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="disclaimer-bar"><div class="container">AI Justicia es una herramienta de orientación y apoyo jurídico. No sustituye la asesoría legal formal ni crea relación abogado-cliente.</div></div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="brand"><img src="assets/logo.svg" alt="AI Justicia" class="brand-mark"></a>
+          <p>Justicia precisa, verificable y al alcance de todos. IA jurídica especializada en derecho mexicano.</p>
+          <div class="footer-social">
+            <a href="#" aria-label="X / Twitter"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h3l-7 8 8 12h-6l-5-7-6 7H2l8-9L2 2h6l4 6 6-6z"/></svg></a>
+            <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zM8 17H5v-7h3v7zM6.5 8.7A1.7 1.7 0 116.5 5.3a1.7 1.7 0 010 3.4zM19 17h-3v-3.8c0-1.4-1.2-1.6-1.5-1.6-.3 0-1.5.2-1.5 1.6V17h-3v-7h3v1.2c.5-.9 1.5-1.2 2.5-1.2 1.7 0 3.5 1.3 3.5 4V17z"/></svg></a>
+            <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+          </div>
+        </div>
+        <div class="footer-col"><h5>Producto</h5><ul><li><a href="producto.html">Visión general</a></li><li><a href="motor-ia.html">Motor de IA</a></li><li><a href="para-ti.html">Para ti</a></li><li><a href="para-abogados.html">Para abogados</a></li><li><a href="para-buffetes.html">Para buffetes</a></li><li><a href="precios.html">Precios</a></li></ul></div>
+        <div class="footer-col"><h5>Empresa</h5><ul><li><a href="nosotros.html">Nosotros</a></li><li><a href="seguridad.html">Seguridad</a></li><li><a href="recursos.html">Recursos</a></li><li><a href="contacto.html">Contacto</a></li></ul></div>
+        <div class="footer-col"><h5>Legal</h5><ul><li><a href="aviso-privacidad.html">Aviso de Privacidad</a></li><li><a href="terminos.html">Términos y condiciones</a></li><li><a href="cookies.html">Cookies</a></li></ul></div>
+      </div>
+      <div class="footer-bottom"><div>© <span data-year>2026</span> AI Justicia. Hecho en México 🇲🇽</div><div class="footer-legal"><a href="aviso-privacidad.html">Privacidad</a><a href="terminos.html">Términos</a><a href="cookies.html">Cookies</a></div></div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+.pytest_cache/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+
+# Entornos y secretos
+.env
+.env.local
+.env*.local
+
+# Sesión de herramientas
+.zcode/
+
+# TODO el directorio de datos del engine (corpus descargado, datasets,
+# adapters LoRA, logs) — se regenera con los scripts, no va al git
+engine/data/
+
+# Modelos / pesos
+*.safetensors
+*.gguf
+
+# Documentos fuente pesados
+docs/LEYFED_zip_030326.zip
+
+# macOS
+.DS_Store
+
+# Caches
+*.swp

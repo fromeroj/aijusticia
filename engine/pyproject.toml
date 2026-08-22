@@ -1,0 +1,67 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ai-justicia-engine"
+version = "0.1.0"
+description = "Motor LLM + RAG con verificación de citas para AI Justicia (derecho mexicano)"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "Proprietary" }
+authors = [{ name = "AI Justicia" }]
+
+dependencies = [
+    # Inferencia (vía API OpenAI-compatible → LM Studio / vLLM / cloud)
+    "openai>=1.40",
+    # RAG / índice híbrido
+    "pgvector>=0.3.0",
+    "psycopg[binary]>=3.2",
+    "rank-bm25>=0.2.2",
+    "numpy>=1.26",
+    # NLI / verificación (modelo ligero via MPS en Mac)
+    "transformers>=4.44",
+    "torch>=2.4",
+    # OCR
+    "pytesseract>=0.3.10",
+    "Pillow>=10.4",
+    # Ingesta de corpus oficial
+    "requests>=2.32",
+    "beautifulsoup4>=4.12",
+    "lxml>=5.2",
+    # App / API
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "pydantic>=2.7",
+    "pydantic-settings>=2.3",
+    # Utilidades
+    "python-dotenv>=1.0",
+    "tenacity>=8.4",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3",
+    "pytest-asyncio>=0.23",
+    "ruff>=0.5",
+    "ipykernel>=6.29",
+]
+
+[project.scripts]
+aij-serve = "ai_justicia.api.main:run"
+aij-ingest = "ai_justicia.scripts:ingest_main"
+aij-query = "ai_justicia.scripts:query_main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["ai_justicia"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"

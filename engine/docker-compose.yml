@@ -1,0 +1,22 @@
+# PostgreSQL 16 + pgvector para el índice vectorial y persistencia del corpus.
+# Puerto 5433 para no chocar con un Postgres local en 5432.
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: aijusticia-postgres
+    environment:
+      POSTGRES_DB: aijusticia
+      POSTGRES_USER: aijusticia
+      POSTGRES_PASSWORD: aijusticia
+    ports:
+      - "5433:5432"
+    volumes:
+      - aijusticia_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aijusticia -d aijusticia"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  aijusticia_pgdata:
