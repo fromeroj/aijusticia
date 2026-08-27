@@ -37,18 +37,18 @@ sin dar ningún dato. La conversación funciona completa (entrevista, fuentes, r
 <h2>Flujo completo</h2>
 <div class="mermaid">
 flowchart TD
-    A[ Landing aijusticia.mx ] -->|Para ti| B[/para-ti]
-    B -->|Consulta libre — sin registro| C[/chat MODO ABIERTO]
-    B -->|Quiero conservar mi caso| D[Onboarding 3 pasos]
-    D --> E[Frase de recuperación + verificación 3 palabras]
-    E --> F[/chat CON CASO]
-    C -->|nota de consentimiento bajo el input| C2[Conversa ilimitado<br/>entrevista + fuentes + respuesta]
-    C2 -->|en cualquier momento| G{Guardar como caso}
-    G -->|Crear cuenta anónima| H[POST /dossiers]
-    H --> I[Se muestra frase UNA vez<br/>+ test de 3 palabras]
+    A["Landing aijusticia.mx"] -->|Para ti| B["/para-ti"]
+    B -->|Consulta libre — sin registro| C["/chat · MODO ABIERTO"]
+    B -->|Quiero conservar mi caso| D["Onboarding 3 pasos"]
+    D --> E["Frase de recuperación + verificación 3 palabras"]
+    E --> F["/chat · CON CASO"]
+    C -->|nota de consentimiento bajo el input| C2["Conversa ilimitado — entrevista + fuentes + respuesta"]
+    C2 -->|en cualquier momento| G{"¿Guardar como caso?"}
+    G -->|Crear cuenta anónima| H["POST /dossiers"]
+    H --> I["Se muestra frase UNA vez + test de 3 palabras"]
     I --> F
     G -->|Seguir en abierto| C2
-    F --> J[Panel expediente visible<br/>Nuevo caso · Exportar referencias]
+    F --> J["Panel expediente visible · Nuevo caso · Exportar referencias"]
 </div>
 
 <h2>Diagrama de estados de la sesión</h2>
@@ -70,19 +70,19 @@ stateDiagram-v2
 <div class="mermaid">
 sequenceDiagram
     participant U as Ciudadano
-    participant FE as Frontend (/chat)
+    participant FE as Frontend chat
     participant API as Engine API
     participant DB as PostgreSQL
-    U->>FE: lleva N mensajes en modo abierto<br/>(expediente ya acumulado en memoria)
+    U->>FE: lleva N mensajes en modo abierto<br/>expediente ya acumulado en memoria
     U->>FE: tap "Guardar como caso"
     FE->>API: POST /dossiers
-    API->>DB: INSERT actor + dossier (anónimo)
+    API->>DB: INSERT actor + dossier anónimo
     API-->>FE: dossier_id + frase_recuperacion
-    FE->>U: modal: frase 12 palabras (UNA vez)<br/>test: escribir 3 palabras al azar
+    FE->>U: modal con frase de 12 palabras UNA vez<br/>test de 3 palabras al azar
     U->>FE: completa verificación
-    FE->>FE: sesión localStorage + device token (un-tap)
+    FE->>FE: sesión localStorage + device token
     FE->>API: POST /auth/dispositivo/registrar
-    FE-->>U: modo CON CASO (badge verde)<br/>expediente intacto — nada se perdió
+    FE-->>U: modo CON CASO badge verde<br/>expediente intacto — nada se perdió
 </div>
 
 <h2>Nota de consentimiento (modo abierto)</h2>
