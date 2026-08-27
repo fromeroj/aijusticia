@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Justicia — Experiencia Ciudadano v2</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  :root { --verde:#047857; --tinta:#1f2937; --papel:#fafaf9; }
+  * { box-sizing:border-box; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; color:var(--tinta); background:var(--papel); margin:0; padding:2.5rem; line-height:1.6; }
+  .wrap { max-width:960px; margin:0 auto; }
+  h1 { font-size:1.9rem; color:var(--verde); margin-bottom:.3rem; }
+  h2 { font-size:1.3rem; margin-top:2.8rem; border-bottom:2px solid var(--verde); padding-bottom:.4rem; }
+  .meta { color:#6b7280; font-size:.95rem; }
+  .friccion { background:#fffbeb; border-left:4px solid #f59e0b; padding:.9rem 1.2rem; border-radius:0 .5rem .5rem 0; margin:1rem 0; }
+  .resuelto { background:#ecfdf5; border-left:4px solid var(--verde); padding:.9rem 1.2rem; border-radius:0 .5rem .5rem 0; margin:1rem 0; }
+  .mermaid { background:white; border:1px solid #e5e7eb; border-radius:.8rem; padding:1.2rem; margin:1.2rem 0; overflow-x:auto; text-align:center; }
+  table { width:100%; border-collapse:collapse; background:white; border-radius:.5rem; overflow:hidden; font-size:.92rem; }
+  th { background:var(--verde); color:white; text-align:left; padding:.6rem .9rem; }
+  td { padding:.55rem .9rem; border-bottom:1px solid #f3f4f6; }
+  code { background:#f3f4f6; padding:.1rem .35rem; border-radius:.25rem; font-size:.88em; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Experiencia Ciudadano — v2</h1>
+<p class="meta">AI Justicia · Diseño de flujo abierto → caso · 27 agosto 2026</p>
+
+<h2>Principio rector</h2>
+<p><strong>Cero fricción para empezar, cuenta solo cuando hay valor.</strong> El ciudadano puede platicar con la AI
+sin dar ningún dato. La conversación funciona completa (entrevista, fuentes, respuestas). Cuando quiera
+<strong>conservar el caso</strong> — volver después, compartirlo con un abogado, no perderlo — lo convierte en
+<em>caso</em> con un tap; ahí y solo ahí se crea la cuenta anónima (dossier + frase de recuperación).</p>
+
+<h2>Flujo completo</h2>
+<div class="mermaid">
+flowchart TD
+    A[ Landing aijusticia.mx ] -->|Para ti| B[/para-ti]
+    B -->|Consulta libre — sin registro| C[/chat MODO ABIERTO]
+    B -->|Quiero conservar mi caso| D[Onboarding 3 pasos]
+    D --> E[Frase de recuperación + verificación 3 palabras]
+    E --> F[/chat CON CASO]
+    C -->|nota de consentimiento bajo el input| C2[Conversa ilimitado<br/>entrevista + fuentes + respuesta]
+    C2 -->|en cualquier momento| G{Guardar como caso}
+    G -->|Crear cuenta anónima| H[POST /dossiers]
+    H --> I[Se muestra frase UNA vez<br/>+ test de 3 palabras]
+    I --> F
+    G -->|Seguir en abierto| C2
+    F --> J[Panel expediente visible<br/>Nuevo caso · Exportar referencias]
+</div>
+
+<h2>Diagrama de estados de la sesión</h2>
+<div class="mermaid">
+stateDiagram-v2
+    [*] --> Anonimo: llega a /chat
+    Anonimo --> Anonimo: pregunta (consentimiento por nota)
+    Anonimo --> Convirtiendo: tap "Guardar como caso"
+    Convirtiendo --> ConCaso: frase verificada
+    Convirtiendo --> Anonimo: cancela
+    ConCaso --> ConCaso: pregunta / entrevista
+    ConCaso --> CasoNuevo: "Nuevo caso" (expediente limpio, sesión persiste)
+    CasoNuevo --> ConCaso
+    ConCaso --> Anonimo: cierra sesión
+    Anonimo --> ConCaso: un-tap / frase (dispositivo vinculado)
+</div>
+
+<h2>Secuencia: convertir chat abierto en caso</h2>
+<div class="mermaid">
+sequenceDiagram
+    participant U as Ciudadano
+    participant FE as Frontend (/chat)
+    participant API as Engine API
+    participant DB as PostgreSQL
+    U->>FE: lleva N mensajes en modo abierto<br/>(expediente ya acumulado en memoria)
+    U->>FE: tap "Guardar como caso"
+    FE->>API: POST /dossiers
+    API->>DB: INSERT actor + dossier (anónimo)
+    API-->>FE: dossier_id + frase_recuperacion
+    FE->>U: modal: frase 12 palabras (UNA vez)<br/>test: escribir 3 palabras al azar
+    U->>FE: completa verificación
+    FE->>FE: sesión localStorage + device token (un-tap)
+    FE->>API: POST /auth/dispositivo/registrar
+    FE-->>U: modo CON CASO (badge verde)<br/>expediente intacto — nada se perdió
+</div>
+
+<h2>Nota de consentimiento (modo abierto)</h2>
+<p>Bajo los mensajes, <em>encima</em> del botón enviar, una línea discreta siempre visible:</p>
+<div class="friccion">
+  ⓘ Al enviar aceptas que esta conversación pueda usarse de forma anónima para mejorar el servicio
+  y entrenar la IA jurídica mexicana. No pedimos tu nombre ni datos personales.
+  <a href="#como-funciona">Cómo funciona</a> · Sin cuenta puedes conversar; con caso lo conservas.
+</div>
+<p>Al convertir en caso, el consentimiento expreso LFPDPPP (tarjeta con dos botones) se muestra
+en el primer turno posterior a la conversión — el usuario ya tiene contexto del producto.</p>
+
+<h2>Las 6 fricciones y su solución</h2>
+<table>
+<tr><th>#</th><th>Fricción</th><th>Solución implementada</th><th>Dónde</th></tr>
+<tr><td>1</td><td>Registro obligatorio antes de probar valor</td><td><strong>Modo abierto</strong>: /chat sin cuenta; conversación completa; "Guardar como caso" en el header siempre visible</td><td>chat/page.tsx · ChatWindow · ConvertCaseModal</td></tr>
+<tr><td>2</td><td>Consentimiento = muro legal antes de empezar</td><td>Nota informativa bajo el input (consentimiento implícito informado); expreso LFPDPPP solo al convertirse en caso</td><td>ConsentNotice · ConsentCard</td></tr>
+<tr><td>3</td><td>Expediente invisible — el usuario no sabe qué sabe el sistema</td><td><strong>Panel expediente</strong>: drawer lateral con hechos estructurados, materia y jurisdicción detectadas; editable</td><td>ExpedientePanel</td></tr>
+<tr><td>4</td><td>Cambiar de tema contamina el caso anterior</td><td><strong>Nuevo caso</strong>: limpia expediente+mensajes, conserva sesión; confirmación si hay &gt;4 mensajes</td><td>ChatWindow header</td></tr>
+<tr><td>5</td><td>Frase de recuperación sin prueba de que se guardó</td><td><strong>Verificación de 3 palabras</strong>: tras mostrar la frase, pedir 3 palabras aleatorias; no avanza hasta acertar; botón "ver de nuevo"</td><td>onboarding + ConvertCaseModal</td></tr>
+<tr><td>6</td><td>Referencias no aprovechables (el ciudadano le lleva esto a un abogado)</td><td><strong>Exportar</strong>: vista imprimible (PDF vía print) con pregunta, respuesta y citas + botón compartir (Web Share API → WhatsApp)</td><td>ReferencesCard export</td></tr>
+</table>
+
+<h2>Pipeline interno (sin cambios) — lo que pasa en cada pregunta</h2>
+<div class="mermaid">
+flowchart LR
+    Q[Pregunta] --> AN[Análisis<br/>materia + jurisdicción]
+    AN --> NO[Normalización<br/>a lenguaje jurídico]
+    NO --> ENT{Entrevista pre-RAG<br/>hasta 2 rondas}
+    ENT -->|faltan hechos| Q2[ClarifyCard<br/>alimenta expediente]
+    Q2 --> ENT
+    ENT -->|suficiente| FTS[Búsqueda FTS<br/>697M tokens · pesos por fuente]
+    FTS --> RR[Re-ranking + filtro<br/>de relevancia]
+    RR --> POST{Ronda post-RAG<br/>la ley revela hueco?}
+    POST -->|sí| Q2
+    POST -->|no| GEN[Generación con citas<br/>stream SSE]
+    GEN --> VER[Verificación de citas]
+    VER --> R[Respuesta + referencias<br/>o abstención honesta]
+</div>
+
+<h2>Decisiones de privacidad</h2>
+<div class="resuelto">
+<strong>Nada cambia en el fondo:</strong> el modo abierto NO envía identificadores al backend
+(la consulta viaja igual que la de un caso, sin datos personales). El expediente del modo abierto
+vive solo en el navegador. Al convertir, el expediente en memoria viaja con la primera consulta
+posterior — el servidor nunca supo que antes era anónimo. La frase de recuperación sigue siendo
+la única credencial; Google OAuth y un-tap son atajos, no requisitos.
+</div>
+
+<h2>Archivos nuevos/tocados</h2>
+<table>
+<tr><th>Archivo</th><th>Cambio</th></tr>
+<tr><td><code>app/chat/page.tsx</code></td><td>sin guard de sesión — modo abierto por defecto</td></tr>
+<tr><td><code>components/chat/ChatWindow.tsx</code></td><td>header con badge modo + botones (caso, expediente, nuevo caso)</td></tr>
+<tr><td><code>components/chat/ConsentNotice.tsx</code></td><td>nuevo — nota bajo el input (modo abierto)</td></tr>
+<tr><td><code>components/chat/ConvertCaseModal.tsx</code></td><td>nuevo — crea dossier + frase + verificación 3 palabras</td></tr>
+<tr><td><code>components/chat/ExpedientePanel.tsx</code></td><td>nuevo — drawer con hechos del expediente</td></tr>
+<tr><td><code>components/chat/PhraseVerify.tsx</code></td><td>nuevo — test de 3 palabras (reusable)</td></tr>
+<tr><td><code>components/chat/MessageBubble.tsx</code></td><td>referencias con exportar (print + share)</td></tr>
+<tr><td><code>lib/store.ts</code></td><td>sesión opcional, convertirACaso, nuevoCaso</td></tr>
+<tr><td><code>app/onboarding/ciudadano/page.tsx</code></td><td>verificación de frase integrada</td></tr>
+</table>
+
+</div>
+<script>mermaid.initialize({ startOnLoad: true, theme: "base", themeVariables: { primaryColor: "#ecfdf5", primaryTextColor: "#1f2937", primaryBorderColor: "#047857", lineColor: "#047857", fontSize: "14px" } });</script>
+</body>
+</html>

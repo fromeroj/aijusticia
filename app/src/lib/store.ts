@@ -53,10 +53,14 @@ interface ChatState {
   setModo: (modo: "ciudadano" | "abogado") => void;
   resetExpediente: () => void;
   clearChat: () => void;
-  // Sesión persistida (landing → onboarding → chat)
+  // Sesión persistida (landing → onboarding → chat). null = modo abierto (anónimo)
   sesion: Sesion | null;
   iniciarSesion: (s: Sesion) => void;
   cerrarSesion: () => void;
+  // Modo abierto → caso: conserva mensajes y expediente, vincula sesión
+  convertirACaso: (s: Sesion) => void;
+  // Nuevo caso: limpia expediente y mensajes, conserva la sesión
+  nuevoCaso: () => void;
 }
 
 export interface Sesion {
@@ -118,6 +122,22 @@ export const useChatStore = create<ChatState>((set, get) => ({
     set({
       sesion: null, modo: "ciudadano", messages: [], currentStage: null,
       isQuerying: false, expedienteAcumulado: null, respuestasAcumuladas: {},
+    });
+  },
+
+  convertirACaso: (s) => {
+    // Conserva mensajes y expediente acumulados del modo abierto;
+    // solo vincula la sesión nueva.
+    guardarSesion(s);
+    set({ sesion: s, modo: s.tipo });
+  },
+
+  nuevoCaso: () => {
+    set({
+      messages: [], currentStage: null, currentStageLabel: null,
+      pendingClarify: null, lastConsulta: null,
+      expedienteAcumulado: null, respuestasAcumuladas: {},
+      stageTimings: {},
     });
   },
 

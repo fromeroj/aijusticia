@@ -2,12 +2,15 @@
 
 import { useEffect, useRef, useCallback, useState } from "react";
 import Link from "next/link";
-import { Scale } from "lucide-react";
+import { Scale, FolderPlus, ClipboardList } from "lucide-react";
 import { useChatStore, type StageId } from "@/lib/store";
 import { streamQuery, type TurnoHistorial } from "@/lib/streamQuery";
 import { ConsentCard } from "./ConsentCard";
 import { MessageBubble } from "./MessageBubble";
 import { InputBar } from "./InputBar";
+import { ConsentNotice } from "./ConsentNotice";
+import { ConvertCaseModal } from "./ConvertCaseModal";
+import { ExpedientePanel } from "./ExpedientePanel";
 
 export function ChatWindow() {
   const messages = useChatStore((s) => s.messages);
@@ -152,7 +155,24 @@ export function ChatWindow() {
   const setModo = useChatStore((s) => s.setModo);
   const sesion = useChatStore((s) => s.sesion);
   const cerrarSesion = useChatStore((s) => s.cerrarSesion);
+  const nuevoCaso = useChatStore((s) => s.nuevoCaso);
+  const expedienteAcumulado = useChatStore((s) => s.expedienteAcumulado);
   const [consentDecidido, setConsentDecidido] = useState(false);
+  const [convertOpen, setConvertOpen] = useState(false);
+  const [expOpen, setExpOpen] = useState(false);
+  const [confirmNuevo, setConfirmNuevo] = useState(false);
+
+  const enModoAbierto = !sesion;
+
+  const confirmarNuevoCaso = () => {
+    if (messages.length > 4 && !confirmNuevo) {
+      setConfirmNuevo(true);
+      setTimeout(() => setConfirmNuevo(false), 4000);
+      return;
+    }
+    nuevoCaso();
+    setConfirmNuevo(false);
+  };
 
   return (
     <div className="flex h-[100dvh] flex-col bg-white">
@@ -168,48 +188,98 @@ export function ChatWindow() {
           </p>
         </div>
 
-        {/* Badge de expediente (ciudadano con dossier activo) */}
-        {modo === "ciudadano" && sesion?.dossierId && (
+        {/* Estado de sesión: modo abierto vs caso guardado */}
+        {modo === "ciudadano" && enModoAbierto ? (
+          <button
+            onClick={() => setConvertOpen(true)}
+            className="ml-3 flex items-center gap-1.5 rounded-full border border-[#047857]/30 bg-[#ecfdf5] px-3 py-1 text-[11px] font-medium text-[#047857] transition hover:bg-[#d1fae5]"
+            title="Conserva esta conversación con una cuenta anónima"
+          >
+            <FolderPlus className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline">Guardar como caso</span>
+            <span className="sm:hidden">Caso</span>
+          </button>
+        ) : modo === "ciudadano" && sesion?.dossierId ? (
           <span className="ml-3 hidden rounded-full bg-[#047857]/10 px-2.5 py-0.5 text-[10px] font-medium text-[#047857] sm:inline">
             Expediente {sesion.dossierId.slice(0, 8)}…
           </span>
-        )}
+        ) : null}
 
-        {/* Selector de modo: ciudadano (entrevista) vs abogado (directo) */}
-        <div className="ml-auto flex rounded-lg border border-gray-200 bg-gray-50 p-0.5">
-          <button
-            onClick={() => setModo("ciudadano")}
-            className={`rounded-md px-3 py-1 text-xs font-medium transition ${
-              modo === "ciudadano"
-                ? "bg-[#047857] text-white"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
-          >
-            Ciudadano
-          </button>
-          <button
-            onClick={() => setModo("abogado")}
-            className={`rounded-md px-3 py-1 text-xs font-medium transition ${
-              modo === "abogado"
-                ? "bg-[#c81e1e] text-white"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
-          >
-            Abogado
-          </button>
+        {/* Acciones de caso (ciudadano) */}
+        <div className="ml-auto flex items-center gap-1">
+          {modo === "ciudadano" && (
+            <>
+              {/* Panel expediente */}
+              <button
+                onClick={() => setExpOpen(true)}
+                title="Ver mi expediente — lo que ya sabemos de tu caso"
+                className="relative rounded-lg px-2 py-1.5 text-xs text-gray-500 transition hover:bg-gray-100 hover:text-gray-700"
+              >
+                <ClipboardList className="h-4 w-4" />
+                {expedienteAcumulado && (
+                  <span className="absolute right-0.5 top-0.5 h-1.5 w-1.5 rounded-full bg-[#047857]" />
+                )}
+              </button>
+              {/* Nuevo caso */}
+              <button
+                onClick={confirmarNuevoCaso}
+                title="Empezar un caso nuevo"
+                className={`rounded-lg px-2.5 py-1.5 text-xs transition ${
+                  confirmNuevo
+                    ? "bg-red-50 font-medium text-red-600"
+                    : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                }`}
+              >
+                {confirmNuevo ? "¿Seguro? Se limpia el expediente" : "Nuevo caso"}
+              </button>
+            </>
+          )}
+
+          {/* Selector de modo */}
+          <div className="hidden rounded-lg border border-gray-200 bg-gray-50 p-0.5 sm:flex">
+            <button
+              onClick={() => setModo("ciudadano")}
+              className={`rounded-md px-3 py-1 text-xs font-medium transition ${
+                modo === "ciudadano"
+                  ? "bg-[#047857] text-white"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              Ciudadano
+            </button>
+            <button
+              onClick={() => setModo("abogado")}
+              className={`rounded-md px-3 py-1 text-xs font-medium transition ${
+                modo === "abogado"
+                  ? "bg-[#c81e1e] text-white"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              Abogado
+            </button>
+          </div>
+
+          {/* Salir (solo con sesión) */}
+          {sesion ? (
+            <button
+              onClick={() => {
+                cerrarSesion();
+                window.location.href = "/";
+              }}
+              title="Cerrar sesión y volver al inicio"
+              className="ml-1 rounded-lg px-2 py-1.5 text-xs text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
+            >
+              Salir
+            </button>
+          ) : (
+            <Link
+              href="/"
+              className="ml-1 rounded-lg px-2 py-1.5 text-xs text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
+            >
+              Inicio
+            </Link>
+          )}
         </div>
-
-        {/* Salir */}
-        <button
-          onClick={() => {
-            cerrarSesion();
-            window.location.href = "/";
-          }}
-          title="Cerrar sesión y volver al inicio"
-          className="ml-1 rounded-lg px-2 py-1.5 text-xs text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
-        >
-          Salir
-        </button>
       </header>
 
       {/* Messages */}
@@ -256,14 +326,15 @@ export function ChatWindow() {
               />
             ))}
 
-            {/* Consentimiento de entrenamiento: tras la 1a respuesta completa,
-                solo en modo ciudadano (LFPDPPP: opt-in expreso y revocable) */}
+            {/* Consentimiento expreso LFPDPPP: tras la 1a respuesta completa,
+                solo con caso guardado (en modo abierto la nota bajo el input cubre) */}
             {modo === "ciudadano" &&
               !isQuerying &&
+              sesion?.dossierId &&
               messages.some((m) => m.done?.respuesta) &&
               !consentDecidido && (
                 <ConsentCard
-                  dossierId={useChatStore.getState().sesion?.dossierId ?? null}
+                  dossierId={sesion.dossierId}
                   onDecide={() => setConsentDecidido(true)}
                 />
               )}
@@ -271,8 +342,19 @@ export function ChatWindow() {
         )}
       </div>
 
+      {/* Nota de consentimiento (modo abierto) — bajo los mensajes, sobre el input */}
+      {modo === "ciudadano" && enModoAbierto && <ConsentNotice />}
+
       {/* Input */}
       <InputBar onSend={handleSend} onStop={stopQuery} isQuerying={isQuerying} />
+
+      {/* Modales / drawers */}
+      {convertOpen && <ConvertCaseModal onClose={() => setConvertOpen(false)} />}
+      <ExpedientePanel
+        expediente={expedienteAcumulado}
+        abierto={expOpen}
+        onClose={() => setExpOpen(false)}
+      />
     </div>
   );
 }

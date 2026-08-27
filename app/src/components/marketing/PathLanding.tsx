@@ -29,6 +29,7 @@ export function PathLanding({
   accesoItems,
   ctaTexto,
   ctaHref,
+  ctaLibreHref,
   notaLegal,
 }: {
   color: string;            // ej. "bg-[#047857]"
@@ -44,6 +45,7 @@ export function PathLanding({
   accesoItems: string[];
   ctaTexto: string;
   ctaHref: string;
+  ctaLibreHref?: string;  // si existe, botón secundario directo al chat sin registro
   notaLegal?: string;
 }) {
   return (
@@ -132,13 +134,23 @@ export function PathLanding({
                 </li>
               ))}
             </ul>
-            <Link
-              href={ctaHref}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-white px-5 py-4 text-base font-semibold text-gray-900 transition hover:bg-gray-100 sm:w-auto sm:self-center"
-            >
-              {ctaTexto}
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+            <div className="flex flex-col items-center gap-2.5 sm:flex-row sm:justify-center">
+              <Link
+                href={ctaLibreHref ?? ctaHref}
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-white px-5 py-4 text-base font-semibold text-gray-900 transition hover:bg-gray-100 sm:w-auto"
+              >
+                {ctaTexto}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              {ctaLibreHref && (
+                <Link
+                  href={ctaHref}
+                  className="flex w-full items-center justify-center rounded-xl border border-white/40 px-5 py-4 text-sm font-medium text-white/90 transition hover:bg-white/10 sm:w-auto"
+                >
+                  Crear mi caso con respaldo
+                </Link>
+              )}
+            </div>
             <p className="mt-4 text-xs text-white/70">
               Sin tarjetas · Puedes salir cuando quieras
             </p>

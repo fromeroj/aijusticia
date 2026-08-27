@@ -4,7 +4,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ShieldCheck, ShieldAlert, FileText, Scale, ChevronDown, ChevronUp } from "lucide-react";
+import { ShieldCheck, ShieldAlert, FileText, Scale, ChevronDown, ChevronUp, Printer, Share2 } from "lucide-react";
 import type { Message } from "@/lib/store";
 import { AnalysisCard } from "./AnalysisCard";
 import { ClarifyCard } from "./ClarifyCard";
@@ -86,6 +86,37 @@ export function MessageBubble({
 }
 
 function ReferencesCard({ done }: { done: import("@/lib/streamQuery").DonePayload }) {
+  const exportar = () => {
+    const pasajes = (done.pasajes || [])
+      .map((p, i) => `${i + 1}. ${p.titulo || p.fuente || "Fuente"}`)
+      .join("\n");
+    const texto = `AI JUSTICIA — Resumen de consulta\nFecha: ${new Date().toLocaleDateString("es-MX")}\n\nRESPUESTA:\n${done.respuesta}\n\nFUENTES VERIFICADAS (${done.n_sustentadas}/${done.n_oraciones} oraciones con cita):\n${pasajes}\n\nEste documento no sustituye asesoría legal profesional.`;
+    // Abrir vista imprimible en ventana nueva (Guardar como PDF)
+    const w = window.open("", "_blank", "width=800,height=900");
+    if (w) {
+      w.document.write(`<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Consulta AI Justicia</title>
+<style>body{font-family:Georgia,serif;max-width:720px;margin:2rem auto;padding:0 1rem;color:#1f2937;line-height:1.7}
+h1{color:#047857;font-size:1.3rem}pre{white-space:pre-wrap;font-family:inherit;font-size:.95rem;background:#f9fafb;padding:1rem;border-radius:.5rem;border:1px solid #e5e7eb}
+small{color:#6b7280}</style></head><body>
+<h1>⚖️ AI Justicia — Resumen de consulta</h1>
+<pre>${texto.replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c] || c))}</pre>
+<small>Generado por aijusticia.mx — orientación jurídica con fuentes verificadas. No sustituye asesoría profesional.</small>
+<script>window.print()<\/script></body></html>`);
+      w.document.close();
+    }
+  };
+
+  const compartir = async () => {
+    const resumen = `Consulta AI Justicia:\n\n${(done.respuesta || "").slice(0, 600)}…\n\nCon ${done.n_sustentadas} citas verificadas — aijusticia.mx`;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: "Consulta AI Justicia", text: resumen });
+      } catch { /* cancelado */ }
+    } else {
+      navigator.clipboard?.writeText(resumen);
+    }
+  };
+
   return (
     <div className="flex gap-3 px-4 py-2">
       <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#d1fae5]">
@@ -110,8 +141,30 @@ function ReferencesCard({ done }: { done: import("@/lib/streamQuery").DonePayloa
           ))}
         </div>
 
+        {/* Exportar / compartir */}
+        <div className="mt-3 flex gap-2">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={exportar}
+            className="flex-1 gap-2 border-[#047857]/30 text-[#047857] hover:bg-[#ecfdf5]"
+          >
+            <Printer className="h-3.5 w-3.5" />
+            Exportar PDF
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={compartir}
+            className="flex-1 gap-2 border-gray-200 text-gray-600 hover:bg-gray-50"
+          >
+            <Share2 className="h-3.5 w-3.5" />
+            Compartir
+          </Button>
+        </div>
+
         {/* Botón siempre presente: consultar abogado */}
-        <a href="/para-ti" className="mt-3 block">
+        <a href="/para-ti" className="mt-2 block">
           <Button size="sm" className="w-full gap-2 bg-[#047857] hover:bg-[#064e3b]">
             <Scale className="h-3.5 w-3.5" />
             Validar con un abogado

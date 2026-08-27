@@ -74,8 +74,9 @@ export default function ParaTi() {
         "Acompañamiento mensual desde $250 MXN si tu caso es largo",
         "Cancela cuando quieras — tu expediente es tuyo",
       ]}
-      ctaTexto="Iniciar mi consulta gratis"
+      ctaTexto="Preguntar ahora — sin registro"
       ctaHref="/onboarding/ciudadano"
+      ctaLibreHref="/chat"
     />
   );
 }

@@ -7,6 +7,7 @@ import {
   KeyRound, Copy, Check, ArrowRight, ArrowLeft, Lock,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { PhraseVerify } from "@/components/chat/PhraseVerify";
 import { useChatStore } from "@/lib/store";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
@@ -156,48 +157,19 @@ export default function OnboardingCiudadano() {
             </div>
           )}
 
-          {/* PASO 3: La frase (UNA vez) */}
+          {/* PASO 3: La frase (UNA vez) + verificación de 3 palabras */}
           {paso === 2 && frase && (
-            <div className="text-center">
-              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#047857]">
-                <KeyRound className="h-7 w-7 text-white" />
-              </div>
-              <h1 className="mb-2 text-2xl font-bold text-gray-900">Tu frase de recuperación</h1>
-              <p className="mb-6 text-sm text-red-600 font-medium">
-                ⚠️ Cópiala AHORA — no volverá a mostrarse
-              </p>
-              <div className="mx-auto mb-6 max-w-lg rounded-xl border-2 border-dashed border-[#047857]/40 bg-[#047857]/5 p-5">
-                <p className="font-mono text-base font-semibold leading-loose tracking-wide text-gray-900">
-                  {frase}
+            <div>
+              <div className="mb-6 text-center">
+                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#047857]">
+                  <KeyRound className="h-7 w-7 text-white" />
+                </div>
+                <h1 className="mb-1 text-2xl font-bold text-gray-900">Tu frase de recuperación</h1>
+                <p className="text-sm text-red-600 font-medium">
+                  ⚠️ Guárdala AHORA — comprobaremos que la tienes
                 </p>
-                <button
-                  className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-[#047857] hover:underline"
-                  onClick={async () => {
-                    await navigator.clipboard.writeText(frase);
-                    setCopiada(true);
-                    setTimeout(() => setCopiada(false), 2000);
-                  }}
-                >
-                  {copiada ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
-                  {copiada ? "¡Copiada!" : "Copiar frase"}
-                </button>
               </div>
-              <label className="mx-auto mb-6 flex max-w-md cursor-pointer items-start gap-2 text-left text-sm text-gray-600">
-                <input
-                  type="checkbox"
-                  checked={confirmo}
-                  onChange={(e) => setConfirmo(e.target.checked)}
-                  className="mt-0.5 h-4 w-4 accent-[#047857]"
-                />
-                Guardé mi frase en un lugar seguro y entiendo que no puede recuperarse.
-              </label>
-              <Button
-                className="w-full bg-[#047857] py-6 text-base hover:bg-[#064e3b] disabled:opacity-40"
-                onClick={entrar}
-                disabled={!confirmo}
-              >
-                Entrar a mi consulta <ArrowRight className="h-4 w-4" />
-              </Button>
+              <PhraseVerify frase={frase} onVerificado={entrar} />
             </div>
           )}
         </div>
