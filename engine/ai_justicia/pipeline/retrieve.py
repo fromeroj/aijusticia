@@ -44,12 +44,17 @@ def recuperar_y_rerankear(
     if consulta_expandida != consulta:
         logger.info("Consulta expandida (vectorial): %s → %s", consulta[:50], consulta_expandida[:80])
 
-    # Búsqueda híbrida: FTS con consulta NORMALIZADA, vectorial con expandida
+    # Búsqueda híbrida: FTS con consulta NORMALIZADA, vectorial con expandida.
+    # Si embeddings están deshabilitados (config), solo FTS.
     from ai_justicia.retrieval.fts_index import busqueda_fts, busqueda_vectorial, _normalizar, PESO_FTS, PESO_VECTORIAL
     from ai_justicia.retrieval.vector_index import Resultado as Res
 
     fts_resultados = busqueda_fts(consulta_normalizada, filtros=filtros, top_k=settings.retrieval_top_k * 2)
-    vec_resultados = busqueda_vectorial(consulta_expandida, filtros=filtros, top_k=settings.retrieval_top_k * 2)
+
+    if settings.embeddings_habilitados:
+        vec_resultados = busqueda_vectorial(consulta_expandida, filtros=filtros, top_k=settings.retrieval_top_k * 2)
+    else:
+        vec_resultados = []
 
     # Filtrar FTS: solo mantener resultados con score >= 30% del top score.
     # Esto elimina coincidencias débiles de una sola palabra (ej: "autorizado"

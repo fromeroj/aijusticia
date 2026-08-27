@@ -40,6 +40,9 @@ class Settings(BaseSettings):
     # En producción con mlx-lm: mlx_lm.load(model, adapter_path=...).
     # Vacío = usar modelo base sin adapter.
     lora_adapter_path: str = ""
+    # Habilitar búsqueda vectorial (embeddings). False = solo FTS.
+    # Cuando el modelo propio esté listo, activar de nuevo.
+    embeddings_habilitados: bool = False
 
     # --- Entrevista dinámica (ciclo de recaudación de información) ---
     # Rondas de preguntas ANTES de buscar la ley (pre-RAG).

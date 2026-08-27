@@ -123,8 +123,8 @@ def run_source(fuente: str, entidad: str, trigger: str = "scheduled") -> dict:
         else:
             run_status = "success"
 
-        # Generar embeddings si hay chunks pendientes
-        if docs_new > 0:
+        # Generar embeddings si hay chunks pendientes Y embeddings habilitados
+        if docs_new > 0 and settings.embeddings_habilitados:
             from ai_justicia.corpus.store import count_chunks_sin_embedding, indexar_chunks_pendientes
             pendientes = count_chunks_sin_embedding()
             if pendientes > 0:

@@ -101,12 +101,19 @@ class LMStudioClient:
 
         resp = self._client.chat.completions.create(**kwargs)
         content = resp.choices[0].message.content or ""
+        # Modelos de razonamiento (M3, Qwen thinking) meten <think> inline.
+        # Limpiar: todo lo que esté entre <think>...</think> se descarta.
+        import re as _re
+        content = _re.sub(r"<think>.*?</think>\s*", "", content, flags=_re.DOTALL)
         # El modelo suele anteponer saltos de línea tras el bloque de razonamiento
         return content.strip()
 
     @retry(stop=stop_after_attempt(3), wait=wait_exponential(min=1, max=8))
     def embed(self, texts: list[str]) -> list[list[float]]:
         if not texts:
+            return []
+        if not settings.embeddings_habilitados:
+            logger.debug("Embeddings deshabilitados — devolviendo vacío")
             return []
         logger.debug("Embed: model=%s, n=%d", self.embed_model, len(texts))
         resp = self._embed_client.embeddings.create(model=self.embed_model, input=texts)

@@ -525,11 +525,23 @@ def admin_update_source(fuente: str, entidad: str = "Federal", update: SourceUpd
 
 @app.get("/admin/stats")
 def admin_stats():
-    """Métricas globales del corpus."""
+    """Métricas globales del corpus (incluye tokens estimados)."""
     from ai_justicia.corpus.store import count_documentos, count_chunks
+    import psycopg as _psy
+    with _psy.connect(settings.psycopg_dsn) as _conn:
+        with _conn.cursor() as _cur:
+            _cur.execute("SELECT COALESCE(SUM(LENGTH(texto)) / 4, 0) FROM documentos")
+            tokens = _cur.fetchone()[0]
+            _cur.execute("""
+                SELECT fuente, COUNT(*), COALESCE(SUM(LENGTH(texto)) / 4000000, 0)
+                FROM documentos GROUP BY fuente ORDER BY COUNT(*) DESC
+            """)
+            fuentes = [{"fuente": f, "docs": n, "tokens_m": round(t, 1)} for f, n, t in _cur.fetchall()]
     return {
         "total_documentos": count_documentos(),
         "total_chunks": count_chunks(),
+        "total_tokens": tokens,
+        "fuentes": fuentes,
         "sources_healthy": _count_health("healthy"),
         "sources_degraded": _count_health("degraded"),
         "sources_unhealthy": _count_health("unhealthy"),
