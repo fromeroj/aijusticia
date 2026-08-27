@@ -95,10 +95,26 @@ function timeAgo(dateStr: string | null): string {
 
 type FilterMode = "all" | "estados" | "federales" | "problemas";
 
+interface Harvester {
+  fuente: string;
+  nombre: string;
+  descripcion: string | null;
+  metodo: string | null;
+  origen_url: string | null;
+  ejecucion: string | null;
+  diferencial: string | null;
+  frecuencia: string | null;
+  completa: boolean;
+  estado: Record<string, unknown> | null;
+  ultima_ejecucion: string | null;
+}
+
 export default function AdminPage() {
   const [sources, setSources] = useState<SourceHealth[]>([]);
   const [stats, setStats] = useState<Stats | null>(null);
   const [runs, setRuns] = useState<RunHistory[]>([]);
+  const [harvesters, setHarvesters] = useState<Harvester[]>([]);
+  const [showHarvesters, setShowHarvesters] = useState(false);
   const [selectedSource, setSelectedSource] = useState<string | null>(null);
   const [selectedEntidad, setSelectedEntidad] = useState<string>("Federal");
   const [loading, setLoading] = useState(true);
@@ -123,6 +139,16 @@ export default function AdminPage() {
     }
   }, []);
 
+  const fetchHarvesters = useCallback(async () => {
+    try {
+      const res = await fetch(`${API_URL}/admin/harvesters`);
+      const data = await res.json();
+      setHarvesters(data.harvesters || []);
+    } catch (e) {
+      console.error("Error fetching harvesters:", e);
+    }
+  }, []);
+
   const fetchRuns = useCallback(async (fuente: string, entidad: string) => {
     try {
       const res = await fetch(`${API_URL}/admin/sources/${fuente}/runs?entidad=${entidad}&limit=30`);
@@ -135,9 +161,10 @@ export default function AdminPage() {
 
   useEffect(() => {
     fetchSources();
+    fetchHarvesters();
     const interval = setInterval(fetchSources, 30000);
     return () => clearInterval(interval);
-  }, [fetchSources]);
+  }, [fetchSources, fetchHarvesters]);
 
   const handleSelectSource = (fuente: string, entidad: string) => {
     if (selectedSource === fuente && selectedEntidad === entidad) {
@@ -291,6 +318,65 @@ export default function AdminPage() {
             <Clock className="h-3.5 w-3.5" />
             Ingesta automática cada 6h
           </span>
+        </div>
+
+        {/* Harvesters — registro de cosecha diferencial */}
+        <div className="mb-6 rounded-xl border border-gray-100 bg-gray-50/60 p-4">
+          <button
+            onClick={() => setShowHarvesters(!showHarvesters)}
+            className="flex w-full items-center justify-between text-left"
+          >
+            <span className="text-sm font-semibold text-gray-800">
+              Harvesters — {harvesters.length} fuentes registradas{" "}
+              <span className="font-normal text-gray-400">
+                (scripts + watermarks para recolección diferencial)
+              </span>
+            </span>
+            <span className="text-xs text-[#047857]">{showHarvesters ? "ocultar ▲" : "ver ▼"}</span>
+          </button>
+          {showHarvesters && (
+            <div className="mt-3 max-h-96 overflow-y-auto">
+              <table className="w-full text-xs">
+                <thead className="text-gray-400">
+                  <tr>
+                    <th className="px-2 py-1 text-left">Fuente</th>
+                    <th className="px-2 py-1 text-left">Método</th>
+                    <th className="px-2 py-1 text-left">Origen</th>
+                    <th className="px-2 py-1 text-left">Corre en</th>
+                    <th className="px-2 py-1 text-center">Completa</th>
+                    <th className="px-2 py-1 text-left">Estado</th>
+                    <th className="px-2 py-1 text-left">Diferencial</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100 bg-white">
+                  {harvesters.map((h) => (
+                    <tr key={h.fuente} className="hover:bg-gray-50">
+                      <td className="px-2 py-1.5">
+                        <div className="font-medium text-gray-800">{h.fuente}</div>
+                        <div className="text-[10px] text-gray-400">{h.nombre}</div>
+                      </td>
+                      <td className="px-2 py-1.5 text-gray-500">{h.metodo}</td>
+                      <td className="max-w-[180px] truncate px-2 py-1.5">
+                        <a href={h.origen_url || "#"} target="_blank" rel="noreferrer" className="text-[#047857] hover:underline">
+                          {h.origen_url?.replace(/^https?:\/\//, "").slice(0, 34)}
+                        </a>
+                      </td>
+                      <td className="px-2 py-1.5 text-gray-500">{h.ejecucion}</td>
+                      <td className="px-2 py-1.5 text-center">
+                        {h.completa ? <span className="text-green-600">✓</span> : <span className="text-amber-500">…</span>}
+                      </td>
+                      <td className="px-2 py-1.5 font-mono text-[10px] text-gray-500">
+                        {h.estado && Object.keys(h.estado).length
+                          ? Object.entries(h.estado).map(([k, v]) => `${k}=${String(v).slice(0, 12)}`).join(" ")
+                          : "—"}
+                      </td>
+                      <td className="max-w-[220px] px-2 py-1.5 text-[10px] text-gray-400">{h.diferencial}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
 
         {/* Sources Table */}
