@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Justicia — Experiencia Ciudadano v2</title>
+<title>AI Justicia — Experiencias: Ciudadano · Abogado · Despacho</title>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <style>
   :root { --verde:#047857; --tinta:#1f2937; --papel:#fafaf9; }
@@ -121,6 +121,142 @@ flowchart LR
     POST -->|no| GEN[Generación con citas<br/>stream SSE]
     GEN --> VER[Verificación de citas]
     VER --> R[Respuesta + referencias<br/>o abstención honesta]
+</div>
+
+<h1 style="margin-top:4rem">Los otros casos — Abogado, Despacho y flujos transversales</h1>
+<p class="meta">Parte 2 · mismos principios: fricción mínima, cuenta solo cuando hay valor, privacidad por arquitectura</p>
+
+<h2>Mapa general: los tres públicos</h2>
+<div class="mermaid">
+flowchart LR
+    subgraph CIUDADANO ["👤 Ciudadano — gratis"]
+        C1["Consulta libre<br/>sin cuenta"] --> C2["Caso anónimo<br/>dossier + frase"]
+        C2 --> C3["Validación con abogado<br/>desde $100 MXN"]
+    end
+    subgraph ABOGADO ["⚖️ Abogado — profesional"]
+        A1["Registro<br/>cédula + especialidades"] --> A2["Modo profesional<br/>Nivel1 · directo"]
+        A2 --> A3["Casos compartidos<br/>dashboard /abogado"]
+    end
+    subgraph DESPACHO ["🏛️ Despacho — empresarial"]
+        D1["Alta de bufete"] --> D2["Adaptador LoRA privado<br/>secreto profesional"]
+        D2 --> D3["Multi-abogado<br/>aislamiento por bufete"]
+    end
+    C3 -.comparte expediente.-> A3
+    A1 -.funda o integra.-> D1
+    D3 -.sus abogados atienden.-> A3
+</div>
+
+<h2>Flujo del abogado</h2>
+<p>El registro pide lo mínimo regulatorio: <strong>cédula profesional + especialidades</strong>.
+La verificación contra RENAJU es Fase E — hoy es declaración, mañana validación automática.
+Un abogado puede registrarse suelto o declarar su despacho (lo crea si no existe).</p>
+<div class="mermaid">
+flowchart TD
+    A["/abogados"] -->|Quiero recibir casos| B["/onboarding/abogado"]
+    B --> C["Cédula profesional"]
+    C --> D["Especialidades — laboral · civil · familiar · penal · mercantil"]
+    D --> E["Despacho opcional<br/>si lo nombra, se crea o vincula el bufete"]
+    E --> F["POST /abogados/registro"]
+    F --> G["Frase de recuperación del acceso profesional<br/>+ verificación 3 palabras"]
+    G --> H["/chat en modo Abogado"]
+    H --> I["Nivel1: sin entrevista ciudadana<br/>respuesta técnica con doctrina y jurisprudencia"]
+    I --> J["/abogado — dashboard"]
+    J --> K["Casos compartidos recibidos<br/>expediente + documentos del ciudadano"]
+    K --> L["Respuesta formal al ciudadano<br/>propuesta de honorarios"]
+</div>
+
+<h2>Flujo del despacho — privacidad por arquitectura</h2>
+<p>El caso de uso estratégico: los despachos <strong>no pueden</strong> usar nube jurídica extranjera
+(secreto profesional + LFPDPPP datos sensibles). La respuesta es el <strong>adaptador dual</strong>:
+los datos de un bufete entrenan SOLO su adaptador LoRA privado, jamás el modelo general.</p>
+<div class="mermaid">
+flowchart TD
+    subgraph GENERAL ["Modelo general — datos de ciudadanos con consentimiento"]
+        G1["Conversaciones anónimas<br/>opt-in LFPDPPP"] --> G2["Anonimización y destilación"]
+        G2 --> G3["Adapter general<br/>mejora para todos"]
+    end
+    subgraph BUFETE ["Adaptador LoRA del bufete — aislado"]
+        B1["Documentos y resoluciones<br/>del despacho"] --> B2["Entrenamiento privado<br/>nunca sale del perímetro"]
+        B2 --> B3["LoRA bufete_X<br/>solo servible en su instancia"]
+    end
+    G3 -. base compartida .-> SERV["Inferencia"]
+    B3 -. merge en runtime .-> SERV
+    SERV --> R1["Respuesta con citas<br/>para clientes del bufete"]
+    style BUFETE fill:#fef3c7,stroke:#f59e0b
+    style GENERAL fill:#ecfdf5,stroke:#047857
+</div>
+<div class="friccion">
+⚠️ Invariante de la arquitectura: los datos de bufetes <strong>jamás</strong> entran al adapter general,
+y el adapter general jamás ve documentos privilegiados. Esta separación es la base legal del
+producto para despachos (secreto profesional, art. 225 CPF; LFPDPPP datos sensibles).
+</div>
+
+<h2>Compartir caso: ciudadano → abogado</h2>
+<div class="mermaid">
+sequenceDiagram
+    participant CI as Ciudadano
+    participant FE as Frontend
+    participant API as Engine
+    participant AB as Abogado
+    CI->>FE: en su caso: Compartir con abogado
+    FE->>API: directorio filtrado por especialidad del caso
+    API-->>FE: abogados verificados + tarifa base
+    CI->>FE: elige abogado y envía
+    FE->>API: crear share — expediente + documentos en solo-lectura
+    API-->>AB: notificación: nuevo caso compartido
+    AB->>API: /abogado — revisa expediente y bóveda
+    AB->>API: respuesta formal + propuesta de honorarios
+    API-->>CI: recibe respuesta en su chat
+    CI->>API: paga validación desde 100 MXN — OXXO o tarjeta
+    Note over CI,AB: El ciudadano revoca el share cuando quiera;<br/>el expediente es suyo, el abogado pierde el acceso.
+</div>
+
+<h2>Autenticación: /entrar</h2>
+<div class="mermaid">
+flowchart TD
+    EN["/entrar"] --> M1{"Método"}
+    M1 -->|Google| G1["OAuth redirect"]
+    M1 -->|Un-tap| D1{"Dispositivo<br/>vinculado?"}
+    M1 -->|Frase| F1["12 palabras"]
+    G1 --> G2["callback crea/vincula actor<br/>correo solo como llave — nunca al corpus"]
+    D1 -->|sí| D2["POST /auth/dispositivo<br/>entra directo"]
+    D1 -->|no| D3["mostrar otras opciones"]
+    F1 --> F2{"POST /auth/frase<br/>coincide?"}
+    F2 -->|sí| OK["Sesión restaurada<br/>dossier + expediente"]
+    F2 -->|no| F3["3 intentos · bloqueo temporal<br/>recuperación solo con frase correcta"]
+    G2 --> OK
+    D2 --> OK
+    style OK fill:#ecfdf5,stroke:#047857
+</div>
+<p class="meta">La frase es la identidad raíz; Google y un-tap son atajos de conveniencia,
+no dependencias. Perder el dispositivo sin frase = caso irrecuperable (trade-off consciente
+de privacidad: ni nosotros podemos recuperarlo).</p>
+
+<h2>Bóveda de documentos (Sprint 4)</h2>
+<div class="mermaid">
+flowchart LR
+    U["Ciudadano en su caso"] -->|"Subir documento"| SEL["Contrato · demanda · recibos<br/>PDF · foto"]
+    SEL --> EX["Extracción de texto local<br/>OCR si es escaneado"]
+    EX --> CL["Clasificación: qué es cada documento"]
+    CL --> V["Bóveda del dossier<br/>cifrado en reposo"]
+    V --> RAG["Los documentos entran al retrieval<br/>del caso — la AI los cita"]
+    V --> SH["Al compartir con abogado<br/>los ve en solo-lectura"]
+</div>
+
+<h2>Ciclo del consentimiento → entrenamiento</h2>
+<div class="mermaid">
+stateDiagram-v2
+    [*] --> SinDecidir: modo abierto nota informativa
+    SinDecidir --> OptIn: tarjeta LFPDPPP acepta
+    SinDecidir --> OptOut: tarjeta rechaza
+    OptIn --> Entrena: conversación anonimizada
+    OptOut --> NoEntrena: jamás sale del caso
+    Entrena --> OptOut: revoca cuando quiera
+    OptOut --> OptIn: puede re-activar
+    note right of Entrena
+        Solo transcript anonimizado, sin PII.
+        El expediente estructurado no entra.
+    end note
 </div>
 
 <h2>Decisiones de privacidad</h2>
