@@ -99,3 +99,9 @@ DO NOTHING/UPDATE` + chunking 1,200 con `ON CONFLICT (documento_id,ordinal)`.
 3. Revistas UNAM (Boletín Derecho Comparado, etc.)
 4. derechoenmexico.mx: 214 libros (Google Drive → Playwright)
 5. Boletín Judicial PJCDMX: 4,084 flip-books de imágenes (OCR masivo, caro)
+
+---
+
+## Nomenclatura interna
+
+- **Tohil** — el LLM soberano mexicano (CPT + SFT sobre base Qwen, decisión de base pendiente de evaluación). Dios k'iche' del Popol Vuh: fuego y trueno. Todo lo relativo al entrenamiento del modelo usa este nombre (checkpoints: `tohil-v0.1-cpt`, runs, adapters de bufete: `tohil-bufete-X`).
