@@ -8,7 +8,7 @@
 
 ## Abstract (draft)
 
-Legal AI in Spanish — and specifically Mexican law — is structurally underserved. The dominant legal LLMs are trained on Anglo-American corpora, cite hallucinated articles when asked about Mexican law, and cannot be deployed on-premise for law firms bound by professional secrecy. We present AI Justicia, an end-to-end effort to build a Mexican legal AI system: (1) the construction of a **10B-token corpus of exclusively Mexican primary legal sources** — laws, official gazettes, case law from state judiciary APIs, and doctrinal works harvested at scale from public government portals; (2) a **retrieval-anchored generation harness** where every legal claim must be verified against retrieved passages, with honest abstention when evidence is insufficient; and (3) **Tohil**, a sovereign base model for Mexican law (named for the K'iche' Maya deity of the Popol Vuh), whose training strategy combines the lessons of SaulLM-7B (domain CPT with replay) and Thomson-1.0 (strong CPT + linear merging), extended with **harness training** — teaching the model the citation-anchored response format during pretraining itself. We also document the data-engineering reality of the project: most Mexican legal data sits behind recaptcha gates, JWT chains, geo-blocks, and legacy ASP.NET portals, and we describe reproducible techniques for each.
+Legal AI in Spanish — and specifically Mexican law — is structurally underserved. The dominant legal LLMs are trained on Anglo-American corpora, cite hallucinated articles when asked about Mexican law, and cannot be deployed on-premise for law firms bound by professional secrecy. We present AI Justicia, an end-to-end effort to build a Mexican legal AI system: (1) the construction of a **10B-token corpus of exclusively Mexican primary legal sources** — laws, official gazettes, case law from state judiciary APIs, and doctrinal works harvested at scale from public government portals; (2) a **retrieval-anchored generation harness** where every legal claim must be verified against retrieved passages, with honest abstention when evidence is insufficient; and (3) **Tlamatini**, a sovereign base model for Mexican law (from the Nahuatl *tlamatini*, "one who knows" — the sage-counselors of pre-Hispanic central Mexico), whose training strategy combines the lessons of SaulLM-7B (domain CPT with replay) and Thomson-1.0 (strong CPT + linear merging), extended with **harness training** — teaching the model the citation-anchored response format during pretraining itself. We also document the data-engineering reality of the project: most Mexican legal data sits behind recaptcha gates, JWT chains, geo-blocks, and legacy ASP.NET portals, and we describe reproducible techniques for each.
 
 ---
 
@@ -99,9 +99,9 @@ Every source required bespoke reverse-engineering. We document the techniques be
 - **Scanned doctrine → OCR**: Apple Vision OCR (es-ES, ~0.7s/page) recovered 445 SCJN cuadernillos and full doctrinal books that had zero embedded text.
 - **Everything differential**: each harvester's script, watermark state, and incremental strategy lives in a Postgres registry (`harvest_scripts`) — laws change, gazettes publish daily, courts upload constantly. A corpus of Mexican law is not a dataset; it is a **living system of record**.
 
-## 5. Training Strategy: Tohil
+## 5. Training Strategy: Tlamatini
 
-*Codename: Tohil — deity of fire and thunder in the Popol Vuh; the memory and the voice.*
+*Codename: Tlamatini — Nahuatl for "one who knows things"; the sage who counsels and, crucially, admits what they do not know. Training infrastructure: Tohil (the forge).*
 
 ### 5.1 The recipe
 
@@ -147,14 +147,14 @@ The citizen tier is anonymous by design: no email required (recovery phrase), in
 
 1. The first large-scale, documented, **living corpus of Mexican law** (10B+ tokens, differential harvest registry, reproducible techniques for every source).
 2. A production **retrieval-anchored legal assistant** with honest abstention, evaluated 3-way (cloud generalist +RAG vs. legal foundation +RAG vs. legal foundation bare), with the token-budget pathology of reasoning models in RAG pipelines identified and fixed.
-3. A training recipe unifying **SaulLM replay + Thomson merge + harness training**, targeting Tohil, the first sovereign Mexican legal base model.
+3. A training recipe unifying **SaulLM replay + Thomson merge + harness training**, targeting Tlamatini, the first sovereign Mexican legal base model.
 4. Evidence that **citation hallucination survives domain CPT** — jurisdiction grounding requires retrieval, and harness format can be trained.
 
 ## 8. Status & Roadmap
 
 - Corpus: 1.5B+ ingested, 10B+ accessible, harvest ongoing across 17 registered sources.
 - System: live at aijusticia.mx (citizen/lawyer tiers), firm tier in development pending base model.
-- Training: Tohil CPT run planned on rented 4×H200 upon corpus completion; base decision (Qwen 3.6-35B-A3B vs Qwen 3.8 27B dense) pending the running evaluation; battery automated.
+- Training: Tlamatini CPT run (Tohil pipeline) planned on rented 4×H200 upon corpus completion; base decision (Qwen 3.6-35B-A3B vs Qwen 3.8 27B dense) pending the running evaluation; battery automated.
 
 ---
 

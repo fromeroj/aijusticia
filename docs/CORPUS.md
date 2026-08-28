@@ -104,4 +104,5 @@ DO NOTHING/UPDATE` + chunking 1,200 con `ON CONFLICT (documento_id,ordinal)`.
 
 ## Nomenclatura interna
 
-- **Tohil** — el LLM soberano mexicano (CPT + SFT sobre base Qwen, decisión de base pendiente de evaluación). Dios k'iche' del Popol Vuh: fuego y trueno. Todo lo relativo al entrenamiento del modelo usa este nombre (checkpoints: `tohil-v0.1-cpt`, runs, adapters de bufete: `tohil-bufete-X`).
+- **Tlamatini** — el LLM soberano mexicano (náhuatl: "el que sabe"; los sabios-consejeros del México central prehispánico). CPT + SFT sobre base Qwen (decisión 3.6-A3B vs 3.8-27B pendiente de evaluación). Checkpoints: `tlamatini-v0.1-cpt`, adapters de bufete: `tlamatini-bufete-X`.
+- **Tohil** — la infraestructura de entrenamiento (el fuego que forja): pipeline de CPT en Vast.ai, runs: `tohil-forge-v0.1`. El trueno = las H200.
