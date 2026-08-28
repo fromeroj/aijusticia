@@ -42,6 +42,8 @@ Thomson-1.0-Small (technical report, 2025) is a 35B-class MoE model built on the
 - Multi-stage curriculum over proprietary legal corpora of tens of billions of tokens.
 - License: PolyForm Strict — non-commercial, reference-only. We cannot use the model itself, but its *architecture decisions* are reproducible: it validated that a strong-CPT-plus-merge recipe on this exact base family produces a usable legal model — our local development machine already runs this architecture at 4-bit quantization.
 
+Two domestic efforts define the current Mexican landscape. **lex-mx** (ingteranalvarez) maintains all 317 federal statutes as clean Markdown, auto-updated daily via GitHub Actions with git history doubling as a per-law reform changelog — an elegant differential-harvest pattern we adopt and integrate as a source. **LEX-MX** (eider404) is a RAG API over Mexican law built on closed OpenAI models (gpt-4.1-nano/mini) with ChromaDB — no training, no corpus contribution, and cloud dependency that is precisely the compliance gap for professional use. Neither trains a model; the sovereign-model space remains open.
+
 Our empirical evaluation confirmed both models' lessons and one caveat: domain-trained models produce *lawyer-shaped* answers by default (correct format, correct institution referrals) but still hallucinate jurisdiction-specific article numbers. Domain CPT teaches the *shape* of legal reasoning; it does not guarantee factual grounding in a specific legal system. That is the RAG harness's job.
 
 ## 3. AI Justicia: System Overview
@@ -69,7 +71,7 @@ An instructive failure: our first full evaluation showed 93% abstention — the 
 |---|---|---|
 | **Semanario Judicial de la Federación** | 150K jurisprudencias + isolated theses | ~22M |
 | **DOF (federal gazette)** | 1999–2026, per-note full text | ~300M+ |
-| **Federal statutes & regulations** | LeyesBiblio corpus + reglamentos/manuales | ~38M |
+| **Federal statutes & regulations** | LeyesBiblio corpus + reglamentos/manuales + lex-mx (317 statutes, daily-synced Markdown) | ~50M |
 | **State legislation (32 states)** | Consolidated codes/laws/reglamentos per state | ~85M |
 | **Gaceta CDMX** | Complete 2014–2026 archive (via Wayback CDX) | 143M |
 | **State case law — CDMX (SIVEPJ)** | 28,146 sentences, full universe enumerated | ~34M |
