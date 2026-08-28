@@ -47,17 +47,48 @@ def generar(consulta: str, pasajes: list[Resultado], nivel: str = "Nivel0") -> R
 
     nivel: 'Nivel0' (ciudadano) usa prompt en lenguaje llano;
            'Nivel1'/'Nivel2' (abogado) usa prompt técnico sin disclaimers.
+
+    Si la primera pasada sale con pocas citas (modelo de razonamiento a veces
+    omite el formato [n]), se reintenta UNA vez con reproche explícito —
+    la auto-corrección es barata frente a abstenerse.
     """
     client = get_llm_client()
     messages = construir_messages(consulta, pasajes, nivel=nivel)
     logger.info("Generando respuesta anclada (%d pasajes, nivel=%s)", len(pasajes), nivel)
 
-    # max_tokens muy generoso: el modelo soporta 262144 de contexto y es de
-    # razonamiento, así que puede usar 10000-30000 tokens en reasoning_content
-    # antes de producir la respuesta final. Optimizaremos después.
-    texto = client.chat(messages, max_tokens=65536, temperature=0.1)
-    oraciones = _parsear_oraciones(texto)
+    def _intento(msgs):
+        # max_tokens muy generoso: el modelo soporta 262144 de contexto y es de
+        # razonamiento, así que puede usar 10000-30000 tokens en reasoning_content
+        # antes de producir la respuesta final.
+        texto = client.chat(msgs, max_tokens=65536, temperature=0.1)
+        oraciones = _parsear_oraciones(texto)
+        return texto, oraciones
+
+    texto, oraciones = _intento(messages)
     n_sustentadas = sum(1 for o in oraciones if o.sustentado)
+
+    # Segunda pasada auto-correctiva si el formato de citas salió flojo
+    ratio = (n_sustentadas / len(oraciones)) if oraciones else 0.0
+    if oraciones and ratio < 0.30 and n_sustentadas < len(oraciones) * 0.5:
+        logger.info(
+            "Citas flojas (%d/%d) — segunda pasada auto-correctiva", n_sustentadas, len(oraciones)
+        )
+        mensajes2 = messages + [
+            {"role": "assistant", "content": texto[:4000]},
+            {"role": "user", "content": (
+                f"Tu respuesta anterior solo ancló {n_sustentadas} de {len(oraciones)} oraciones "
+                "con citas [n]. Vuelve a emitir la MISMA respuesta pero agregando la cita [n] "
+                "del pasaje que respalda cada afirmación jurídica (también en los pasos y "
+                "recomendaciones cuando el pasaje los apoye). No agregues contenido nuevo."
+            )},
+        ]
+        try:
+            texto2, oraciones2 = _intento(mensajes2)
+            n2 = sum(1 for o in oraciones2 if o.sustentado)
+            if len(oraciones2) and n2 / len(oraciones2) > ratio:
+                texto, oraciones, n_sustentadas = texto2, oraciones2, n2
+        except Exception as e:
+            logger.warning("Segunda pasada falló (%s), usando la primera", str(e)[:60])
 
     logger.info(
         "Respuesta: %d oraciones, %d sustentadas (%.0f%%)",

@@ -250,7 +250,7 @@ def normalizar_consulta_juridica(consulta: str, materia: str | None = None) -> s
         response = client.chat(
             [{"role": "user", "content": prompt}],
             temperature=0.0,
-            max_tokens=128,
+            max_tokens=2048,
         )
 
         # Limpiar respuesta
@@ -338,7 +338,7 @@ def contextualizar_consulta(consulta: str, historial: list[dict] | None) -> str:
         response = client.chat(
             [{"role": "user", "content": prompt}],
             temperature=0.0,
-            max_tokens=128,
+            max_tokens=2048,
         )
 
         response = response.strip()

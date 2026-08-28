@@ -101,10 +101,29 @@ class LMStudioClient:
 
         resp = self._client.chat.completions.create(**kwargs)
         content = resp.choices[0].message.content or ""
-        # Modelos de razonamiento (M3, Qwen thinking) meten <think> inline.
-        # Limpiar: todo lo que esté entre <think>...</think> se descarta.
-        import re as _re
-        content = _re.sub(r"<think>.*?</think>\s*", "", content, flags=_re.DOTALL)
+        finish = resp.choices[0].finish_reason
+
+        def _limpiar(texto: str) -> str:
+            # Modelos de razonamiento (M3, Qwen thinking) meten <think> inline.
+            import re as _re
+            # bloque cerrado
+            texto = _re.sub(r"<think>.*?</think>\s*", "", texto, flags=_re.DOTALL)
+            # bloque TRUNCADO por max_tokens: <think> sin cierre — tirar todo
+            if "<think>" in texto:
+                texto = texto.split("<think>", 1)[0]
+            return texto.strip()
+
+        content = _limpiar(content)
+
+        # Modelos de razonamiento con presupuesto corto: el <think> consumió
+        # todo el cupo y el contenido quedó vacío o cortado a mitad de razonamiento.
+        # Reintentar UNA vez con presupuesto ampliado (fail-open: la etapa
+        # de arriba prefiere respuesta larga a respuesta vacía).
+        if (not content or finish == "length") and max_tokens < 4000:
+            kwargs["max_tokens"] = max(4000, max_tokens * 8)
+            resp = self._client.chat.completions.create(**kwargs)
+            content = _limpiar(resp.choices[0].message.content or "")
+
         # El modelo suele anteponer saltos de línea tras el bloque de razonamiento
         return content.strip()
 
