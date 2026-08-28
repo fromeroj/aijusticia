@@ -14,13 +14,13 @@ export default function Despachos() {
       colorSoft="bg-gray-900/10 text-gray-700"
       emoji="🏛️"
       publico="Para despachos y firmas"
-      titular="Una IA que litiga como su despacho… porque la entrenó su despacho"
-      promesa="Cada caso, contrato y demanda de tu firma entrena un modelo privado de AI Justicia. La IA de TU despacho habla con vuestro estilo, cita vuestras estrategias — y ese conocimiento jamás sale de la firma."
+      titular="Tlamatini: la IA que litiga como su despacho… porque la entrenó su despacho"
+      promesa="Tlamatini —el modelo jurídico mexicano de AI Justicia— corre DENTRO de tu firma, y cada caso, contrato y demanda entrena tu adapter privado. La IA de TU despacho habla con vuestro estilo, cita vuestras estrategias — y ese conocimiento jamás sale de la firma."
       features={[
         {
           icon: <Brain className="h-5 w-5" />,
-          titulo: "Modelo privado por despacho",
-          texto: "Un adapter exclusivo entrenado solo con los casos de tu firma: tus plantillas, tus estrategias, tu manera de redactar. La base es común; el know-how es tuyo.",
+          titulo: "Tlamatini on-premise + adapter privado",
+          texto: "El modelo jurídico mexicano desplegado en tu infraestructura, con un adapter exclusivo entrenado solo con los casos de tu firma: tus plantillas, tus estrategias, tu manera de redactar. La base es común; el know-how es tuyo.",
         },
         {
           icon: <Lock className="h-5 w-5" />,

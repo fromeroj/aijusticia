@@ -1,0 +1,37 @@
+% ================= 4. TRABAJO RELACIONADO =================
+\section{Trabajo relacionado}\label{sec:relacionado}
+
+\subsection{Modelos de lenguaje jurídicos: de SaulLM a la generación industrial}
+
+SaulLM-7B (Colombo et al., Equall.ai, 2024) fue el primer LLM diseñado explícitamente para el dominio jurídico y sigue siendo la receta de referencia para el CPT de dominio.\cite{colombo2024} Construido sobre Mistral-7B, destila \textbf{30B tokens} de texto jurídico inglés a partir de \textbf{94B tokens crudos} ---descartando 68\% del material recolectado por artefactos de PDF, duplicados entre fuentes y unicode corrupto---, con fuentes que incluyen MultiLegal Pile, FreeLaw, GovInfo, EuroParl, EDGAR y USPTO. Sus dos decisiones metodológicas más influyentes son el \textbf{2\% de replay general} (Wikipedia, StackExchange, GitHub de SlimPajama) contra el olvido catastrófico, y la inclusión de \textbf{datos instruccionales durante el propio CPT} (FLAN, Super-NaturalInstructions) en lugar de diferir todo lo conversacional al SFT. El modelo se liberó bajo licencia MIT, y su escalado posterior a SaulLM-54B y SaulLM-141B documentó los trade-offs de la adaptación de dominio a mayor escala.\cite{saullm54b} La lección que importa: \emph{la ingeniería de calidad del corpus domina al volumen}.
+
+En el plano industrial, la generación de modelos legales propietarios de la familia de Thomson Reuters ---referenciada en nuestro borrador de trabajo como Thomson-1.0, cuyo reporte técnico (2025) describe un MoE de clase 35B sobre la misma familia base que empleamos--- validó dos decisiones que adoptamos: \textbf{CPT fuerte más fusión lineal de modelos} como mecanismo anti-olvido (en lugar de replay solo), y un currículo multietapa sobre corpus jurídicos propietarios de decenas de miles de millones de tokens. Su licencia (PolyForm Strict, no comercial) impide usar el modelo, pero sus \emph{decisiones de arquitectura} son reproducibles; nuestra evaluación empírica (Sección~\ref{sec:problema}) confirmó tanto su lección principal como su límite: el modelo produce respuestas con \emph{forma de abogado} pero sigue alucinando números de artículo específicos de jurisdicción.
+
+\subsection{LLMs jurídicos fuera del mundo anglosajón}
+
+La literatura confirma que la verticalización jurisdiccional es viable y útil fuera del inglés. China ha producido una familia completa de LLMs legales ---ChatLaw (multiagente, con base de conocimiento externa y módulo de referencia explícitamente diseñado para reducir alucinación),\cite{cui2024chatlaw} DISC-LawLLM, Fuzi-Mingcha, HanFei, InternLM2-Law y LawGPT--- entrenados sobre legislación, interpretaciones judiciales y foros legales chinos.\cite{surveylegal2025} Para el español, los recursos a escala existentes (Legal-ES; la tarea compartida IberLegal de IberLEF) se concentran en NER sobre textos jurídicos y administrativos \emph{de España}.\cite{legales2020} En el plano de modelos soberanos nacionales, el proyecto español Alia ---impulsado por el gobierno con corpus curados y supervisión pública--- ejemplifica la motivación de soberanía lingüística, aunque sus propios analistas reconocen que no resuelve la capa que más importa a los sectores regulados: la soberanía de inferencia.\cite{alia2026} \textbf{Para el derecho mexicano no existe, a la fecha, ningún corpus de entrenamiento a escala ni ningún modelo de dominio publicado.} Ese vacío es simultáneamente la motivación científica y la oportunidad de negocio de este proyecto.
+
+\subsection{La medición de la alucinación legal}
+
+El estado del arte empírico se resume en tres resultados. (i) Dahl et al.: alucinación del 58--88\% en modelos generales, con degradación en jurisdicciones poco prominentes y ausencia de autoconciencia del error.\cite{dahl2024} (ii) Magesh et al.: las herramientas RAG comerciales reducen pero no eliminan el problema (17--33\%), y el modo residual más peligroso es la cita \emph{misgrounded} ---fuente real que no sustenta la afirmación---, indistinguible sin leer la fuente.\cite{magesh2025} (iii) El ensayo controlado de Schwarcz et al. con estudiantes de derecho: el RAG preserva la integridad factual de no usar IA; el modelo de razonamiento sin anclaje mejora el análisis pero contamina con alucinaciones.\cite{ailawlibrarians2026} La conclusión de ingeniería es estable: \textbf{la fiabilidad legal exige anclaje en recuperación en inferencia}, y la pregunta abierta ---que abordamos--- es si ese comportamiento de anclaje puede además \emph{entrenarse en los pesos}.
+
+\begin{table}[H]
+\centering\small
+\caption{Síntesis comparativa del trabajo relacionado y posición de AI Justicia.}
+\label{tab:relacionado}
+\begin{tabular}{@{}p{3.1cm}p{2.6cm}p{3.0cm}p{2.6cm}p{2.6cm}@{}}
+\toprule
+\textbf{Sistema} & \textbf{Jurisdicción / idioma} & \textbf{Corpus} & \textbf{Anclaje factual} & \textbf{Despliegue soberano} \\
+\midrule
+SaulLM-7B\cite{colombo2024} & Anglosajón / inglés & 30B tokens (abierto, MIT) & No (bare) & Sí (pesos abiertos) \\
+SaulLM-54B/141B\cite{saullm54b} & Anglosajón / inglés & Escalado, MIT & No (bare) & Sí \\
+ChatLaw et al.\cite{cui2024chatlaw,surveylegal2025} & China / chino & Corpus legal chino & KB + referencia & Parcial \\
+Legal-ES / IberLegal\cite{legales2020} & España / español & Recursos NER & N/A (tarea) & Sí (recursos) \\
+Lexis+ AI / Westlaw AI\cite{magesh2025} & EE.UU. / inglés & Propietario & RAG (17--33\% aluc.) & No (SaaS) \\
+vLex Vincent\cite{vlex2024} & 9+ países incl. México & 100M+ docs & RAG (no evaluado indep.) & No (SaaS) \\
+Harvey\cite{harvey2026} & Global / inglés-céntrico & Propietario & RAG + workflows & No (SaaS) \\
+\midrule
+\textbf{AI Justicia} & \textbf{México / español} & \textbf{10B+ tokens vivos} & \textbf{RAG + harness training + abstención} & \textbf{Sí (on-premise)} \\
+\bottomrule
+\end{tabular}
+\end{table}

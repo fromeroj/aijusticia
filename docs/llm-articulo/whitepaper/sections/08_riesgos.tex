@@ -1,0 +1,24 @@
+% ================= 8. RIESGOS =================
+\section{Riesgos y limitaciones}\label{sec:riesgos}
+
+\begin{table}[H]
+\centering\small
+\caption{Registro de riesgos principales y mitigaciones.}
+\label{tab:riesgos}
+\begin{tabular}{@{}p{3.4cm}p{4.9cm}p{5.6cm}@{}}
+\toprule
+\textbf{Riesgo} & \textbf{Descripción} & \textbf{Mitigación} \\
+\midrule
+Alucinación residual & El RAG reduce pero no elimina el error (17--33\% en incumbentes\cite{magesh2025}); el modo \emph{misgrounded} es indetectable sin leer la fuente & Verificación por \emph{entailment} por oración + abstención honesta + evaluación continua; métricas públicas de la batería de 30 preguntas \\
+Responsabilidad por consejo legal & Un ciudadano puede tomar la orientación como asesoría definitiva & Diseño de abstención, disclaimers estructurales, referencia a instituciones; el sistema orienta, no litiga; tratamiento automatizado declarado conforme a LFPDPPP\cite{cosio2026} \\
+Incertidumbre regulatoria & El reglamento de la LFPDPPP 2025 sigue pendiente; la SABG es autoridad nueva\cite{cosio2026,kyc2026} & Cumplimiento por diseño (opt-in revocable, minimización, local-first); monitoreo regulatorio como parte del corpus vivo \\
+Obsolescencia del corpus & Reformas legislativas y criterios nuevos degradan el anclaje & Cosecha diferencial con registro persistente (17 fuentes); sensibilidad a reformas como métrica de evaluación \\
+Competencia de incumbentes & Harvey/vLex podrían localizar para México\cite{harvey2026,vlex2024} & El foso es el corpus vivo + on-premise + precio; replicar la cosecha diferencial toma años \\
+Fragilidad de fuentes & Cambios en portales, reCAPTCHAs, términos de acceso & Registro de harvesters con estrategia por fuente; redundancia (Wayback CDX); OAI-PMH incremental donde existe \\
+Base modelo abierto & Dependencia de familias de pesos abiertos (licencias, disponibilidad) & Arquitectura agnóstica de base; fusión lineal preserva reversibilidad al base \\
+Sesgo de evaluación & La batería de 30 preguntas es propia y pequeña & Prerregistro de métricas, evaluación por abogados en ejercicio, publicación de metodología \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Dos limitaciones metodológicas merecen declararse explícitamente. Primera, las cifras de mercado provienen de firmas de análisis con metodologías heterogéneas (IMARC, Mordor, Fortune BI difieren en el tamaño absoluto del mercado global, aunque coinciden en rango y CAGR);\cite{imarc2025,mordor2026,fortune2026} nuestro TAM/SAM/SOM deriva de supuestos propios conservadores y debe leerse como orden de magnitud, no como proyección financiera auditada. Segunda, las métricas de desempeño del sistema (batería de 30 preguntas, tasas de abstención) son evaluaciones internas del proyecto, aún no auditadas por terceros; su publicación con metodología abierta es parte de la hoja de ruta.

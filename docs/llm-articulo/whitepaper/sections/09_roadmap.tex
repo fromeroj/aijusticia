@@ -1,0 +1,29 @@
+% ================= 9. HOJA DE RUTA =================
+\section{Estado actual y hoja de ruta}\label{sec:roadmap}
+
+\begin{table}[H]
+\centering\small
+\caption{Estado y hitos del proyecto.}
+\label{tab:roadmap}
+\begin{tabular}{@{}p{2.6cm}p{5.2cm}p{5.8cm}@{}}
+\toprule
+\textbf{Frente} & \textbf{Estado (agosto 2026)} & \textbf{Siguiente hito} \\
+\midrule
+Corpus & 1.5B+ tokens ingeridos y consultables; 10B+ accesibles; 17 fuentes registradas & Completar cosecha de caselaw estatal (Edomex, Jalisco, Querétaro, NL); publicar ficha técnica del corpus \\
+Sistema & Producción en aijusticia.mx (tiers ciudadano y abogado); harness con abstención; respuesta 2/30 $\rightarrow$ 18/30 tras corrección de presupuestos & Batería de evaluación automatizada y prerregistrada; modo profesional con evaluación por abogados \\
+Modelo base & Arquitectura validada; receta fijada (CPT + merge + harness training); corrida CPT planificada en 4$\times$H200 rentadas (Figura~\ref{fig:costo}) & Run CPT sobre corpus completo; fusión lineal; SFT; liberación de resultados de evaluación \\
+Tier despacho & En desarrollo, pendiente del modelo base & Primer piloto on-premise con adaptadores privados e invariante de doble adaptador \\
+Cumplimiento & Opt-in ciudadano revocable; anonimato por diseño; avisos conforme a LFPDPPP 2025\cite{lfpdppp,cosio2026} & Actualización al reglamento de la LFPDPPP cuando se publique; auditoría de terceros \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Contribuciones}
+
+\begin{enumerate}
+\item El primer \textbf{corpus vivo de derecho mexicano} a escala documentada (10B+ tokens), con registro de cosecha diferencial y técnicas reproducibles para cada fuente ---un activo de infraestructura de investigación por derecho propio.
+\item Un \textbf{asistente jurídico anclado en recuperación} en producción, con abstención honesta, evaluado en tres configuraciones (generalista en nube +RAG vs. fundación legal +RAG vs. fundación legal bare), incluyendo la identificación y corrección de la patología de presupuesto de tokens de modelos de razonamiento en pipelines RAG.
+\item Una \textbf{receta de entrenamiento} que unifica replay de SaulLM, fusión lineal industrial y harness training, orientada al primer modelo base legal soberano de México, con costo de cómputo de tres cifras en dólares.
+\item Evidencia de que la \textbf{alucinación de citas sobrevive al CPT de dominio}: el anclaje jurisdiccional requiere recuperación, y el formato del harness puede entrenarse en los pesos.
+\item Un \textbf{análisis de viabilidad} que documenta la necesidad social (32M de problemas jurídicos/año, 5\% de acceso institucional\cite{wjpmx2019,justiciaabierta2025}), el mercado (TAM $\sim$USD 418M, SOM USD 5--17M ARR) y la restricción regulatoria que hace de la soberanía un requisito de cumplimiento (LFPDPPP 2025; arts.~210--211 CPF).\cite{lfpdppp,cpf}
+\end{enumerate}

@@ -1,0 +1,54 @@
+% ================= 5. EL CORPUS =================
+\section{El corpus: 10B tokens de derecho mexicano}\label{sec:corpus}
+
+\subsection{Composición}
+
+El corpus de AI Justicia se construye exclusivamente sobre fuentes primarias mexicanas ---legislación, gacetas, jurisprudencia y doctrina--- más un conjunto instructivo en inglés restringido al SFT. La Tabla~\ref{tab:corpus} y la Figura~\ref{fig:corpus} resumen su composición. El estado actual es de \textbf{más de 1.5B tokens ingeridos y consultables}, con el resto en cosecha activa y un universo descubierto y accesible superior a 12B tokens.
+
+\begin{table}[H]
+\centering\small
+\caption{Composición del corpus AI Justicia por familia de fuentes.}
+\label{tab:corpus}
+\begin{tabular}{@{}p{4.6cm}p{6.4cm}r@{}}
+\toprule
+\textbf{Familia} & \textbf{Contenido} & \textbf{Tokens aprox.} \\
+\midrule
+Semanario Judicial de la Federación\cite{sjf} & 150K jurisprudencias y tesis aisladas & $\sim$22M \\
+DOF federal\cite{sidof} & 1999--2026, texto completo por nota & $\sim$300M+ \\
+Legislación federal y reglamentos & Corpus LeyesBiblio, reglamentos, manuales & $\sim$38M \\
+Legislación estatal (32 estados) & Códigos, leyes y reglamentos consolidados & $\sim$85M \\
+Gaceta CDMX & Archivo completo 2014--2026 (vía Wayback CDX) & 143M \\
+Caselaw CDMX (SIVEPJ) & 28,146 sentencias, universo completo enumerado & $\sim$34M \\
+Caselaw Edomex & $\sim$85K sentencias públicas únicas (API judicial) & $\sim$3--4B \\
+Caselaw Jalisco & 84,371 sentencias vía URLs firmadas S3 & $\sim$2--3B \\
+Caselaw Querétaro, NL y otros & Cadenas JWT, cosecha ASP.NET & $\sim$1--2B \\
+Doctrina: BJV (IIJ-UNAM) & 5,680 libros completos vía OAI-PMH & $\sim$1B \\
+Tesis: Repositorio UNAM & 43,423 tesis ($\sim$40\% con PDF completo) & $\sim$2--3B \\
+Instructivo inglés (solo SFT) & 269K ejemplos de razonamiento: NLI contractual, lógica LSAT, case briefs; \textbf{cero legislación extranjera} & mezcla SFT \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{fig_corpus.png}
+\caption{Composición del corpus por familia de fuentes (escala logarítmica). El derecho anglosajón de SaulLM fue 30B tokens de una jurisdicción consolidada;\cite{colombo2024} el corpus mexicano alcanza escala comparable en orden de magnitud pero desde 33+ jurisdicciones internas heterogéneas.}
+\label{fig:corpus}
+\end{figure}
+
+\subsection{Ingeniería de datos: la parte reproducible que nadie publica}
+
+Cada fuente exigió ingeniería inversa a medida. Documentamos las técnicas porque son el verdadero cuello de botella de la IA jurídica en la mayoría de los países ---y, en consecuencia, el activo más difícil de replicar del proyecto:
+
+\begin{itemize}
+\item \textbf{OAI-PMH donde existe} (IIJ-UNAM): el camino limpio ---tokens de resumición y re-cosecha incremental por \emph{datestamp}.
+\item \textbf{APIs Elasticsearch abiertas} (judicatura Edomex): el límite de 10K por slice obliga a sub-dividir por trimestre; los PDF se sirven desde un host de archivos predecible separado.
+\item \textbf{APIs tras reCAPTCHA} (STJ Jalisco): la cookie de sesión \texttt{\_vt} está ligada a IP y tiene cuota; sostenemos la cosecha manejando un navegador real vía CDP, renovando la cookie con recargas completas (que re-ejecutan \texttt{grecaptcha} con score aceptable) y consultando el listado por \texttt{curl} con la cookie extraída, mientras los PDF provienen de URLs pre-firmadas de S3 que no requieren sesión.
+\item \textbf{Portales con cadenas JWT} (Querétaro): el endpoint de lista devuelve llaves estructuradas $\rightarrow$ endpoint de token por documento (TTL 60s) $\rightarrow$ endpoint de PDF. HTTP puro, sin navegador.
+\item \textbf{Portales geo-bloqueados} (Consejería Jurídica CDMX, SEGOB Veracruz): cosecha desde una máquina con IP mexicana y envío de JSONL al servidor de datos.
+\item \textbf{Wayback CDX como rescate de archivo legal}: el buscador propio de la gaceta CDMX es una aplicación ZK Java inautomatizable; el archivo completo de PDF existe en el índice de la Wayback Machine y es totalmente enumerable.
+\item \textbf{Doctrina escaneada $\rightarrow$ OCR}: Apple Vision OCR (es-ES, $\sim$0.7 s/página) recuperó 445 cuadernillos de la SCJN y libros doctrinales completos sin texto embebido.
+\item \textbf{Todo diferencial}: el script, estado de marca de agua y estrategia incremental de cada cosechador vive en un registro PostgreSQL (\texttt{harvest\_scripts}). Las leyes cambian, las gacetas publican a diario, los tribunales suben constantemente: un corpus de derecho mexicano no es un dataset; es un \textbf{sistema vivo de registro} ---actualmente 17 fuentes registradas.
+\end{itemize}
+
+Esta capa de ingeniería es también la respuesta a la pregunta de defensibilidad: un competidor con capital puede rentar GPUs en una tarde (Sección~\ref{sec:viabilidad}), pero no puede reconstituir años de cosecha diferencial, normalización y verificación sobre 33+ portales heterogénicos sin repetir el mismo trabajo.

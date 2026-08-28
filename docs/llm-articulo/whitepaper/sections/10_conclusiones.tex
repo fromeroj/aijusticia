@@ -1,0 +1,17 @@
+% ================= 10. CONCLUSIONES =================
+\section{Conclusiones}\label{sec:conclusiones}
+
+La pregunta que originó este whitepaper ---si existe necesidad y viabilidad de negocio para un LLM jurídico mexicano local--- admite una respuesta afirmativa con evidencia en los tres planos analizados.
+
+En el plano de la \textbf{necesidad}, el déficit está medido: la mitad de los mexicanos enfrenta problemas jurídicos cada dos años, solo 30\% busca asesoría y 5 de cada 100 alcanzan una institución;\cite{wjpmx2019,justiciaabierta2025} el poder judicial opera con rezago estructural y menos juzgadores;\cite{eleconomista2025} y los modelos disponibles alucinan el derecho mexicano con fluidez profesional, porque el anclaje jurisdiccional no se entrena ---se recupera, y hoy no hay de dónde recuperarlo.\cite{dahl2024,magesh2025}
+
+En el plano de la \textbf{factibilidad técnica}, la receta existe y está validada por partes: SaulLM demostró que 30B tokens de dominio con replay producen un modelo legal utilizable bajo licencia abierta;\cite{colombo2024} la generación industrial demostró que CPT fuerte más fusión lineal escala a producción; la literatura de alucinación demostró que el RAG es indispensable pero insuficiente sin verificación y abstención;\cite{magesh2025,ailawlibrarians2026} y nuestro propio sistema demostró en producción que el harness anclado con abstención honesta es operable hoy. El costo de cómputo del modelo base ---cientos de dólares, no millones--- convierte la pregunta de factibilidad en una pregunta de datos, y los datos ya están siendo cosechados con base normativa sólida (art.~14-VII LFDA).\cite{lfda}
+
+En el plano de la \textbf{viabilidad de negocio}, el mercado premia exactamente lo que el proyecto construye: la verticalización legal de la IA vale decenas de miles de millones en los mercados anglosajones (Harvey, Legora, CoCounsel);\cite{harvey2026,sacra2026} el mercado LegalTech latinoamericano crece a doble dígito;\cite{imarc2025} la abogacía mexicana es numerosa, atomizada y subdigitalizada;\cite{mirada360,computerweekly2025} y la regulación mexicana ---LFPDPPP 2025 con sus reglas de tratamiento automatizado, y el deber penal de sigilo--- convierte el despliegue soberano en la única opción jurídicamente defendible para el segmento de mayor valor: los despachos.\cite{lfpdppp,cosio2026,cpf} El foso defensivo no es el modelo, que es recomputable, sino el corpus vivo y el cumplimiento, que no lo son.
+
+El trabajo inmediato es el que la hoja de ruta detalla: completar la cosecha de caselaw estatal, ejecutar el run de CPT, publicar la evaluación prerregistrada y llevar el primer piloto on-premise a un despacho. Si la tesis de este documento es correcta ---harness en los pesos más recuperación en inferencia, sobre un corpus que nadie más tiene--- México tendrá no solo su primer modelo jurídico soberano ---Tlamatini, el que sabe---, sino la plantilla replicable para que cualquier jurisdicción hispanohablante construya el suyo.
+
+\vspace{1em}
+\begin{alerta}{Aviso}
+Este documento es un whitepaper técnico con fines informativos y de investigación. No constituye asesoría jurídica, fiscal ni de inversión. Las cifras de mercado provienen de fuentes públicas citadas y las proyecciones son estimaciones del proyecto sujetas a los supuestos declarados. Las referencias a productos y empresas tienen fines comparativos y de análisis.
+\end{alerta}

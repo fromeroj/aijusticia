@@ -1,0 +1,54 @@
+% ================= 6. ESTRATEGIA DE ENTRENAMIENTO =================
+\section{Arquitectura del sistema y estrategia de entrenamiento}\label{sec:entrenamiento}
+
+\subsection{El sistema en producción}
+
+AI Justicia es un sistema en producción (\url{https://aijusticia.mx}) con tres tiers de servicio: \textbf{ciudadano} (gratuito, anónimo, guiado por entrevista), \textbf{abogado} (modo profesional, registro técnico, generación de documentos) y \textbf{despacho} (modelo soberano on-premise con adaptadores privados). Toda consulta atraviesa el mismo pipeline:
+
+\begin{enumerate}
+\item \textbf{Análisis} --- clasificación de materia y detección de jurisdicción (federal vs. 32 estados).
+\item \textbf{Normalización} --- lenguaje ciudadano coloquial $\rightarrow$ terminología estatutaria (``me despidieron'' $\rightarrow$ ``despido injustificado \dots{} art.~48 LFT''). Esta etapa mejoró drásticamente la recuperación FTS.
+\item \textbf{Entrevista} --- rondas dinámicas de clarificación manejadas por el LLM (configurables pre/post-recuperación) que construyen un expediente estructurado.
+\item \textbf{Recuperación} --- búsqueda de texto completo PostgreSQL con stemming en español sobre el corpus, ponderada por fuente (estatutos 1.3$\times$, jurisprudencia 1.2$\times$), con filtrado de relevancia.
+\item \textbf{Generación} --- respuestas ancladas: toda afirmación jurídica debe portar una cita \texttt{[n]} a un pasaje recuperado.
+\item \textbf{Verificación} --- pasada de \emph{entailment} sobre cada oración citada; bajo el umbral de soporte, el sistema \textbf{abstiene honestamente} en lugar de responder.
+\end{enumerate}
+
+\paragraph{La lección de la abstención.} Nuestra primera evaluación completa mostró 93\% de abstención: el sistema rechazaba casi todo. La causa raíz no era el modelo sino \emph{cómo lo llamábamos}: el modelo de razonamiento empleado consume 5--8K tokens de pensamiento interno antes de responder; nuestros presupuestos por etapa (128--256 tokens para normalización y filtrado) truncaban el pensamiento a la mitad, produciendo salidas vacías $\rightarrow$ consultas coloquiales llegaban al FTS $\rightarrow$ pasajes irrelevantes $\rightarrow$ abstención. Tras corregir presupuestos (10K mínimo) y añadir una segunda pasada autocorrectiva para formatos de cita débiles, la tasa de respuesta pasó de \textbf{2/30 a 18/30} sin pérdida de integridad de citas. Lección: para modelos de razonamiento, la ingeniería de prompts incluye \emph{ingeniería de presupuesto de tokens}.
+
+\subsection{La receta de entrenamiento de Tlamatini}
+
+Tlamatini (náhuatl: el que sabe cosas'') es el nombre del modelo soberano. La virtud epistémica que lo define es la que su nombre evoca: el sabio aconseja y, crucialmente, admite lo que no sabe ---nuestra abstención honesta. La infraestructura de entrenamiento lleva el nombre de \emph{Tohil} (el fuego que forja: los runs de CPT en GPU rentada).
+
+Sintetizando SaulLM, la generación industrial y nuestros hallazgos de evaluación:
+
+\begin{enumerate}
+\item \textbf{Base}: la misma familia del modelo industrial de referencia (MoE clase 35B con $\sim$3B parámetros activos) ---decisión de arquitectura ya validada por ese reporte y verificable en nuestra máquina de desarrollo local, que corre la arquitectura en cuantización de 4 bits. Una alternativa densa de la generación más reciente (27B, Apache 2.0, contexto 256K) está en evaluación: el MoE abarata CPT ($\sim$6$\times$ en cómputo activo) e inferencia on-premise, pero el CPT sobre modelos densos es más estable (el \emph{routing drift} de MoE es un riesgo conocido); la decisión se toma con la misma batería de 30 preguntas descrita en \Sef{sec:problema}.
+\item \textbf{Etapa 1 --- CPT full-parameter} sobre el corpus mexicano ($\sim$10B tokens): $\sim$80\% derecho primario mexicano en su mezcla natural (siguiendo a SaulLM: deduplicación agresiva, sin sobreponderación artificial de estatutos sobre caselaw\cite{colombo2024}); $\sim$15\% ejemplos en formato harness (\S\ref{sec:harness}); $\sim$2--5\% replay general (Wikipedia en español, código, instructivo general). Full-parameter y no LoRA-CPT: nuestro intento previo de LoRA-CPT a LR alta divergió (val loss $1.24 \rightarrow 10.69$), y el análisis de costos (Figura~\ref{fig:costo}) hace innecesario el atajo. \textbf{Fusión lineal con el modelo base} post-CPT como mecanismo anti-olvido.
+\item \textbf{Etapa 2 --- SFT} sobre: diálogo guiado por entrevista, respuestas ancladas en citas, calibración de abstención; más los 269K ejemplos instructivos ingleses de razonamiento (NLI contractual, lógica tipo LSAT, case briefs ---patrones de razonamiento, cero estatutos extranjeros).
+\item \textbf{Etapa 3 --- adaptadores por despacho}: adaptadores LoRA privados entrenados exclusivamente sobre documentos consentidos de cada firma, servidos por fusión en runtime. \textbf{El invariante de doble adaptador}: los datos de un despacho jamás entran al adaptador general; el adaptador general jamás ve documentos privilegiados. Es la expresión arquitectónica de los arts.~210--211 CPF y de la LFPDPPP.\cite{cpf,lfpdppp}
+\end{enumerate}
+
+\subsection{Harness training: enseñar el harness en los pesos}\label{sec:harness}
+
+Nuestro sistema de producción es un harness: recuperar pasajes $\rightarrow$ inyectarlos como contexto $\rightarrow$ exigir respuestas ancladas en citas. Todos nuestros fallos de abstención fueron fallos de harness (formato perdido, presupuesto de pensamiento agotado). La extensión natural ---propuesta independientemente en la literatura reciente como \emph{harness training}--- es \textbf{entrenar el comportamiento del harness en el propio modelo}, incluyendo millones de ejemplos en el formato exacto de inferencia durante el CPT:
+
+\begin{center}
+\ttfamily\small
+<pasaje(s) recuperado(s)> + <pregunta ciudadana> $\rightarrow$ <respuesta con anclas [n] por afirmación>
+\end{center}
+
+Tres fuentes de pares harness, todas ya en mano: (i) \textbf{el propio caselaw}: los considerandos judiciales son naturalmente aserción-más-artículo ---minar pares (considerando $\rightarrow$ artículo citado) de las 200K+ sentencias produce datos en formato anclado gratis; (ii) \textbf{trazas de producción}: con consentimiento ciudadano explícito y revocable conforme a LFPDPPP, nuestros logs verificados de consulta$\rightarrow$pasajes$\rightarrow$respuesta son oro de la distribución real del harness; (iii) \textbf{destilación sintética}: pasaje $\rightarrow$ generar pregunta ciudadana + respuesta anclada, a escala de corpus.
+
+\begin{tesis}
+\textbf{Aportación central.} El CPT de dominio produce la \emph{forma} correcta de la respuesta (Thomson); la recuperación produce los \emph{hechos} correctos (nuestra evaluación RAG); el harness training los unifica. Para IA jurídica jurisdicción-específica, \emph{harness-en-los-pesos} + \emph{recuperación-en-inferencia} supera a cada estrategia por separado.
+\end{tesis}
+
+\subsection{Qué mediremos}
+
+\begin{itemize}
+\item Batería ciudadana de 30 preguntas: tasa de respuesta, precisión de cita, exactitud a nivel de artículo ---el modo de falla que exhibieron las respuestas bare del modelo industrial.
+\item QA estatutario con sensibilidad a reformas (misma pregunta, año pre/post reforma).
+\item Calibración de abstención: tasa de falsa abstención vs. tasa de alucinación.
+\item Modo profesional: redacción de promociones y contratos evaluada por abogados en ejercicio.
+\end{itemize}

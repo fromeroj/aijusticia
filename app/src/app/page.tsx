@@ -4,7 +4,7 @@ import Link from "next/link";
 import {
   Scale, ShieldCheck, BookOpenCheck, MessageCircleQuestion,
   FileSearch, BadgeCheck, ArrowRight, Building2, UserCheck,
-  MapPin, Lock, Handshake,
+  MapPin, Lock, Handshake, Sparkles,
 } from "lucide-react";
 import { useChatStore } from "@/lib/store";
 
@@ -180,6 +180,51 @@ export default function Landing() {
               items={["IA con el estilo de tu despacho", "Aislamiento total de tus datos", "Tu equipo más rápido, sin crecer nómina"]}
               cta="Registrar mi despacho"
             />
+          </div>
+        </div>
+      </section>
+
+      {/* Tlamatini — el motor */}
+      <section className="border-t border-[#047857]/10 bg-gradient-to-b from-[#ecfdf5] to-white px-6 py-14">
+        <div className="mx-auto max-w-3xl text-center">
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#047857]/30 bg-white px-4 py-1.5 text-xs font-medium text-[#047857]">
+            <Sparkles className="h-3.5 w-3.5" />
+            En construcción — primer release 2027
+          </div>
+          <h3 className="mb-3 font-serif text-3xl font-bold text-gray-900">
+            Tlamatini
+          </h3>
+          <p className="mb-2 text-sm italic text-[#047857]">
+            Del náhuatl <strong>tlamatini</strong> — "el que sabe": los sabios consejeros del México antiguo.
+          </p>
+          <p className="mx-auto mb-6 max-w-2xl text-sm leading-relaxed text-gray-600">
+            El primer modelo de IA jurídica entrenado exclusivamente con derecho mexicano — leyes
+            federales y de los 32 estados, jurisprudencia y doctrina. Cuando un modelo general
+            <em> alucina</em> artículos, Tlamatini responde con la ley real y la cita exacta. Y como
+            un sabio de verdad: <strong>si no sabe, lo dice</strong>.
+          </p>
+          <div className="grid gap-3 text-left sm:grid-cols-3">
+            <div className="rounded-xl border border-[#047857]/15 bg-white p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-[#047857]">Soberano</p>
+              <p className="mt-1 text-xs text-gray-600">
+                Corre dentro del despacho. Ninguna consulta sale de la firma — compatible con el
+                secreto profesional.
+              </p>
+            </div>
+            <div className="rounded-xl border border-[#047857]/15 bg-white p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-[#047857]">Mexicano</p>
+              <p className="mt-1 text-xs text-gray-600">
+                Entrenado con miles de millones de tokens de fuentes oficiales: DOF, gacetas
+                estatales, sentencias, IIJ-UNAM.
+              </p>
+            </div>
+            <div className="rounded-xl border border-[#047857]/15 bg-white p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-[#047857]">Verificable</p>
+              <p className="mt-1 text-xs text-gray-600">
+                Cada afirmación con su cita. Sin respuestas inventadas — la honestidad es parte
+                del diseño.
+              </p>
+            </div>
           </div>
         </div>
       </section>

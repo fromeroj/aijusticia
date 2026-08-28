@@ -1,0 +1,62 @@
+% ================= 7. VIABILIDAD DE NEGOCIO =================
+\section{Viabilidad de negocio}\label{sec:viabilidad}
+
+\subsection{Modelo de ingresos por tiers}
+
+El diseño de tres tiers no es solo de producto: es una secuencia de adquisición. El tier ciudadano (gratuito, anónimo, sin email ---recuperación por frase, datos locales hasta opt-in explícito) ataca el déficit de acceso y genera la distribución; el tier abogado (suscripción a fracción del precio incumbente) monetiza el uso profesional; el tier despacho (licencia anual on-premise con adaptadores privados) captura el segmento donde el cumplimiento es innegociable y el precio es secundario.
+
+\begin{table}[H]
+\centering\small
+\caption{Tiers de producto, precios objetivo y justificación de mercado.}
+\label{tab:tiers}
+\begin{tabular}{@{}p{2.2cm}p{4.6cm}p{3.4cm}p{3.8cm}@{}}
+\toprule
+\textbf{Tier} & \textbf{Propuesta} & \textbf{Precio objetivo} & \textbf{Referencia de mercado} \\
+\midrule
+Ciudadano & Entrevista guiada, orientación anclada, abstención honesta & Gratuito (adquisición) & 32M problemas jurídicos/año; 70\% no busca asesoría\cite{wjpmx2019} \\
+Abogado & Modo profesional, documentos, corpus completo & USD $\sim$35/asiento/mes & Incumbentes: USD 300--500/mes\cite{vaquill2026}; salario promedio abogado MX $\sim\$13.3$k MXN\cite{forojuridico2023} \\
+Despacho & Modelo soberano on-premise, adaptadores LoRA privados, cero llamadas externas & USD $\sim$12,000/año & On-premise conserva $\sim$63\% del despliegue LegalTech por control de información\cite{fortune2026} \\
+Corpus & Licenciamiento del registro de cosecha y corpus curado a instituciones & Por acuerdo & No existe equivalente mexicano (Sección~\ref{sec:corpus}) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Unit economics: el cómputo no es el problema}
+
+El costo de entrenar el modelo base soberano es sorprendentemente bajo. Con la regla estándar de $6ND$ FLOPs\cite{spheron} aplicada a un MoE de $\sim$3B parámetros activos sobre 10B tokens, el run principal de CPT requiere $\sim 1.8\times10^{20}$ FLOPs: entre \textbf{100 y 170 GPU-horas} de clase H100/H200 según la eficiencia (MFU 30--50\%), es decir, del orden de \textbf{USD 260--1,000} a precios de mercado spot (\$2.6/GPU-h) o USD 600--1,000 a tarifas on-demand altas (\$6/GPU-h)\cite{gmicloud2026,introl2026} ---menos de dos días de reloj en 4$\times$H200. Incluso con diez runs de experimentación, ablación y fallos, el presupuesto total de cómputo de entrenamiento queda en los miles de dólares, no en los millones. Los costos de inferencia son igualmente manejables: servir un modelo 70B-cuántizado en H200 cuesta $\sim$USD 5/1M tokens,\cite{gmicloud2026} y la cuantización INT4 reduce 75\% el costo por token con 1--2\% de degradación.\cite{introl2026}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\textwidth]{fig_costo_cpt.png}
+\caption{Costo estimado del run principal de CPT (10B tokens, MoE $\sim$3B activos, regla $6ND$; precios GPU de mercado\cite{gmicloud2026,introl2026,spheron}). El cómputo es marginal; el activo escaso es el corpus.}
+\label{fig:costo}
+\end{figure}
+
+La conclusión económica invierte la intuición habitual: \textbf{la barrera no es el capital de cómputo sino la ingeniería de datos acumulada}. Esto tiene una implicación de estrategia competitiva directa: el proyecto debe defender y capitalizar el corpus (registro diferencial, normalización, licenciamiento) más que el modelo, porque los pesos son recomputables por cualquiera con el mismo corpus ---y nadie más lo tiene.
+
+\subsection{Posición competitiva}
+
+La Tabla~\ref{tab:relacionado} resume el panorama: los incumbentes globales (Harvey, CoCounsel/Westlaw, Lexis+, vLex) compiten en SaaS anglocéntrico de USD 300--500/asiento/mes;\cite{vaquill2026} las legaltech mexicanas (25+ startups) compiten en gestión y automatización sin modelos propios;\cite{computerweekly2025} y los modelos abiertos legales (SaulLM) no cubren jurisdicción ni español mexicano.\cite{colombo2024} La posición de AI Justicia ---español mexicano, corpus primario vivo, anclaje con abstención, on-premise, precio long tail--- no solapa frontalmente con ninguno. El riesgo de commoditización que los analistas identifican para la IA legal vertical (los modelos de frontera igualan el razonamiento genérico)\cite{sacra2026} refuerza, no debilita, esta tesis: lo que no se comoditiza son los datos jurisdiccionales y el cumplimiento.
+
+El español como plataforma de expansión es un upside no contado en el SOM: con 520M de hablantes nativos y 635M potenciales ---tercera comunidad lingüística del mundo---,\cite{cervantes2025} la misma metodología (cosecha diferencial + harness training) es replicable en otras jurisdicciones de tradición civil hispanohablante, donde el vacío de corpus es idéntico al mexicano.
+
+\subsection{Escenarios financieros a 5 años}
+
+\begin{table}[H]
+\centering\small
+\caption{Escenarios de ARR a 5 años (estimaciones propias sobre los parámetros de la Sección~\ref{sec:necesidad}).}
+\label{tab:escenarios}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+\textbf{Línea} & \textbf{Conservador} & \textbf{Base} & \textbf{Optimista} \\
+\midrule
+Asientos abogado (1\% / 3\% / 5\% de 449K) & \$1.9M & \$5.7M & \$9.4M \\
+Despachos on-premise (0.5\% / 2\% / 4\% de 46K) & \$2.8M & \$11.0M & \$22.1M \\
+Corpus e instituciones & \$0.2M & \$0.8M & \$2.0M \\
+\midrule
+\textbf{ARR total} & \textbf{\$4.9M} & \textbf{\$17.5M} & \textbf{\$33.5M} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Los supuestos son deliberadamente sobrios: penetraciones de un dígito sobre poblaciones medidas (449K abogados, 46K firmas),\cite{mirada360,industryresearch2026} precios una décima parte del incumbente,\cite{vaquill2026} y ningún ingreso del tier ciudadano. El costo marginal del cómputo de entrenamiento e inferencia (Figura~\ref{fig:costo}) permite sostener márgenes de software incluso al precio long tail que el mercado mexicano exige.

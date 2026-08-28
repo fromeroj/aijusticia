@@ -1,0 +1,47 @@
+% ================= 2. NECESIDAD Y MERCADO =================
+\section{La necesidad: demanda social y oportunidad de mercado}\label{sec:necesidad}
+
+\subsection{Un déficit de acceso a la justicia de escala masiva}
+
+La necesidad social subyacente está medida con precisión inusual. La Encuesta a Población General del World Justice Project ---más de 25,000 entrevistas en México--- documenta que los problemas con posibles consecuencias legales son un asunto cotidiano: \textbf{la mitad de los mexicanos experimentó un problema de justicia cotidiana en los últimos dos años}, desde conflictos de consumo hasta desalojos; solo \textbf{30\% buscó asesoría o representación legal}; y apenas \textbf{5 de cada 100 personas con un problema acudieron a tribunales o policías}. El 40\% reportó al menos una consecuencia negativa derivada del problema, especialmente en salud y estabilidad financiera.\cite{wjpmx2019,justiciaabierta2025} Proyectado a una población de $\sim$130 millones, esto implica del orden de \textbf{32 millones de problemas jurídicos al año}, de los cuales solo $\sim$1.6 millones tocan una institución formal.
+
+El sistema que debería absorber esa demanda opera al límite. México cayó al lugar \textbf{121 de 143 países} en el WJP Rule of Law Index 2025 ---135 en justicia penal y 134 en ausencia de corrupción---, en un contexto global donde la justicia civil se debilitó en 68\% de los países medidos.\cite{mbn2025wjp,wjp2025} En la Ciudad de México, el número de juzgadores bajó de 486 (2023) a 425 (marzo 2025) mientras cada juez penal carga en promedio 289 causas (promedio nacional: 365); solo el paro judicial de mayo--julio de 2025 dejó sin atender $\sim$48,000 audiencias y 1.44 millones de promociones.\cite{eleconomista2025} La escasez estructural de capacidad humana es exactamente el tipo de brecha que un asistente jurídico confiable puede amortiguar ---no sustituyendo al juzgador ni al abogado, sino reduciendo el costo de información jurídica para quien hoy no puede pagarlo.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.86\textwidth]{fig_acceso_justicia.png}
+\caption{El embudo de la justicia cotidiana en México según la Encuesta a Población General del WJP: la mitad de la población enfrenta problemas jurídicos, menos de un tercio busca asesoría y solo 5 de cada 100 llegan a tribunales o policías.\cite{wjpmx2019,justiciaabierta2025}}
+\label{fig:acceso}
+\end{figure}
+
+\subsection{El mercado profesional: una abogacía numerosa y subdigitalizada}
+
+La oferta profesional es igualmente singular. Derecho es la segunda carrera más estudiada de México, con más de \textbf{1.2 millones de egresados} acumulados y cerca de \textbf{2,000 escuelas} que la imparten;\cite{forojuridico2023} los abogados en ejercicio se estiman en $\sim$\textbf{449,000},\cite{mirada360} con un salario mensual promedio de apenas $\sim\$13,300$ MXN que concentra la mayor parte de la profesión en el segmento de despachos pequeños y práctica individual.\cite{forojuridico2023,datamexico} Operan alrededor de \textbf{46,000 firmas} en el país.\cite{industryresearch2026} Es un mercado profesional enorme en personas y atomizado en presupuesto: exactamente el perfil que no puede pagar USD 300--500 por asiento/mes de las suites anglosajonas,\cite{vaquill2026} pero sí una fracción de ese precio por una herramienta que además le resuelve el problema de cumplimiento.
+
+La brecha de adopción tecnológica está documentada: mientras 84\% de las firmas legales globales consideran la inversión en tecnología una prioridad estratégica (Wolters Kluwer, \emph{Future Ready Lawyer}), solo 30\% de los despachos latinoamericanos se sienten preparados para el cambio; México concentra más de 25 startups legaltech, agrupadas en gestión de despachos, automatización de contratos, marketplaces legales, consultas en línea y pruebas digitales ---\textbf{ninguna construye modelos de lenguaje propios ni corpus de entrenamiento}.\cite{computerweekly2025}
+
+\subsection{Tamaño de mercado: TAM, SAM, SOM}
+
+El mercado LegalTech latinoamericano fue valuado en \textbf{USD 1.9 miles de millones en 2025} y se proyecta a \textbf{USD 4.9 miles de millones en 2034} (CAGR 10.68\%), impulsado por la adopción de IA y la demanda de soluciones con seguridad de datos.\cite{imarc2025} El mercado global de LegalTech se estima entre USD 34--39 mil millones (2025--2026) con proyecciones a USD 72--78 mil millones hacia 2031--2034;\cite{mordor2026,fortune2026} el mercado global de \emph{servicios} legales ---el techo último--- supera USD 1.1 billones en 2026.\cite{mordorlegalservices2026} Dos detalles de segmentación importan para nuestra estrategia: las pymes son el segmento de mayor crecimiento (CAGR 16.45\%)\cite{mordor2026} y el despliegue \emph{on-premise} conserva una participación mayoritaria proyectada ($\sim$63\% en 2026), sustentada precisamente en requisitos de control y aislamiento de la información.\cite{fortune2026}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.88\textwidth]{fig_mercado_latam.png}
+\caption{Trayectoria del mercado LegalTech latinoamericano 2025--2034 según IMARC.\cite{imarc2025}}
+\label{fig:latam}
+\end{figure}
+
+Con estos parámetros construimos un dimensionamiento conservador propio (Figura~\ref{fig:tam}): atribuyendo a México $\sim$22\% del mercado latinoamericano (segunda economía de la región), el \textbf{TAM} mexicano de LegalTech es $\sim$\textbf{USD 418M} (2025). El \textbf{SAM} ---IA legal en asientos profesionales--- se estima en $\sim$\textbf{USD 94M/año}: 449,000 abogados $\times$ USD 35/asiento/mes (una décima parte del precio de las suites incumbentes) $\times$ 50\% de profesionales en práctica con capacidad de pago. El \textbf{SOM} a cinco años combina dos líneas: 3\% de penetración en asientos profesionales ($\sim$USD 5.7M ARR) y 2\% de las 46,000 firmas adoptando el tier soberano on-premise a USD 12,000/año ($\sim$USD 11M ARR), para un rango de \textbf{USD 6--17M de ARR} sin contar la línea ciudadana ni licenciamiento del corpus.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.84\textwidth]{fig_tam.png}
+\caption{Dimensionamiento de mercado propio. TAM: 22\% del mercado LegalTech LatAm\cite{imarc2025}. SAM: asientos profesionales a USD 35/mes sobre la población abogacil\cite{mirada360,industryresearch2026} (precio de referencia incumbente: USD 300--500/mes\cite{vaquill2026}). SOM: penetración 3\% en asientos + 2\% de firmas en tier soberano.}
+\label{fig:tam}
+\end{figure}
+
+\subsection{El efecto demostración: Harvey y la verticalización de la IA}
+
+La viabilidad económica de la IA legal vertical ya no es hipotética. Harvey ---fundada en 2022--- alcanzó una valoración de \textbf{USD 11 mil millones} en marzo de 2026, con más de USD 1,000M levantados, $\sim$USD 190M de ARR a enero de 2026 ($\sim$USD 350M a mediados de año), 100,000+ abogados en 1,300 organizaciones y 60+ países;\cite{harvey2026,sacra2026} en agosto de 2026 negociaba una nueva ronda a USD 15.5 mil millones.\cite{theinformation2026} Legora levantó USD 550M a una valoración de USD 5.6 mil millones, y Thomson Reuters adquirió Casetext (CoCounsel) por USD 650M e invierte más de USD 200M anuales en IA.\cite{sacra2026,vlex2018,mordor2026} vLex (hoy parte de Clio) opera Vincent AI con cobertura anunciada para México entre otros 9+ países, sobre una biblioteca de 100M+ documentos.\cite{vlex2018,vlex2024}
+
+Tres lecciones se desprenden para AI Justicia. Primera: el mercado premia la verticalización jurídica con múltiplos de frontera. Segunda: ninguno de estos actores compite en el segmento que ocupamos ---español mexicano, fuentes primarias locales, despliegue soberano, precio para la long tail de la abogacía; vLex, el más cercano en idioma, es SaaS en nube y no publica evaluación independiente de precisión.\cite{vaquill2026} Tercera: el análisis de la industria advierte que los modelos de frontera \emph{comoditizan} el razonamiento legal genérico, por lo que el valor migra a datos propietarios, orquestación de flujo y distribución.\cite{sacra2026} Eso es exactamente lo que un corpus vivo de 10B tokens de fuentes primarias mexicanas ---con un registro de cosecha diferencial que ningún competidor ha construido--- representa: \textbf{el activo no comoditizable}.

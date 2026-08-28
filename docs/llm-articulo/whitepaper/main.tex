@@ -1,0 +1,143 @@
+\documentclass[11pt,a4paper]{article}
+
+% ===== Paquetes base =====
+\usepackage[spanish,es-tabla]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage[most]{tcolorbox}
+\usepackage[numbers,super,sort&compress]{natbib}
+\bibliographystyle{unsrtnat}
+
+% ===== Paleta =====
+\definecolor{navy}{HTML}{1B3A5C}
+\definecolor{teal}{HTML}{2A9D8F}
+\definecolor{brick}{HTML}{C1443C}
+\definecolor{ochre}{HTML}{E9C46A}
+\definecolor{lightnavy}{HTML}{EAF0F6}
+\definecolor{lightteal}{HTML}{E9F6F4}
+\definecolor{darkgray}{HTML}{444444}
+
+% ===== Geometría y tipografía =====
+\geometry{a4paper, top=2.6cm, bottom=2.6cm, left=2.8cm, right=2.6cm}
+\setstretch{1.12}
+\setlength{\parskip}{0.45em}
+\setlength{\parindent}{0pt}
+
+% ===== Encabezados =====
+\titleformat{\section}{\Large\bfseries\color{navy}}{\thesection}{0.8em}{}
+\titleformat{\subsection}{\large\bfseries\color{navy}}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{darkgray}}{\thesubsubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{1.4em}{0.7em}
+\titlespacing*{\subsection}{0pt}{1.1em}{0.5em}
+
+% ===== Cabecera / pie =====
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{darkgray}AI Justicia --- Whitepaper técnico}
+\fancyhead[R]{\small\color{darkgray}Agosto 2026}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\color{navy}\hrule width\headwidth height 0.4pt}
+
+% ===== Cajas =====
+\newtcolorbox{hallazgo}[1]{enhanced, colback=lightnavy, colframe=navy,
+  fonttitle=\bfseries, title={#1}, boxrule=0.8pt, arc=1.5mm,
+  left=2mm, right=2mm, top=1.5mm, bottom=1.5mm}
+\newtcolorbox{alerta}[1]{enhanced, colback=brick!6, colframe=brick,
+  fonttitle=\bfseries, title={#1}, boxrule=0.8pt, arc=1.5mm,
+  left=2mm, right=2mm, top=1.5mm, bottom=1.5mm}
+\newtcolorbox{tesis}{enhanced, colback=lightteal, colframe=teal,
+  boxrule=0.8pt, arc=1.5mm, left=2.5mm, right=2.5mm, top=1.8mm, bottom=1.8mm}
+
+% ===== Captions =====
+\captionsetup{font={small}, labelfont={bf,color=navy}, skip=6pt}
+
+% ===== Listas =====
+\setlist[itemize]{itemsep=0.25em, leftmargin=1.5em}
+\setlist[enumerate]{itemsep=0.25em, leftmargin=1.7em}
+
+% ===== hyperref (último) =====
+\usepackage[
+    colorlinks=true,
+    linkcolor=navy,
+    citecolor=darkgray,
+    urlcolor=teal,
+    bookmarks=true,
+    bookmarksnumbered=true,
+    unicode=true
+]{hyperref}
+\hypersetup{
+    pdftitle={AI Justicia: Hacia un modelo de lenguaje jurídico soberano para México},
+    pdfauthor={Proyecto AI Justicia},
+    pdfsubject={Whitepaper técnico y de viabilidad},
+    pdfkeywords={IA legal, México, LLM, LegalTech, soberanía de datos, derecho mexicano}
+}
+
+\graphicspath{{figs/}}
+
+\begin{document}
+
+% ================= PORTADA =================
+\begin{titlepage}
+\pagecolor{navy}\color{white}
+\vspace*{2.2cm}
+{\noindent\rule{\textwidth}{1.2pt}}\\[1.6em]
+{\Huge\bfseries AI Justicia\par}
+\vspace{0.5em}
+{\LARGE Hacia un modelo de lenguaje jurídico\\ soberano para México\par}
+\vspace{1.1em}
+{\large\itshape De 430M a 10B tokens de fuentes primarias mexicanas:\\ necesidad, arquitectura y viabilidad de negocio\par}
+\vspace{1.6em}
+{\noindent\rule{\textwidth}{1.2pt}}
+
+\vspace{2.2cm}
+{\large Whitepaper técnico --- versión 2.0\par}
+\vspace{0.4em}
+{\large Agosto de 2026\par}
+
+\vfill
+{\small Proyecto AI Justicia \quad$\cdot$\quad \url{https://aijusticia.mx}\par}
+\vspace{0.5em}
+{\small Documento de trabajo para audiencia técnica y académica. No constituye asesoría jurídica ni oferta de inversión.\par}
+\end{titlepage}
+\pagecolor{white}\color{black}
+
+% ================= RESUMEN + TOC =================
+\input{sections/00_resumen}
+\newpage
+\tableofcontents
+\newpage
+
+% ================= CUERPO =================
+\input{sections/01_problema}
+\input{sections/02_necesidad}
+\input{sections/03_marco}
+\input{sections/04_relacionado}
+\input{sections/05_corpus}
+\input{sections/06_entrenamiento}
+\input{sections/07_viabilidad}
+\input{sections/08_riesgos}
+\input{sections/09_roadmap}
+\input{sections/10_conclusiones}
+
+% ================= BIBLIOGRAFÍA =================
+\newpage
+\addcontentsline{toc}{section}{Referencias}
+\bibliography{referencias}
+
+\end{document}

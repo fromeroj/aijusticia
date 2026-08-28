@@ -1,0 +1,308 @@
+\begin{thebibliography}{44}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Dahl et~al.(2024)Dahl, Magesh, Suzgun, and Ho]{dahl2024}
+Matthew Dahl, Varun Magesh, Mirac Suzgun, and Daniel~E. Ho.
+\newblock Large legal fictions: Profiling legal hallucinations in large
+  language models.
+\newblock \emph{Journal of Legal Analysis}, 16\penalty0 (1):\penalty0 64--93,
+  2024.
+\newblock \doi{10.1093/jla/laae001}.
+
+\bibitem[Magesh et~al.(2025)Magesh, Surani, Dahl, Suzgun, Manning, and
+  Ho]{magesh2025}
+Varun Magesh, Faiz Surani, Matthew Dahl, Mirac Suzgun, Christopher~D. Manning,
+  and Daniel~E. Ho.
+\newblock Hallucination-free? assessing the reliability of leading {AI} legal
+  research tools.
+\newblock \emph{Journal of Empirical Legal Studies}, 2025.
+\newblock \doi{10.1111/jels.12413}.
+
+\bibitem[{C{\'a}mara de Diputados del H. Congreso de la Uni{\'o}n}(2026)]{lfda}
+{C{\'a}mara de Diputados del H. Congreso de la Uni{\'o}n}.
+\newblock Ley federal del derecho de autor, art. 14, fracc. {VII}.
+\newblock \url{https://www.diputados.gob.mx/LeyesBiblio/pdf/LFDA.pdf}, 2026.
+
+\bibitem[Colombo et~al.(2024{\natexlab{a}})Colombo, Pires, Boudiaf, Culver,
+  Melo, Corro, Martins, Esposito, Raposo, Morgado, and Desa]{colombo2024}
+Pierre Colombo, Telmo~Pessoa Pires, Malik Boudiaf, Dominic Culver, Rui Melo,
+  Caio Corro, Andr{\'e} F.~T. Martins, Fabrizio Esposito, Vera~L{\'u}cia
+  Raposo, Sofia Morgado, and Michael Desa.
+\newblock {SaulLM-7B}: A pioneering large language model for law,
+  2024{\natexlab{a}}.
+
+\bibitem[{IMARC Group}(2025)]{imarc2025}
+{IMARC Group}.
+\newblock Latin america legal tech market report 2026--2034.
+\newblock
+  \url{https://www.imarcgroup.com/report/es/latin-america-legal-tech-market},
+  2025.
+
+\bibitem[{Mordor Intelligence}(2026{\natexlab{a}})]{mordorlegalservices2026}
+{Mordor Intelligence}.
+\newblock Legal services market size \& share analysis, 2026--2031.
+\newblock
+  \url{https://www.mordorintelligence.com/es/industry-reports/legal-services-market},
+  2026{\natexlab{a}}.
+
+\bibitem[{Industry Research}(2026)]{industryresearch2026}
+{Industry Research}.
+\newblock Legal services market report (m{\'e}xico).
+\newblock
+  \url{https://www.industryresearch.biz/es/market-reports/legal-services-market-112851},
+  2026.
+
+\bibitem[{Mirada 360}(2026)]{mirada360}
+{Mirada 360}.
+\newblock ?`y si el problema no es la {IA}? el problema son los 3.5 millones de
+  abogados en latinoam{\'e}rica.
+\newblock
+  \url{https://mirada360.es/y-si-el-problema-no-es-la-ia-el-problema-son-los-35-millones-de-abogados-en-latinoamerica/},
+  2026.
+
+\bibitem[(con datos~del {IMCO})(2023)]{forojuridico2023}
+{Foro Jur{\'i}dico} (con datos~del {IMCO}).
+\newblock Situaci{\'o}n actual de la abogac{\'i}a en m{\'e}xico.
+\newblock
+  \url{https://forojuridico.mx/situacion-actual-de-la-abogacia-en-mexico/},
+  2023.
+
+\bibitem[{World Justice Project M{\'e}xico}(2019)]{wjpmx2019}
+{World Justice Project M{\'e}xico}.
+\newblock Acceso a la justicia en m{\'e}xico: Hallazgos de una encuesta a
+  m{\'a}s de 25,000 mexicanos.
+\newblock \url{https://worldjusticeproject.mx/en/a2jmx-2019/}, 2019.
+
+\bibitem[{Justicia Abierta}(2025)]{justiciaabierta2025}
+{Justicia Abierta}.
+\newblock 11 datos clave para entender el problema de justicia en m{\'e}xico.
+\newblock
+  \url{https://justiciaabierta.net/11-datos-clave-para-entender-el-problema-de-justicia-en-mexico/},
+  2025.
+
+\bibitem[{C{\'a}mara de Diputados del H. Congreso de la
+  Uni{\'o}n}(2025)]{lfpdppp}
+{C{\'a}mara de Diputados del H. Congreso de la Uni{\'o}n}.
+\newblock Ley federal de protecci{\'o}n de datos personales en posesi{\'o}n de
+  los particulares (dof 20-03-2025).
+\newblock \url{https://www.diputados.gob.mx/LeyesBiblio/pdf/LFPDPPP.pdf}, 2025.
+
+\bibitem[{CCN --- Cacheaux, Cavazos \& Newton}(2025)]{ccn2025}
+{CCN --- Cacheaux, Cavazos \& Newton}.
+\newblock Decreto de reforma en materia de transparencia, acceso a la
+  informaci{\'o}n p{\'u}blica y protecci{\'o}n de datos personales.
+\newblock
+  \url{https://ccn-law.com/es/decreto-de-reforma-en-materia-de-transparencia-acceso-a-la-informacion-publica-y-proteccion-de-datos-personales/},
+  2025.
+
+\bibitem[{C{\'a}mara de Diputados del H. Congreso de la Uni{\'o}n}(2024)]{cpf}
+{C{\'a}mara de Diputados del H. Congreso de la Uni{\'o}n}.
+\newblock C{\'o}digo penal federal, t{\'i}tulo noveno, arts. 210--211.
+\newblock \url{https://www.diputados.gob.mx/LeyesBiblio/pdf/CPF.pdf}, 2024.
+
+\bibitem[{Harvey}(2026)]{harvey2026}
+{Harvey}.
+\newblock Harvey raises at \$11 billion valuation to scale agents across law
+  firms and enterprises.
+\newblock
+  \url{https://www.harvey.ai/blog/harvey-raises-at-dollar11-billion-valuation-to-scale-agents-across-law-firms-and-enterprises},
+  2026.
+
+\bibitem[{Vaquill AI}(2026)]{vaquill2026}
+{Vaquill AI}.
+\newblock Lexis+ {AI} vs westlaw {AI} 2026: Pricing + which hallucinates less.
+\newblock \url{https://www.vaquill.ai/blog/lexis-ai-vs-westlaw-ai}, 2026.
+
+\bibitem[{Stanford Institute for Human-Centered AI}(2024)]{stanfordhai2024}
+{Stanford Institute for Human-Centered AI}.
+\newblock Ai on trial: Legal models hallucinate in 1 out of 6 (or more)
+  benchmarking queries.
+\newblock
+  \url{https://hai.stanford.edu/news/ai-trial-legal-models-hallucinate-1-out-6-or-more-benchmarking-queries},
+  2024.
+
+\bibitem[{AI Law Librarians}(2026)]{ailawlibrarians2026}
+{AI Law Librarians}.
+\newblock What the science says about hallucinations in legal research.
+\newblock
+  \url{https://www.ailawlibrarians.com/2026/02/19/what-the-science-says-about-hallucinations-in-legal-research/},
+  2026.
+
+\bibitem[{Cosio Legal}(2026)]{cosio2026}
+{Cosio Legal}.
+\newblock Gu{\'i}a de protecci{\'o}n de datos personales en m{\'e}xico (2026).
+\newblock
+  \url{https://cosio.mx/publicaciones/guia-proteccion-datos-personales-mexico},
+  2026.
+
+\bibitem[{Dewey B Strategic}(2023)]{vlex2018}
+{Dewey B Strategic}.
+\newblock vlex launches first global {AI} legal assistant: Vincent {AI} for
+  research and drafting.
+\newblock
+  \url{https://www.deweybstrategic.com/2023/10/vlex-launches-first-global-ai-legal-assistant-vincent-ai-for-research-and-drafting.html},
+  2023.
+
+\bibitem[{Data Center Dynamics}(2024)]{aws2024}
+{Data Center Dynamics}.
+\newblock {AWS} plans \$5bn {M}exican cloud region for 2025.
+\newblock
+  \url{https://www.datacenterdynamics.com/en/news/aws-plans-5bn-mexican-cloud-region-for-2025/},
+  2024.
+
+\bibitem[{Mexico Business News}(2024)]{gcp2024}
+{Mexico Business News}.
+\newblock Google cloud inaugurates new cloud region in quer{\'e}taro.
+\newblock
+  \url{https://mexicobusiness.news/cloudanddata/news/google-cloud-inaugurates-new-cloud-region-queretaro},
+  2024.
+
+\bibitem[{Galileo Studio}(2026)]{alia2026}
+{Galileo Studio}.
+\newblock Alia, spain's {LLM}: The 4 levels of {AI} sovereignty and which one
+  actually matters for your business.
+\newblock \url{https://www.galileostudio.ai/en/blog/alia-soberania-ia}, 2026.
+
+\bibitem[{SEGOB --- Sistema de Informaci{\'o}n del Diario Oficial de la
+  Federaci{\'o}n (SIDOF)}(2026)]{sidof}
+{SEGOB --- Sistema de Informaci{\'o}n del Diario Oficial de la Federaci{\'o}n
+  (SIDOF)}.
+\newblock Diario oficial de la federaci{\'o}n: ediciones desde 1921,
+  {\'i}ndices desde 1917.
+\newblock \url{https://sidof.segob.gob.mx/}, 2026.
+
+\bibitem[Guti{\'e}rrez-Fandi{\~n}o et~al.(2020)]{legales2020}
+Asier Guti{\'e}rrez-Fandi{\~n}o et~al.
+\newblock Legal-{ES}: A set of large scale resources for {S}panish legal text
+  processing.
+\newblock In \emph{Proceedings of the LREC 2020 Workshop on Language
+  Technologies for Government (LT4Gov)}, 2020.
+
+\bibitem[{Mexico Business News}(2025)]{mbn2025wjp}
+{Mexico Business News}.
+\newblock Mexico drops to 121st in 2025 rule of law index.
+\newblock
+  \url{https://mexicobusiness.news/policyandeconomy/news/mexico-drops-121st-2025-rule-law-index},
+  2025.
+
+\bibitem[{World Justice Project}(2025)]{wjp2025}
+{World Justice Project}.
+\newblock {WJP} rule of law index 2025: Global press release.
+\newblock
+  \url{https://worldjusticeproject.org/news/wjp-rule-law-index-2025-global-press-release},
+  2025.
+
+\bibitem[{El Economista}(2025)]{eleconomista2025}
+{El Economista}.
+\newblock Rezago en el poder judicial de la {CDMX} amenaza con crecer como bola
+  de nieve.
+\newblock
+  \url{https://www.eleconomista.com.mx/politica/rezago-judicial-cdmx-amenaza-crecer-bola-nieve-20250719-768889.html},
+  2025.
+
+\bibitem[{Data M{\'e}xico, Secretar{\'i}a de Econom{\'i}a}(2026)]{datamexico}
+{Data M{\'e}xico, Secretar{\'i}a de Econom{\'i}a}.
+\newblock Abogados: Salarios, diversidad, industrias e informalidad laboral.
+\newblock
+  \url{https://www.economia.gob.mx/datamexico/es/profile/occupation/abogados},
+  2026.
+
+\bibitem[{ComputerWeekly.es}(2025)]{computerweekly2025}
+{ComputerWeekly.es}.
+\newblock Legaltech en m{\'e}xico impulsan el futuro de los servicios
+  jur{\'i}dicos.
+\newblock
+  \url{https://www.computerweekly.com/es/noticias/366627996/Legaltech-en-Mexico-impulsan-el-futuro-de-los-servicios-juridicos},
+  2025.
+
+\bibitem[{Mordor Intelligence}(2026{\natexlab{b}})]{mordor2026}
+{Mordor Intelligence}.
+\newblock Legal tech market size \& share analysis, 2026--2031.
+\newblock
+  \url{https://www.mordorintelligence.com/es/industry-reports/global-legal-tech-market},
+  2026{\natexlab{b}}.
+
+\bibitem[{Fortune Business Insights}(2026)]{fortune2026}
+{Fortune Business Insights}.
+\newblock Legal technology market size, share \& growth report, 2034.
+\newblock
+  \url{https://www.fortunebusinessinsights.com/es/legal-technology-market-109527},
+  2026.
+
+\bibitem[{Sacra}(2026)]{sacra2026}
+{Sacra}.
+\newblock Harvey: Revenue, valuation \& funding.
+\newblock \url{https://sacra.com/c/harvey/}, 2026.
+
+\bibitem[{The Information}(2026)]{theinformation2026}
+{The Information}.
+\newblock Harvey in talks to raise funding at \$15.5 billion valuation.
+\newblock
+  \url{https://www.theinformation.com/articles/harvey-talks-raise-funding-15-5-billion-valuation},
+  2026.
+
+\bibitem[{Legal Practice Intelligence}(2024)]{vlex2024}
+{Legal Practice Intelligence}.
+\newblock vlex's {AI} legal assistant vincent gets major upgrade.
+\newblock
+  \url{https://www.legalpracticeintelligence.com/en-us/blogs/technology-intelligence/vlex-s-ai-legal-assistant-vincent-gets-major-upgrade},
+  2024.
+
+\bibitem[{KYC Systems}(2026)]{kyc2026}
+{KYC Systems}.
+\newblock {LFPDPPP} vigente 2026: gu{\'i}a completa de la ley con {SABG}
+  (ex-{INAI}) como autoridad.
+\newblock \url{https://kyc-systems.com/blog/lfpdppp}, 2026.
+
+\bibitem[Colombo et~al.(2024{\natexlab{b}})]{saullm54b}
+Pierre Colombo et~al.
+\newblock {SaulLM-54B} \& {SaulLM-141B}: Scaling up domain adaptation for the
+  legal domain, 2024{\natexlab{b}}.
+
+\bibitem[Cui et~al.(2024)Cui, Li, Yan, Chen, and Yuan]{cui2024chatlaw}
+Jiaxi Cui, Zongjian Li, Yang Yan, Bohua Chen, and Li~Yuan.
+\newblock {ChatLaw}: Open-source legal large language model with integrated
+  external knowledge bases, 2024.
+
+\bibitem[Zhou et~al.(2025)]{surveylegal2025}
+Zhitian Zhou et~al.
+\newblock Large language models meet legal artificial intelligence, 2025.
+
+\bibitem[{Suprema Corte de Justicia de la Naci{\'o}n}(2026)]{sjf}
+{Suprema Corte de Justicia de la Naci{\'o}n}.
+\newblock Semanario judicial de la federaci{\'o}n, duod{\'e}cima {\'e}poca.
+\newblock \url{https://sjf.scjn.gob.mx/}, 2026.
+
+\bibitem[{Spheron Network}(2026)]{spheron}
+{Spheron Network}.
+\newblock {AI} \& {LLM} training cost calculator.
+\newblock \url{https://www.spheron.network/tools/training-cost-calculator/},
+  2026.
+
+\bibitem[{GMI Cloud}(2026)]{gmicloud2026}
+{GMI Cloud}.
+\newblock Cost per million tokens explained: {LLM} inference cost on {GPU}
+  cloud.
+\newblock
+  \url{https://www.gmicloud.ai/en/blog/llm-inference-cost-per-million-tokens},
+  2026.
+
+\bibitem[{Introl}(2026)]{introl2026}
+{Introl}.
+\newblock Cost per token analysis: Optimizing {GPU} infrastructure.
+\newblock
+  \url{https://introl.com/blog/cost-per-token-llm-inference-optimization},
+  2026.
+
+\bibitem[{Instituto Cervantes}(2025)]{cervantes2025}
+{Instituto Cervantes}.
+\newblock El espa{\~n}ol en el mundo: Anuario 2025.
+\newblock
+  \url{https://cervantes.org/es/sobre-nosotros/sala-prensa/notas-prensa/espanol-crece-30-millones-hablantes-ano-5-anterior},
+  2025.
+
+\end{thebibliography}

@@ -1,0 +1,39 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {section}{Resumen ejecutivo}{1}{Doc-Start}%
+\contentsline {section}{\numberline {1}El problema: tres fallas estructurales}{5}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Alucinación de derecho: fluida, confiada y errónea}{5}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Dependencia de nube frente al secreto profesional}{6}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}El corpus mexicano no existe}{6}{subsection.1.3}%
+\contentsline {section}{\numberline {2}La necesidad: demanda social y oportunidad de mercado}{7}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Un déficit de acceso a la justicia de escala masiva}{7}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}El mercado profesional: una abogacía numerosa y subdigitalizada}{8}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Tamaño de mercado: TAM, SAM, SOM}{8}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}El efecto demostración: Harvey y la verticalización de la IA}{9}{subsection.2.4}%
+\contentsline {section}{\numberline {3}El marco regulatorio: por qué la soberanía es un requisito, no una opción}{10}{section.3}%
+\contentsline {subsection}{\numberline {3.1}La nueva LFPDPPP (2025) y el tratamiento automatizado}{10}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Secreto profesional con sanción penal}{10}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Base normativa del corpus: los textos del Estado no son objeto de derecho de autor}{11}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Infraestructura: residencia de datos resuelta, soberanía de inferencia pendiente}{11}{subsection.3.4}%
+\contentsline {section}{\numberline {4}Trabajo relacionado}{11}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Modelos de lenguaje jurídicos: de SaulLM a la generación industrial}{11}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}LLMs jurídicos fuera del mundo anglosajón}{12}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}La medición de la alucinación legal}{12}{subsection.4.3}%
+\contentsline {section}{\numberline {5}El corpus: 10B tokens de derecho mexicano}{13}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Composición}{13}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Ingeniería de datos: la parte reproducible que nadie publica}{14}{subsection.5.2}%
+\contentsline {section}{\numberline {6}Arquitectura del sistema y estrategia de entrenamiento}{15}{section.6}%
+\contentsline {subsection}{\numberline {6.1}El sistema en producción}{15}{subsection.6.1}%
+\contentsline {paragraph}{La lección de la abstención.}{15}{paragraph*.8}%
+\contentsline {subsection}{\numberline {6.2}La receta de entrenamiento de Tlamatini}{16}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Harness training: enseñar el harness en los pesos}{16}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Qué mediremos}{17}{subsection.6.4}%
+\contentsline {section}{\numberline {7}Viabilidad de negocio}{17}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Modelo de ingresos por tiers}{17}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Unit economics: el cómputo no es el problema}{18}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Posición competitiva}{18}{subsection.7.3}%
+\contentsline {subsection}{\numberline {7.4}Escenarios financieros a 5 años}{19}{subsection.7.4}%
+\contentsline {section}{\numberline {8}Riesgos y limitaciones}{20}{section.8}%
+\contentsline {section}{\numberline {9}Estado actual y hoja de ruta}{21}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Contribuciones}{21}{subsection.9.1}%
+\contentsline {section}{\numberline {10}Conclusiones}{21}{section.10}%
+\contentsline {section}{Referencias}{23}{section.10}%
