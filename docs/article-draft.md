@@ -18,7 +18,9 @@ Three failures define the current state of legal AI for Mexico:
 
 **1.1 Hallucinated law.** We evaluated Thomson-1.0-Small (a strong English legal foundation model) on 30 canonical Mexican citizen legal questions — labor, family, consumer, housing. It answered 30/30 fluently and 93% cited statutes. But inspection revealed systematic citation errors: it cited "Art. 139 LFT" for pregnancy-related dismissal protection (the correct article is 164), and attributed the "3 months + 20 days/year" indemnification formula to Art. 48 (it is Art. 50). A fluent, confident, wrong citation is the worst failure mode for a citizen who cannot verify it.
 
-**1.2 Cloud dependency vs. professional secrecy.** Mexican law firms operate under professional secrecy obligations (Art. 225 CPF) and LFPDPPP rules on sensitive personal data. Uploading privileged client documents to a foreign cloud LLM API — which may retain and train on inputs — is legally unacceptable for despachos. A sovereign, locally-deployable model is not a nice-to-have; it is a compliance requirement.
+An honest note: while drafting this very paper, one author cited "Art. 225 CPF" as the basis of professional secrecy. It is Arts. 210–211 — the reviewer caught it, and the correction was verified by querying this project's own corpus (the ingested Código Penal Federal returns the exact text: Art. 211 punishes revelation of secrets "por persona que presta servicios profesionales o técnicos" with 1–5 years and suspension of the profession). Citation drift is not a weakness of weak models; it is the default failure mode of *any* memory-based legal reasoning, human or machine. This is the core argument for retrieval-anchored generation.
+
+**1.2 Cloud dependency vs. professional secrecy.** Mexican law firms operate under professional secrecy obligations (Arts. 210–211 CPF) and LFPDPPP rules on sensitive personal data. Uploading privileged client documents to a foreign cloud LLM API — which may retain and train on inputs — is legally unacceptable for despachos. A sovereign, locally-deployable model is not a nice-to-have; it is a compliance requirement.
 
 **1.3 No Mexican corpus exists.** SaulLM trained on 30B tokens of English law. Thomson trained on proprietary Anglo-American corpora. For Mexico, no equivalent existed — not because the data doesn't exist, but because it is scattered across 33+ judicial portals, 32 state gazette systems, a 107-year-old federal gazette, and university repositories, most behind anti-bot protections.
 
@@ -111,7 +113,7 @@ Synthesizing SaulLM, Thomson, and our evaluation findings:
    - Full-parameter (not LoRA-CPT): our earlier LoRA-CPT attempt at high LR diverged (val loss 1.24→10.69); Thomson's result and cost analysis (4×H200, ~$70, ~6h on Vast.ai) favor full CPT.
    - **Linear merge with base** post-CPT — Thomson's anti-forgetting mechanism.
 3. **Stage 2 — SFT** on: interview-driven dialogue, citation-anchored answers, abstention calibration; plus the 269K English instructive reasoning examples (contract NLI, LSAT-style logic, case briefs — reasoning patterns, zero foreign statutes).
-4. **Stage 3 — Domain adapters per firm (despachos)**: private LoRA adapters trained exclusively on that firm's consented documents, served by merging at runtime. **The dual-adapter invariant**: firm data never enters the general adapter; the general adapter never sees privileged documents. This is the architectural expression of Art. 225 CPF and LFPDPPP.
+4. **Stage 3 — Domain adapters per firm (despachos)**: private LoRA adapters trained exclusively on that firm's consented documents, served by merging at runtime. **The dual-adapter invariant**: firm data never enters the general adapter; the general adapter never sees privileged documents. This is the architectural expression of Arts. 210–211 CPF and LFPDPPP.
 
 ### 5.2 Harness training: teaching the harness into the weights
 
