@@ -80,6 +80,33 @@ REGISTRO = [
      "api-rest", "huggingface.co/datasets/lawinstruct/lawinstruct", "server-tmux",
      "Estático (SFT). Solo actualizar si sale nueva versión del dataset",
      "anual", True, lambda: {"registros": 269577, "datasets": 10}),
+
+    # ── Sentencias estatales ────────────────────────────────────────────
+    ("SentenciasJalisco", "harvest_jalisco.py",
+     "84,371 sentencias STJ Jalisco. Cadena: cookie _vt (recaptcha bypass, IP-bound) → GET /tocas?page=N (10/pág, 8,438 págs) → GET /toca/{id}/file → URL S3 firmada → PDF sin sesión. La cookie se auto-renueva via CDP al navegador persistente (click NUEVA BÚSQUEDA→BUSCAR revalida grecaptcha). Solo corre en la Mac con el navegador CDP :9223 VIVO. NOTA: tambien hay url_resumen_ia (resúmenes ciudadanos .txt) cosechables.",
+     "api-rest+recaptcha-cdp", "https://publica-sentencias-backend.stjjalisco.gob.mx/tocas", "mac-cdp-navegador",
+     "Re-query /tocas pages con periodo reciente (campo periodo=año) y comparar ids conocidos en estado_ids.json; PDFs S3 solo para ids nuevos",
+     "mensual", False, None),  # estado vive en la Mac: se registra desde ahí manualmente
+    ("SentenciasQro", "harvest_queretaro.py",
+     "Sentencias Poder Judicial Querétaro. Cadena: POST leeSent.php (fecINI/fecFIN) → filas con clave estructural ORGANO|MATERIA|TIPO|AÑO|NUM|seq → POST crear_token.php → JWT (TTL 60s) → GET leeDoc.php?cual=JWT → PDF. Puro HTTP. BUG CONOCIDO: la paginación (pag=N) devuelve duplicados — revisar el parámetro real de offset antes de re-cosecha masiva; primer barrido 2008-2026 dio 246 únicas.",
+     "scraping-http+jwt", "https://www.poderjudicialqro.gob.mx/APP_UT69ii/leeSent.php", "server-tmux",
+     "Re-query por trimestres recientes; las claves son deterministas por expediente — diff contra estado.json",
+     "mensual", False, lambda: _estado_server("/opt/aijusticia/corpus_downloads/queretaro/estado.json", "claves")),
+    ("TesisUNAM", "harvest_unam_server.py",
+     "43,423 tesis Repositorio UNAM (colección Tesis, search c=b0dZK5). Fase A: GET /contenidos/ficha/<slug> SIN sesión → HTML con URL PDF (132.248.9.195 → redirect tesiunamdocumentos.dgb.unam.mx). Fase B: PDF directo + extracción. ~24-31% con PDF (las recientes digitalizadas), 173K tokens/tesis. Índice de slugs: paginar /contenidos?c=b0dZK5&q=derecho&i=<pág> (50/pág, 878 págs) CON sesión caliente (GET /contenidos primero)",
+     "scraping-http", "https://repositorio.unam.mx/contenidos", "server-tmux",
+     "Re-correr índice páginas recientes (i=1..N hasta detectar slugs conocidos); fichas solo de slugs nuevos",
+     "trimestral", False, lambda: _estado_server("/opt/aijusticia/corpus_downloads/unam_tesis/estado_fichas.json", "fichas")),
+    ("SentenciasEdomex", "harvest_edomex.py",
+     "~197K sentencias PJEdomex vía API elástica (backgestiondocumental) + PDFs de electronico.pjedomex.gob.mx. Slices materia×año, sub-rebanado trimestral si >10K (límite elástico). Fase1 manifiesto COMPLETO (85,572 PDFs únicos tras dedup de 124K filas). Fase2 descarga+extracción en curso.",
+     "api-rest", "https://backgestiondocumental.pjedomex.gob.mx/files/search/elastic", "server-tmux",
+     "fase1 re-query year=años recientes; fase2 usa estado.json (PDFs ya bajados)",
+     "mensual", False, lambda: _estado_server("/opt/aijusticia/corpus_downloads/edomex/estado_fase2.json", "pdfs")),
+    ("DOF-Huecos", "dof_huecos.py",
+     "Backfill DOF 2009-2010 y 2013-2020 (huecos del backfill original que murió por errores de referer). listar_desde camina hacia atrás: para mes [start, start+30) se consulta desde start+30.",
+     "scraping-http", "https://www.dof.gob.mx/index_111.php", "server-tmux",
+     "Una sola vez (histórico). Incremental diario ya cubierto por el harvester DOF principal",
+     "única", False, None),
 ]
 
 
@@ -89,6 +116,23 @@ def leer_script(nombre):
         if p.exists():
             return p.read_text(errors="replace")[:200_000]
     return None
+
+
+def _estado_mac(rel, clave):
+    """Lee un estado json desde la Mac (para fuentes que corren aquí)."""
+    try:
+        p = Path.home() / "workspace/aijusticia" / rel
+        return {clave: len(json.loads(p.read_text()))}
+    except Exception as e:
+        return {"error": str(e)[:60]}
+
+
+def _estado_server(abs_path, clave):
+    """Lee un estado json desde el server (corre en el server)."""
+    try:
+        return {clave: len(json.loads(open(abs_path).read()))}
+    except Exception as e:
+        return {"error": str(e)[:60]}
 
 
 def main():
