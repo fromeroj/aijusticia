@@ -117,10 +117,11 @@ class LMStudioClient:
 
         # Modelos de razonamiento con presupuesto corto: el <think> consumió
         # todo el cupo y el contenido quedó vacío o cortado a mitad de razonamiento.
-        # Reintentar UNA vez con presupuesto ampliado (fail-open: la etapa
-        # de arriba prefiere respuesta larga a respuesta vacía).
-        if (not content or finish == "length") and max_tokens < 4000:
-            kwargs["max_tokens"] = max(4000, max_tokens * 8)
+        # Reintentar UNA vez con presupuesto ampliado — mínimo 10k: un thinking
+        # model puede quemar 5-8k solo en razonamiento antes de la respuesta.
+        # (fail-open: la etapa de arriba prefiere respuesta larga a respuesta vacía)
+        if (not content or finish == "length") and max_tokens < 10240:
+            kwargs["max_tokens"] = max(10240, max_tokens * 8)
             resp = self._client.chat.completions.create(**kwargs)
             content = _limpiar(resp.choices[0].message.content or "")
 

@@ -98,7 +98,7 @@ def filtrar_relevantes(
         response = client.chat(
             [{"role": "user", "content": prompt}],
             temperature=0.0,
-            max_tokens=2048,
+            max_tokens=10240,
         )
 
         # Parsear JSON de respuesta

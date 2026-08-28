@@ -168,7 +168,7 @@ def actualizar_expediente(
         response = client.chat(
             [{"role": "user", "content": prompt}],
             temperature=0.0,
-            max_tokens=1024,
+            max_tokens=10240,
         )
         data = _parsear_json(response)
 
@@ -282,7 +282,7 @@ def detectar_huecos_post_rag(
         response = client.chat(
             [{"role": "user", "content": prompt}],
             temperature=0.0,
-            max_tokens=768,
+            max_tokens=10240,
         )
         data = _parsear_json(response)
         if not data or not data.get("hay_hueco_critico"):
