@@ -106,3 +106,11 @@ DO NOTHING/UPDATE` + chunking 1,200 con `ON CONFLICT (documento_id,ordinal)`.
 
 - **Tlamatini** — el LLM soberano mexicano (náhuatl: "el que sabe"; los sabios-consejeros del México central prehispánico). CPT + SFT sobre base Qwen (decisión 3.6-A3B vs 3.8-27B pendiente de evaluación). Checkpoints: `tlamatini-v0.1-cpt`, adapters de bufete: `tlamatini-bufete-X`.
 - **Tohil** — la infraestructura de entrenamiento (el fuego que forja): pipeline de CPT en Vast.ai, runs: `tohil-forge-v0.1`. El trueno = las H200.
+
+## Infraestructura de almacenamiento (2026-08-29)
+
+**Dos nodos:**
+- **Main (182.255.84.124)**: PostgreSQL + engine + app. SOLO chunks de RAG en la DB (`documentos.texto` se vacía tras la ingesta completa de cada fuente).
+- **Storage (148.135.106.227, hostname "tlamatini")**: 197GB. Exporta `/srv/corpus` por NFS, montado en main como `/opt/aijusticia/corpus_downloads` (rutas idénticas → cero cambios de código). Ahí viven: JSONLs de cosecha, manifiestos, estados, y `dump_texto_rag_sources.jsonl` (texto completo de todas las fuentes dietadas = insumo del CPT).
+
+**Ciclo de ingesta sostenible**: cosechar → JSONL en NFS → ingerir a Postgres (texto+chunks) → dump del texto a NFS → `UPDATE documentos SET texto=''` → VACUUM. La DB queda como índice de RAG (~la mitad del tamaño); el corpus de entrenamiento vive en storage.
