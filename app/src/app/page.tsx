@@ -226,6 +226,13 @@ export default function Landing() {
               </p>
             </div>
           </div>
+
+          <Link
+            href="/tlamatini"
+            className="mt-8 inline-flex items-center gap-2 rounded-xl bg-[#047857] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#036c4c]"
+          >
+            Conoce a Tlamatini <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </section>
 
