@@ -49,23 +49,20 @@ def cookie(force=False):
     browser = p.chromium.connect_over_cdp("http://127.0.0.1:9223")
     ctx = browser.contexts[0]
     if force:
-        page = [pg for pg in ctx.pages if "sentencias" in pg.url][-1]
-        for _ in range(3):
-            try:
-                page.click("button:has-text('NUEVA BÚSQUEDA')", timeout=4000)
-                _t.sleep(1.5)
-            except Exception:
-                pass
-            try:
-                page.click("button:has-text('BUSCAR')", timeout=6000)
-                _t.sleep(12)
-            except Exception:
-                pass
-            # verificar dentro de la pagina
+        # RENOVACIÓN POR RELOAD: la carga inicial de /sentencias ejecuta grecaptcha
+        # con buen score y el backend emite _vt nueva — sin tocar el formulario
+        # (el BUSCAR vacío dispara swal de validación y no genera token).
+        page = [pg for pg in ctx.pages if "sentencias" in pg.url][-1] if any("sentencias" in pg.url for pg in ctx.pages) else ctx.new_page()
+        for _ in range(4):
+            page.goto("https://publicacionsentencias.stjjalisco.gob.mx/sentencias",
+                      timeout=90000, wait_until="domcontentloaded")
+            _t.sleep(25)
             ok = page.evaluate(
-                "async () => { const r = await fetch('" + BACK + "/tocas?page=1', {credentials:'include'}); return (await r.json()).status === 'ok'; }")
+                "async () => { const r = await fetch('" + BACK + "/tocas?page=1', {credentials:'include'});"
+                " return (await r.json()).status === 'ok'; }")
             if ok:
                 break
+            _t.sleep(8)
     cookies = ctx.cookies(BACK)
     p.stop()
     v = "; ".join(f"{c['name']}={c['value']}" for c in cookies)
@@ -93,45 +90,80 @@ def fetch(url, use_cookie=True, timeout=60, retries=3):
     raise RuntimeError("reintentos agotados")
 
 
+def _pagina(pg):
+    for _ in range(3):
+        try:
+            return json.loads(fetch(f"{BACK}/tocas?page={pg}"))["data"]["tocas"]["data"]
+        except Exception:
+            time.sleep(3)
+    return None
+
+
 def fase_ids():
     """Recorre las 8,438 páginas del listado y extrae ids+file paths."""
     hechos = set()
     if ESTADO_IDS.exists():
         hechos = set(json.loads(ESTADO_IDS.read_text()))
     print(f"ids ya conocidos: {len(hechos)}", flush=True)
-    # primera llamada: total y last_page
-    d = json.loads(fetch(f"{BACK}/tocas?page=1"))
+    # primera llamada: total y last_page (con renovaciones; no matar el proceso)
+    d = None
+    for _ in range(5):
+        try:
+            cookie(force=True)
+            d = json.loads(fetch(f"{BACK}/tocas?page=1"))
+            break
+        except Exception as e:
+            print(f"  [inicial retry] {str(e)[:60]}", flush=True)
+            time.sleep(10)
+    if d is None:
+        print("No se pudo iniciar: sesion bloqueada. Reintentar mas tarde.", flush=True)
+        return
     tocas = d["data"]["tocas"]
     total, last = tocas["total"], tocas["last_page"]
     print(f"universo: {total} sentencias en {last} páginas", flush=True)
+    import concurrent.futures as cf
+    pgs = [p for p in range(1, last + 1)]
     out = open(IDS, "a")
-    for pg in range(1, last + 1):
+    done = 0
+    # La _vt muere por CUOTA (~150 requests), no solo TTL: renovar cada 80
+    # paginas evita los loops de 403 (renewal por reload ~30s).
+    RENOVAR_CADA = 80
+    import itertools
+
+    def _lote(lote_pgs):
+        # renovar al inicio de cada lote (reload) y correr el lote serial-2
         try:
-            d = json.loads(fetch(f"{BACK}/tocas?page={pg}"))
-            items = d["data"]["tocas"]["data"]
+            cookie(force=True)
         except Exception as e:
-            print(f"  [ERR pg {pg}] {str(e)[:60]}", flush=True)
-            time.sleep(5)
-            continue
-        nuevos = 0
-        for it in items:
-            iid = it["id"]
-            if iid in hechos:
+            print(f"  [renov fail] {str(e)[:50]}", flush=True)
+        res = []
+        with cf.ThreadPoolExecutor(max_workers=2) as ex:
+            for pg, d in zip(lote_pgs, ex.map(_pagina, lote_pgs)):
+                res.append((pg, d))
+        return res
+
+    for lote_inicio in range(1, last + 1, RENOVAR_CADA):
+        lote = list(range(lote_inicio, min(lote_inicio + RENOVAR_CADA, last + 1)))
+        for pg, d in _lote(lote):
+            done += 1
+            if d is None:
                 continue
-            out.write(json.dumps({
-                "id": iid, "file": it.get("file"),
-                "numero": it.get("numero"), "periodo": it.get("periodo"),
-                "materia": (it.get("materia_data") or {}).get("nombre", ""),
-                "sala": (it.get("salas_data") or {}).get("nombre", "")[:100],
-                "fecha_pub": it.get("fecha_publicacion"),
-            }, ensure_ascii=False) + "\n")
-            hechos.add(iid)
-            nuevos += 1
-        if pg % 50 == 0:
-            out.flush()
-            ESTADO_IDS.write_text(json.dumps(list(hechos)))
-            print(f"  pg {pg}/{last} ids={len(hechos)} (+{nuevos})", flush=True)
-        time.sleep(0.35)
+            for it in d:
+                iid = it["id"]
+                if iid in hechos:
+                    continue
+                out.write(json.dumps({
+                    "id": iid, "file": it.get("file"),
+                    "numero": it.get("numero"), "periodo": it.get("periodo"),
+                    "materia": (it.get("materia_data") or {}).get("nombre", ""),
+                    "sala": (it.get("salas_data") or {}).get("nombre", "")[:100],
+                    "fecha_pub": it.get("fecha_publicacion"),
+                }, ensure_ascii=False) + "\n")
+                hechos.add(iid)
+            if done % 80 == 0:
+                out.flush()
+                ESTADO_IDS.write_text(json.dumps(list(hechos)))
+                print(f"  pg {done}/{last} ids={len(hechos)}", flush=True)
     out.flush()
     ESTADO_IDS.write_text(json.dumps(list(hechos)))
     print(f"FASE IDS COMPLETA: {len(hechos)}", flush=True)

@@ -31,7 +31,7 @@ def preguntar(q: str) -> dict:
     req = urllib.request.Request(API, data=body,
                                  headers={"Content-Type": "application/json"})
     t0 = time.time()
-    with urllib.request.urlopen(req, timeout=240) as r:
+    with urllib.request.urlopen(req, timeout=900) as r:
         d = json.load(r)
     contenido = d["choices"][0]["message"]["content"] or ""
     razonamiento = d["choices"][0]["message"].get("reasoning_content") or ""
