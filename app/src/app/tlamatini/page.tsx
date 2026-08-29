@@ -152,6 +152,63 @@ export default function TlamatiniPage() {
         </div>
       </section>
 
+      {/* Por qué ahora */}
+      <section className="border-t border-gray-100 px-6 py-14">
+        <div className="mx-auto max-w-4xl">
+          <h2 className="mb-2 text-center text-2xl font-bold text-gray-900">
+            ¿Por qué ahora es posible?
+          </h2>
+          <p className="mx-auto mb-10 max-w-2xl text-center text-sm text-gray-500">
+            Dos fuerzas convergen — y ninguna existed hace dos años.
+          </p>
+
+          <div className="grid gap-5 md:grid-cols-2">
+            <div className="rounded-2xl border border-gray-100 bg-white p-6">
+              <h3 className="mb-3 text-sm font-semibold text-gray-900">
+                1. Los modelos locales ya están alcanzando a la frontera
+              </h3>
+              <p className="mb-4 text-xs leading-relaxed text-gray-600">
+                La brecha entre modelos abiertos y los gigantes cerrados se cierra a velocidad
+                medible: el mejor modelo abierto de 27B —que corre en hardware accesible— puntúa
+                61.7 en SWE-bench Pro, a solo 5 puntos del mejor modelo frontera del mundo. Lo que
+                era clase mundial hace 17 meses, hoy corre en una laptop.
+              </p>
+              <div className="space-y-2">
+                <Barra etiqueta="Modelo abierto 27B (local)" valor={61.7} color="#047857" />
+                <Barra etiqueta="Frontera cerrada (nube)" valor={66.9} color="#9ca3af" />
+                <p className="pt-1 text-[10px] text-gray-400">
+                  SWE-bench Pro, agosto 2026 · brecha: 5.2 puntos
+                </p>
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-gray-100 bg-white p-6">
+              <h3 className="mb-3 text-sm font-semibold text-gray-900">
+                2. El especialista vence al generalista… en su terreno
+              </h3>
+              <p className="mb-4 text-xs leading-relaxed text-gray-600">
+                En dominios especializados, un modelo enfocado no iguala a un modelo frontera:
+                lo supera. Lo medimos nosotros mismos: con la misma base de ley y el mismo motor
+                de recuperación, el modelo jurídico especialista respondió <strong>4× más
+                preguntas</strong> que el gigante generalista de nube — y citó mejor.
+              </p>
+              <div className="space-y-2">
+                <Barra etiqueta="Especialista jurídico 35B + RAG" valor={33} color="#047857" sufijo="% respondió" />
+                <Barra etiqueta="Gigante generalista (nube) + RAG" valor={7} color="#9ca3af" sufijo="% respondió" />
+                <p className="pt-1 text-[10px] text-gray-400">
+                  Batería propia de 30 preguntas ciudadanas · mismas fuentes · mismo harness
+                </p>
+              </div>
+              <p className="mt-3 rounded-lg bg-[#ecfdf5] px-3 py-2 text-[11px] leading-relaxed text-[#047857]">
+                La conclusión estratégica: no competimos contra la frontera general — competimos
+                donde la frontera no puede ir: derecho mexicano, anclado en fuentes, desplegable
+                en tu despacho.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Soberanía */}
       <section className="border-t border-gray-100 px-6 py-14">
         <div className="mx-auto grid max-w-4xl items-center gap-8 md:grid-cols-2">
@@ -280,6 +337,22 @@ export default function TlamatiniPage() {
           sustituye la asesoría de un abogado con cédula profesional.
         </p>
       </footer>
+    </div>
+  );
+}
+
+function Barra({ etiqueta, valor, color, sufijo = "" }: { etiqueta: string; valor: number; color: string; sufijo?: string }) {
+  return (
+    <div>
+      <div className="mb-1 flex items-baseline justify-between text-[11px]">
+        <span className="text-gray-600">{etiqueta}</span>
+        <span className="font-mono font-semibold" style={{ color }}>
+          {valor}{sufijo}
+        </span>
+      </div>
+      <div className="h-2 overflow-hidden rounded-full bg-gray-100">
+        <div className="h-full rounded-full" style={{ width: `${valor}%`, background: color }} />
+      </div>
     </div>
   );
 }

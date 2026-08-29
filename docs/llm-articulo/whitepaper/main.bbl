@@ -1,4 +1,4 @@
-\begin{thebibliography}{44}
+\begin{thebibliography}{46}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -251,6 +251,21 @@ Asier Guti{\'e}rrez-Fandi{\~n}o et~al.
 \newblock
   \url{https://www.legalpracticeintelligence.com/en-us/blogs/technology-intelligence/vlex-s-ai-legal-assistant-vincent-gets-major-upgrade},
   2024.
+
+\bibitem[{Qwen Team}(2026)]{qwen38_2026}
+{Qwen Team}.
+\newblock Qwen3.8: The latest generation of open-weights models.
+\newblock \url{https://huggingface.co/Qwen}, 2026.
+\newblock Model card y resultados públicos: Qwen3.8-27B obtiene 61.7 en
+  SWE-bench Pro, 84.3 en OSWorld-Verified, 90.3 en LiveCodeBench v6; Apache
+  2.0.
+
+\bibitem[Yang et~al.(2026)]{swebench_pro}
+John Yang et~al.
+\newblock Swe-bench pro: Agentic software engineering at enterprise scale.
+\newblock \url{https://www.swebench.com/}, 2026.
+\newblock Leaderboard público; el mejor modelo cerrado supera al mejor abierto
+  en 5.2 puntos (agosto 2026).
 
 \bibitem[{KYC Systems}(2026)]{kyc2026}
 {KYC Systems}.

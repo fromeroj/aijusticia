@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  28 AUG 2026 17:14
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  28 AUG 2026 18:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1096,7 +1096,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.4pt}.
 
 [5]
-<figs/fig_alucinacion.png, id=327, 544.3245pt x 240.462pt>
+<figs/fig_alucinacion.png, id=332, 544.3245pt x 240.462pt>
 File: figs/fig_alucinacion.png Graphic file (type png)
 <use figs/fig_alucinacion.png>
 Package pdftex.def Info: figs/fig_alucinacion.png  used on input line 32.
@@ -1111,7 +1111,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.4pt}.
 
 [6]
-<figs/fig_acceso_justicia.png, id=350, 564.6915pt x 204.327pt>
+<figs/fig_acceso_justicia.png, id=355, 564.6915pt x 204.327pt>
 File: figs/fig_acceso_justicia.png Graphic file (type png)
 <use figs/fig_acceso_justicia.png>
 Package pdftex.def Info: figs/fig_acceso_justicia.png  used on input line 12.
@@ -1126,7 +1126,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.4pt}.
 
 [7 <./figs/fig_alucinacion.png>]
-<figs/fig_mercado_latam.png, id=380, 495.378pt x 235.206pt>
+<figs/fig_mercado_latam.png, id=385, 495.378pt x 235.206pt>
 File: figs/fig_mercado_latam.png Graphic file (type png)
 <use figs/fig_mercado_latam.png>
 Package pdftex.def Info: figs/fig_mercado_latam.png  used on input line 29.
@@ -1141,7 +1141,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.4pt}.
 
 [8 <./figs/fig_acceso_justicia.png>]
-<figs/fig_tam.png, id=396, 566.991pt x 215.1675pt>
+<figs/fig_tam.png, id=401, 566.991pt x 215.1675pt>
 File: figs/fig_tam.png Graphic file (type png)
 <use figs/fig_tam.png>
 Package pdftex.def Info: figs/fig_tam.png  used on input line 38.
@@ -1175,6 +1175,15 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.4pt}.
 
 [11]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.4pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.4pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.4pt}.
+
+[12]
 Underfull \hbox (badness 1648) in paragraph at lines 24--24
 []|\T1/cmr/bx/n/10 (+20) Jurisdicción /
  []
@@ -1223,22 +1232,13 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.4pt}.
 
-[12]
-<figs/fig_corpus.png, id=481, 623.1645pt x 288.423pt>
+[13]
+<figs/fig_corpus.png, id=496, 623.1645pt x 288.423pt>
 File: figs/fig_corpus.png Graphic file (type png)
 <use figs/fig_corpus.png>
 Package pdftex.def Info: figs/fig_corpus.png  used on input line 34.
 (pdftex.def)             Requested size: 421.66824pt x 195.16122pt.
 
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 12.4pt, for example:
-(fancyhdr)                \setlength{\headheight}{12.4pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-0.4pt}.
-
-[13]
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1265,7 +1265,16 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.4pt}.
 
-[16]) (./sections/07_viabilidad.tex
+[16]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.4pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.4pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.4pt}.
+
+[17]) (./sections/07_viabilidad.tex
 Underfull \hbox (badness 10000) in paragraph at lines 18--19
 []|\T1/cmr/m/n/10 (+20) On-premise con-ser-va
  []
@@ -1275,17 +1284,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 18--19
 \OMS/cmsy/m/n/10 ^^X$\T1/cmr/m/n/10 (+20) 63$ $% del des-plie-gue
  []
 
-
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 12.4pt, for example:
-(fancyhdr)                \setlength{\headheight}{12.4pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-0.4pt}.
-
-[17]
-<figs/fig_costo_cpt.png, id=541, 396.171pt x 231.264pt>
+<figs/fig_costo_cpt.png, id=549, 396.171pt x 231.264pt>
 File: figs/fig_costo_cpt.png Graphic file (type png)
 <use figs/fig_costo_cpt.png>
 Package pdftex.def Info: figs/fig_costo_cpt.png  used on input line 30.
@@ -1299,7 +1298,16 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.4pt}.
 
-[18 <./figs/fig_costo_cpt.png>]) (./sections/08_riesgos.tex
+[18]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.4pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.4pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.4pt}.
+
+[19 <./figs/fig_costo_cpt.png>]) (./sections/08_riesgos.tex
 Underfull \hbox (badness 4872) in paragraph at lines 13--13
 []|\T1/cmr/m/n/10 (+20) Responsabilidad por
  []
@@ -1314,7 +1322,7 @@ Underfull \hbox (badness 4193) in paragraph at lines 16--16
 []|\T1/cmr/m/n/10 (+20) Competencia de in-
  []
 
-
+) (./sections/09_roadmap.tex
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1323,7 +1331,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.4pt}.
 
-[19]) (./sections/09_roadmap.tex
+[20]
 Underfull \hbox (badness 1527) in paragraph at lines 16--17
 []|\T1/cmr/m/n/10 (+20) Actualización al re-gla-men-to de la
  []
@@ -1337,7 +1345,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.4pt}.
 
-[20]) (./sections/10_conclusiones.tex
+[21]) (./sections/10_conclusiones.tex)
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1346,7 +1354,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.4pt}.
 
-[21])
+[22]
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1355,7 +1363,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.4pt}.
 
-[22] (./main.bbl
+[23] (./main.bbl
 Underfull \hbox (badness 4353) in paragraph at lines 53--58
 []\T1/cmr/m/n/10.95 (+20) Industry Re-search.  Le-gal ser-vi-ces mar-ket re-por
 t (mé-xi-co).  [][]$\T1/cmtt/m/n/10.95 https : / / www .
@@ -1427,7 +1435,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.4pt}.
 
-[23]
+[24]
 Underfull \hbox (badness 10000) in paragraph at lines 121--127
 \T1/cmtt/m/n/10.95 ai-[]trial-[]legal-[]models-[]hallucinate-[]1-[]out-[]6-[]or
 -[]more-[]benchmarking-[]queries$[][]\T1/cmr/m/n/10.95 (+20) ,
@@ -1526,7 +1534,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.4pt}.
 
-[24]
+[25]
 Underfull \hbox (badness 3942) in paragraph at lines 215--221
 []\T1/cmr/m/n/10.95 (+20) ComputerWeekly.es.  Le-gal-tech en mé-xi-co im-pul-sa
 n el fu-tu-ro de los ser-vi-
@@ -1563,27 +1571,27 @@ Underfull \hbox (badness 10000) in paragraph at lines 249--254
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 302--307
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.4pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.4pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.4pt}.
+
+[26]
+Underfull \hbox (badness 10000) in paragraph at lines 317--322
 []\T1/cmr/m/n/10.95 (+20) Instituto Cer-van-tes.  El es-pa-ñol en el mun-do: An
 ua-rio 2025.
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 302--307
+Underfull \hbox (badness 10000) in paragraph at lines 317--322
 [][]$\T1/cmtt/m/n/10.95 https : / / cervantes . org / es / sobre-[]nosotros / s
 ala-[]prensa / notas-[]prensa /
  []
 
-
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 12.4pt, for example:
-(fancyhdr)                \setlength{\headheight}{12.4pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-0.4pt}.
-
-[25])
+)
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1592,7 +1600,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.4pt}.
 
-[26] (./main.aux
+[27] (./main.aux
 LaTeX Info: Redefining \. on input line 12.
 LaTeX Info: Redefining \% on input line 12.
 )
@@ -1601,13 +1609,13 @@ LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 5E2AF797DBD81945C4C6673A2E604CE8;10567.
+(rerunfilecheck)             Checksum: 3CBFCB0A096455662670E0C62F17C2E8;10834.
  ) 
 Here is how much of TeX's memory you used:
- 34431 strings out of 473190
- 672885 string characters out of 5715801
- 1143417 words of memory out of 5000000
- 56706 multiletter control sequences out of 15000+600000
+ 34443 strings out of 473190
+ 673085 string characters out of 5715801
+ 1139543 words of memory out of 5000000
+ 56714 multiletter control sequences out of 15000+600000
  587984 words of font info for 226 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  98i,14n,101p,1520b,874s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1631,10 +1639,10 @@ f-dist/fonts/type1/public/cm-super/sfti1095.pfb></usr/local/texlive/2025/texmf-
 dist/fonts/type1/public/cm-super/sfti1200.pfb></usr/local/texlive/2025/texmf-di
 st/fonts/type1/public/cm-super/sftt1000.pfb></usr/local/texlive/2025/texmf-dist
 /fonts/type1/public/cm-super/sftt1095.pfb>
-Output written on main.pdf (27 pages, 954112 bytes).
+Output written on main.pdf (28 pages, 956962 bytes).
 PDF statistics:
- 830 PDF objects out of 1000 (max. 8388607)
- 704 compressed objects within 8 object streams
- 134 named destinations out of 1000 (max. 500000)
- 46563 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 847 PDF objects out of 1000 (max. 8388607)
+ 720 compressed objects within 8 object streams
+ 138 named destinations out of 1000 (max. 500000)
+ 46571 words of extra memory for PDF output out of 51595 (max. 10000000)
 
