@@ -114,3 +114,21 @@ DO NOTHING/UPDATE` + chunking 1,200 con `ON CONFLICT (documento_id,ordinal)`.
 - **Storage (148.135.106.227, hostname "tlamatini")**: 197GB. Exporta `/srv/corpus` por NFS, montado en main como `/opt/aijusticia/corpus_downloads` (rutas idénticas → cero cambios de código). Ahí viven: JSONLs de cosecha, manifiestos, estados, y `dump_texto_rag_sources.jsonl` (texto completo de todas las fuentes dietadas = insumo del CPT).
 
 **Ciclo de ingesta sostenible**: cosechar → JSONL en NFS → ingerir a Postgres (texto+chunks) → dump del texto a NFS → `UPDATE documentos SET texto=''` → VACUUM. La DB queda como índice de RAG (~la mitad del tamaño); el corpus de entrenamiento vive en storage.
+
+## Política RAG vs Entrenamiento (2026-08-29, definitiva)
+
+**Main = SOLO Postgres (RAG) + engine + app. Cero archivos de datos.** Todo archivo vive en storage (NFS).
+
+**Corpus de entrenamiento ≠ corpus de RAG.** No todo se ingiere a Postgres:
+
+| RAG (main, Postgres) | Entrenamiento (storage, JSONL) |
+|---|---|
+| Leyes federales (LexMX, LeyesBiblio) + 32 estados | Tesis UNAM (43K, doctrina) |
+| Jurisprudencia SJF | BJV libros (5,680, doctrina) |
+| Sentencias estatales **últimos 3 años** (Edomex, Qro, Jalisco, CDMX) | Sentencias >3 años |
+| Gacetas recientes + DOF vigente-relevante | DOF histórico completo |
+| Doctrina operativa corta (SCJN cuadernillos) | Doctrina larga (libros CDMX) |
+
+**Regla de ejecución**: los ingestores de sentencias filtran `año >= año_actual - 3`; el JSONL completo (todas las épocas) queda en storage para el CPT de Tlamatini. Fuentes doctrinales (TesisUNAM, BJV) NO se ingieren a Postgres.
+
+**Justificación**: (a) el ciudadano consulta ley vigente y criterios recientes; (b) 10B en RAG no caben en main y no aportan valor de consulta proporcional; (c) el CPT los consume igual desde JSONL.
