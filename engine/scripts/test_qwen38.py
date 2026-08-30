@@ -26,7 +26,7 @@ def preguntar(q: str) -> dict:
         "messages": [{"role": "system", "content": SYSTEM},
                      {"role": "user", "content": q}],
         "temperature": 0.3,
-        "max_tokens": 4000,
+        "max_tokens": 12000,
     }).encode()
     req = urllib.request.Request(API, data=body,
                                  headers={"Content-Type": "application/json"})
