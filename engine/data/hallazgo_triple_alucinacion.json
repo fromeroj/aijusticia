@@ -1,0 +1,39 @@
+{
+ "fecha": "2026-08-30",
+ "experimento": "triple-alucinacion-de-citas",
+ "tesis": "La alucinación de números de artículo sobrevive a CPT de dominio, a la generación más reciente del modelo, y a LoRA específico de jurisdicción — incluso en el dominio/lengua de entrenamiento. El dato sustantivo y la cita viajan por caminos distintos.",
+ "resultados": [
+  {
+   "modelo": "thomson-1.0-small (35B legal anglo)",
+   "pregunta": "protección maternidad LFT",
+   "cita_emitida": "art. 139",
+   "cita_correcta": "art. 164",
+   "idioma": "es"
+  },
+  {
+   "modelo": "qwen3.8-27b @12K",
+   "pregunta": "días aguinaldo LFT",
+   "cita_emitida": "art. 80",
+   "cita_correcta": "art. 87",
+   "idioma": "es"
+  },
+  {
+   "modelo": "qwen3.5-4b + LoRA indonesio",
+   "pregunta": "vacaciones UU 13/2003 (EN su dominio, en indonesio)",
+   "cita_emitida": "Pasal 39",
+   "cita_correcta": "Pasal 79",
+   "nota": "dato correcto (12 días), artículo equivocado",
+   "idioma": "id"
+  }
+ ],
+ "implicacion": "Anclaje jurisdiccional no se entrena — se recupera. Evidencia central para harness training + RAG.",
+ "baterias": {
+  "4_vias": [
+   "thomson_test_results.json",
+   "qwen38_test_results.json",
+   "test_qwen3.5-9b-oq4e-text.json",
+   "test_qwen3.5-4b-indonesia.json"
+  ],
+  "script": "engine/scripts/test_any.py"
+ }
+}
