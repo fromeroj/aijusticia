@@ -9,7 +9,25 @@ La literatura sobre alucinación legal es ya robusta. Dahl et al. administraron 
 
 La recuperación aumentada mitiga pero no elimina el problema. Magesh et al., en la primera evaluación prerregistrada de herramientas jurídicas comerciales con RAG, midieron tasas de alucinación de 17\% en Lexis+ AI y Ask Practical Law AI, y de 33\% en Westlaw AI-Assisted Research, frente a 43\% de GPT-4; el modo de falla más peligroso que documentan es la respuesta \emph{misgrounded}: una cita a una fuente real que no sustenta la afirmación.\cite{magesh2025,stanfordhai2024} Un ensayo controlado aleatorio con 127 estudiantes de derecho refuerza el punto desde otro ángulo: quienes usaron una herramienta RAG (Vincent AI de vLex) produjeron trabajo con una tasa de alucinación comparable a no usar IA, mientras que quienes usaron un modelo de razonamiento sin RAG produjeron mejor análisis pero introdujeron alucinaciones.\cite{ailawlibrarians2026}
 
-Nuestra propia evaluación reproduce el fenómeno en el contexto mexicano. Sometimos un modelo legal de fundación anglosajón de última generación (referenciado en este documento como Thomson-1.0-Small, véase la Sección~\ref{sec:relacionado}) a una batería de 30 preguntas jurídicas ciudadanas canónicas ---laboral, familiar, consumidor, vivienda---. Respondió 30/30 con fluidez y 93\% de las respuestas citaban legislación. La inspección reveló errores sistemáticos de cita: atribuyó la protección contra despido por embarazo al ``art.~139 LFT'' (el correcto es el 164) y la fórmula indemnizatoria de ``3 meses más 20 días por año'' al art.~48 (es el art.~50). Para un ciudadano que no puede verificar, una cita fluida, confiada y errónea es el peor modo de falla posible: tiene la forma de certeza jurídica sin su contenido.
+Nuestra propia evaluación reproduce el fenómeno sistemáticamente. Sometimos una misma batería de 30 preguntas jurídicas ciudadanas canónicas ---laboral, familiar, consumidor, vivienda--- a cuatro modelos de fundación de tres generaciones distintas, y ampliamos el experimento a un segundo dominio y un segundo idioma para aislar el fenómeno. El resultado es un \textbf{experimento triple}: tres modelos, dos jurisdicciones, dos idiomas, un único modo de falla (Tabla~\ref{tab:triple}).
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{@{}p{3.4cm}p{2.2cm}p{3.2cm}p{3.6cm}@{}}
+\toprule
+\textbf{Modelo} & \textbf{Dominio} & \textbf{Pregunta} & \textbf{Cita emitida vs.\ correcta} \\
+\midrule
+Legal anglosajón 35B (Thomson-1.0-Small) & MX (foráneo) & Protección por maternidad LFT & art.~139 \emph{vs.} \textbf{art.~164} \\
+Qwen3.8-27B (general, gen.\ 3.8) & MX (foráneo) & Días de aguinaldo LFT & art.~80 \emph{vs.} \textbf{art.~87} \\
+Qwen3.5-4B + LoRA legal \emph{indonesio} & \textbf{ID (propio)} & Días de vacaciones UU~13/2003 & Pasal~39 \emph{vs.}\ \textbf{Pasal~79} \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{El experimento triple}: la alucinación de citas ocurre incluso en el dominio y lengua de entrenamiento del modelo. El Qwen3.5-4B con LoRA de derecho indonesio, preguntado en indonesio sobre ley indonesia, produce el \emph{dato} correcto (12 días) con el \emph{artículo} equivocado --- el mismo modo de falla que los modelos anglosajones muestran en México. La memoria del modelo genera números de artículo con confianza de experto y precisión de lotería.}
+\label{tab:triple}
+\end{table}
+
+El detalle del caso indonesio es revelador: el modelo acierta el \emph{dato} sustantivo (12 días de vacaciones anuales, el número correcto de la ley) mientras cita el artículo equivocado. El conocimiento y la cita viajan por caminos distintos y el segundo es el que alucina. Para un ciudadano que no puede verificar, una cita fluida, confiada y errónea es el peor modo de falla posible: tiene la forma de certeza jurídica sin su contenido. Ninguna cantidad de entrenamiento de dominio observada ---ni CPT industrial de decenas de miles de millones de tokens (Thomson), ni la generación más reciente (Qwen 3.8), ni LoRA específico de jurisdicción (c5-legal)--- corrige este modo de falla; solo el anclaje en recuperación lo hace.
 
 \begin{alerta}{Modo de falla crítico}
 El CPT de dominio enseña la \emph{forma} del razonamiento jurídico ---registro, estructura, referencias institucionales--- pero no garantiza anclaje factual en un sistema jurídico específico. La alucinación de citas \textbf{sobrevive al entrenamiento de dominio}. El anclaje jurisdiccional requiere recuperación sobre fuentes primarias de esa jurisdicción.

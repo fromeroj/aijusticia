@@ -25,7 +25,7 @@
 \contentsline {subsection}{\numberline {5.2}Ingeniería de datos: la parte reproducible que nadie publica}{15}{subsection.5.2}%
 \contentsline {section}{\numberline {6}Arquitectura del sistema y estrategia de entrenamiento}{16}{section.6}%
 \contentsline {subsection}{\numberline {6.1}El sistema en producción}{16}{subsection.6.1}%
-\contentsline {paragraph}{La lección de la abstención.}{16}{paragraph*.8}%
+\contentsline {paragraph}{La lección de la abstención.}{16}{paragraph*.9}%
 \contentsline {subsection}{\numberline {6.2}La receta de entrenamiento de Tlamatini}{17}{subsection.6.2}%
 \contentsline {subsection}{\numberline {6.3}Harness training: enseñar el harness en los pesos}{17}{subsection.6.3}%
 \contentsline {subsection}{\numberline {6.4}Qué mediremos}{18}{subsection.6.4}%
