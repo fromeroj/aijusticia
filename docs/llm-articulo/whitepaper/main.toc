@@ -19,22 +19,23 @@
 \contentsline {subsection}{\numberline {4.1}Modelos de lenguaje jurídicos: de SaulLM a la generación industrial}{12}{subsection.4.1}%
 \contentsline {subsection}{\numberline {4.2}LLMs jurídicos fuera del mundo anglosajón}{12}{subsection.4.2}%
 \contentsline {subsection}{\numberline {4.3}La medición de la alucinación legal}{13}{subsection.4.3}%
-\contentsline {section}{\numberline {5}El corpus: 10B tokens de derecho mexicano}{13}{section.5}%
+\contentsline {subsection}{\numberline {4.4}Esfuerzos por jurisdicción: el patrón emergente}{13}{subsection.4.4}%
+\contentsline {section}{\numberline {5}El corpus: 10B tokens de derecho mexicano}{14}{section.5}%
 \contentsline {subsection}{\numberline {5.1}Composición}{14}{subsection.5.1}%
 \contentsline {subsection}{\numberline {5.2}Ingeniería de datos: la parte reproducible que nadie publica}{15}{subsection.5.2}%
-\contentsline {section}{\numberline {6}Arquitectura del sistema y estrategia de entrenamiento}{15}{section.6}%
-\contentsline {subsection}{\numberline {6.1}El sistema en producción}{15}{subsection.6.1}%
+\contentsline {section}{\numberline {6}Arquitectura del sistema y estrategia de entrenamiento}{16}{section.6}%
+\contentsline {subsection}{\numberline {6.1}El sistema en producción}{16}{subsection.6.1}%
 \contentsline {paragraph}{La lección de la abstención.}{16}{paragraph*.8}%
-\contentsline {subsection}{\numberline {6.2}La receta de entrenamiento de Tlamatini}{16}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.2}La receta de entrenamiento de Tlamatini}{17}{subsection.6.2}%
 \contentsline {subsection}{\numberline {6.3}Harness training: enseñar el harness en los pesos}{17}{subsection.6.3}%
-\contentsline {subsection}{\numberline {6.4}Qué mediremos}{17}{subsection.6.4}%
+\contentsline {subsection}{\numberline {6.4}Qué mediremos}{18}{subsection.6.4}%
 \contentsline {section}{\numberline {7}Viabilidad de negocio}{18}{section.7}%
 \contentsline {subsection}{\numberline {7.1}Modelo de ingresos por tiers}{18}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}Unit economics: el cómputo no es el problema}{18}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.2}Unit economics: el cómputo no es el problema}{19}{subsection.7.2}%
 \contentsline {subsection}{\numberline {7.3}Posición competitiva}{19}{subsection.7.3}%
 \contentsline {subsection}{\numberline {7.4}Escenarios financieros a 5 años}{20}{subsection.7.4}%
-\contentsline {section}{\numberline {8}Riesgos y limitaciones}{20}{section.8}%
-\contentsline {section}{\numberline {9}Estado actual y hoja de ruta}{21}{section.9}%
-\contentsline {subsection}{\numberline {9.1}Contribuciones}{21}{subsection.9.1}%
+\contentsline {section}{\numberline {8}Riesgos y limitaciones}{21}{section.8}%
+\contentsline {section}{\numberline {9}Estado actual y hoja de ruta}{22}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Contribuciones}{22}{subsection.9.1}%
 \contentsline {section}{\numberline {10}Conclusiones}{22}{section.10}%
 \contentsline {section}{Referencias}{24}{section.10}%

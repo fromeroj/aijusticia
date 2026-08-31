@@ -35,3 +35,11 @@ Harvey\cite{harvey2026} & Global / inglés-céntrico & Propietario & RAG + workf
 \bottomrule
 \end{tabular}
 \end{table}
+
+\subsection{Esfuerzos por jurisdicción: el patrón emergente}
+
+La construcción de IA legal específica por jurisdicción es un patrón global emergente, con esfuerzos de escala muy distinta que conviene caracterizar porque delimitan el espacio de diseño. En Indonesia, \textbf{c5-legal} (MorpKnight) entrena un LoRA sobre Qwen3.5-4B para recuperación terminológica legal con rigor metodológico notable: datasets externos pineados por hash sha256, cuarentena formal de registros no verificados, y un principio idéntico al nuestro ---\emph{el modelo generativo jamás es la capa de autoridad}--- al que llegaron sin entrenar siquiera el modelo de producción. Dos de sus prácticas adoptamos directamente: la autoría de preguntas de evaluación \emph{antes} de consultar las fuentes (anti-leakage), y el protocolo de re-evaluación tras cuantización (su propia model card lo admite como deuda). Su escala ---piloto de 50 términos, 250 gold queries--- ilustra el otro extremo del espectro: el mismo problema, sin el corpus.
+
+En el extremo de cuantización, el trabajo de \emph{craquehouse} con esquemas oQ4e (precisión mixta por sensibilidad con gate de fidelidad KL contra el modelo fuente) define el estándar de honestidad que exigiremos al desplegar Tlamatini: un quant que reclama ser el mismo modelo debe medirlo.
+
+En México, como se documentó, los esfuerzos existentes son un dataset (lex-mx, 317 leyes federales en Markdown con sync diario) y un RAG sobre modelos cerrados (LEX-MX). Ningún esfuerzo conocido combina base soberana entrenada, corpus a escala de miles de millones de tokens, y harness training --- el espacio que Tlamatini ocupa.

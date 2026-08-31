@@ -132,3 +132,13 @@ DO NOTHING/UPDATE` + chunking 1,200 con `ON CONFLICT (documento_id,ordinal)`.
 **Regla de ejecución**: los ingestores de sentencias filtran `año >= año_actual - 3`; el JSONL completo (todas las épocas) queda en storage para el CPT de Tlamatini. Fuentes doctrinales (TesisUNAM, BJV) NO se ingieren a Postgres.
 
 **Justificación**: (a) el ciudadano consulta ley vigente y criterios recientes; (b) 10B en RAG no caben en main y no aportan valor de consulta proporcional; (c) el CPT los consume igual desde JSONL.
+
+## Prácticas adoptadas de trabajos relacionados (2026-08-30)
+
+De **c5-legal** (Indonesia, LoRA Qwen3.5-4B — rigor de auditoría ejemplar):
+1. **Anti-leakage en evaluación**: las preguntas de la batería se escriben ANTES de consultar las fuentes/recuperación — evita contaminar el eval con la distribución del corpus. Aplica al extender la batería de 30.
+2. **Cuarentena formal de registros**: los datos basura no se tiran — se aíslan con motivo en manifiesto (nosotros: garbage filter binario; mejorar a cuarentena auditada).
+3. **Datasets externos pineados por sha256 + commit**: cada fuente externa (LawInstruct, lex-mx) registra hash del snapshot exacto usado — reproducibilidad del corpus de entrenamiento.
+
+De **oQ4e** (craquehouse — cuantización honesta):
+4. **Gate de fidelidad tras cuantización**: todo quant de Tlamatini para despachos debe pasar la batería de 30 + precisión de citas ANTES y DESPUÉS de cuantizar, con reporte KL/divergencia. Un quant que reclama ser el mismo modelo debe medirlo.
