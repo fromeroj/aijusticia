@@ -104,7 +104,62 @@ flowchart TB
 
 ---
 
-## 6. Hoja de ruta de refactor (ordenado, sin big-bang)
+## 6. Router de modelos: frontera para abrir, Tlamatini para fundar
+
+La arquitectura multi-LLM sigue la lógica del dato, no la del proveedor:
+
+```mermaid
+flowchart TB
+    T[Tarea del abogado] --> G{Clasificador de datos<br/>PII-gate}
+    G -->|"trabajo público/anónimo<br/>(research, base de contrato)"| F[LLM frontera en nube<br/>MiniMax M3 / otros]
+    G -->|"toca el caso o al cliente"| P[Tlamatini local<br/>+ adapter del bufete]
+    F --> B[Borrador base / hallazgos]
+    B --> R[Tlamatini refina:<br/>plantillas + cláusulas + citas]
+    P --> R
+    R --> O[Documento final:<br/>estilo de la casa, citas verificadas]
+    style F fill:#dbeafe,stroke:#2563eb
+    style P fill:#ecfdf5,stroke:#047857
+    style G fill:#fef3c7,stroke:#f59e0b
+```
+
+### 6.1 Política de ruteo (tabla viva en config)
+
+| Tarea | Clase de dato | Modelo | Nota |
+|---|---|---|---|
+| Investigación web (reformas, criterios) | Público | Frontera cloud + search API | Lo que el abogado ya hace en Google/Westlaw — sin dato de cliente |
+| Borrador base (estructura de contrato nuevo) | Público/anónimo | Frontera cloud | Entradas pasadas por PII-scan obligatorio |
+| Refinado, citas, documento final | Caso | **Tlamatini local** | Aquí vive el secreto profesional |
+| Entrevista ciudadana (tier gratis) | Anónimo | Cloud (hoy MiniMax) | Ya en producción |
+| Entrenamiento de adapter | Know-how firma | On-premise | Invariante dual-adapter |
+| Monitores de reforma | Público | Cloud barato | DOF/gacetas ya sincronizadas diarias |
+
+### 6.2 El gate es el mismo componente, doble uso
+
+El **PII-scan** que anonimiza plantillas (spec §4) es el mismo que clasifica entradas antes de
+rutar a la nube. Un solo detector (Presidio + reglas CURP/RFC/elector), dos consumidores:
+promoción a plantilla y clasificación de ruteo. Detección → `[NOMBRE]`/`[RFC]` → si el documento
+queda limpio, puede subir a frontera; si no, Tlamatini.
+
+### 6.3 Por qué esto NO rompe la promesa soberana
+
+Los arts. 210-211 CPF obligan sobre secretos conocidos por motivo profesional — no sobre
+investigación de derecho público. El abogado ya usa Google, Westlaw, vLex. La frontera cloud ve
+exactamente lo mismo que ve Westlaw: consultas jurídicas sin identidad. **La promesa que
+vendemos se precisa**: "los datos de tus clientes jamás salen" — no "ningún byte jamás sale",
+que ningún despacho operativo querría. Y en modo máximo-hermético (config del bufete), todo va
+a Tlamatini incluso el research, con menor calidad de apertura — el bufete elige su punto en el
+espectro.
+
+### 6.4 La cascada como fallback
+
+Si Tlamatini (35B) no resuelve algo complejo (análisis cross-jurisdiccional, razonamiento
+multi-paso difícil), el router puede **cascadar**: tarea anonimizada → frontera → borrador →
+Tlamatini verifica anclaje y citas contra el corpus → salida con doble firma (quién abrió,
+quién fundamentó). La verificación SIEMPRE es local: la frontera propone, Tlamatini dispone.
+
+---
+
+## 7. Hoja de ruta de refactor (ordenado, sin big-bang)
 
 | Paso | Alcance | Riesgo | Cuándo |
 |---|---|---|---|
