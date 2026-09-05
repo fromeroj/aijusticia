@@ -4,6 +4,8 @@ from __future__ import annotations
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
+from ai_justicia.config import settings
+
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 def _sesion_resp(s: dict) -> dict:
@@ -89,3 +91,77 @@ def auth_google(req: GoogleLoginRequest):
     return _sesion_resp(s)
 
 
+
+
+class TokenRequest(BaseModel):
+    """Intercambio de credenciales por par JWT access+refresh."""
+    via: str = Field(..., description="google | frase | dispositivo | refresh")
+    credential: str = Field(..., description="Token/frase/refresh_token según vía")
+    email: str | None = Field(None, description="solo via=google")
+
+
+@router.post("/token")
+def auth_token(req: TokenRequest):
+    """Emite par JWT access(15m) + refresh(30d) según la vía."""
+    import datetime
+    import uuid as _uuid
+    from ai_justicia.auth.jwt import par_tokens, verificar_token, hash_refresh
+    from ai_justicia.dossiers import store as dstore
+
+    actor_info = None
+
+    if req.via == "refresh":
+        claims = verificar_token(req.credential)
+        if not claims or claims.get("typ") != "refresh":
+            raise HTTPException(401, "Refresh token inválido")
+        # verificar no revocado
+        import psycopg
+        conn = psycopg.connect(host=settings.pg_host, port=settings.pg_port,
+                               dbname=settings.pg_db, user=settings.pg_user, password=settings.pg_password)
+        cur = conn.cursor()
+        cur.execute("SELECT actor_id FROM refresh_tokens WHERE token_hash=%s AND revoked_at IS NULL AND expires_at > now()",
+                    (hash_refresh(req.credential),))
+        row = cur.fetchone()
+        if not row:
+            raise HTTPException(401, "Refresh token revocado o expirado")
+        # rotar: revocar viejo, emitir nuevo
+        cur.execute("UPDATE refresh_tokens SET revoked_at=now() WHERE token_hash=%s", (hash_refresh(req.credential),))
+        actor_id, tier = str(claims["sub"]), claims.get("tier", "ciudadano")
+        conn.commit(); conn.close()
+        actor_info = {"actor_id": actor_id, "tipo": tier, "dossier_id": None}
+
+    elif req.via == "frase":
+        s = dstore.entrar_con_frase(req.credential.strip())
+        if not s:
+            raise HTTPException(401, "Frase incorrecta")
+        actor_info = s
+
+    elif req.via == "dispositivo":
+        s = dstore.entrar_con_dispositivo(req.credential.strip())
+        if not s:
+            raise HTTPException(401, "Dispositivo no vinculado")
+        actor_info = s
+
+    elif req.via == "google":
+        s = dstore.entrar_o_crear_con_google(req.credential.strip(), req.email)
+        actor_info = s
+
+    else:
+        raise HTTPException(400, f"vía desconocida: {req.via}")
+
+    # emitir par
+    resultado = par_tokens(actor_info["actor_id"], actor_info.get("tipo", "ciudadano"),
+                           actor_info.get("bufete_id"), actor_info.get("rol"))
+
+    # persistir refresh hash
+    import psycopg
+    conn = psycopg.connect(host=settings.pg_host, port=settings.pg_port,
+                           dbname=settings.pg_db, user=settings.pg_user, password=settings.pg_password)
+    cur = conn.cursor()
+    cur.execute(
+        "INSERT INTO refresh_tokens (actor_id, token_hash, expires_at) VALUES (%s, %s, %s)",
+        (_uuid.UUID(resultado["actor_id"]), hash_refresh(resultado["refresh_token"]),
+         datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=30)))
+    conn.commit(); conn.close()
+
+    return resultado

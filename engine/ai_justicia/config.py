@@ -61,6 +61,8 @@ class Settings(BaseSettings):
     pg_db: str = "aijusticia"
     pg_user: str = "aijusticia"
     pg_password: str = "aijusticia"
+    # Secret para firmar JWT (HS256) — generar con: openssl rand -hex 32
+    jwt_secret: str = "dev-secret-cambiar-en-produccion"
 
     # --- Pipeline / umbrales ---
     retrieval_quality_threshold: float = 0.20

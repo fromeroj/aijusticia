@@ -46,7 +46,7 @@ def cookie(force=False):
     import time as _t
     from playwright.sync_api import sync_playwright
     p = sync_playwright().start()
-    browser = p.chromium.connect_over_cdp("http://127.0.0.1:9223")
+    browser = p.chromium.connect_over_cdp("http://127.0.0.1:9224")
     ctx = browser.contexts[0]
     if force:
         # RENOVACIÓN POR RELOAD: la carga inicial de /sentencias ejecuta grecaptcha
