@@ -41,6 +41,9 @@ services:
       NEXTCLOUD_TRUSTED_DOMAINS: 162.35.113.166 oficina.aijusticia.mx
     volumes:
       - /opt/aijusticia/oficina/html:/var/www/html
+    extra_hosts:
+
+      - "aijusticia.mx:192.227.167.147"
 
   collabora:
     image: collabora/code:latest
@@ -49,7 +52,7 @@ services:
       - aliasgroup1=http://162.35.113.166:8080
       - username=cola
       - password=colabora2026
-      - extra_params=--o:ssl.enable=false --o:net.post_allow.hosts=172.16.0.0/12 --o:storage.wopi.host=162.35.113.166:8080
+      - extra_params=--o:ssl.enable=false --o:net.post_allow.hosts=0.0.0.0/0 --o:server_mode=proxy --o:proxy_prefix=/cool/
     ports:
       - "9980:9980"
     cap_add:
