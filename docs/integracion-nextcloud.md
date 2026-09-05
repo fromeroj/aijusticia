@@ -168,3 +168,44 @@ Tlamatini, o una máquina de 32GB con GPU. Docker-compose del stack completo = p
    descartado por origen (Rusia) frente al discurso Euro-soberano
 4. **Federación multi-despacho (cloud)**: NC instances por firma vs single-tenant con
    namespaces — on-prem lo resuelve naturalmente
+
+---
+
+## 9. Versionado de documentos (2026-09-05)
+
+**El versionado es nativo de Nextcloud y ya está activo y configurado.** No construimos
+nada: `files_versions` versiona automáticamente **cada save de Collabora y cada PUT de
+WebDAV** (probado: 3 subidas → 3 versiones en el historial).
+
+### Lo que da NC out-of-the-box (verificado en browser)
+
+| Función | Cómo |
+|---|---|
+| Versión por cada save | Automática ( Collabora auto-save cada ~30s + cada PUT) |
+| Historial con autor y fecha | Sidebar del archivo → tab **Versiones** (en español ✓) |
+| Restaurar cualquier versión | Botón de acciones por versión |
+| Descargar versión específica | Click en la versión |
+| "Versión inicial" y "Versión actual" marcadas | Etiquetas automáticas |
+
+### Configuración aplicada (grado legal)
+
+```
+versions_retention_obligation = "auto, 400"   # autos → 400 días (requisito legal laboral)
+max_versions_per_file = 0                     # versiones ilimitadas por archivo
+```
+
+### Comparación de versiones (redline)
+
+Collabora tiene comparación nativa dentro del editor (Review → Compare), y el sidebar de
+NC muestra el historial. Para el diff visual entre dos versiones arbitarias del mismo
+documento, `richdocuments` ya integra la vista previa de versiones anteriores. El
+diff avanzado entre documentos distintos (p.ej. plantilla v3 vs v4) será via
+nuestro servicio con `legal-redline-tools` (fase F2).
+
+### La capa nuestra (lo que NC no da)
+
+| Necesidad del spec | Solución |
+|---|---|
+| Versión con **mensaje de commit** ("cambió cláusula X por Y") | Nuestro panel puede etiquetar versiones via la API de tags de NC al guardar |
+| Diff redline entre 2 versiones arbitrarias | F2: legal-redline-tools en nuestro engine |
+| Vincular versión a evento del caso | Nuestra DB casos↔documentos↔versiones con contexto legal |
