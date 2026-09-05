@@ -108,7 +108,9 @@ Cada bufete tiene un **inventario vivo** generado por el sistema (exportable com
 
 | Función | Detalle |
 |---|---|
-| **Investigación anclada** | Como el chat ciudadano pero Nivel1: técnico, con doctrina y jurisprudencia + precedentes de la FIRMMA mezclados en el retrieval |
+| **Investigación anclada** | Como el chat ciudadano pero Nivel1: técnico, con doctrina y jurisprudencia + precedentes de la FIRMA mezclados en el retrieval |
+| **Router de modelos** | Trabajo público/anónimo (research web, borradores base) → LLM frontera cloud; todo lo que toca el caso → Tlamatini local. PII-gate clasifica cada entrada (ver arquitectura.md §6) |
+| **Cascada verificada** | Para razonamiento complejo: frontera abre anonimizada → Tlamatini fundamenta y ancla contra el corpus → salida con doble firma |
 | **Monitores** | Vigilancia de reformas: DOF + gaceta estatal + SJF — si cambia una ley que toca tus plantillas activas, alerta con redline del cambio |
 | **Comparador de versiones de ley** | "¿Qué cambió del art. 164 LFT desde 2023?" → diff con fecha de reforma (usamos git-history de lex-mx + DOF) |
 
@@ -178,6 +180,7 @@ administración = mayoría calificada"
 | Entrenamiento con know-how | "Zero training" | Adapter privado por bufete |
 | Precio | USD 300-500/mes/asiento | Desde ~$2,000 MXN/mes/asiento (a definir) |
 | Word add-in | Sí | Fase 2 (roadmap) |
+| Frontera para research/base | Propietaria integrada | Router multi-LLM con PII-gate (arquitectura §6) |
 | Agentic workflows maduros | Sí | Fase 3 (roadmap) |
 | Español mexicano + LFPDPPP nativo | No | Sí |
 
