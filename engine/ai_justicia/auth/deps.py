@@ -59,4 +59,4 @@ def set_tenant(cur, bufete_id: str | None):
         cur.execute("SELECT * FROM dossiers ...")
     """
     cur.execute("SELECT set_config('app.bufete_id', %s, false)",
-                (str(bufete_id) if bufete_id else ""))
+                (str(bufete_id) if bufete_id else "",))

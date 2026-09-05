@@ -149,9 +149,22 @@ def auth_token(req: TokenRequest):
     else:
         raise HTTPException(400, f"vía desconocida: {req.via}")
 
+    # buscar bufete del actor si es abogado
+    bufete_id = actor_info.get("bufete_id")
+    if not bufete_id:
+        import psycopg as _psy
+        _conn = _psy.connect(host=settings.pg_host, port=settings.pg_port,
+                            dbname=settings.pg_db, user=settings.pg_user, password=settings.pg_password)
+        _cur = _conn.cursor()
+        _cur.execute("SELECT bufete_id FROM actores WHERE id = %s", (str(actor_info["actor_id"]),))
+        _row = _cur.fetchone()
+        if _row and _row[0]:
+            bufete_id = str(_row[0])
+        _conn.close()
+
     # emitir par
     resultado = par_tokens(actor_info["actor_id"], actor_info.get("tipo", "ciudadano"),
-                           actor_info.get("bufete_id"), actor_info.get("rol"))
+                           bufete_id, actor_info.get("rol"))
 
     # persistir refresh hash
     import psycopg
