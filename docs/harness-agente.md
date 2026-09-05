@@ -123,3 +123,42 @@ Esto es RL-asistido-por-reglas sin construir un entorno de RL completo.
 | Bucle infinito / costo | Presupuesto duro de pasos y tokens por tarea |
 | Acción destructiva errónea | Toda acción de escritura pasa gates + confirmación humana según umbral configurable del bufete |
 | Exfiltración por tool-chaining creativo | El PII-gate intercepta SALIDAS de tools también, no solo entradas del usuario |
+
+---
+
+## Referencia: Mercor/SkyRL — guía RL para agentes de trabajo del conocimiento
+
+*Fuente: [Training Frontier Knowledge-Work Agents: A 397B RL Training Guide with SkyRL](https://www.mercor.com/blog/training-frontier-knowledge-work-agents-a-397b-rl-training-guide-with-skyrl/) — receta open-source (scripts, pesos, trazas de eval en GitHub: ApexAgents-SkyRL-Recipe)*
+
+### Por qué nos importa
+
+1. **Validan nuestra base (de nuevo)**: sus ablations corrieron sobre **Qwen3.6-35B-A3B** — la misma
+   familia que elegimos para Tlamatini — y con solo post-training **superó a Opus 4.5** en APEX-Agents.
+2. **"Los fixes del harness solos valieron una época de entrenamiento"**: arreglar el entorno
+   (paquetes faltantes, PDFs ilegibles, truncamiento) subió su 35B de 22.74% → 28.69% —
+   **+6 puntos SIN tocar el modelo**. Es la validación más fuerte hasta fecha de nuestra filosofía
+   harness-primero (todo lo que invertimos en el harness de RAG/verificación/PII-gate es
+   entrenamiento gratis).
+3. **"Los datos dominaron a los algoritmos"**: su mejor perilla algorítmica dio +3.9 pts; el
+   post-training completo dio +10-12. Nuestra apuesta por el corpus (14B tokens mexicanos)
+   sobre la optimización fina de hiperparámetros es la asignación correcta de esfuerzo.
+
+### Qué tomar de su metodología RL (para la fase H3/agentic de Tlamatini)
+
+| Técnica | Resultado | Aplicación nuestra |
+|---|---|---|
+| **Overfit-run de 32 tareas ANTES del run completo** | expuso grading roto sin gastar compute | Nuestro smoke test de 100M tokens ($3) antes del forge — mismo principio, formalizarlo como gate |
+| **DPPO (máscara de tokens divergentes)** | empata en score, pero mÃ¡s turnos cortos (mejor conducta agentic) | Candidato para el trainer de la fase agentic |
+| **prompt_mean (agregación DAPO)** | +3.9 pts vs token_mean | Las trayectorias de despacho (2k-128k tokens) sesgan igual — usar prompt_mean |
+| **Context nudge al 80% del contexto** | +3.0 pts gratis | Aplicable al ciclo del agente: prompt de cierre cuando el contexto se agota |
+| **TITO (token-in-token-out)** | mantiene on-policy sin re-tokenizar | Reescribir el harness alrededor de /completions — para cuando midamos logprobs |
+| **Métricas conductuales > reward** | turnos/tool-call-success predicen mejor | Loguear métricas de conducta en las trayectorias del harness (pasos, tools, tasa de anclaje) |
+| Transfer a harness held-out | el 35B transfirió MEJOR (aprendió a preferir código sobre MCP) | Nuestro harness training debe incluir trayectorias con herramientas sustitutas |
+
+### Números de referencia
+
+- Hero run: Qwen3.5-397B-A17B, RL puro (sin SFT warmup), 1,928 tareas expertas
+- Pass@1: 16.11% → 27.29% (+70% relativo) en APEX-Agents (480 held-out)
+- Terminal-Bench 2.1: 44.6% (35B) / 50.6% (397B) baselines, con transferencia
+- Ratio inferencia:entrenamiento: 12:4 (35B) / 12:8 (397B); concurrencia limitada por KV-cache
+- Sin SFT warmup: el RL directo desde el base funcionó — relevante si Tlamatini post-CPT va directo a RL de trayectorias
