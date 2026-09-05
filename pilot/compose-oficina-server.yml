@@ -49,10 +49,10 @@ services:
     image: collabora/code:latest
     restart: unless-stopped
     environment:
-      - aliasgroup1=http://162.35.113.166:8080
+      - aliasgroup1=https://oficina.konen.guru
       - username=cola
       - password=colabora2026
-      - extra_params=--o:ssl.enable=false --o:net.post_allow.hosts=0.0.0.0/0 --o:server_mode=proxy --o:proxy_prefix=/cool/
+      - extra_params=--o:ssl.enable=true --o:ssl.termination=true --o:net.post_allow.hosts=0.0.0.0/0
     ports:
       - "9980:9980"
     cap_add:
