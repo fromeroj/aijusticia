@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  30 AUG 2026 23:49
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  5 SEP 2026 03:37
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -899,6 +899,10 @@ File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 (./main.aux
 LaTeX Info: Redefining \. on input line 12.
 LaTeX Info: Redefining \% on input line 12.
+
+
+LaTeX Warning: Label `sec:harness' multiply defined.
+
 )
 \openout1 = `main.aux'.
 
@@ -922,8 +926,7 @@ LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 93.
 LaTeX Font Info:    ... okay on input line 93.
 LaTeX Info: Redefining \. on input line 93.
 LaTeX Info: Redefining \% on input line 93.
-
-(/usr/local/texlive/2025/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+ (/usr/local/texlive/2025/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count352
 \scratchdimen=\dimen311
@@ -1303,7 +1306,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.4pt}.
 
 [18]
-<figs/fig_costo_cpt.png, id=562, 396.171pt x 231.264pt>
+<figs/fig_costo_cpt.png, id=563, 396.171pt x 231.264pt>
 File: figs/fig_costo_cpt.png Graphic file (type png)
 <use figs/fig_costo_cpt.png>
 Package pdftex.def Info: figs/fig_costo_cpt.png  used on input line 30.
@@ -1581,6 +1584,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 249--254
  []
 
 
+Underfull \hbox (badness 10000) in paragraph at lines 296--303
+\T1/cmr/m/n/10.95 (+20) urlhttps://www.mercor.com/blog/training-frontier-knowle
+dge-work-agents-a-397b-rl-
+ []
+
+
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1590,13 +1599,13 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.4pt}.
 
 [26]
-Underfull \hbox (badness 10000) in paragraph at lines 317--322
+Underfull \hbox (badness 10000) in paragraph at lines 326--331
 []\T1/cmr/m/n/10.95 (+20) Instituto Cer-van-tes.  El es-pa-ñol en el mun-do: An
 ua-rio 2025.
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 317--322
+Underfull \hbox (badness 10000) in paragraph at lines 326--331
 [][]$\T1/cmtt/m/n/10.95 https : / / cervantes . org / es / sobre-[]nosotros / s
 ala-[]prensa / notas-[]prensa /
  []
@@ -1618,14 +1627,18 @@ LaTeX Info: Redefining \% on input line 12.
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
+
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 3FB0526E144319265AB6368FCEF83941;11171.
  ) 
 Here is how much of TeX's memory you used:
- 34459 strings out of 473190
- 673279 string characters out of 5715801
- 1140028 words of memory out of 5000000
- 56718 multiletter control sequences out of 15000+600000
+ 34463 strings out of 473190
+ 673348 string characters out of 5715801
+ 1140090 words of memory out of 5000000
+ 56721 multiletter control sequences out of 15000+600000
  588480 words of font info for 231 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  98i,14n,101p,1520b,874s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1649,10 +1662,10 @@ f-dist/fonts/type1/public/cm-super/sfti1095.pfb></usr/local/texlive/2025/texmf-
 dist/fonts/type1/public/cm-super/sfti1200.pfb></usr/local/texlive/2025/texmf-di
 st/fonts/type1/public/cm-super/sftt1000.pfb></usr/local/texlive/2025/texmf-dist
 /fonts/type1/public/cm-super/sftt1095.pfb>
-Output written on main.pdf (28 pages, 962467 bytes).
+Output written on main.pdf (28 pages, 963222 bytes).
 PDF statistics:
- 854 PDF objects out of 1000 (max. 8388607)
- 727 compressed objects within 8 object streams
- 140 named destinations out of 1000 (max. 500000)
+ 856 PDF objects out of 1000 (max. 8388607)
+ 729 compressed objects within 8 object streams
+ 141 named destinations out of 1000 (max. 500000)
  46579 words of extra memory for PDF output out of 51595 (max. 10000000)
 

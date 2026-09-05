@@ -32,7 +32,7 @@
 \contentsline {section}{\numberline {7}Viabilidad de negocio}{18}{section.7}%
 \contentsline {subsection}{\numberline {7.1}Modelo de ingresos por tiers}{18}{subsection.7.1}%
 \contentsline {subsection}{\numberline {7.2}Unit economics: el cómputo no es el problema}{19}{subsection.7.2}%
-\contentsline {subsection}{\numberline {7.3}Posición competitiva}{19}{subsection.7.3}%
+\contentsline {subsection}{\numberline {7.3}Posición competitiva}{20}{subsection.7.3}%
 \contentsline {subsection}{\numberline {7.4}Escenarios financieros a 5 años}{20}{subsection.7.4}%
 \contentsline {section}{\numberline {8}Riesgos y limitaciones}{21}{section.8}%
 \contentsline {section}{\numberline {9}Estado actual y hoja de ruta}{22}{section.9}%

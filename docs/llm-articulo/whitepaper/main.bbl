@@ -1,4 +1,4 @@
-\begin{thebibliography}{46}
+\begin{thebibliography}{47}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -291,6 +291,15 @@ Zhitian Zhou et~al.
 {Suprema Corte de Justicia de la Naci{\'o}n}.
 \newblock Semanario judicial de la federaci{\'o}n, duod{\'e}cima {\'e}poca.
 \newblock \url{https://sjf.scjn.gob.mx/}, 2026.
+
+\bibitem[Team(2026)]{mercor2026}
+Mercor Team.
+\newblock Training frontier knowledge-work agents: A 397b rl training guide
+  with {SkyRL}, 2026.
+\newblock Receta abierta de RL agentic; ablations sobre Qwen3.6-35B-A3B
+  superando Opus 4.5 en APEX-Agents; fixes de harness equivalentes a una epoca
+  de entrenamiento;
+  \\url{https://www.mercor.com/blog/training-frontier-knowledge-work-agents-a-397b-rl-training-guide-with-skyrl/}.
 
 \bibitem[{Spheron Network}(2026)]{spheron}
 {Spheron Network}.
