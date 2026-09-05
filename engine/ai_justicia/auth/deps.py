@@ -47,3 +47,16 @@ async def bufete_actual(actor: dict = Depends(actor_actual)) -> uuid.UUID:
     if actor.get("tier") != "despacho" or not actor.get("bufete"):
         raise HTTPException(403, "Requiere sesión de despacho")
     return uuid.UUID(actor["bufete"])
+
+
+def set_tenant(cur, bufete_id: str | None):
+    """Configura la variable de sesión para RLS antes de queries de dossiers.
+
+    Uso:
+        conn = psycopg.connect(...)
+        cur = conn.cursor()
+        set_tenant(cur, actor.get("bufete"))
+        cur.execute("SELECT * FROM dossiers ...")
+    """
+    cur.execute("SELECT set_config('app.bufete_id', %s, false)",
+                (str(bufete_id) if bufete_id else ""))
