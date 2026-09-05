@@ -227,12 +227,20 @@ export default function Landing() {
             </div>
           </div>
 
-          <Link
-            href="/tlamatini"
-            className="mt-8 inline-flex items-center gap-2 rounded-xl bg-[#047857] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#036c4c]"
-          >
-            Conoce a Tlamatini <ArrowRight className="h-4 w-4" />
-          </Link>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Link
+              href="/tlamatini"
+              className="inline-flex items-center gap-2 rounded-xl bg-[#047857] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#036c4c]"
+            >
+              Conoce a Tlamatini <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
+              href="/tecnologia"
+              className="inline-flex items-center gap-2 rounded-xl border border-[#047857]/30 px-6 py-3 text-sm font-medium text-[#047857] transition hover:bg-white"
+            >
+              Cómo protegemos tus datos
+            </Link>
+          </div>
         </div>
       </section>
 
