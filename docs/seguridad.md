@@ -101,3 +101,76 @@ Del spec c5-legal (práctica ya adoptada), formalizada:
 - **No WAF empresarial / SOC2 todavía**: el producto es piloto; el basic auth + rate limit + JWT cubren el riesgo real actual
 - **No cifrado de disco en VPS**: el riesgo real es la red (TLS ✓) y el acceso (SSH + auth); LUKS en VPS da falsa seguridad contra el proveedor
 - **No 2FA para ciudadanos**: la frase de 12 palabras YA es el segundo factor (posesión + conocimiento según camino)
+
+---
+
+## 6. Corrección del modelo: despacho también en nube (2026-09-05)
+
+**Realidad del mercado**: muchos despachos chicos (2-10 abogados) NO tienen máquina ni IT.
+El tier despacho debe ofrecer dos modos con el MISMO código:
+
+| Modo | Dónde corre | A quién sirve | Auth |
+|---|---|---|---|
+| **Despacho Cloud** | Nuestra instancia (oficina.konen.guru) | Despachos sin hardware; onboarding en minutos | Login NC hospedado → OAuth → JWT engine |
+| **Despacho On-Prem** | Su servidor (docker-compose) | Despachos con requisito de soberanía/secreto profesional | Login NC local → OAuth → JWT engine local |
+
+**La factura diferencial es la privacidad del dato, no la funcionalidad**: en Cloud, los
+documentos del caso viven en NUESTRA infra (somos encargados LFPDPPP art. 21, contrato
+de encargamiento); en On-Prem, en la del despacho (cero transferencia). El adapter
+privado en Cloud entrena en su tenant aislado (RLS) pero dentro de nuestra infra —
+es el trade-off que Harvey/Legora ya venden, pero con derecho mexicano nativo.
+
+### 6.1 Modelo de identidad final (3 emisores, 1 verificador)
+
+```
+EMISORES                              VERIFICADOR
+┌────────────────┐
+│ Google OAuth   │──┐
+│ (ciudadano +   │  │   ┌──────────────────────────┐
+│ abogado solo)  │  ├──▶│ Engine: deps.py          │
+├────────────────┤  │   │ valida JWT en CADA ruta  │
+│ Frase/Disposit.│──┤   │                          │
+│ (recuperación  │  │   │ claims: {sub, tier,      │
+│  anónima)      │  │   │         bufete?, rol?}   │
+├────────────────┤  │   └──────────────────────────┘
+│ NC OAuth2      │──┘        │
+│ (despacho:         ▼        ▼
+│  cloud u on-prem)  RLS Postgres  →  datos del bufete
+│                    sin bufete_id →  solo dossiers propios
+```
+
+### 6.2 Multi-tenancy del Despacho Cloud
+
+Un NC por despacho sería limpio pero costoso. Arquitectura pragmática:
+
+- **1 instancia NC** con usuarios agrupados por despacho (NC groups = bufete)
+- Carpetas raíz por bufete: `/Bufetes/{slug}/Casos/...` con ACLs NC por grupo
+- **RLS en Postgres del engine** por `bufete_id` del JWT (nunca del request)
+- Nextcloud "bulk upload" / provisioning API crea el bufete + usuarios al registro
+- El adapter LoRA privado: en Cloud entrena con los datos del tenant (RLS); en On-Prem
+  con los datos locales. El adapter general NUNCA ve datos de bufete.
+
+### 6.3 Emisión del JWT — especificación
+
+```
+POST /auth/token
+{
+  "via": "google" | "frase" | "dispositivo" | "nc_oauth",
+  ...credenciales según vía...
+}
+
+→ 200 { "access_token": "<JWT>", "expires_in": 900, "refresh_token": "<JWT>" }
+
+claims: {
+  sub: actor_uuid,
+  tier: "ciudadano" | "abogado" | "despacho",
+  bufete: uuid | null,      // solo tier despacho
+  rol: "socio" | "asociado" | "pasante" | null,
+  iat, exp
+}
+```
+
+- `access_token`: 15 min (Header `Authorization: Bearer`)
+- `refresh_token`: 30 días rotativo (revocable: tabla `refresh_tokens` con hash)
+- Firma: HS256 con `JWT_SECRET` del `.env` (rotable sin invalidar actores)
+- El refresh detecta dispositivo nuevo → exige re-emisión con credencial raíz
