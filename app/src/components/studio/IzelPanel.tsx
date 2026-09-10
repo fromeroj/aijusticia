@@ -198,7 +198,6 @@ export function IzelPanel({ casoNombre, casoId }: { casoNombre?: string | null; 
   const [escribiendo, setEscribiendo] = useState(false);
   const [ttsOn, setTtsOn] = useState(() => localStorage.getItem("aij_tts") === "1");
   const [escuchando, setEscuchando] = useState(false);
-  const [audioRef] = useState(() => useRef<HTMLAudioElement | null>(null));
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
