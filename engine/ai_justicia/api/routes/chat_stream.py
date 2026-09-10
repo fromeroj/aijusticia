@@ -88,9 +88,17 @@ async def chat_stream(req: ChatStreamRequest, request=Depends(actor_actual)):
 
     # RAG retrieval
     pasajes_text = ""
+    pasajes = []
     try:
         from ai_justicia.retrieval.fts_index import busqueda_fts
-        pasajes = busqueda_fts(req.consulta, None, top_k=8)
+        pasajes = busqueda_fts(req.consulta, None, top_k=12)
+
+        # Para ciudadanos (Nivel0): leyes primero, jurisprudencia después
+        if req.nivel in ("Nivel0", None):
+            leyes = [p for p in pasajes if p.fuente in ("LeyesBiblio", "LexMX")]
+            otros = [p for p in pasajes if p.fuente not in ("LeyesBiblio", "LexMX")]
+            pasajes = leyes + otros[:max(0, 8 - len(leyes))]
+
         if pasajes:
             pasajes_text = "\n".join(
                 f"[{i}] ({p.fuente} | {p.titulo[:50]}) {p.texto[:400]}"
@@ -101,6 +109,10 @@ async def chat_stream(req: ChatStreamRequest, request=Depends(actor_actual)):
 
     # construir messages
     system = SYSTEM_PROMPT
+
+    if req.nivel in ("Nivel0", None) or req.nivel == "Nivel0":
+        system += "\n\nFUENTE PRIORITARIA: Base tus respuestas en LEYES Y CÓDIGOS vigentes (LeyesBiblio, LexMX), NO en jurisprudencia específica (SJF) ni en casos concretos. El ciudadano necesita saber qué dice la LEY, no qué resolvió un juez en otro caso."
+
     if req.nivel in ("Nivel1", "Nivel2"):
         system += "\n\nEl usuario es un abogado: usa lenguaje técnico, responde directo, sin disclaimers de 'consulta a un abogado'."
 
