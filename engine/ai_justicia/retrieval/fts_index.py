@@ -270,6 +270,8 @@ def busqueda_vectorial(
     top_k: int = 10,
 ) -> list[Resultado]:
     """Búsqueda vectorial (pgvector) con filtros — la vía semántica."""
+    if not settings.embeddings_habilitados:
+        return []
     filtros = filtros or Filtros()
     query_emb = np.array(embed_query(query), dtype=np.float32)
 
