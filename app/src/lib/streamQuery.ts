@@ -152,12 +152,15 @@ function parseSSEEvent(raw: string): SSEEvent | null {
   if (!data) return null;
 
   try {
-    if (event === "token") {
-      return { type: "token", data };
-    }
+    // parsear SIEMPRE — los tokens del backend vienen como JSON strings
+    // (json.dumps añade comillas y escapa \n que sin parsear se ven como texto literal)
     const parsed = JSON.parse(data);
     return { type: event as SSEEvent["type"], data: parsed } as SSEEvent;
   } catch {
+    // token events: data es el texto crudo sin JSON wrapping (fallback)
+    if (event === "token") {
+      return { type: "token", data };
+    }
     return null;
   }
 }
