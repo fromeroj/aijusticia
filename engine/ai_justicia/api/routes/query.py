@@ -4,11 +4,12 @@ from __future__ import annotations
 import json
 import logging
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 from ai_justicia.config import settings
+from ai_justicia.corpus.store import count_chunks, count_documentos
 from ai_justicia.jobs.store import obtener_job
 from ai_justicia.llm.client import check_connection
 from ai_justicia.pipeline.orchestrator import RespuestaPipeline, ejecutar_consulta
@@ -31,6 +32,27 @@ class QueryRequest(BaseModel):
     respuestas_acumuladas: dict[str, str] | None = Field(None)
     expediente_prev: dict | None = Field(None)
     historial: list[TurnoHistorial] | None = Field(None)
+    # F3: caso con bóveda — Izel cita los documentos (requiere JWT con acceso)
+    dossier_id: str | None = Field(None, max_length=64)
+
+    @field_validator("webhook_url")
+    @classmethod
+    def _webhook_seguro(cls, v: str | None) -> str | None:
+        """A6: el worker hará POST a esta URL — solo https público (guard SSRF)."""
+        if not v:
+            return v
+        from urllib.parse import urlparse
+        u = urlparse(v)
+        host = (u.hostname or "").lower()
+        if u.scheme != "https":
+            raise ValueError("webhook_url debe ser https://")
+        if (not host or host in ("localhost", "0.0.0.0", "::1")
+                or host.startswith("127.") or host.startswith("10.")
+                or host.startswith("192.168.") or host.startswith("169.254.")
+                or (host.startswith("172.") and host.split(".")[1].isdigit()
+                    and 16 <= int(host.split(".")[1]) <= 31)):
+            raise ValueError("webhook_url no puede apuntar a redes privadas")
+        return v
 
 
 class QueryResponse(BaseModel):
@@ -91,6 +113,7 @@ def health() -> dict:
         n_docs = count_documentos()
         n_chunks = count_chunks()
     except Exception:  # noqa: BLE001
+        logger.exception("Fallo contando corpus para /health")
         n_docs, n_chunks = -1, -1
     return {
         "status": "ok" if conn["ok"] and n_docs >= 0 else "degraded",
@@ -100,7 +123,7 @@ def health() -> dict:
 
 
 @router.post("/query/stream")
-async def query_stream(req: QueryRequest):
+async def query_stream(req: QueryRequest, request: Request):
     """SSE: ejecuta el pipeline emitiendo eventos de progreso + tokens + resultado final.
 
     Eventos:
@@ -113,6 +136,24 @@ async def query_stream(req: QueryRequest):
       event: error   data: {"mensaje":"..."}
     """
     import asyncio
+
+    # F3: documentos de la bóveda del caso — Izel los cita. Opcional: si el
+    # JWT no es válido o no hay acceso, simplemente no hay contexto extra.
+    documentos_ctx = ""
+    if req.dossier_id and request is not None:
+        try:
+            import uuid as _uuid
+            from ai_justicia.auth.jwt import verificar_token
+            from ai_justicia.dossiers import boveda, store as dstore
+            auth_header = request.headers.get("Authorization", "")
+            if auth_header.startswith("Bearer "):
+                claims = verificar_token(auth_header[7:])
+                if claims and dstore.tiene_acceso(
+                        _uuid.UUID(req.dossier_id), _uuid.UUID(claims["sub"]),
+                        claims.get("bufete")):
+                    documentos_ctx = boveda.textos_para_contexto(_uuid.UUID(req.dossier_id))
+        except Exception:
+            documentos_ctx = ""
 
     async def event_generator():
         try:
@@ -170,6 +211,11 @@ async def query_stream(req: QueryRequest):
             if expediente.hechos:
                 hechos_str = "; ".join(f"{k.replace('_', ' ')}: {v}" for k, v in expediente.hechos.items())
                 consulta_completa = f"{consulta_completa} (Datos del caso: {hechos_str})"
+            # F3: los documentos de la bóveda del caso (contratos, recibos…)
+            if documentos_ctx:
+                consulta_completa = (
+                    f"{consulta_completa}\n\nDocumentos adjuntos del caso "
+                    f"(contratos/escritos subidos por el usuario):\n{documentos_ctx}")
 
             yield _sse("stage", {"stage": "recuperacion", "label": "Buscando fuentes oficiales..."})
             from ai_justicia.pipeline.retrieve import recuperar_y_rerankear
@@ -211,7 +257,10 @@ async def query_stream(req: QueryRequest):
             from ai_justicia.llm.generate import generar
             # La generación ve la pregunta ORIGINAL del usuario (no la reescrita)
             # junto con pasajes recuperados con todo el contexto.
-            respuesta_gen = await asyncio.to_thread(generar, req.consulta, pasajes, req.nivel)
+            # (F3: consulta_completa incluye hechos del expediente Y los
+            # documentos de la bóveda — sin esto el modelo "no ve" el contrato)
+            respuesta_gen = await asyncio.to_thread(
+                generar, consulta_completa, pasajes, req.nivel)
 
             # Emitir el texto generado como tokens.
             # Partir por palabras preservando espacios entre lotes.
@@ -375,7 +424,9 @@ def job_status(job_id: int) -> JobStatus:
     return JobStatus(
         job_id=job.id,
         estado=job.estado.value,
-        consulta=job.consulta[:200],
+        # A5: sin consulta del usuario (endpoint público/enumerable); el
+        # frontend solo necesita estado + norma para el polling.
+        consulta=None,
         norma_faltante=job.norma_faltante,
         fuente=job.fuente,
         respuesta=job.respuesta,

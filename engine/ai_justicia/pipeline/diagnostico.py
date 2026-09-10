@@ -59,8 +59,11 @@ REGLAS:
 la abstención (ej. falta la Ley Fintech, falta el registro SJF 2024156789).
 - caso="A" si la abstención se debe a la naturaleza del caso (requiere análisis de \
 hechos, opinión profesional, o no hay norma que resuelva directamente).
-- Si la consulta menciona una ley específica por nombre y no aparece en los pasajes \
-recuperados, es casi seguro Caso B.
+- CRÍTICO: si los pasajes recuperados YA CONTIENEN la ley citada en la consulta \
+(mira la etiqueta [fuente | título] de cada pasaje — ej. "[LeyesBiblio | Código \
+Civil Federal]"), NO es Caso B: la norma está disponible y la respuesta simplemente \
+no logró anclarse — caso="A".
+- Solo declara Caso B por una ley cuyo nombre NO aparezca en ningún título/pasaje.
 - No inventes números de registro SJF si no estás seguro; deja id_externo=null.
 
 JSON:"""

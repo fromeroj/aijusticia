@@ -85,7 +85,7 @@ def busqueda_vectorial(query: str, filtros: Filtros | None = None, top_k: int = 
 
     sql = f"""
         SELECT
-            c.id AS chunk_id, c.documento_id, c.texto,
+            (c.documento_id * 1000000 + c.ordinal) AS chunk_id, c.documento_id, c.texto,
             1 - (c.embedding <=> %s) AS score,
             d.fuente, d.titulo, d.materia, d.entidad, d.jerarquia, d.vinculante,
             d.registro_sjf, d.fecha_reforma, d.fecha_publicacion, d.fecha_vigencia, d.derogado

@@ -18,6 +18,7 @@ from base64 import urlsafe_b64decode, urlsafe_b64encode
 from typing import Any
 
 from ai_justicia.config import settings
+from ai_justicia.ids import nuevo_id
 
 # HS256 manual (sin dependencia de PyJWT — implementación transparente y auditable)
 
@@ -43,7 +44,7 @@ def emitir_token(claims: dict, ttl_seg: int, secret: str | None = None) -> str:
     body = dict(claims)
     body.setdefault("iat", now)
     body["exp"] = now + ttl_seg
-    body["jti"] = str(uuid.uuid4())
+    body["jti"] = str(nuevo_id())
     payload = _b64(json.dumps(body).encode())
     signing_input = f"{header}.{payload}".encode()
     return f"{header}.{payload}.{_sign(signing_input, sec)}"
@@ -74,13 +75,15 @@ def hash_refresh(token: str) -> str:
 
 
 def par_tokens(actor_id: str, tier: str, bufete_id: str | None = None,
-               rol: str | None = None) -> dict:
+               rol: str | None = None, dossier_id: str | None = None) -> dict:
     """Emite el par access + refresh para un actor."""
     claims = {"sub": str(actor_id), "tier": tier}
     if bufete_id:
         claims["bufete"] = str(bufete_id)
     if rol:
         claims["rol"] = rol
+    if dossier_id:
+        claims["dossier"] = str(dossier_id)
 
     access = emitir_token(claims, ttl_seg=900)  # 15 min
     refresh = emitir_token({**claims, "typ": "refresh"}, ttl_seg=86400 * 30)  # 30 días
@@ -91,6 +94,6 @@ def par_tokens(actor_id: str, tier: str, bufete_id: str | None = None,
         "refresh_token": refresh,
         "actor_id": str(actor_id),
         "tipo": tier,
-        "dossier_id": None,  # compat con frontend actual
+        "dossier_id": str(dossier_id) if dossier_id else None,
         "bufete_id": str(bufete_id) if bufete_id else None,
     }

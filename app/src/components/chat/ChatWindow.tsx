@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Scale, FolderPlus, ClipboardList } from "lucide-react";
 import { useChatStore, type StageId } from "@/lib/store";
 import { streamQuery, type TurnoHistorial } from "@/lib/streamQuery";
+import { subirDocumento } from "@/lib/boveda";
+import { authFetch } from "@/lib/auth";
 import { ConsentCard } from "./ConsentCard";
 import { MessageBubble } from "./MessageBubble";
 import { InputBar } from "./InputBar";
@@ -57,13 +59,14 @@ export function ChatWindow() {
     async (consulta: string, respuestasAclaratorias?: Record<string, string>) => {
       const abortController = new AbortController();
       const historial = buildHistorial();
-      const { modo, expedienteAcumulado, respuestasAcumuladas } = useChatStore.getState();
+      const { modo, expedienteAcumulado, respuestasAcumuladas, sesion: sesionActual } =
+        useChatStore.getState();
       const nivel = modo === "abogado" ? "Nivel1" : "Nivel0";
 
       try {
         for await (const event of streamQuery(
           consulta, nivel, abortController.signal, respuestasAclaratorias, historial,
-          respuestasAcumuladas, expedienteAcumulado,
+          respuestasAcumuladas, expedienteAcumulado, sesionActual?.dossierId ?? null,
         )) {
           switch (event.type) {
             case "stage":
@@ -157,12 +160,49 @@ export function ChatWindow() {
   const cerrarSesion = useChatStore((s) => s.cerrarSesion);
   const nuevoCaso = useChatStore((s) => s.nuevoCaso);
   const expedienteAcumulado = useChatStore((s) => s.expedienteAcumulado);
+  const [expedienteServer, setExpedienteServer] = useState<Record<string, unknown> | null>(null);
+
+  useEffect(() => {
+    if (!sesion?.dossierId) return;
+    authFetch(`/dossiers/${sesion.dossierId}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => { if (d) setExpedienteServer(d.expediente ?? null); })
+      .catch(() => {});
+  }, [sesion?.dossierId]);
   const [consentDecidido, setConsentDecidido] = useState(false);
   const [convertOpen, setConvertOpen] = useState(false);
   const [expOpen, setExpOpen] = useState(false);
   const [confirmNuevo, setConfirmNuevo] = useState(false);
+  const [refrescoDocs, setRefrescoDocs] = useState(0);
+  const [avisoDoc, setAvisoDoc] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const adjuntarDoc = () => fileInputRef.current?.click();
+
+  const hacerSubida = async (file: File) => {
+    if (!sesion?.dossierId) return;
+    try {
+      const doc = await subirDocumento(sesion.dossierId, file);
+      setRefrescoDocs((n) => n + 1);
+      setAvisoDoc(doc.nombre);
+      setTimeout(() => setAvisoDoc(null), 6000);
+    } catch {
+      setAvisoDoc(null);
+      setExpOpen(true); // muestra el error dentro del panel
+    } finally {
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
 
   const enModoAbierto = !sesion;
+
+  // Si llegamos de /casos con un dossier existente y no hay conversación,
+  // abrir el expediente automáticamente (mostrar docs, notas, compartir)
+  useEffect(() => {
+    if (sesion?.dossierId && messages.length === 0) {
+      setExpOpen(true);
+    }
+  }, [sesion?.dossierId]);
 
   const confirmarNuevoCaso = () => {
     if (messages.length > 4 && !confirmNuevo) {
@@ -178,13 +218,15 @@ export function ChatWindow() {
     <div className="flex h-[100dvh] flex-col bg-white">
       {/* Header */}
       <header className="flex items-center gap-2 border-b border-gray-200 px-4 py-3">
-        <Link href="/" className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#047857]">
+        <Link href="/" className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#047857] to-[#0d9488]" title="Izel — AI Justicia">
           <Scale className="h-4 w-4 text-white" />
         </Link>
         <div>
-          <h1 className="text-sm font-bold text-gray-900">AI Justicia</h1>
+          <h1 className="text-sm font-bold text-gray-900">
+            Izel <span className="font-normal text-gray-300">·</span> <span className="text-gray-500">AI Justicia</span>
+          </h1>
           <p className="text-[10px] text-gray-400">
-            {modo === "abogado" ? "Modo profesional" : "Consulta ciudadana"}
+            {modo === "abogado" ? "Modo profesional" : "Tu asistente legal"}
           </p>
         </div>
 
@@ -259,18 +301,34 @@ export function ChatWindow() {
             </button>
           </div>
 
-          {/* Salir (solo con sesión) */}
+          {/* Cuenta + Salir (solo con sesión) */}
           {sesion ? (
-            <button
-              onClick={() => {
-                cerrarSesion();
-                window.location.href = "/";
-              }}
-              title="Cerrar sesión y volver al inicio"
-              className="ml-1 rounded-lg px-2 py-1.5 text-xs text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
-            >
-              Salir
-            </button>
+            <>
+              <Link
+                href="/casos"
+                title="Mis casos: propios y compartidos contigo"
+                className="ml-1 rounded-lg px-2 py-1.5 text-xs text-gray-500 transition hover:bg-gray-100 hover:text-gray-700"
+              >
+                Casos
+              </Link>
+              <Link
+                href="/cuenta"
+                title="Mi cuenta: consentimiento y preferencias"
+                className="ml-1 rounded-lg px-2 py-1.5 text-xs text-gray-500 transition hover:bg-gray-100 hover:text-gray-700"
+              >
+                Cuenta
+              </Link>
+              <button
+                onClick={() => {
+                  cerrarSesion();
+                  window.location.href = "/";
+                }}
+                title="Cerrar sesión y volver al inicio"
+                className="ml-1 rounded-lg px-2 py-1.5 text-xs text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
+              >
+                Salir
+              </button>
+            </>
           ) : (
             <Link
               href="/"
@@ -286,16 +344,16 @@ export function ChatWindow() {
       <div ref={scrollRef} className="flex-1 overflow-y-auto">
         {isEmpty ? (
           <div className="flex h-full flex-col items-center justify-center gap-4 p-8 text-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#047857]">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#047857] to-[#0d9488]">
               <Scale className="h-8 w-8 text-white" />
             </div>
             <div className="max-w-sm">
               <h2 className="mb-1 font-serif text-xl font-semibold text-gray-900">
-                Justicia precisa, verificable
+                Hola, soy Izel
               </h2>
               <p className="text-sm text-gray-500">
-                Pregunta sobre derecho mexicano. Cada respuesta viene con citas verificadas
-                contra fuentes oficiales.
+                Tu asistente legal. Pregunta sobre derecho mexicano: cada respuesta viene con
+                citas verificadas contra fuentes oficiales.
               </p>
             </div>
             <div className="flex flex-wrap justify-center gap-2">
@@ -345,15 +403,41 @@ export function ChatWindow() {
       {/* Nota de consentimiento (modo abierto) — bajo los mensajes, sobre el input */}
       {modo === "ciudadano" && enModoAbierto && <ConsentNotice />}
 
+      {/* Aviso de documento subido (bóveda F3) */}
+      {avisoDoc && (
+        <div className="border-t border-[#047857]/20 bg-[#ecfdf5] px-4 py-2 text-center text-xs text-[#047857]">
+          📄 {avisoDoc} agregado al expediente — Izel ya puede citarlo.
+        </div>
+      )}
+
       {/* Input */}
-      <InputBar onSend={handleSend} onStop={stopQuery} isQuerying={isQuerying} />
+      <InputBar
+        onSend={handleSend}
+        onStop={stopQuery}
+        isQuerying={isQuerying}
+        onAttach={sesion?.dossierId ? adjuntarDoc : undefined}
+      />
+      <input
+        ref={fileInputRef}
+        type="file"
+        className="hidden"
+        accept=".pdf,.jpg,.jpeg,.png,.webp,.tif,.tiff,.bmp"
+        onChange={(e) => {
+          const f = e.target.files?.[0];
+          if (f) hacerSubida(f);
+        }}
+      />
 
       {/* Modales / drawers */}
       {convertOpen && <ConvertCaseModal onClose={() => setConvertOpen(false)} />}
       <ExpedientePanel
-        expediente={expedienteAcumulado}
+        expediente={expedienteAcumulado ?? expedienteServer as any}
         abierto={expOpen}
         onClose={() => setExpOpen(false)}
+        dossierId={sesion?.dossierId}
+        refresco={refrescoDocs}
+        onDocumentoSubido={(nombre) => setAvisoDoc(nombre)}
+        puedeCompartir={sesion?.tipo === "ciudadano"}
       />
     </div>
   );

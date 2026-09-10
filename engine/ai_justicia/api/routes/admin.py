@@ -5,7 +5,7 @@ import json as _json
 import time
 from pathlib import Path
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
 from ai_justicia.config import settings

@@ -16,8 +16,9 @@ from pathlib import Path
 import psycopg
 
 DIR = Path("/opt/aijusticia/corpus_downloads/lexmx_repo")
-conn = psycopg.connect(host="127.0.0.1", port=5432, dbname="aijusticia",
-                       user="aijusticia", password="aijusticia2016", autocommit=True)
+import os; _env = dict(l.strip().split("=",1) for l in open("/opt/aijusticia/engine/.env") if "=" in l and not l.startswith("#"))
+conn = psycopg.connect(host="127.0.0.1", port=5432, dbname=_env.get("PG_DB","aijusticia"),
+                       user=_env.get("PG_USER","aijusticia"), password=_env["PG_PASSWORD"], autocommit=True)
 cur = conn.cursor()
 n = 0
 for md in sorted((DIR / "leyes").glob("*.md")):

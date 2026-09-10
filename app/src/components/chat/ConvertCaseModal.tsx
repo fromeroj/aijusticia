@@ -9,6 +9,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { FolderPlus, Lock, X } from "lucide-react";
 import { useChatStore } from "@/lib/store";
+import { canjearTokens, registrarDispositivo } from "@/lib/auth";
 import { PhraseVerify } from "./PhraseVerify";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
@@ -39,7 +40,11 @@ export function ConvertCaseModal({ onClose }: { onClose: () => void }) {
       const d = await res.json();
       setFrase(d.frase_recuperacion);
       setPaso("frase");
-      // Registrar device token para un-tap en próximas visitas (best-effort)
+      // Canjear la frase (en memoria, UNA vez) por el par JWT — la sesión
+      // queda autenticada; la frase no se guarda en el navegador.
+      await canjearTokens("frase", d.frase_recuperacion).catch(() => null);
+      // Device token para un-tap: la prueba de posesión es la frase recién
+      // emitida (A3). Best-effort.
       try {
         const token =
           crypto.randomUUID().replace(/-/g, "") + crypto.randomUUID().replace(/-/g, "");
@@ -47,11 +52,7 @@ export function ConvertCaseModal({ onClose }: { onClose: () => void }) {
           "aij_device_token",
           JSON.stringify({ token, tipo: "ciudadano" })
         );
-        await fetch(`${API_URL}/auth/dispositivo/registrar`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ actor_id: d.actor_id, token }),
-        });
+        await registrarDispositivo(d.actor_id, token, d.frase_recuperacion);
       } catch {
         /* best-effort */
       }

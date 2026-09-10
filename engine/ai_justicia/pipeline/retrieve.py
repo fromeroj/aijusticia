@@ -35,6 +35,13 @@ def recuperar_y_rerankear(
     # Esto mejora DRÁSTICAMENTE el FTS: los términos jurídicos coinciden con las leyes.
     from ai_justicia.pipeline.query_analysis import normalizar_consulta_juridica
     consulta_normalizada = normalizar_consulta_juridica(consulta, materia=analisis.materia)
+    # El normalizador puede perder citas expresas ("artículo 87") que son ORO
+    # para el FTS (localizador de disposición) — re-incorporarlas si faltan.
+    import re as _re
+    citas = _re.findall(r"art\w*\s+\d{1,4}", consulta, _re.I)
+    for c in citas:
+        if c.lower() not in consulta_normalizada.lower():
+            consulta_normalizada += f" {c}"
     if consulta_normalizada != consulta:
         logger.info("Consulta normalizada: %s → %s", consulta[:50], consulta_normalizada[:60])
 

@@ -74,8 +74,8 @@ export default function Despachos() {
         "Onboarding y migración de precedentes asistida",
         "Beta fundadora: condiciones preferentes de por vida",
       ]}
-      ctaTexto="Registrar mi despacho"
-      ctaHref="/onboarding/abogado"
+      ctaTexto="Entrar a la app de trabajo"
+      ctaHref="/app"
       notaLegal="AI Justicia procesa los datos del despacho como encargado; el responsable del tratamiento es la firma. El modelo privado es propiedad conjunta: la base de AI Justicia y el know-how del despacho permanecen separados."
     />
   );

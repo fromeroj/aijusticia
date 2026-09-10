@@ -6,18 +6,10 @@ import Link from "next/link";
 import { Scale, KeyRound, Smartphone, ArrowRight, Fingerprint } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useChatStore } from "@/lib/store";
+import { canjearTokens, guardarSesionConTokens, registrarDispositivo } from "@/lib/auth";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 const DEVICE_KEY = "aij_device_token";
 const GOOGLE_ENABLED = Boolean(process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID);
-
-interface SesionResp {
-  actor_id: string;
-  tipo: "ciudadano" | "abogado";
-  dossier_id: string | null;
-  bufete_id: string | null;
-  email: string | null;
-}
 
 export default function Entrar() {
   const router = useRouter();
@@ -30,21 +22,14 @@ export default function Entrar() {
   const [cargando, setCargando] = useState(false);
 
   useEffect(() => {
-    // Retorno de Google OAuth: el callback ya verificó con Google y trae la sesión
+    // Retorno de Google OAuth: canjear el code de un solo uso por la sesión
     const q = new URLSearchParams(window.location.search);
-    if (q.get("g") === "ok") {
-      const s: SesionResp = {
-        actor_id: q.get("actor") || "",
-        tipo: (q.get("tipo") as "ciudadano" | "abogado") || "ciudadano",
-        dossier_id: q.get("dossier") || null,
-        bufete_id: q.get("bufete") || null,
-        email: q.get("email") || null,
-      };
-      if (s.actor_id) {
-        aplicarSesion(s);
-        return;
-      }
-    } else if (q.get("g") === "error") {
+    const g = q.get("g");
+    if (g === "ok" && q.get("code")) {
+      canjearGoogleHandoff(q.get("code")!);
+      return;
+    }
+    if (g === "error") {
       const motivo = q.get("motivo");
       setError(
         motivo === "config"
@@ -64,26 +49,47 @@ export default function Entrar() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const aplicarSesion = async (s: SesionResp) => {
+  /** Handoff de Google: code → sesión con tokens (un solo uso, 60s). */
+  const canjearGoogleHandoff = async (code: string) => {
+    setCargando(true);
+    try {
+      const r = await fetch(`/api/auth/google/handoff?code=${encodeURIComponent(code)}`);
+      if (!r.ok) throw new Error();
+      const d = await r.json();
+      const s = guardarSesionConTokens(d);
+      aplicarSesion({
+        tipo: s.tipo, actorId: s.actorId,
+        dossierId: s.dossierId ?? null, bufeteId: s.bufeteId ?? null,
+      });
+    } catch {
+      setError("No se pudo completar el acceso con Google. Usa tu frase.");
+      setCargando(false);
+    }
+  };
+
+  const aplicarSesion = (info: {
+    tipo: "ciudadano" | "abogado"; actorId: string;
+    dossierId: string | null; bufeteId: string | null;
+  }) => {
     iniciarSesion({
-      tipo: s.tipo,
-      actorId: s.actor_id,
-      dossierId: s.dossier_id ?? undefined,
-      bufeteId: s.bufete_id,
+      tipo: info.tipo,
+      actorId: info.actorId,
+      dossierId: info.dossierId ?? undefined,
+      bufeteId: info.bufeteId,
       creadoEn: Date.now(),
     });
-    // Vincular este dispositivo para one-tap la próxima vez
-    try {
-      const token = crypto.randomUUID().replace(/-/g, "") + crypto.randomUUID().replace(/-/g, "");
-      window.localStorage.setItem(DEVICE_KEY, JSON.stringify({ token, tipo: s.tipo }));
-      await fetch(`${API_URL}/auth/dispositivo/registrar`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actor_id: s.actor_id, token }),
-      });
-    } catch { /* la vinculación es best-effort */ }
+    // Vincular este dispositivo para one-tap la próxima vez.
+    // La prueba de posesión es el JWT recién emitido (Authorization).
+    registrarDispositivo(info.actorId, nuevoTokenDispositivo(info.tipo))
+      .catch(() => { /* la vinculación es best-effort */ });
     router.push("/chat");
   };
+
+  function nuevoTokenDispositivo(tipo: string): string {
+    const token = crypto.randomUUID().replace(/-/g, "") + crypto.randomUUID().replace(/-/g, "");
+    window.localStorage.setItem(DEVICE_KEY, JSON.stringify({ token, tipo }));
+    return token;
+  }
 
   const entrarDispositivo = async () => {
     setCargando(true);
@@ -92,18 +98,16 @@ export default function Entrar() {
       const raw = window.localStorage.getItem(DEVICE_KEY);
       if (!raw) throw new Error("sin token");
       const { token } = JSON.parse(raw);
-      const res = await fetch(`${API_URL}/auth/dispositivo`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token }),
+      const s = await canjearTokens("dispositivo", token);
+      if (!s) throw new Error("Este dispositivo ya no está vinculado. Usa tu frase.");
+      aplicarSesion({
+        tipo: s.tipo, actorId: s.actorId,
+        dossierId: s.dossierId ?? null, bufeteId: s.bufeteId ?? null,
       });
-      if (!res.ok) throw new Error((await res.json()).detail || "Dispositivo no vinculado");
-      await aplicarSesion(await res.json());
     } catch (e) {
       window.localStorage.removeItem(DEVICE_KEY);
       setTieneDispositivo(false);
       setError(e instanceof Error ? e.message : "Error de conexión");
-    } finally {
       setCargando(false);
     }
   };
@@ -116,16 +120,14 @@ export default function Entrar() {
     setCargando(true);
     setError(null);
     try {
-      const res = await fetch(`${API_URL}/auth/frase`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ frase: frase.trim() }),
+      const s = await canjearTokens("frase", frase.trim());
+      if (!s) throw new Error("Frase incorrecta. Revisa que sean tus 12 palabras.");
+      aplicarSesion({
+        tipo: s.tipo, actorId: s.actorId,
+        dossierId: s.dossierId ?? null, bufeteId: s.bufeteId ?? null,
       });
-      if (!res.ok) throw new Error((await res.json()).detail || "Frase incorrecta");
-      await aplicarSesion(await res.json());
     } catch (e) {
       setError(e instanceof Error ? e.message : "Error de conexión");
-    } finally {
       setCargando(false);
     }
   };

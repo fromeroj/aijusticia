@@ -12,6 +12,7 @@
  */
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+import { getAccessToken } from "./auth";
 
 export interface ClarifyQuestion {
   id: string;
@@ -83,10 +84,16 @@ export async function* streamQuery(
   historial?: TurnoHistorial[],
   respuestasAcumuladas?: Record<string, string>,
   expedientePrev?: Expediente | null,
+  dossierId?: string | null,
 ): AsyncGenerator<SSEEvent> {
+  // S3: si hay sesión, el engine ata la consulta al actor (anónimo sigue funcionando)
+  const token = await getAccessToken().catch(() => null);
   const res = await fetch(`${API_URL}/query/stream`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
     body: JSON.stringify({
       consulta,
       nivel,
@@ -94,6 +101,8 @@ export async function* streamQuery(
       respuestas_acumuladas: respuestasAcumuladas && Object.keys(respuestasAcumuladas).length > 0 ? respuestasAcumuladas : null,
       expediente_prev: expedientePrev || null,
       historial: historial && historial.length > 0 ? historial : null,
+      // F3: la bóveda del caso entra al contexto de Izel (el engine verifica acceso)
+      dossier_id: dossierId || null,
     }),
     signal,
   });

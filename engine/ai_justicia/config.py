@@ -64,6 +64,24 @@ class Settings(BaseSettings):
     # Secret para firmar JWT (HS256) — generar con: openssl rand -hex 32
     jwt_secret: str = "dev-secret-cambiar-en-produccion"
 
+    # Client ID de Google OAuth (validación de id_token en /auth/google).
+    # Vacío = login con Google deshabilitado en el engine.
+    google_client_id: str = ""
+
+    # --- Nextcloud del despacho (oficina) ---
+    # Cloud: oficina.konen.guru; on-prem: URL del bufete. WebDAV con app-password.
+    bufete_nc_url: str = "https://oficina.konen.guru"
+    bufete_nc_user: str = "admin"
+    bufete_nc_app_password: str = ""
+
+    # --- Bóveda de documentos del dossier (F3) ---
+    # Filesystem del web server; migrable a NFS. Permisos 700.
+    boveda_dir: str = "/opt/aijusticia/boveda"
+
+    # --- Email (Resend) ---
+    # API key de resend.com. Vacío = emails se registran en log pero no se envían.
+    resend_api_key: str = ""
+
     # --- Pipeline / umbrales ---
     retrieval_quality_threshold: float = 0.20
     retrieval_top_k: int = 8

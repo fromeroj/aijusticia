@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { PhraseVerify } from "@/components/chat/PhraseVerify";
 import { useChatStore } from "@/lib/store";
+import { canjearTokens, registrarDispositivo } from "@/lib/auth";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
@@ -56,15 +57,13 @@ export default function OnboardingCiudadano() {
       dossierId,
       creadoEn: Date.now(),
     });
-    // Vincular este dispositivo para one-tap en la próxima visita
+    // Canjear la frase (en memoria) por el par JWT — sesión autenticada.
+    if (frase) await canjearTokens("frase", frase).catch(() => null);
+    // Vincular este dispositivo para one-tap (prueba de posesión: la frase).
     try {
       const token = crypto.randomUUID().replace(/-/g, "") + crypto.randomUUID().replace(/-/g, "");
       window.localStorage.setItem("aij_device_token", JSON.stringify({ token, tipo: "ciudadano" }));
-      await fetch(`${API_URL}/auth/dispositivo/registrar`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actor_id: actorId, token }),
-      });
+      await registrarDispositivo(actorId, token, frase ?? undefined);
     } catch { /* best-effort */ }
     router.push("/chat");
   };

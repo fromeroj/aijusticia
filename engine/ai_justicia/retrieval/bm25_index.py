@@ -47,14 +47,15 @@ class BM25Index:
             with conn.cursor() as cur:
                 cur.execute(
                     """
-                    SELECT c.id, c.documento_id, c.texto,
+                    SELECT (c.documento_id * 1000000 + c.ordinal) AS chunk_id,
+                           c.documento_id, c.texto,
                            d.fuente, d.titulo, d.materia, d.entidad, d.jerarquia,
                            d.vinculante, d.registro_sjf, d.fecha_reforma,
                            d.fecha_publicacion, d.fecha_vigencia, d.derogado
                     FROM documentos_chunks c
                     JOIN documentos d ON d.id = c.documento_id
                     WHERE d.derogado = FALSE
-                    ORDER BY c.id
+                    ORDER BY c.documento_id, c.ordinal
                     """
                 )
                 rows = cur.fetchall()

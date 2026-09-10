@@ -69,10 +69,12 @@ export interface Sesion {
   dossierId?: string;        // ciudadanos: su caso activo
   bufeteId?: string | null;  // abogados: su despacho
   creadoEn: number;
+  tokens?: { access: string; refresh: string };  // S3: par JWT (via lib/auth)
 }
 
-// Persistencia ligera de sesión (sin auth aún). La frase NUNCA se guarda
-// aquí — solo vive en el dispositivo del usuario, mostrada una vez.
+// Persistencia ligera de sesión. La frase NUNCA se guarda aquí — solo vive
+// en el dispositivo del usuario, mostrada una vez. Los tokens los gestiona
+// lib/auth.ts (misma clave); aquí se preservan al reescribir la sesión.
 const SESION_KEY = "aij_sesion";
 
 function leerSesion(): Sesion | null {
@@ -88,8 +90,16 @@ function leerSesion(): Sesion | null {
 function guardarSesion(s: Sesion | null) {
   if (typeof window === "undefined") return;
   try {
-    if (s) window.localStorage.setItem(SESION_KEY, JSON.stringify(s));
-    else window.localStorage.removeItem(SESION_KEY);
+    if (s) {
+      const prev = leerSesion();
+      // no perder los tokens al reescribir (mismo actor, vienen de lib/auth)
+      if (!s.tokens && prev?.actorId === s.actorId && prev.tokens) {
+        s = { ...s, tokens: prev.tokens };
+      }
+      window.localStorage.setItem(SESION_KEY, JSON.stringify(s));
+    } else {
+      window.localStorage.removeItem(SESION_KEY);
+    }
   } catch {
     /* storage lleno/bloqueado — sesión en memoria */
   }

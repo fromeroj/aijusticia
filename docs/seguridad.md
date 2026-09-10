@@ -1,37 +1,43 @@
 # AI Justicia — Plan de Seguridad e Integridad Unificado
 
-*Septiembre 2026 · Auditoría + plan por fases*
+*Septiembre 2026 · Auditoría + plan por fases · **actualizado 2026-09-06 tras S3 (F1 del plan v2)***
 
 ---
 
-## 1. Auditoría honesta (estado al 2026-09-05)
+## 1. Auditoría honesta (estado al 2026-09-06)
 
-### 🔴 CRÍTICO — corregido hoy
+### 🔴 CRÍTICO — ✅ RESUELTO
 
 | Riesgo | Estado | Fix aplicado |
 |---|---|---|
-| **`/admin/*` del engine públicos** (stats, harvesters, preguntas, sources — información completa del sistema sin autenticación) | EXPUESTO en producción | ✅ **Basic auth nginx** en todos los `/admin/*` (admin / `Soberania2026!`) — hoy |
+| **`/admin/*` del engine públicos** | ✅ | Basic auth nginx en todos los `/admin/*` + `X-Robots-Tag: noindex` en páginas internas (2026-09-05/06) |
+| **`POST /dossiers` sin ruta nginx** (caía a Next.js por el pattern `/dossiers/` con slash) | ✅ | `location = /dossiers` en nginx — el "Guardar como caso" por URL pública quedó roto silenciosamente hasta 2026-09-06 |
 
-### 🟠 ALTO — corregir esta semana (S2)
+### 🟠 ALTO — ✅ RESUELTO (S2, 2026-09-05)
 
-| Riesgo | Detalle | Fix |
+| Riesgo | Estado | Fix aplicado |
 |---|---|---|
-| **Secrets en git** | `aijusticia2016`, `tlamatini2026`, `nc_oficina_2026` en 10+ archivos del repo y compose | `.env` real fuera de git (`.gitignore`), secrets de compose via `${VARS}` de un `.env` no versionado; rotar TODAS las contraseñas comprometidas |
-| **Contraseñas débiles/known en DB** | Postgres `aijusticia2016`, NC admin `tlamatini2026` | Rotar: NC admin password → nueva fuerte; Postgres → contraseña aleatoria 32 chars en `.env` con permisos 600 |
-| **NFS `no_root_squash` sin cifrado** | Storage monta el corpus con root total | `root_squash` + export solo a la IP del web (ya está) + evaluar wireguard entre nodos |
-| **CORS wildcard en WebDAV** | `Access-Control-Allow-Origin: *` que pusimos para el panel | Reducir a los orígenes reales: `https://aijusticia.mx`, `https://oficina.konen.guru` |
-| **Sin rate limiting** | `/query/stream` puede ser drenado (costo MiniMax) | `limit_req` en nginx: 10 req/min por IP en /query; 5/min en /auth/* |
+| **Secrets en git** | ✅ | `.env` fuera de git; contraseñas rotadas (Postgres 32-char, NC admin reseteado vía API PHP; nuevas en `/root/.secrets_rotadas`) |
+| **Contraseñas débiles/known en DB** | ✅ | Ídem; JWT_SECRET fuerte generado (`openssl rand -hex 32`) |
+| **NFS `no_root_squash` sin cifrado** | 🟡 parcial | Export restringido a la IP del web; wireguard pendiente si crece el fleet |
+| **CORS wildcard en WebDAV** | ✅ | Restringido a `aijusticia.mx` / `oficina.konen.guru` |
+| **Sin rate limiting** | ✅ | `limit_req` nginx: api 10/min burst 5 en `/query`; auth burst 3 en `/auth/*` |
 
-### 🟡 MEDIO — fase F1 (con el refactor R1-R5)
+### 🟡 MEDIO — ✅ mayormente RESUELTO (S3 = F1 plan v2, 2026-09-06)
 
-| Riesgo | Detalle | Fix |
+| Riesgo | Estado | Fix aplicado |
 |---|---|---|
-| Sesiones ciudadano sin firma | localStorage = cualquier script puede "ser" otro actor | **JWT de vida corta (15min) + refresh** — R3 del refactor |
-| Engine confía en el frontend | `/dossiers/{id}` accesible con solo saber el UUID | El JWT lleva el actor; middleware `deps.py` verifica ownership |
-| NC admin = cuenta única | Todo el despacho corre como admin | Crear usuarios reales por rol: socios/asociados/pasantes (NC groups) |
-| Collabora con credenciales débiles | cola/colabora2026 | Rotar + `--o:admin_console.enable=false` |
-| Sin backups automáticos de la DB RAG | Un disco muerto = perder el índice | pg_dump diario → storage NFS, retención 7d + pg_basebackup semanal |
-| App-password del panel en sessionStorage | Credencial permanente, no sesión | Migrar a JWT del engine emitido vía OAuth NC (NC como IdP) |
+| Sesiones ciudadano sin firma | ✅ | **JWT para ciudadanos**: `/entrar`, onboarding y conversión chat→caso canjean frase/dispositivo/Google por par access(15m)+refresh(30d rotatorio). `lib/auth.ts` con auto-refresh; `aij_sesion` plana eliminada del flujo |
+| Engine confía en el frontend | ✅ | `GET /dossiers/{id}` y consentimiento exigen JWT + ownership (`tiene_acceso`); consentimiento SOLO el dueño |
+| **Secuestro por `/auth/dispositivo/registrar`** (vincular token a cualquier actor_id sin prueba) | ✅ | Prueba de posesión obligatoria: JWT del mismo actor o frase válida (disponible solo al crear el caso) |
+| **`/auth/google` sin verificar firma** | ✅ | El engine valida el `id_token` contra Google (tokeninfo): audiencia, expiración, email_verified. El `google_sub` enviado a mano ya no se acepta. Handoff de tokens al frontend vía code de un solo uso (60s) — jamás por URL |
+| **`/jobs/{id}` enumerable filtraba consultas ajenas** | ✅ | Ya no devuelve `consulta` |
+| **SSRF vía `webhook_url`** | ✅ | Validador pydantic: solo https, hosts públicos (bloquea localhost/privadas/link-local) |
+| **Frase con sal estática + duplicados en la lista** | ✅ | `frase_hash_saltado` con sal por actor (`frase_salt`); migración de actores legados al vuelo en el siguiente login; lista de palabras deduplicada. `frase_hash` queda solo como índice determinístico de lookup |
+| NC admin = cuenta única | 🟡 | Existe usuario `demo` vinculado al bufete piloto (`actores.nc_login`); usuarios por rol completos en F2 |
+| ~~Collabora con credenciales débiles~~ | ✅ RESUELTO (2026-09-06) | Credenciales rotadas (aleatorias en `/root/.secrets_rotadas`), admin console DESACTIVADO (`--o:admin_console.enable=false`): sin creds → 403, creds viejas → 403. WOPI allowlist `aliasgroup1=oficina.konen.guru` verificada; `post_allow=0.0.0.0/0` correcto en topología proxy (los navegadores guardan vía POST público) |
+| Backups automáticos DB RAG | ✅ | pg_dump diario 4am → NFS, retención 7d |
+| ~~App-password del panel en sessionStorage~~ | ✅ | JWT via=nc (2026-09-05) |
 
 ### 🟢 BAJO/aceptado — documentar
 
@@ -41,6 +47,7 @@
 | Frase ciudadano irrecuperable | Por diseño (privacidad estructural), documentado en UX |
 | TLS del edge (Caddy) | Automático Let's Encrypt, correcto |
 | DNSSEC roto de aijusticia.mx | Pendiente del registrar; los servicios críticos ya usan konen.guru |
+| Login Google no configurado en prod | `GOOGLE_CLIENT_ID` vacío → engine responde 503 (deshabilitado explícito) |
 
 ---
 
@@ -131,13 +138,22 @@ EMISORES                              VERIFICADOR
 ├────────────────┤  │   │ valida JWT en CADA ruta  │
 │ Frase/Disposit.│──┤   │                          │
 │ (recuperación  │  │   │ claims: {sub, tier,      │
-│  anónima)      │  │   │         bufete?, rol?}   │
-├────────────────┤  │   └──────────────────────────┘
-│ NC OAuth2      │──┘        │
+│  anónima)      │  │   │         bufete?, rol?,   │
+├────────────────┤  │   │         dossier?}        │
+│ NC OAuth2      │──┘   └──────────────────────────┘
 │ (despacho:         ▼        ▼
 │  cloud u on-prem)  RLS Postgres  →  datos del bufete
 │                    sin bufete_id →  solo dossiers propios
 ```
+
+**M1 — Modelo de acceso a dossiers (implementado 2026-09-06, S3):** el dossier
+pertenece SIEMPRE a quien lo crea; abogados y despachos acceden por grants
+revocables en `dossier_accesos` (rol lectura|edicion, otorgado_por, historial
+permanente = auditoría LFPDPPP). Reasignar = revocar + otorgar.
+`tiene_acceso(dossier, actor, bufete?)` es la única puerta: devuelve
+`dueño | edicion | lectura | None` y la usan los endpoints para autorizar.
+La API pública de grants (directorio, compartir, revocar desde la UI) es F4
+del plan v2.
 
 ### 6.2 Multi-tenancy del Despacho Cloud
 

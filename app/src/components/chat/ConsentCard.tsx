@@ -3,13 +3,13 @@
 import { useState } from "react";
 import { ShieldCheck, HeartHandshake, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+import { authFetch } from "@/lib/auth";
 
 /**
  * Tarjeta de consentimiento EXPRESO para entrenamiento (LFPDPPP 2025).
  * Aparece tras una respuesta útil. Opt-in separado del servicio, revocable.
  * Solo alimenta el adapter GENERAL — jamás datos de bufetes.
+ * S3: exige JWT del dueño (el engine verifica ownership).
  */
 export function ConsentCard({
   dossierId,
@@ -28,7 +28,7 @@ export function ConsentCard({
       return;
     }
     try {
-      const res = await fetch(`${API_URL}/dossiers/${dossierId}/consentimiento`, {
+      const res = await authFetch(`/dossiers/${dossierId}/consentimiento`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ otorgar }),

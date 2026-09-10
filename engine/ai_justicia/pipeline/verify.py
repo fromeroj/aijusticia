@@ -141,12 +141,16 @@ def verificar(
     # El diagnóstico LLM determina si falta una norma específica descargable.
     if decision.abstenido and consulta:
         from ai_justicia.pipeline.diagnostico import clasificar_abstencion
-        titulos_pasajes = [p.titulo for p in pasajes]
+        # etiqueta FUENTE|título + inicio del texto: el clasificador debe PODER
+        # ver que la ley citada ya está en los pasajes (falsos Caso B)
+        pasajes_etiquetados = [
+            f"[{p.fuente} | {p.titulo[:60]}] {p.texto[:120]}" for p in pasajes
+        ]
         no_sustentadas = [
             c.oracion.texto for c in citas_verificadas
             if not c.oracion.sustentado and not _es_disclaimer(c.oracion.texto)
         ]
-        decision = clasificar_abstencion(consulta, titulos_pasajes, no_sustentadas, decision)
+        decision = clasificar_abstencion(consulta, pasajes_etiquetados, no_sustentadas, decision)
 
     # El texto final depende del tipo de abstención:
     #  - Caso A: mensaje definitivo (derivar a abogado)
