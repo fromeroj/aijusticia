@@ -1,8 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,33 +8,7 @@ import { ShieldCheck, ShieldAlert, FileText, Scale, ChevronDown, ChevronUp, Prin
 import type { Message } from "@/lib/store";
 import { AnalysisCard } from "./AnalysisCard";
 import { ClarifyCard } from "./ClarifyCard";
-
-function Markdown({ content }: { content: string }) {
-  return (
-    <ReactMarkdown
-      remarkPlugins={[remarkGfm]}
-      components={{
-        h1: ({ children }) => <h1 className="mt-3 mb-2 text-base font-bold">{children}</h1>,
-        h2: ({ children }) => <h2 className="mt-3 mb-1.5 text-sm font-bold">{children}</h2>,
-        h3: ({ children }) => <h3 className="mt-2 mb-1 text-[13px] font-semibold">{children}</h3>,
-        p: ({ children }) => <p className="my-1.5 leading-relaxed">{children}</p>,
-        ul: ({ children }) => <ul className="my-1.5 ml-4 list-disc space-y-0.5">{children}</ul>,
-        ol: ({ children }) => <ol className="my-1.5 ml-4 list-decimal space-y-0.5">{children}</ol>,
-        li: ({ children }) => <li className="text-sm">{children}</li>,
-        strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
-        blockquote: ({ children }) => (
-          <blockquote className="my-2 border-l-2 border-[#047857]/30 pl-3 text-gray-600">{children}</blockquote>
-        ),
-        a: ({ href, children }) => (
-          <a href={href} target="_blank" rel="noopener" className="text-[#047857] underline hover:no-underline">{children}</a>
-        ),
-        hr: () => <hr className="my-3 border-gray-300" />,
-      }}
-    >
-      {content}
-    </ReactMarkdown>
-  );
-}
+import { Markdown } from "@/components/Markdown";
 
 export function MessageBubble({
   msg,
