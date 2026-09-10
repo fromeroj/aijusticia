@@ -412,6 +412,11 @@ export function IzelPanel({ casoNombre, casoId }: { casoNombre?: string | null; 
       {/* input */}
       <div className="border-t border-border p-3">
         <div className="flex items-end gap-2">
+          {escuchando && (
+            <div className="flex items-center gap-1 text-[11px] text-red-500 animate-pulse">
+              <span className="size-2 rounded-full bg-red-500 animate-ping" /> Escuchando…
+            </div>
+          )}
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -420,6 +425,35 @@ export function IzelPanel({ casoNombre, casoId }: { casoNombre?: string | null; 
             placeholder={t("izel.placeholder")}
             className="min-h-[40px] flex-1 resize-none rounded-lg border border-input bg-background px-3 py-2 text-[12.5px] text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
           />
+          <button
+            onClick={() => {
+              const rec = getRecognition();
+              if (!rec) { setInput("[STT no disponible en este navegador]"); return; }
+              setEscuchando(true);
+              let finalText = "";
+              rec.onresult = (ev: any) => {
+                let interim = "";
+                for (let i = ev.resultIndex; i < ev.results.length; i++) {
+                  if (ev.results[i].isFinal) finalText += ev.results[i][0].transcript;
+                  else interim += ev.results[i][0].transcript;
+                }
+                setInput(finalText || interim);
+              };
+              rec.onend = () => { setEscuchando(false); };
+              rec.onerror = () => setEscuchando(false);
+              rec.start();
+            }}
+            disabled={escribiendo}
+            className={cn(
+              "rounded-lg p-2.5 transition-colors",
+              escuchando
+                ? "bg-red-500 text-white animate-pulse"
+                : "bg-muted text-muted-foreground hover:bg-accent hover:text-foreground"
+            )}
+            title={escuchando ? "Escuchando… click para detener" : "Hablar"}
+          >
+            {escuchando ? <MicOff className="size-4" /> : <Mic className="size-4" />}
+          </button>
           <button onClick={enviar} disabled={!input.trim() || escribiendo}
             className="rounded-lg bg-primary p-2.5 text-primary-foreground disabled:opacity-40">
             <Send className="size-4" />
