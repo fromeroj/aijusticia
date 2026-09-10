@@ -6,6 +6,7 @@ import { Scale, FolderPlus, ClipboardList } from "lucide-react";
 import { useChatStore, type StageId } from "@/lib/store";
 import { streamQuery, type TurnoHistorial } from "@/lib/streamQuery";
 import { subirDocumento } from "@/lib/boveda";
+import { cn } from "@/lib/utils";
 import { authFetch } from "@/lib/auth";
 import { ConsentCard } from "./ConsentCard";
 import { MessageBubble } from "./MessageBubble";
@@ -176,6 +177,47 @@ export function ChatWindow() {
   const [refrescoDocs, setRefrescoDocs] = useState(0);
   const [avisoDoc, setAvisoDoc] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [ttsOn, setTtsOn] = useState(() => typeof window !== "undefined" && localStorage.getItem("aij_tts") === "1");
+  const [speaking, setSpeaking] = useState(false);
+
+  const speakIzel = useCallback(async (texto: string) => {
+    if (!ttsOn) return;
+    setSpeaking(true);
+    try {
+      const raw = sessionStorage.getItem("aij_tokens");
+      const tk = raw ? JSON.parse(raw) : null;
+      const clean = texto
+        .replace(/#{1,6}\s/g, "")
+        .replace(/\*\*(.+?)\*\*/g, "$1")
+        .replace(/\*(.+?)\*/g, "$1")
+        .replace(/`{3}[^`]*`{3}/g, "")
+        .replace(/`([^`]+)`/g, "$1")
+        .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+        .replace(/\n{2,}/g, ". ")
+        .replace(/\n/g, ", ")
+        .replace(/[#|>\-]{2,}/g, " ")
+        .replace(/\s{2,}/g, " ")
+        .trim()
+        .slice(0, 2000);
+      const r = await fetch("/tts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(tk?.access ? { Authorization: `Bearer ${tk.access}` } : {}),
+        },
+        body: JSON.stringify({ text: clean }),
+      });
+      if (r.ok) {
+        const blob = await r.blob();
+        const url = URL.createObjectURL(blob);
+        const audio = new Audio(url);
+        audio.onended = () => setSpeaking(false);
+        audio.play().catch(() => setSpeaking(false));
+      } else {
+        setSpeaking(false);
+      }
+    } catch { setSpeaking(false); }
+  }, [ttsOn]);
 
   const adjuntarDoc = () => fileInputRef.current?.click();
 
@@ -302,6 +344,21 @@ export function ChatWindow() {
           </div>
 
           {/* Cuenta + Salir (solo con sesión) */}
+          {/* TTS toggle */}
+          <button
+            onClick={() => {
+              const next = !ttsOn;
+              setTtsOn(next);
+              localStorage.setItem("aij_tts", next ? "1" : "0");
+            }}
+            className={cn(
+              "ml-auto mr-1 flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-medium transition-colors",
+              ttsOn ? "bg-[#047857]/10 text-[#047857]" : "bg-gray-100 text-gray-400 hover:text-gray-600"
+            )}
+            title={ttsOn ? "Izel habla (click para silenciar)" : "Activar voz de Izel"}
+          >
+            {ttsOn ? "🔊 Voz" : "🔇 Silencio"}
+          </button>
           {sesion ? (
             <>
               <Link
