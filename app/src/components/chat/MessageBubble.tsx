@@ -69,17 +69,21 @@ export function MessageBubble({
         </div>
       )}
       <div className={cn("max-w-[85%] rounded-2xl px-4 py-2.5", isUser ? "bg-[#047857] text-white" : "bg-gray-100 text-gray-900")}>
-        {/* Texto del mensaje — markdown para Izel, texto plano para usuario */}
         {msg.text && (
           isUser ? (
             <div className="whitespace-pre-wrap text-sm leading-relaxed">
               {msg.text}
-              {msg.isStreaming && <span className="ml-0.5 inline-block h-4 w-1 animate-pulse bg-gray-400" />}
+            </div>
+          ) : msg.isStreaming ? (
+            /* Durante streaming: texto plano — el markdown incompleto se ve roto */
+            <div className="whitespace-pre-wrap text-sm leading-relaxed">
+              {msg.text}
+              <span className="ml-0.5 inline-block h-4 w-1 animate-pulse bg-gray-400" />
             </div>
           ) : (
+            /* Respuesta completa: markdown renderizado */
             <div className="text-sm leading-relaxed [&_*]:max-w-none">
               <Markdown content={msg.text} />
-              {msg.isStreaming && <span className="ml-0.5 inline-block h-4 w-1 animate-pulse bg-gray-400" />}
             </div>
           )
         )}
