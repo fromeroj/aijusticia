@@ -221,48 +221,84 @@ export function IzelPanel({ casoNombre, casoId }: { casoNombre?: string | null; 
   const enviar = async () => {
     const q = input.trim();
     if (!q || escribiendo) return;
-    setMsgs((m) => [...m, { rol: "user", texto: q }]);
+    setMsgs((m) => [...m, { rol: "user", texto: q, creado_en: new Date().toISOString() }]);
     setInput("");
     setEscribiendo(true);
 
-    // persistir mensaje del usuario
     if (casoId) persistir(casoId, "user", q);
 
     try {
       const raw = sessionStorage.getItem("aij_tokens");
       const tk = raw ? JSON.parse(raw) : null;
-      const r = await fetch("/bufetes/studio/query", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(tk?.access ? { Authorization: `Bearer ${tk.access}` } : {}),
-        },
-        body: JSON.stringify({ consulta: q, caso_id: casoId || null }),
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+        ...(tk?.access ? { Authorization: `Bearer ${tk.access}` } : {}),
+      };
+      const body = JSON.stringify({
+        consulta: q,
+        nivel: "Nivel0",
+        caso_id: casoId || null,
       });
-      if (r.ok) {
-        const d = await r.json();
-        const citas = (d.pasajes ?? []).slice(0, 3).map((p: any) =>
-          `${p.titulo?.slice(0, 40) ?? ""} (${p.fuente ?? ""})`
-        );
-        const textoRespuesta = d.respuesta || "...";
-        setMsgs((m) => [...m, {
-          rol: "izel", texto: textoRespuesta,
-          citas: citas.length > 0 ? citas : d.tool_calls_ejecutados?.map((tc: any) => `${tc.tool} ✓`).slice(0, 3),
-          creado_en: new Date().toISOString(),
-        }]);
-        speak(textoRespuesta);
-        if (casoId) persistir(casoId, "izel", d.respuesta || "...", citas);
-        // ejecutar accion_ui (navegar, refrescar, etc.)
-        if (d.accion_ui) {
-          const au = d.accion_ui;
-          if (au.tipo === "navegar" && au.destino) {
-            window.dispatchEvent(new CustomEvent("izel-navigate", { detail: au }));
-          } else if (au.tipo === "refresh") {
-            window.dispatchEvent(new CustomEvent("izel-refresh"));
+
+      const resp = await fetch("/chat/stream", {
+        method: "POST", headers, body,
+      });
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+
+      const reader = resp.body?.getReader();
+      if (!reader) throw new Error("no reader");
+      const dec = new TextDecoder();
+      let buf = "";
+      let fullText = "";
+      let done = false;
+
+      // agregar mensaje vacío de Izel para streaming
+      setMsgs((m) => [...m, { rol: "izel", texto: "", creado_en: new Date().toISOString() }]);
+
+      while (!done) {
+        const { done: rDone, value } = await reader.read();
+        if (rDone) break;
+        buf += dec.decode(value, { stream: true });
+        const events = buf.split("\n\n");
+        buf = events.pop() || "";
+
+        for (const ev of events) {
+          const evMatch = ev.match(/^event:\s*(.+)$/m);
+          const dataMatch = ev.match(/^data:\s*(.+)$/m);
+          if (!evMatch || !dataMatch) continue;
+          const evType = evMatch[1].trim();
+          let data: any;
+          try { data = JSON.parse(dataMatch[1]); } catch { continue; }
+
+          if (evType === "token") {
+            fullText += data;
+            // actualizar el último mensaje de Izel con streaming
+            setMsgs((m) => {
+              const last = m[m.length - 1];
+              if (last?.rol === "izel") {
+                return [...m.slice(0, -1), { ...last, texto: fullText }];
+              }
+              return [...m, { rol: "izel", texto: fullText, creado_en: new Date().toISOString() }];
+            });
+          } else if (evType === "done") {
+            done = true;
+            // actualizar con texto limpio
+            setMsgs((m) => {
+              const last = m[m.length - 1];
+              if (last?.rol === "izel") {
+                return [...m.slice(0, -1), { ...last, texto: data.respuesta || fullText }];
+              }
+              return m;
+            });
+            // persistir respuesta de Izel
+            if (casoId) persistir(casoId, "izel", data.respuesta || fullText);
+            // TTS
+            if (ttsOn) speak(data.respuesta || fullText);
+          } else if (evType === "error") {
+            setMsgs((m) => [...m.slice(0, -1), { rol: "izel", texto: `Error: ${data.mensaje || "desconocido"}` }]);
+            done = true;
           }
         }
-      } else {
-        setMsgs((m) => [...m, { rol: "izel", texto: "Error de conexión." }]);
       }
     } catch {
       setMsgs((m) => [...m, { rol: "izel", texto: "Error de conexión." }]);
