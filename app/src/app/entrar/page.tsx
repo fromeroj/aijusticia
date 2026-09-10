@@ -57,6 +57,7 @@ export default function Entrar() {
       if (!r.ok) throw new Error();
       const d = await r.json();
       const s = guardarSesionConTokens(d);
+      if (s.tipo === 'abogado') { router.push('/studio'); return; }
       aplicarSesion({
         tipo: s.tipo, actorId: s.actorId,
         dossierId: s.dossierId ?? null, bufeteId: s.bufeteId ?? null,
@@ -100,6 +101,7 @@ export default function Entrar() {
       const { token } = JSON.parse(raw);
       const s = await canjearTokens("dispositivo", token);
       if (!s) throw new Error("Este dispositivo ya no está vinculado. Usa tu frase.");
+      if (s.tipo === 'abogado') { router.push('/studio'); return; }
       aplicarSesion({
         tipo: s.tipo, actorId: s.actorId,
         dossierId: s.dossierId ?? null, bufeteId: s.bufeteId ?? null,
@@ -122,6 +124,7 @@ export default function Entrar() {
     try {
       const s = await canjearTokens("frase", frase.trim());
       if (!s) throw new Error("Frase incorrecta. Revisa que sean tus 12 palabras.");
+      if (s.tipo === 'abogado') { router.push('/studio'); return; }
       aplicarSesion({
         tipo: s.tipo, actorId: s.actorId,
         dossierId: s.dossierId ?? null, bufeteId: s.bufeteId ?? null,

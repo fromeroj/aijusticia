@@ -6,12 +6,13 @@
  * Las versiones anteriores se expanden con un timeline.
  */
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import {
   Check, ChevronDown, ChevronRight, Clock, Download, Eye,
   FileText, GitBranch, Loader2, Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Upload } from "lucide-react";
 import { useT } from "@/lib/i18n";
 
 export interface DocItem {
@@ -107,6 +108,35 @@ export function DocsTab({ docs, api, selId }: {
   const [revisar, setRevisar] = useState<{ docId: number; nombre: string; consulta: string } | null>(null);
   const [revisando, setRevisando] = useState(false);
   const [revisionResultado, setRevisionResultado] = useState<{ archivo: string; cambios: string } | null>(null);
+  const [subiendo, setSubiendo] = useState(false);
+  const [versionDe, setVersionDe] = useState<number | null>(null);
+  const [uploadMsg, setUploadMsg] = useState<string | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  const subirArchivo = async (file: File) => {
+    if (!selId) return;
+    setSubiendo(true);
+    setUploadMsg(null);
+    try {
+      const form = new FormData();
+      form.append("archivo", file);
+      if (versionDe) form.append("version_de", String(versionDe));
+      const r = await api(`/dossiers/${selId}/documentos`, { method: "POST", body: form });
+      if (r.ok) {
+        const d = await r.json();
+        setUploadMsg(`✓ ${d.nombre} subido${versionDe ? ` como v${d.version}` : ""}`);
+        window.location.reload();
+      } else {
+        const err = await r.json().catch(() => ({}));
+        setUploadMsg(`✗ ${err.detail || "Error al subir"}`);
+      }
+    } catch {
+      setUploadMsg("✗ Error de conexión");
+    } finally {
+      setSubiendo(false);
+      setVersionDe(null);
+    }
+  };
 
   const grupos = useMemo(() => agrupar(docs), [docs]);
 
@@ -179,12 +209,26 @@ export function DocsTab({ docs, api, selId }: {
 
   return (
     <div className="max-w-3xl space-y-3">
+      {/* barra de subida */}
+      <div className="flex items-center gap-2">
+        <button
+          onClick={() => { setVersionDe(null); fileRef.current?.click(); }}
+          disabled={subiendo}
+          className="flex items-center gap-1.5 rounded-lg bg-primary/10 px-3 py-2 text-[12px] font-semibold text-primary hover:bg-primary/20 disabled:opacity-40"
+        >
+          {subiendo ? <Loader2 className="size-3.5 animate-spin" /> : <Upload className="size-3.5" />}
+          Subir documento
+        </button>
+        <input ref={fileRef} type="file" className="hidden" accept=".pdf,.docx,.jpg,.jpeg,.png,.tif,.tiff,.webp"
+          onChange={(e) => { if (e.target.files?.[0]) subirArchivo(e.target.files[0]); }} />
+        {uploadMsg && <span className={cn("text-[11px]", uploadMsg.startsWith("✓") ? "text-teal-600" : "text-red-500")}>{uploadMsg}</span>}
+      </div>
       {grupos.map((g) => {
         const estaExpandido = expanded.has(g.raiz.id);
         const tieneHistorial = g.versiones.length > 1;
         return (
           <div key={g.raiz.id} className="rounded-xl border border-border">
-            {/* ── versión ACTUAL (prominente) ── */}
+            {/* versión ACTUAL */}
             <div className="flex items-center gap-3 px-4 py-3">
               <FileText className="size-5 shrink-0 text-primary" />
               <button onClick={() => verInline(g.actual)} className="min-w-0 flex-1 text-left" title="Ver">
@@ -219,6 +263,14 @@ export function DocsTab({ docs, api, selId }: {
               <button onClick={() => descargar(g.actual)}
                 className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground" title="Descargar">
                 <Download className="size-3.5" />
+              </button>
+              <button
+                onClick={() => { setVersionDe(g.actual.id); fileRef.current?.click(); }}
+                disabled={subiendo}
+                className="flex items-center gap-1 rounded-md bg-amber-500/10 px-2 py-1 text-[9px] font-semibold text-amber-600 hover:bg-amber-500/20 disabled:opacity-40"
+                title="Subir una versión nueva de este documento"
+              >
+                <GitBranch className="size-3" /> versión
               </button>
             </div>
 

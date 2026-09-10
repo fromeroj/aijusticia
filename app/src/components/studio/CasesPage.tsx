@@ -321,7 +321,7 @@ export function CasesPage({ onCasoNombre, onCasoId }: { onCasoNombre?: (n: strin
             {tab === "documentos" && selId && <DocsTab docs={docs} api={api} selId={selId} />}
             {tab === "notas" && <TabNotas notas={notas} nuevaNota={nuevaNota} setNuevaNota={setNuevaNota} agregarNota={agregarNota} />}
             {tab === "plazos" && selId && <TabPlazos plazos={plazos} tareas={tareas} api={api} selId={selId} />}
-            {tab === "timeline" && <TabTimeline timeline={timeline} />}
+            {tab === "timeline" && selId && <TabTimeline timeline={timeline} api={api} selId={selId} onNavigate={setTab} />}
             {tab === "equipo" && selId && <TabEquipo miembros={miembros} asignaciones={asignaciones} api={api} selId={selId} />}
           </div>
         </div>
@@ -447,139 +447,6 @@ function GenerarDocDialog({ open, onClose, caso, api }: {
   );
 }
 
-// ── Tab: Documentos ───────────────────────────────────────────────────────
-
-function TabDocumentos({ docs, api, selId }: {
-  docs: DocItem[];
-  api: (p: string, i?: RequestInit) => Promise<Response>;
-  selId: string;
-}) {
-  const t = useT();
-  const [abriendo, setAbriendo] = useState<number | null>(null);
-  const [revisar, setRevisar] = useState<{ docId: number; nombre: string; consulta: string } | null>(null);
-  const [revisando, setRevisando] = useState(false);
-  const [revisionResultado, setRevisionResultado] = useState<{ archivo: string; cambios: string } | null>(null);
-
-  const descargar = async (d: DocItem) => {
-    const r = await api(`/documentos/${d.id}/descargar`).catch(() => null);
-    if (!r?.ok) return;
-    const blob = await r.blob();
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url; a.download = d.nombre; a.click();
-    URL.revokeObjectURL(url);
-  };
-
-  const abrirEditor = async (d: DocItem) => {
-    setAbriendo(d.id);
-    try {
-      const r = await api(`/bufetes/casos/${selId}/documentos/${d.id}/abrir`, { method: "POST" });
-      if (r.ok) {
-        const data = await r.json();
-        const url = data.editor_url || data.nc_url;
-        // abrir como nueva pestaña via <a> programático (bypass popup blocker)
-        const a = document.createElement("a");
-        a.href = url;
-        a.target = "_blank";
-        a.rel = "noopener";
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-      }
-    } finally { setAbriendo(null); }
-  };
-
-  const enviarRevision = async () => {
-    if (!revisar || !revisar.consulta.trim()) return;
-    setRevisando(true);
-    setRevisionResultado(null);
-    try {
-      const r = await api(`/bufetes/casos/${selId}/documentos/${revisar.docId}/revisar`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ caso_id: selId, documento_id: revisar.docId, consulta: revisar.consulta.trim() }),
-      });
-      if (r.ok) {
-        const d = await r.json();
-        setRevisionResultado({ archivo: d.archivo, cambios: d.cambios || "(sin cambios descritos)" });
-      } else {
-        const d = await r.json().catch(() => ({}));
-        setRevisionResultado({ archivo: "ERROR", cambios: d.detail || "Error" });
-      }
-    } catch {
-      setRevisionResultado({ archivo: "ERROR", cambios: "Error de conexión" });
-    } finally { setRevisando(false); }
-  };
-
-  const verInline = async (d: DocItem) => {
-    const r = await api(`/documentos/${d.id}/descargar`).catch(() => null);
-    if (!r?.ok) return;
-    const blob = await r.blob();
-    const url = URL.createObjectURL(blob);
-    window.open(url, "_blank");
-  };
-
-  return (
-    <div className="max-w-3xl space-y-1.5">
-      {docs.length === 0 && <p className="text-sm text-muted-foreground">{t("resumen.sin_docs")}</p>}
-      {docs.map((d) => (
-        <div key={d.id} className="flex items-center gap-3 rounded-lg border border-border px-4 py-2.5">
-          <FileText className="size-4 shrink-0 text-muted-foreground" />
-          <button onClick={() => verInline(d)} className="min-w-0 flex-1 text-left" title="Ver">
-            <span className="block truncate text-[13px] text-foreground hover:text-primary">{d.nombre}</span>
-            <span className="text-[10px] text-muted-foreground">
-              v{d.version} · {fmtTamano(d.tamano_bytes)}
-              {d.metodo_texto === "ocr" && ` · ${t("docs.ocr")}`}
-              {d.metodo_texto === "pdf_digital" && ` · ${t("docs.texto")}`}
-              {" "}&middot; {fmtFecha(d.creado_en)}
-            </span>
-          </button>
-          {d.nombre.toLowerCase().match(/\.(docx)$/) && (
-            <>
-              <button
-                onClick={() => abrirEditor(d)}
-                disabled={abriendo === d.id}
-                className="flex items-center gap-1 rounded-md bg-primary/10 px-2.5 py-1.5 text-[10px] font-semibold text-primary hover:bg-primary/20 disabled:opacity-40"
-                title="Editar en Collabora"
-              >
-                {abriendo === d.id ? <Loader2 className="size-3 animate-spin" /> : <Eye className="size-3" />}
-                editar
-              </button>
-              <button
-                onClick={() => setRevisar({ docId: d.id, nombre: d.nombre, consulta: "" })}
-                className="flex items-center gap-1 rounded-md bg-teal-500/10 px-2.5 py-1.5 text-[10px] font-semibold text-teal-600 hover:bg-teal-500/20 dark:text-teal-400"
-                title="Izel revisa y corrige este documento"
-              >
-                <Sparkles className="size-3" />
-                Izel
-              </button>
-            </>
-          )}
-          <button
-            onClick={() => descargar(d)}
-            className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
-            title="Descargar"
-          >
-            <Download className="size-3.5" />
-          </button>
-          {d.nombre.toLowerCase().endsWith(".docx") && (
-            <button
-              onClick={async () => {
-                const r = await api(`/bufetes/casos/${selId}/documentos/${d.id}/promover`, { method: "POST" }).catch(() => null);
-                if (r?.ok) window.location.reload();
-              }}
-              className="rounded-md bg-primary/10 px-2 py-1 text-[9px] font-semibold text-primary hover:bg-primary/20"
-              title="Convertir en plantilla (PII-scan)"
-            >
-              {t("docs.plantilla")}
-            </button>
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
-
 // ── Tab: Notas ────────────────────────────────────────────────────────────
 
 function TabNotas({ notas, nuevaNota, setNuevaNota, agregarNota }: {
@@ -657,13 +524,55 @@ const TIMELINE_ICONS: Record<string, any> = {
   acceso_otorgado: Share2, acceso_revocado: Ban, asignacion: UserPlus,
 };
 
-function TabTimeline({ timeline }: { timeline: TimelineItem[] }) {
+function TabTimeline({ timeline, api, selId, onNavigate }: {
+  timeline: TimelineItem[];
+  api: (p: string, i?: RequestInit) => Promise<Response>;
+  selId: string;
+  onNavigate: (tab: Tab) => void;
+}) {
+  const [verDoc, setVerDoc] = useState<string | null>(null);
+
+  const handleClick = async (e: TimelineItem) => {
+    if (e.tipo === "documento") {
+      // abrir el documento inline
+      const docs = await api(`/bufetes/casos/${selId}/documentos`)
+        .then((r) => r.ok ? r.json() : { documentos: [] })
+        .then((d) => d.documentos ?? []).catch(() => []);
+      const match = docs.find((d: any) => e.detalle.includes(d.nombre));
+      if (match) {
+        const r = await api(`/documentos/${match.id}/descargar`).catch(() => null);
+        if (r?.ok) {
+          const blob = await r.blob();
+          window.open(URL.createObjectURL(blob), "_blank");
+        }
+      }
+    } else if (e.tipo === "nota") {
+      onNavigate("notas");
+    } else if (e.tipo.startsWith("acceso") || e.tipo.startsWith("asignacion")) {
+      onNavigate("equipo");
+    } else if (e.tipo === "caso_creado") {
+      onNavigate("resumen");
+    }
+  };
+
+  const clickable = (e: TimelineItem) =>
+    ["documento", "nota", "acceso_otorgado", "acceso_revocado", "asignacion", "caso_creado"].includes(e.tipo);
+
   return (
     <div className="max-w-3xl space-y-1">
       {timeline.map((e, i) => {
         const Icon = TIMELINE_ICONS[e.tipo] ?? Circle;
+        const clic = clickable(e);
         return (
-          <div key={i} className="flex gap-3 rounded-lg border border-border px-4 py-2.5">
+          <button
+            key={i}
+            onClick={() => clic && handleClick(e)}
+            className={cn(
+              "flex w-full gap-3 rounded-lg border border-border px-4 py-2.5 text-left",
+              clic ? "cursor-pointer transition-colors hover:border-primary/40 hover:bg-primary/[0.04]" : "cursor-default"
+            )}
+            title={clic ? "Click para abrir" : ""}
+          >
             <Icon className="mt-0.5 size-3.5 shrink-0 text-muted-foreground" />
             <div className="min-w-0 flex-1">
               <p className="truncate text-[12.5px] text-foreground">{e.detalle}</p>
@@ -671,7 +580,8 @@ function TabTimeline({ timeline }: { timeline: TimelineItem[] }) {
                 {fmtFecha(e.cuando)}{e.quien ? ` · ${e.quien}` : ""} · {e.tipo.replace("_", " ")}
               </p>
             </div>
-          </div>
+            {clic && <ChevronRight className="mt-0.5 size-3.5 shrink-0 text-muted-foreground/50" />}
+          </button>
         );
       })}
       {timeline.length === 0 && <p className="text-sm text-muted-foreground">—</p>}

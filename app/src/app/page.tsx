@@ -25,10 +25,10 @@ export default function Landing() {
           </div>
           {sesion ? (
             <Link
-              href="/chat"
+              href="/studio"
               className="ml-auto rounded-lg bg-[#047857] px-4 py-2 text-sm font-medium text-white hover:bg-[#064e3b]"
             >
-              Volver a mi chat →
+              Ir a Studio →
             </Link>
           ) : (
             <Link
