@@ -82,6 +82,12 @@ class Settings(BaseSettings):
     # API key de resend.com. Vacío = emails se registran en log pero no se envían.
     resend_api_key: str = ""
 
+    # --- TTS (MiniMax) — voz de Izel ---
+    minimax_api_key: str = ""
+    tts_voice: str = "ale-castilla-es"
+    tts_model: str = "speech-2.8-hd"
+    tts_speed: float = 1.3
+
     # --- Pipeline / umbrales ---
     retrieval_quality_threshold: float = 0.20
     retrieval_top_k: int = 8

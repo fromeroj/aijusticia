@@ -12,7 +12,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import {
-  ChevronRight, Loader2, Send, Sparkles, X, Bot, User,
+  ChevronRight, Loader2, Mic, MicOff, Send, Sparkles, Volume2, VolumeX, X, Bot, User,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
@@ -158,6 +158,34 @@ function Mensaje({ m }: { m: Msg }) {
   );
 }
 
+// ── STT: Chrome SpeechRecognition ──
+
+function getRecognition(): any {
+  const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+  if (!SR) return null;
+  const rec = new SR();
+  rec.lang = "es-MX";
+  rec.interimResults = true;
+  rec.continuous = false;
+  return rec;
+}
+
+function limpiarMarkdown(md: string): string {
+  return md
+    .replace(/#{1,6}\s/g, "")
+    .replace(/\*\*(.+?)\*\*/g, "$1")
+    .replace(/\*(.+?)\*/g, "$1")
+    .replace(/`{3}[^`]*`{3}/g, "")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/\n{2,}/g, ". ")
+    .replace(/\n/g, ", ")
+    .replace(/[#|>\-]{2,}/g, " ")
+    .replace(/\s{2,}/g, " ")
+    .trim()
+    .slice(0, 2000);
+}
+
 // ── Panel principal ───────────────────────────────────────────────────────
 
 export function IzelPanel({ casoNombre, casoId }: { casoNombre?: string | null; casoId?: string | null }) {
@@ -168,6 +196,9 @@ export function IzelPanel({ casoNombre, casoId }: { casoNombre?: string | null; 
   const [cargandoChat, setCargandoChat] = useState(false);
   const [input, setInput] = useState("");
   const [escribiendo, setEscribiendo] = useState(false);
+  const [ttsOn, setTtsOn] = useState(() => localStorage.getItem("aij_tts") === "1");
+  const [escuchando, setEscuchando] = useState(false);
+  const [audioRef] = useState(() => useRef<HTMLAudioElement | null>(null));
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -182,6 +213,28 @@ export function IzelPanel({ casoNombre, casoId }: { casoNombre?: string | null; 
   useEffect(() => {
     localStorage.setItem(OPEN_KEY, open ? "1" : "0");
   }, [open]);
+
+  const speak = useCallback(async (texto: string) => {
+    if (!ttsOn) return;
+    try {
+      const raw = sessionStorage.getItem("aij_tokens");
+      const tk = raw ? JSON.parse(raw) : null;
+      const r = await fetch("/tts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(tk?.access ? { Authorization: `Bearer ${tk.access}` } : {}),
+        },
+        body: JSON.stringify({ text: limpiarMarkdown(texto) }),
+      });
+      if (r.ok) {
+        const blob = await r.blob();
+        const url = URL.createObjectURL(blob);
+        const audio = new Audio(url);
+        audio.play().catch(() => {});
+      }
+    } catch { /* silencioso */ }
+  }, [ttsOn]);
 
   // cargar chat persistente del caso
   useEffect(() => {
@@ -243,11 +296,13 @@ export function IzelPanel({ casoNombre, casoId }: { casoNombre?: string | null; 
         const citas = (d.pasajes ?? []).slice(0, 3).map((p: any) =>
           `${p.titulo?.slice(0, 40) ?? ""} (${p.fuente ?? ""})`
         );
+        const textoRespuesta = d.respuesta || "...";
         setMsgs((m) => [...m, {
-          rol: "izel", texto: d.respuesta || "...",
+          rol: "izel", texto: textoRespuesta,
           citas: citas.length > 0 ? citas : d.tool_calls_ejecutados?.map((tc: any) => `${tc.tool} ✓`).slice(0, 3),
           creado_en: new Date().toISOString(),
         }]);
+        speak(textoRespuesta);
         if (casoId) persistir(casoId, "izel", d.respuesta || "...", citas);
         // ejecutar accion_ui (navegar, refrescar, etc.)
         if (d.accion_ui) {

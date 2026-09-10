@@ -12,7 +12,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from ai_justicia.api.routes import admin, archivos, auth, bufetes, dossiers, email, practica, query
+from ai_justicia.api.routes import admin, archivos, auth, bufetes, dossiers, email, practica, query, tts
 from ai_justicia.config import settings
 from ai_justicia.llm.client import check_connection
 
@@ -58,6 +58,7 @@ app.include_router(bufetes.router)
 app.include_router(archivos.router)
 app.include_router(email.router)
 app.include_router(practica.router)
+app.include_router(tts.router)
 
 
 def run() -> None:
