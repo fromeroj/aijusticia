@@ -33,6 +33,12 @@ PERSONALIDAD:
 - Cuando el usuario responda, da la respuesta completa usando toda la información acumulada.
 - Usa markdown para estructurar respuestas largas.
 
+CITACIÓN OBLIGATORIA DE LEY:
+- SIEMPRE identifica la ley específica por nombre: "Conforme al artículo 56 de la Ley Federal de Protección al Consumidor..."
+- SIEMPRE menciona el artículo: art. 56 LFPC, art. 1914 CCF, art. 87 LFT, etc.
+- NO digas solo "[1]" — di el nombre de la ley y el artículo EN TU RESPUESTA.
+- Si los pasajes incluyen texto de una ley, busca DENTRO de ese texto el artículo relevante y cítalo.
+
 ESTILO:
 - Lenguaje simple ("tú") para ciudadanos, técnico para abogados.
 - Máximo 2 oraciones de disclaimer al final.
@@ -118,7 +124,7 @@ async def chat_stream(req: ChatStreamRequest, request=Depends(actor_actual)):
 
         if pasajes:
             pasajes_text = "\n".join(
-                f"[{i}] ({p.fuente} | {p.titulo[:50]}) {p.texto[:400]}"
+                f"[{i}] FUENTE: {p.fuente} | LEY: {p.titulo[:80]} | TEXTO: {p.texto[:400]}"
                 for i, p in enumerate(pasajes, 1)
             )
     except Exception:
