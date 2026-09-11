@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useCallback, useState } from "react";
 import Link from "next/link";
-import { Scale, FolderPlus, ClipboardList } from "lucide-react";
-import { useChatStore, type StageId } from "@/lib/store";
-import { streamQuery, type TurnoHistorial } from "@/lib/streamQuery";
+import { BookOpen, Scale, FolderPlus, ClipboardList } from "lucide-react";
+import { useChatStore } from "@/lib/store";
+import { chatStream, type LeyesPrevias, type TriagePrevio } from "@/lib/chatStream";
 import { subirDocumento } from "@/lib/boveda";
 import { cn } from "@/lib/utils";
 import { authFetch } from "@/lib/auth";
@@ -19,15 +19,10 @@ export function ChatWindow() {
   const messages = useChatStore((s) => s.messages);
   const currentStage = useChatStore((s) => s.currentStage);
   const isQuerying = useChatStore((s) => s.isQuerying);
-  const lastConsulta = useChatStore((s) => s.lastConsulta);
   const sendMessage = useChatStore((s) => s.sendMessage);
   const appendToken = useChatStore((s) => s.appendToken);
-  const setStage = useChatStore((s) => s.setStage);
-  const setAnalysisInfo = useChatStore((s) => s.setAnalysisInfo);
   const finishMessage = useChatStore((s) => s.finishMessage);
   const addReferencesMessage = useChatStore((s) => s.addReferencesMessage);
-  const addAbstencionMessage = useChatStore((s) => s.addAbstencionMessage);
-  const addClarifyMessage = useChatStore((s) => s.addClarifyMessage);
   const errorMessage = useChatStore((s) => s.errorMessage);
   const stopQuery = useChatStore((s) => s.stopQuery);
 
@@ -39,144 +34,6 @@ export function ChatWindow() {
     }
   }, [messages]);
 
-  /**
-   * Deriva el historial de la conversación desde el store para enviarlo al backend.
-   * Solo turnos completos (sin streaming), últimos 6, con texto truncado.
-   * El backend lo usa para contextualizar preguntas de seguimiento.
-   */
-  const buildHistorial = useCallback((): TurnoHistorial[] => {
-    const { messages: msgs } = useChatStore.getState();
-    return msgs
-      .filter((m) => m.role === "user" || (m.role === "assistant" && !m.isStreaming && m.done))
-      .filter((m) => !m.clarify) // las tarjetas de clarificación no son turnos reales
-      .slice(-6)
-      .map((m) => ({
-        role: m.role,
-        text: (m.role === "assistant" ? m.text.slice(0, 300) : m.text),
-      }));
-  }, []);
-
-  const runPipeline = useCallback(
-    async (consulta: string, respuestasAclaratorias?: Record<string, string>) => {
-      const abortController = new AbortController();
-      const historial = buildHistorial();
-      const { modo, expedienteAcumulado, respuestasAcumuladas, sesion: sesionActual } =
-        useChatStore.getState();
-      const nivel = modo === "abogado" ? "Nivel1" : "Nivel0";
-
-      try {
-        for await (const event of streamQuery(
-          consulta, nivel, abortController.signal, respuestasAclaratorias, historial,
-          respuestasAcumuladas, expedienteAcumulado, sesionActual?.dossierId ?? null,
-        )) {
-          switch (event.type) {
-            case "stage":
-              setStage(event.data.stage as StageId, event.data.label);
-              break;
-            case "clarify":
-              setAnalysisInfo(event.data.materia);
-              // El backend devuelve el expediente actualizado en cada clarify
-              if (event.data.expediente) {
-                useChatStore.setState({ expedienteAcumulado: event.data.expediente });
-              }
-              addClarifyMessage(event.data);
-              break;
-            case "token":
-              appendToken(event.data);
-              break;
-            case "done":
-              finishMessage(event.data);
-              // Guardar expediente final del caso
-              if (event.data.expediente) {
-                useChatStore.setState({ expedienteAcumulado: event.data.expediente });
-              }
-              // Mostrar referencias SIEMPRE que haya una respuesta generada.
-              // Solo mostrar abstención si NO se generó texto útil (la generación falló).
-              if (event.data.abstenido && !event.data.respuesta) {
-                addAbstencionMessage(event.data);
-              } else {
-                addReferencesMessage(event.data);
-              }
-              break;
-            case "error":
-              errorMessage(event.data.mensaje);
-              break;
-          }
-        }
-      } catch (err) {
-        if (err instanceof DOMException && err.name === "AbortError") {
-          // cancelado por el usuario
-        } else {
-          errorMessage(err instanceof Error ? err.message : "Error de conexión");
-        }
-      }
-    },
-    [sendMessage, appendToken, setStage, setAnalysisInfo, finishMessage, addReferencesMessage, addAbstencionMessage, addClarifyMessage, errorMessage, buildHistorial],
-  );
-
-  const handleSend = useCallback(
-    (text: string) => {
-      sendMessage(text);
-      runPipeline(text);
-    },
-    [sendMessage, runPipeline],
-  );
-
-  const handleClarifySubmit = useCallback(
-    (respuestas: Record<string, string>) => {
-      // Multi-ronda: ACUMULAR respuestas de todas las rondas y re-enviar.
-      // El backend fusiona respuestas_acumuladas al expediente y decide
-      // si hace falta otra ronda o ya procede a responder.
-      const respuestasFusionadas = {
-        ...useChatStore.getState().respuestasAcumuladas,
-        ...respuestas,
-      };
-      useChatStore.setState((state) => ({
-        messages: [
-          ...state.messages,
-          {
-            id: crypto.randomUUID(),
-            role: "assistant" as const,
-            text: "",
-            isStreaming: true,
-            analysisInfo: { materia: state.pendingClarify?.materia || null },
-          },
-        ],
-        isQuerying: true,
-        pendingClarify: null,
-        currentStage: "recuperacion" as const,
-        respuestasAcumuladas: respuestasFusionadas,
-      }));
-      if (lastConsulta) {
-        runPipeline(lastConsulta, respuestas);
-      }
-    },
-    [lastConsulta, runPipeline],
-  );
-
-  const isEmpty = messages.length === 0;
-  const modo = useChatStore((s) => s.modo);
-  const setModo = useChatStore((s) => s.setModo);
-  const sesion = useChatStore((s) => s.sesion);
-  const cerrarSesion = useChatStore((s) => s.cerrarSesion);
-  const nuevoCaso = useChatStore((s) => s.nuevoCaso);
-  const expedienteAcumulado = useChatStore((s) => s.expedienteAcumulado);
-  const [expedienteServer, setExpedienteServer] = useState<Record<string, unknown> | null>(null);
-
-  useEffect(() => {
-    if (!sesion?.dossierId) return;
-    authFetch(`/dossiers/${sesion.dossierId}`)
-      .then((r) => (r.ok ? r.json() : null))
-      .then((d) => { if (d) setExpedienteServer(d.expediente ?? null); })
-      .catch(() => {});
-  }, [sesion?.dossierId]);
-  const [consentDecidido, setConsentDecidido] = useState(false);
-  const [convertOpen, setConvertOpen] = useState(false);
-  const [expOpen, setExpOpen] = useState(false);
-  const [confirmNuevo, setConfirmNuevo] = useState(false);
-  const [refrescoDocs, setRefrescoDocs] = useState(0);
-  const [avisoDoc, setAvisoDoc] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const [ttsOn, setTtsOn] = useState(() => typeof window !== "undefined" && localStorage.getItem("aij_tts") === "1");
   const [speaking, setSpeaking] = useState(false);
 
@@ -218,6 +75,129 @@ export function ChatWindow() {
       }
     } catch { setSpeaking(false); }
   }, [ttsOn]);
+
+  /**
+   * Historial de la conversación desde el store: turnos completos, últimos 8.
+   * El backend lo fusiona con el chat persistido del dossier.
+   */
+  const buildHistorial = useCallback((): Array<{ role: "user" | "assistant"; text: string }> => {
+    const { messages: msgs } = useChatStore.getState();
+    return msgs
+      .filter((m) => m.role === "user" || (m.role === "assistant" && !m.isStreaming && m.done))
+      .slice(-8)
+      .map((m) => ({
+        role: m.role,
+        text: (m.role === "assistant" ? m.text.slice(0, 400) : m.text),
+      }));
+  }, []);
+
+  // Resultados del Bibliotecario que persisten entre turnos — el frontend
+  // los devuelve en la siguiente petición para que Izel cite con fundamento.
+  const leyesRef = useRef<LeyesPrevias[]>([]);
+  const triageRef = useRef<TriagePrevio>({});
+  // Aviso visible de lo que el Bibliotecario encontró en ESTE turno
+  const [biblioAviso, setBiblioAviso] = useState<{ ley: string; institucion: string } | null>(null);
+
+  const runChat = useCallback(
+    async (consulta: string) => {
+      const abortController = new AbortController();
+      const historial = buildHistorial();
+      const { modo, sesion: sesionActual } = useChatStore.getState();
+      const nivel = modo === "abogado" ? "Nivel1" : "Nivel0";
+      setBiblioAviso(null);
+
+      try {
+        for await (const event of chatStream(consulta, {
+          nivel,
+          dossierId: sesionActual?.dossierId ?? null,
+          historial,
+          leyesPrevias: leyesRef.current,
+          triagePrevio: triageRef.current,
+          signal: abortController.signal,
+        })) {
+          switch (event.type) {
+            case "token":
+              appendToken(event.data);
+              break;
+            case "reset":
+              // Izel se atoró (repetición degenerada) — reintento del backend
+              useChatStore.setState((st) => {
+                const msgs = [...st.messages];
+                const last = msgs[msgs.length - 1];
+                if (last?.role === "assistant") {
+                  msgs[msgs.length - 1] = { ...last, text: "" };
+                }
+                return { messages: msgs };
+              });
+              break;
+            case "laws":
+              // el Bibliotecario encontró la norma aplicable
+              triageRef.current = { ley: event.data.ley, institucion: event.data.institucion };
+              if (event.data.ley) {
+                setBiblioAviso({ ley: event.data.ley, institucion: event.data.institucion || "" });
+              }
+              break;
+            case "done":
+              if (event.data.pasajes?.length) {
+                leyesRef.current = event.data.pasajes as LeyesPrevias[];
+              }
+              if (!event.data.respuesta) {
+                errorMessage("Izel no pudo generar respuesta");
+                break;
+              }
+              finishMessage(event.data);
+              if (event.data.pasajes?.length) {
+                addReferencesMessage(event.data);
+              }
+              speakIzel(event.data.respuesta);
+              break;
+            case "error":
+              errorMessage(event.data.mensaje);
+              break;
+          }
+        }
+      } catch (err) {
+        if (err instanceof DOMException && err.name === "AbortError") {
+          // cancelado por el usuario
+        } else {
+          errorMessage(err instanceof Error ? err.message : "Error de conexión");
+        }
+      }
+    },
+    [sendMessage, appendToken, finishMessage, addReferencesMessage, errorMessage, buildHistorial, speakIzel],
+  );
+
+  const handleSend = useCallback(
+    (text: string) => {
+      sendMessage(text);
+      runChat(text);
+    },
+    [sendMessage, runChat],
+  );
+
+  const isEmpty = messages.length === 0;
+  const modo = useChatStore((s) => s.modo);
+  const setModo = useChatStore((s) => s.setModo);
+  const sesion = useChatStore((s) => s.sesion);
+  const cerrarSesion = useChatStore((s) => s.cerrarSesion);
+  const nuevoCaso = useChatStore((s) => s.nuevoCaso);
+  const expedienteAcumulado = useChatStore((s) => s.expedienteAcumulado);
+  const [expedienteServer, setExpedienteServer] = useState<Record<string, unknown> | null>(null);
+
+  useEffect(() => {
+    if (!sesion?.dossierId) return;
+    authFetch(`/dossiers/${sesion.dossierId}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => { if (d) setExpedienteServer(d.expediente ?? null); })
+      .catch(() => {});
+  }, [sesion?.dossierId]);
+  const [consentDecidido, setConsentDecidido] = useState(false);
+  const [convertOpen, setConvertOpen] = useState(false);
+  const [expOpen, setExpOpen] = useState(false);
+  const [confirmNuevo, setConfirmNuevo] = useState(false);
+  const [refrescoDocs, setRefrescoDocs] = useState(0);
+  const [avisoDoc, setAvisoDoc] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const adjuntarDoc = () => fileInputRef.current?.click();
 
@@ -437,9 +417,28 @@ export function ChatWindow() {
                 msg={msg}
                 stage={currentStage}
                 isQuerying={isQuerying}
-                onClarifySubmit={handleClarifySubmit}
               />
             ))}
+
+            {/* Aviso del Bibliotecario (subagente) — norma encontrada en este turno */}
+            {biblioAviso && (
+              <div className="flex gap-3 px-4 py-2">
+                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#eff6ff]">
+                  <BookOpen className="h-4 w-4 text-[#1d4ed8]" />
+                </div>
+                <div className="max-w-[85%] rounded-2xl border border-[#bfdbfe] bg-[#eff6ff] px-4 py-2.5">
+                  <p className="text-xs font-semibold text-[#1e40af]">
+                    Bibliotecario jurídico · norma identificada
+                  </p>
+                  <p className="mt-0.5 text-[12px] text-[#1e3a8a]">
+                    {biblioAviso.ley}
+                    {biblioAviso.institucion && (
+                      <span className="text-[#3b82f6]"> · {biblioAviso.institucion}</span>
+                    )}
+                  </p>
+                </div>
+              </div>
+            )}
 
             {/* Consentimiento expreso LFPDPPP: tras la 1a respuesta completa,
                 solo con caso guardado (en modo abierto la nota bajo el input cubre) */}

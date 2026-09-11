@@ -10,7 +10,7 @@
  */
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
-  ChevronRight, Loader2, Mic, MicOff, Send, Sparkles, Volume2, VolumeX, X, Bot, User,
+  BookOpen, ChevronRight, Loader2, Mic, MicOff, Send, Sparkles, Volume2, VolumeX, X, Bot, User,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Markdown } from "@/components/Markdown";
@@ -145,8 +145,14 @@ export function IzelPanel({ casoNombre, casoId }: { casoNombre?: string | null; 
   const [cargandoChat, setCargandoChat] = useState(false);
   const [input, setInput] = useState("");
   const [escribiendo, setEscribiendo] = useState(false);
+  const [primerToken, setPrimerToken] = useState(false);
   const [ttsOn, setTtsOn] = useState(() => localStorage.getItem("aij_tts") === "1");
   const [escuchando, setEscuchando] = useState(false);
+
+  // Resultados del Bibliotecario que persisten entre turnos
+  const leyesRef = useRef<Array<{ titulo: string; fuente: string; clave_cita: string; vinculante: boolean; fragmento: string; jerarquia: number }>>([]);
+  const triageRef = useRef<{ ley?: string; institucion?: string }>({});
+  const [biblioAviso, setBiblioAviso] = useState<string | null>(null);
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -224,6 +230,8 @@ export function IzelPanel({ casoNombre, casoId }: { casoNombre?: string | null; 
     setMsgs((m) => [...m, { rol: "user", texto: q, creado_en: new Date().toISOString() }]);
     setInput("");
     setEscribiendo(true);
+    setPrimerToken(false);
+    setBiblioAviso(null);
 
     if (casoId) persistir(casoId, "user", q);
 
@@ -238,6 +246,8 @@ export function IzelPanel({ casoNombre, casoId }: { casoNombre?: string | null; 
         consulta: q,
         nivel: "Nivel0",
         caso_id: casoId || null,
+        leyes_previas: leyesRef.current.length > 0 ? leyesRef.current : null,
+        triage_previo: triageRef.current.ley ? triageRef.current : null,
       });
 
       const resp = await fetch("/chat/stream", {
@@ -271,6 +281,7 @@ export function IzelPanel({ casoNombre, casoId }: { casoNombre?: string | null; 
           try { data = JSON.parse(dataMatch[1]); } catch { continue; }
 
           if (evType === "token") {
+            if (!primerToken) setPrimerToken(true);
             fullText += data;
             // actualizar el último mensaje de Izel con streaming
             setMsgs((m) => {
@@ -280,20 +291,38 @@ export function IzelPanel({ casoNombre, casoId }: { casoNombre?: string | null; 
               }
               return [...m, { rol: "izel", texto: fullText, creado_en: new Date().toISOString() }];
             });
-          } else if (evType === "done") {
-            done = true;
-            // actualizar con texto limpio
+          } else if (evType === "reset") {
+            // Izel se atoró — el backend reintenta; limpiar el texto parcial
+            fullText = "";
             setMsgs((m) => {
               const last = m[m.length - 1];
               if (last?.rol === "izel") {
-                return [...m.slice(0, -1), { ...last, texto: data.respuesta || fullText }];
+                return [...m.slice(0, -1), { ...last, texto: "" }];
+              }
+              return m;
+            });
+          } else if (evType === "laws") {
+            // el Bibliotecario encontró la norma aplicable
+            triageRef.current = { ley: data.ley, institucion: data.institucion };
+            if (data.ley) setBiblioAviso(data.ley);
+          } else if (evType === "done") {
+            done = true;
+            if (data.pasajes?.length) {
+              leyesRef.current = data.pasajes;
+            }
+            const finalText = data.respuesta || fullText;
+            setMsgs((m) => {
+              const last = m[m.length - 1];
+              if (last?.rol === "izel") {
+                const citas = (data.pasajes || []).map((p: any) => p.clave_cita || p.titulo).slice(0, 4);
+                return [...m.slice(0, -1), { ...last, texto: finalText, citas }];
               }
               return m;
             });
             // persistir respuesta de Izel
-            if (casoId) persistir(casoId, "izel", data.respuesta || fullText);
+            if (casoId) persistir(casoId, "izel", finalText);
             // TTS
-            if (ttsOn) speak(data.respuesta || fullText);
+            if (ttsOn) speak(finalText);
           } else if (evType === "error") {
             setMsgs((m) => [...m.slice(0, -1), { rol: "izel", texto: `Error: ${data.mensaje || "desconocido"}` }]);
             done = true;
@@ -390,8 +419,16 @@ export function IzelPanel({ casoNombre, casoId }: { casoNombre?: string | null; 
           msgs.map((m, i) => <Mensaje key={i} m={m} />)
         )}
 
-        {/* overlay de "pensando" */}
-        {escribiendo && <ThinkingOverlay />}
+        {/* overlay de "pensando" — solo hasta el primer token */}
+        {escribiendo && !primerToken && <ThinkingOverlay />}
+
+        {/* aviso del Bibliotecario */}
+        {biblioAviso && escribiendo && (
+          <div className="flex items-center gap-1.5 rounded-lg border border-blue-200 bg-blue-50 px-2.5 py-1.5 text-[11px] text-blue-800 dark:border-blue-900 dark:bg-blue-950/40 dark:text-blue-300">
+            <BookOpen className="size-3.5 shrink-0" />
+            <span className="truncate">Bibliotecario: {biblioAviso}</span>
+          </div>
+        )}
       </div>
 
       {/* input */}

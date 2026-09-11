@@ -157,15 +157,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
       role: "user",
       text,
     };
-    // Burbuja 1: AnalysisCard (persistente — siempre visible con las etapas)
-    const analysisMsg: Message = {
-      id: crypto.randomUUID(),
-      role: "assistant",
-      text: "",
-      isStreaming: true,
-      analysisInfo: { materia: null },
-    };
-    // Burbuja 3: Respuesta (empieza vacía, se llena con tokens)
+    // Respuesta (empieza vacía, se llena con tokens del stream)
     const responseMsg: Message = {
       id: crypto.randomUUID(),
       role: "assistant",
@@ -173,7 +165,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
       isStreaming: true,
     };
     set((state) => ({
-      messages: [...state.messages, userMsg, analysisMsg, responseMsg],
+      messages: [...state.messages, userMsg, responseMsg],
       isQuerying: true,
       currentStage: null,
       currentStageLabel: null,
