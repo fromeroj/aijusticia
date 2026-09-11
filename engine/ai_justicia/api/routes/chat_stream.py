@@ -421,8 +421,13 @@ async def chat_stream(req: ChatStreamRequest, actor=Depends(actor_opcional)):
         # 3) Izel en streaming — primer token ~1-2s.
         #    MiniMax-M3 emite <think>…</think> al inicio de content: suprimirlo
         #    del stream sin retener el resto. Si decae en repetición degenerada
-        #    (glitch de muestreo de M3), se reintenta una vez.
+        #    (glitch de muestreo de M3), se reintenta una vez. M3 también cuela
+        #    caracteres CJK en texto español: se purgan EN CADA TOKEN.
         degenerado_re = re.compile(r"(.{1,8})\1{11,}$")
+        cjk_re = re.compile(r"[\u3040-\u30ff\u4e00-\u9fff\u3400-\u4dbf\uff01-\uffee]+")
+
+        def _purga(txt: str) -> str:
+            return cjk_re.sub("", txt)
 
         def _degenerado(txt: str) -> bool:
             return bool(degenerado_re.search(txt[-120:])) if len(txt) > 60 else False
@@ -450,7 +455,7 @@ async def chat_stream(req: ChatStreamRequest, actor=Depends(actor_opcional)):
                     t = delta.content
                     full += t
                     if resuelto:
-                        yield t
+                        yield _purga(t)
                     else:
                         pend += t
                         if not suprimiendo:
@@ -460,13 +465,13 @@ async def chat_stream(req: ChatStreamRequest, actor=Depends(actor_opcional)):
                             elif not "<think>".startswith(pend.lstrip()):
                                 resuelto = True
                                 if pend.strip():
-                                    yield pend
+                                    yield _purga(pend)
                         else:
                             if "</think>" in pend:
                                 rest = pend.split("</think>", 1)[1]
                                 resuelto = True
                                 if rest:
-                                    yield rest
+                                    yield _purga(rest)
                     if _degenerado(full):
                         estado.update(texto=full, degenerado=True)
                         return
@@ -497,7 +502,7 @@ async def chat_stream(req: ChatStreamRequest, actor=Depends(actor_opcional)):
 
         clean = re.sub(r"<think>.*?</think>", "", full_text, flags=re.S).strip()
         # M3 a veces desliza caracteres CJK en texto español — nunca son válidos
-        clean = re.sub(r"[\u3040-\u30ff\u4e00-\u9fff]+", "", clean)
+        clean = _purga(clean)
         # colapsar cola repetida si ambos intentos degeneraron
         clean = re.sub(r"(.{1,8})\1{5,}$", r"\1", clean)
 

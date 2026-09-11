@@ -8,7 +8,6 @@ import { chatStream, type LeyesPrevias, type TriagePrevio } from "@/lib/chatStre
 import { subirDocumento } from "@/lib/boveda";
 import { cn } from "@/lib/utils";
 import { authFetch } from "@/lib/auth";
-import { ConsentCard } from "./ConsentCard";
 import { MessageBubble } from "./MessageBubble";
 import { InputBar } from "./InputBar";
 import { ConsentNotice } from "./ConsentNotice";
@@ -191,7 +190,6 @@ export function ChatWindow() {
       .then((d) => { if (d) setExpedienteServer(d.expediente ?? null); })
       .catch(() => {});
   }, [sesion?.dossierId]);
-  const [consentDecidido, setConsentDecidido] = useState(false);
   const [convertOpen, setConvertOpen] = useState(false);
   const [expOpen, setExpOpen] = useState(false);
   const [confirmNuevo, setConfirmNuevo] = useState(false);
@@ -439,24 +437,11 @@ export function ChatWindow() {
                 </div>
               </div>
             )}
-
-            {/* Consentimiento expreso LFPDPPP: tras la 1a respuesta completa,
-                solo con caso guardado (en modo abierto la nota bajo el input cubre) */}
-            {modo === "ciudadano" &&
-              !isQuerying &&
-              sesion?.dossierId &&
-              messages.some((m) => m.done?.respuesta) &&
-              !consentDecidido && (
-                <ConsentCard
-                  dossierId={sesion.dossierId}
-                  onDecide={() => setConsentDecidido(true)}
-                />
-              )}
           </div>
         )}
       </div>
 
-      {/* Nota de consentimiento (modo abierto) — bajo los mensajes, sobre el input */}
+      {/* Leyenda de envío — chat público, antes de hacer el caso */}
       {modo === "ciudadano" && enModoAbierto && <ConsentNotice />}
 
       {/* Aviso de documento subido (bóveda F3) */}
