@@ -71,6 +71,11 @@ Eres el bibliotecario jurídico de AI Justicia. Dada la conversación entre un u
 e Izel, identifica las normas mexicanas aplicables (máximo 3, la más relevante primero).
 Cada nombre debe ser el nombre oficial de UNA ley o código — nunca combines dos.
 
+Los "terminos_busqueda" deben ser palabras y frases que aparecerían TEXTUALMENTE en los
+artículos aplicables de esas leyes: sustantivos del procedimiento y de la institución
+(p. ej. "reclamación", "aclaración", "dictamen", "operaciones no reconocidas",
+"devolución", la autoridad competente…). No repitas las palabras del usuario tal cual.
+
 CONVERSACIÓN (la más reciente al final):
 {conversacion}
 
@@ -78,7 +83,7 @@ Responde SOLO con JSON válido, sin explicaciones:
 {{"leyes": ["Ley o Código 1", "Ley o Código 2"],
   "ley": "Ley o Código 1 (la principal, misma que la primera de la lista)",
   "institucion": "autoridad competente (CONDUSEF, PROFECO, juzgado laboral, etc.)",
-  "terminos_busqueda": ["3 a 6 términos técnicos con los que buscar los artículos"],
+  "terminos_busqueda": ["5 a 8 términos que aparecerían en los artículos aplicables"],
   "resumen_situacion": "una frase con la situación jurídica"}}
 """
 
@@ -187,53 +192,71 @@ _STOP_LEY = {
 }
 
 
+def _frase_a_tsquery(frase: str) -> str:
+    """'operaciones no reconocidas' → '(operación<->no<->reconocida) | (operacion<->no<->reconocida)'."""
+    palabras = [p for p in re.findall(r"[a-záéíóúñü0-9]+", frase.lower()) if len(p) > 1]
+    if not palabras:
+        return ""
+    _MAPA = {"á": "a", "é": "e", "í": "i", "ó": "o", "ú": "u", "ü": "u", "ñ": "n"}
+    planas = [re.sub(r"[áéíóúüñ]", lambda m: _MAPA[m.group()], p) for p in palabras]
+    con = "<->".join(palabras)
+    sin = "<->".join(planas)
+    return con if planas == palabras else f"({con}) | ({sin})"
+
+
 def _buscar_en_ley(ley: str, terminos: list[str], top_k: int = 6) -> list[dict]:
     """Busca los artículos más relevantes DENTRO de la ley identificada.
 
-    Es el gesto del bibliotecario: ya sabe qué libro es — busca en ese libro.
-    Devuelve dicts con la forma que espera la tarjeta de referencias.
+    Ranking: cobertura (cuántas frases distintas toca el chunk) + ts_rank,
+    con boost a chunks que INICIAN un artículo (el texto canónico).
     """
     palabras = [w for w in re.findall(r"[a-záéíóúñü]+", ley.lower())
                 if w not in _STOP_LEY and len(w) > 3]
-    # los términos llegan como frases — aplanar a palabras sueltas
-    palabras_terminos: list[str] = []
-    for t in terminos:
-        for w in re.findall(r"[a-záéíóúñü0-9]+", t.lower()):
-            if len(w) > 2 and w not in palabras_terminos:
-                palabras_terminos.append(w)
-    if not palabras or not palabras_terminos:
+    if not palabras or not terminos:
+        return []
+    ley_q = " & ".join(palabras[:4])
+
+    frases: list[str] = []
+    for t in terminos[:7]:
+        tq = _frase_a_tsquery(t)
+        if tq and tq not in frases:
+            frases.append(tq)
+    if not frases:
         return []
 
-    # título ESTRICTO (AND) — solo la ley identificada, no documentos afines;
-    # la relajación va del lado de los términos del cuerpo
-    ley_q = " & ".join(palabras[:4])
-    variantes_q = [
-        " & ".join(palabras_terminos[:6]),
-        " & ".join(palabras_terminos[:3]),
-        " | ".join(palabras_terminos[:4]),
-    ]
+    # relajación graduada: todas las frases → 3 → 1
+    variantes = [frases, frases[:3], frases[:1]]
 
-    sql = """
-        SELECT d.fuente, d.titulo, c.articulo_num, c.texto, d.jerarquia, d.vinculante,
-               ts_rank_cd(c.texto_search, q) AS rank
-        FROM documentos_chunks c
-        JOIN documentos d ON c.documento_id = d.id
-        CROSS JOIN to_tsquery('spanish', %(term_q)s) q
-        WHERE NOT d.derogado
-          AND d.fuente IN ('LeyesBiblio', 'LexMX', 'DOF')
-          AND d.titulo_search @@ to_tsquery('spanish', %(ley_q)s)
-          AND c.texto_search @@ q
-        ORDER BY (c.articulo_num IS NOT NULL) DESC, rank DESC
-        LIMIT 18
-    """
     filas: list = []
     try:
         from ai_justicia.corpus.store import get_conn
 
         with get_conn() as conn:
             cur = conn.cursor()
-            for term_q in variantes_q:
-                cur.execute(sql, {"ley_q": ley_q, "term_q": term_q})
+            for grupo in variantes:
+                cobertura = " + ".join(
+                    "(CASE WHEN c.texto_search @@ to_tsquery('spanish', %s) THEN 1 ELSE 0 END)"
+                    for _ in grupo
+                )
+                sql = f"""
+                    SELECT d.fuente, d.titulo, c.articulo_num, c.texto,
+                           d.jerarquia, d.vinculante,
+                           ({cobertura}) AS cobertura,
+                           ts_rank_cd(c.texto_search, to_tsquery('spanish', %s)) AS rank,
+                           (left(regexp_replace(c.texto, '\\s+', ' ', 'g'), 24)
+                            ~ '^(Artículo|ARTÍCULO) ') AS es_articulo
+                    FROM documentos_chunks c
+                    JOIN documentos d ON c.documento_id = d.id
+                    WHERE NOT d.derogado
+                      AND d.fuente IN ('LeyesBiblio', 'LexMX', 'DOF')
+                      AND left(d.titulo, 40) ~* '^(ley|código|codigo|reglamento|constitución|constitucion)'
+                      AND d.titulo_search @@ to_tsquery('spanish', %s)
+                      AND c.texto_search @@ to_tsquery('spanish', %s)
+                    ORDER BY es_articulo DESC, cobertura DESC, rank DESC
+                    LIMIT 24
+                """
+                params = [*grupo, " | ".join(grupo), ley_q, " | ".join(grupo)]
+                cur.execute(sql, params)
                 filas = cur.fetchall()
                 if len(filas) >= 2:
                     break
@@ -244,16 +267,15 @@ def _buscar_en_ley(ley: str, terminos: list[str], top_k: int = 6) -> list[dict]:
     # dedup por (título normalizado, artículo) — el corpus tiene versiones duplicadas
     vistos: set = set()
     out: list[dict] = []
-    for fuente, titulo, articulo, texto, jerarquia, vinculante, _rank in filas:
+    for fuente, titulo, articulo, texto, jerarquia, vinculante, _cob, _rank, _es_art in filas:
         clave = ((titulo or "").lower().strip()[:60], articulo or texto[:40])
         if clave in vistos:
             continue
         vistos.add(clave)
-        m = _ART_RE.search(texto or "")
         out.append({
             "titulo": (titulo or ley)[:80],
             "fuente": fuente or "LeyesBiblio",
-            "clave_cita": f"art. {articulo}" if articulo else (_clave_cita(texto) if m else "fragmento"),
+            "clave_cita": f"art. {articulo}" if articulo else _clave_cita(texto),
             "vinculante": bool(vinculante),
             "fragmento": (texto or "")[:350],
             "jerarquia": jerarquia if jerarquia is not None else 100,
@@ -306,10 +328,11 @@ async def _bibliotecario(client, consulta: str, historial: list[dict]) -> dict |
     resumen = (triage.get("resumen_situacion") or "").strip()
 
     # Buscar DENTRO de cada ley identificada — el gesto del bibliotecario:
-    # ya sabe qué libros son; busca en esos libros.
+    # ya sabe qué libros son; busca en esos libros. Cuota por ley para que
+    # la principal no aplaste a las demás.
     encontrados: list[dict] = []
     for ley_i in leyes_lista:
-        encontrados += await asyncio.to_thread(_buscar_en_ley, ley_i, terminos)
+        encontrados += await asyncio.to_thread(_buscar_en_ley, ley_i, terminos, 3)
         if len(encontrados) >= 6:
             break
     pasajes = encontrados
@@ -497,14 +520,16 @@ async def chat_stream(req: ChatStreamRequest, actor=Depends(actor_opcional)):
         # 5) done — pasajes para la tarjeta de referencias
         #    prioridad: los del turno actual; si aún no hay, los previos
         encontrados = (leyes_nuevas or {}).get("encontrados") or leyes_previas
+        encontrados = (encontrados or [])[:5]
         yield _sse("done", {
             "respuesta": clean,
             "abstenido": False,
             "ley": (leyes_nuevas or {}).get("ley") or triage_previo.get("ley"),
             "institucion": (leyes_nuevas or {}).get("institucion") or triage_previo.get("institucion"),
-            "n_oraciones": max(1, clean.count(".")),
-            "n_sustentadas": len(encontrados or []),
-            "pasajes": (encontrados or [])[:5],
+            "modo_verificacion": "bibliotecario",
+            "n_oraciones": len(encontrados),
+            "n_sustentadas": len(encontrados),
+            "pasajes": encontrados,
             "dossier_id": dossier_id,
         })
 

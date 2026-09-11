@@ -54,6 +54,10 @@ export interface DonePayload {
   job_id: number | null;
   traza_id: number | null;
   expediente?: Expediente;
+  // Modo bibliotecario (chat conversacional): el conteo es de pasajes, no de oraciones
+  modo_verificacion?: string;
+  ley?: string | null;
+  institucion?: string | null;
   n_oraciones: number;
   n_sustentadas: number;
   pasajes: Array<{

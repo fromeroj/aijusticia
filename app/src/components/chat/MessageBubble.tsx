@@ -56,9 +56,23 @@ export function MessageBubble({
     );
   }
 
-  // Burbuja de RESPUESTA vacía (aún no llega texto) — no renderizar nada
+  // Burbuja de RESPUESTA vacía (aún no llega texto): indicador de escritura
   if (!isUser && !msg.text && !msg.clarify && !msg.done && msg.isStreaming) {
-    return null;
+    return (
+      <div className="flex gap-3 px-4 py-3">
+        <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#047857] text-white text-sm font-bold">
+          AI
+        </div>
+        <div className="flex max-w-[85%] items-center gap-2.5 rounded-2xl bg-gray-100 px-4 py-3">
+          <span className="flex gap-1">
+            <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-gray-400" />
+            <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-gray-400 [animation-delay:150ms]" />
+            <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-gray-400 [animation-delay:300ms]" />
+          </span>
+          <span className="text-xs text-gray-400">Izel está escribiendo…</span>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -143,7 +157,14 @@ small{color:#6b7280}</style></head><body>
         {/* Score de verificación */}
         <div className="mt-1.5 flex items-center gap-1.5 text-[11px] text-gray-400">
           <ShieldCheck className="h-3 w-3" />
-          {done.n_sustentadas}/{done.n_oraciones} oraciones con cita verificada
+          {done.modo_verificacion === "bibliotecario" ? (
+            <span>
+              {done.n_sustentadas} pasajes de la norma identificada
+              {done.ley ? ` — ${done.ley}` : ""}
+            </span>
+          ) : (
+            <span>{done.n_sustentadas}/{done.n_oraciones} oraciones con cita verificada</span>
+          )}
         </div>
 
         {/* Lista de fuentes expandibles */}
@@ -269,6 +290,11 @@ function ExpandiblePasaje({ indice, pasaje }: {
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1">
             <span className="font-medium text-gray-700">{pasaje.fuente}</span>
+            {pasaje.clave_cita && pasaje.clave_cita !== "fragmento" && (
+              <Badge variant="outline" className="flex-shrink-0 border-[#047857]/30 bg-[#ecfdf5] text-[10px] text-[#047857]">
+                {pasaje.clave_cita}
+              </Badge>
+            )}
             {pasaje.vinculante && <ShieldCheck className="h-3 w-3 text-green-600" />}
             {expandido
               ? <ChevronUp className="ml-auto h-3 w-3 flex-shrink-0 text-gray-400" />
