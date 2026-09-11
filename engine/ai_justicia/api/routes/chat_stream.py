@@ -25,7 +25,7 @@ from fastapi import APIRouter, Depends
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
-from ai_justicia.auth.deps import actor_actual
+from ai_justicia.auth.deps import actor_opcional
 from ai_justicia.config import settings
 
 logger = logging.getLogger(__name__)
@@ -330,13 +330,15 @@ async def _bibliotecario(client, consulta: str, historial: list[dict]) -> dict |
 # ── Endpoint ───────────────────────────────────────────────────────────────
 
 @router.post("/chat/stream")
-async def chat_stream(req: ChatStreamRequest, actor=Depends(actor_actual)):
+async def chat_stream(req: ChatStreamRequest, actor=Depends(actor_opcional)):
+    """Chat anónimo permitido: sin token responde igual (el Bibliotecario no
+    necesita identidad); con dossier se verifican los accesos como siempre."""
     dossier_id = req.dossier_id or req.caso_id
-    es_abogado = actor.get("tier") in ("abogado", "despacho")
+    es_abogado = bool(actor) and actor.get("tier") in ("abogado", "despacho")
 
     # contexto del caso + historial persistido (fuera del event loop)
     contexto, err_acceso, historial_db = ("", None, [])
-    if dossier_id:
+    if dossier_id and actor:
         contexto, err_acceso, historial_db = await asyncio.to_thread(
             _contexto_caso, dossier_id, actor
         )
@@ -506,8 +508,8 @@ async def chat_stream(req: ChatStreamRequest, actor=Depends(actor_actual)):
             "dossier_id": dossier_id,
         })
 
-        # 6) persistir (nunca guardar basura degenerada)
-        if dossier_id and not err_acceso and clean and not _degenerado(clean):
+        # 6) persistir (nunca guardar basura degenerada; sin actor no hay dueño)
+        if dossier_id and actor and not err_acceso and clean and not _degenerado(clean):
             await asyncio.to_thread(_persistir, dossier_id, actor, req.consulta, clean)
 
     return StreamingResponse(
