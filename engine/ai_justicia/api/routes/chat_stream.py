@@ -86,12 +86,29 @@ async def chat_stream(req: ChatStreamRequest, request=Depends(actor_actual)):
         except Exception:
             pass
 
-    # RAG retrieval
+    # ── TRIAGE jurídico: identifica ley/institución/términos antes de buscar ──
+    triage = {}
+    try:
+        from ai_justicia.tools.triage import identificar_dominio
+        triage = identificar_dominio(req.consulta)
+    except Exception:
+        pass
+
+    # RAG retrieval — usa términos legales del triage para mejor matching
     pasajes_text = ""
     pasajes = []
     try:
         from ai_justicia.retrieval.fts_index import busqueda_fts
-        pasajes = busqueda_fts(req.consulta, None, top_k=12)
+
+        query_legal = req.consulta
+        if triage.get("terminos_busqueda"):
+            query_legal = " ".join(triage["terminos_busqueda"][:5])
+        if triage.get("ley"):
+            query_legal += f" {triage['ley']}"
+
+        pasajes = busqueda_fts(query_legal, None, top_k=12)
+        if not pasajes:
+            pasajes = busqueda_fts(req.consulta, None, top_k=12)
 
         # Para ciudadanos (Nivel0): leyes primero, jurisprudencia después
         if req.nivel in ("Nivel0", None):
@@ -109,6 +126,14 @@ async def chat_stream(req: ChatStreamRequest, request=Depends(actor_actual)):
 
     # construir messages
     system = SYSTEM_PROMPT
+
+    # inyectar triage jurídico: Izel sabe qué ley/institución aplica
+    if triage.get("ley"):
+        system += f"\n\nTRIAGE JURÍDICO IDENTIFICADO:"
+        system += f"\n- Ley probable: {triage['ley']}"
+        if triage.get("institucion"):
+            system += f"\n- Institución: {triage['institucion']}"
+        system += "\n- USA esta información para enfocar tu respuesta. Cita los artículos de esta ley si los pasajes los contienen."
 
     if req.nivel in ("Nivel0", None) or req.nivel == "Nivel0":
         system += "\n\nFUENTE PRIORITARIA: Base tus respuestas en LEYES Y CÓDIGOS vigentes (LeyesBiblio, LexMX), NO en jurisprudencia específica (SJF) ni en casos concretos. El ciudadano necesita saber qué dice la LEY, no qué resolvió un juez en otro caso."
@@ -159,14 +184,11 @@ async def chat_stream(req: ChatStreamRequest, request=Depends(actor_actual)):
                     full_text += token
                     # filtrar <think> blocks durante streaming
                     if "<think>" in full_text and "</think>" not in full_text:
-                        continue  # aún dentro de think — no emitir
-                    # eliminar think del token si el cierre acaba de llegar
+                        continue
                     if "</think>" in full_text:
                         token = token.split("</think>")[-1]
                         if not token:
                             continue
-                    yield _sse("token", token)
-                    full_text += token
                     yield _sse("token", token)
 
             # limpiar thinking si existe
