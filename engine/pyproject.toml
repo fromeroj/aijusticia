@@ -29,6 +29,8 @@ dependencies = [
     "requests>=2.32",
     "beautifulsoup4>=4.12",
     "lxml>=5.2",
+    # SJF: sjf2.scjn.gob.mx está tras Imperva — exige huella TLS de Chrome
+    "curl_cffi>=0.7",
     # App / API
     "fastapi>=0.115",
     "uvicorn[standard]>=0.30",

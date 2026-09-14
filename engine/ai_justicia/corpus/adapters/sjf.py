@@ -56,8 +56,24 @@ class SJFAdapter:
     fuente = Fuente.SJF
 
     def __init__(self, page_size: int = 200):
-        self.client = EducationalHTTPClient(referer=REFERER)
+        # sjf2.scjn.gob.mx está detrás de Imperva (Incapsula): desde 2026-09
+        # rechaza la huella TLS de requests/urllib con un reto "Loading" 307→403.
+        # curl_cffi impersona el fingerprint de Chrome y pasa sin resolver JS.
+        from curl_cffi import requests as creq
+
         self.page_size = page_size
+        self.client = EducationalHTTPClient(referer=REFERER)
+        self._session = creq.Session(impersonate="chrome", headers={"Referer": REFERER})
+
+    def _post_json(self, url: str, json_body: dict) -> dict:
+        resp = self._session.post(url, json=json_body, timeout=60)
+        resp.raise_for_status()
+        return resp.json()
+
+    def _get_json(self, url: str) -> dict:
+        resp = self._session.get(url, timeout=60)
+        resp.raise_for_status()
+        return resp.json()
 
     def listar_desde(
         self,
@@ -74,7 +90,7 @@ class SJFAdapter:
         for page in range(start_page, start_page + max_pages):
             logger.info("SJF: listando página %d (desde %s)", page, fecha_inicio)
             body = {"criteria": {"searchTerms": [], "classifiers": []}}
-            data = self.client.post_json(
+            data = self._post_json(
                 f"{SEARCH_URL}?page={page}&size={self.page_size}",
                 json_body=body,
             )
@@ -101,7 +117,20 @@ class SJFAdapter:
         """
         ius = metadata.id_externo
         try:
-            data = self.client.get_json(DETAIL_URL.format(ius=ius))
+            # 2026-09: la SCJN cambió el contrato — el detalle exige los params
+            # isSemanal y hostName (así lo llama el propio buscador de la SCJN)
+            resp = self._session.get(
+                DETAIL_URL.format(ius=ius),
+                params={
+                    "isSemanal": str(metadata.extra.get("semanal", 0) or 0),
+                    "hostName": BASE,
+                },
+                headers={"Accept": "application/json"},
+                timeout=60,
+            )
+            if resp.status_code in (404, 500):
+                raise RuntimeError(f"detalle {resp.status_code}")
+            data = resp.json()
         except Exception as e:
             # 404 = lag semanal, no es un error fatal
             if metadata.extra.get("semanal") == 1:
