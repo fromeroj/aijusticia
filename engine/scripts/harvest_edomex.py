@@ -46,6 +46,7 @@ def fase1():
     total_hits = 0
 
     def pagina(mat, anio, rango, out):
+        vistos.update(vistos_pre)
         """Pagina un slice (opcionalmente con startDate/endDate)."""
         frm, n = 0, 0
         while True:
@@ -85,7 +86,15 @@ def fase1():
 
     TRIMESTRES = [("%s-01-01", "%s-03-31"), ("%s-04-01", "%s-06-30"),
                   ("%s-07-01", "%s-09-30"), ("%s-10-01", "%s-12-31")]
-    with open(MANIFEST, "w") as out:
+    # reanudable: dedupe contra el manifiesto previo
+    vistos_pre = set()
+    if os.path.exists(MANIFEST):
+        for l in open(MANIFEST):
+            try:
+                vistos_pre.add(json.loads(l)["pdf"])
+            except Exception:
+                pass
+    with open(MANIFEST, "a") as out:
         for mat in materias:
             for anio in anios:
                 n, gte = pagina(mat, anio, None, out)

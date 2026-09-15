@@ -21,6 +21,12 @@ class Fuente(str, Enum):
     SJF = "SJF"                        # Semanario Judicial de la Federación
     ORDEN_JURIDICO = "OrdenJuridico"   # ordenjuridico.gob.mx
     GACETA_ESTATAL = "GacetaEstatal"   # Gacetas de las 32 entidades
+    # Sentencias y acervos de poderes judiciales estatales
+    SENTENCIAS_EDOMEX = "SentenciasEdomex"
+    SENTENCIAS_CDMX = "SentenciasCDMX"
+    SENTENCIAS_QRO = "SentenciasQro"
+    SCJN_LIBROS = "SCJN-Libros"
+    JUSTIA_ESTATAL = "JustiaEstatal"
 
 
 class Materia(str, Enum):
