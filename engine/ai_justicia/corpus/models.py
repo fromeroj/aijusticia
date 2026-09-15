@@ -25,6 +25,7 @@ class Fuente(str, Enum):
     SENTENCIAS_EDOMEX = "SentenciasEdomex"
     SENTENCIAS_CDMX = "SentenciasCDMX"
     SENTENCIAS_QRO = "SentenciasQro"
+    SENTENCIAS_BC = "SentenciasBC"
     SCJN_LIBROS = "SCJN-Libros"
     JUSTIA_ESTATAL = "JustiaEstatal"
 
