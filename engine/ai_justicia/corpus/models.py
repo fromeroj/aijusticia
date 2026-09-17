@@ -19,6 +19,7 @@ class Fuente(str, Enum):
     DOF = "DOF"                        # Diario Oficial de la Federación
     LEYES_BIBLIO = "LeyesBiblio"       # Legislación federal consolidada (diputados.gob.mx)
     SJF = "SJF"                        # Semanario Judicial de la Federación
+    EJECUTORIAS_SJF = "EjecutoriasSJF" # Ejecutorias (sentencias completas) del SJF
     ORDEN_JURIDICO = "OrdenJuridico"   # ordenjuridico.gob.mx
     GACETA_ESTATAL = "GacetaEstatal"   # Gacetas de las 32 entidades
     # Sentencias y acervos de poderes judiciales estatales
