@@ -1,0 +1,40 @@
+# ============================================================
+# Tohil — Tlamatini v1: FULL-PARAMETER CPT
+# ============================================================
+# CPT completo del Qwen3.6-35B-A3B sobre el corpus mexicano.
+# 4×H200 (564GB VRAM total) con FSDP — cabe bf16 full:
+#   params 70GB + grads 70GB + AdamW 140GB + activaciones ≈ 350-400GB
+#
+# Lanzamiento:
+#   pip install "soup-cli[train,deepspeed]"
+#   soup train --config soup-tlamatini-full.yaml \
+#     --deepspeed zero3    # (o FSDP según docs de Soup)
+#
+# Post-CPT: merge lineal con el base (mecanismo Thomson):
+#   merged = (1 - α) * base + α * cpt_model,  α ≈ 0.5–0.7
+#   (mergekit con task_vectors o manual — ver README del experimento)
+# ============================================================
+
+base: Qwen/Qwen3-30B-A3B      # sustituir por el base ganador de la evaluación
+task: pretrain
+
+data:
+  train: ./data/derecho_mx.jsonl          # corpus mexicano completo
+  format: plaintext
+  val_split: 0.03
+  max_length: 8192
+
+training:
+  epochs: 1
+  lr: 1e-5
+  warmup_ratio: 0.03
+  scheduler: cosine
+  weight_decay: 0.1
+  batch_size: auto
+  gradient_accumulation_steps: 16
+  gradient_checkpointing: true
+  packing: true
+  # SIN lora y SIN quantization: full-parameter
+  optimizer: adamw_torch_fused
+
+output: ./output_tlamatini_v1

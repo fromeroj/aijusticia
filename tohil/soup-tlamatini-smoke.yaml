@@ -1,0 +1,42 @@
+# ============================================================
+# Tohil — smoke test v0 para Tlamatini
+# ============================================================
+# CPT de dominio sobre el corpus mexicano (formato plaintext JSONL).
+# Corrida de validación del pipeline: 1 época sobre el export v0.
+#
+# En Vast.ai (4×H200):
+#   pip install "soup-cli[train]"
+#   soup train --config soup-tlamatini-smoke.yaml
+#
+# Para la corrida real (10B tokens):
+#   - quitar el bloque lora (full CPT)
+#   - quantization: off
+#   - multi-GPU: DeepSpeed/FSDP (docs/performance-and-quantization.md)
+#   - epochs según token count final del corpus
+# ============================================================
+
+base: Qwen/Qwen3-30B-A3B
+task: pretrain
+# backend: unsloth  # 2-5x más rápido con "soup-cli[fast]"
+
+data:
+  train: ./data/derecho_mx.jsonl          # corpus mexicano (export CPT)
+  format: plaintext
+  val_split: 0.05
+  max_length: 4096
+
+training:
+  epochs: 1
+  lr: 1e-5
+  batch_size: auto
+  gradient_accumulation_steps: 8
+  packing: true
+  lora:
+    r: 64
+    alpha: 16
+    target_modules: auto
+  # quantization: 4bit      # para smoke test en menos VRAM
+  moe_lora: true
+  moe_aux_loss_coeff: 0.01
+
+output: ./output_tlamatini_smoke
