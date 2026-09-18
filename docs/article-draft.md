@@ -50,16 +50,15 @@ Our empirical evaluation confirmed both models' lessons and one caveat: domain-t
 
 ## 3. AI Justicia: System Overview
 
-AI Justicia is a production system (aijusticia.mx) with three service tiers: **citizen** (free, anonymous, interview-driven), **lawyer** (professional mode, technical register, document generation), and **firm/despacho** (on-premise sovereign model with private adapters).
+AI Justicia is a production system (aijusticia.mx) with three service tiers: **citizen** (free, anonymous, conversational), **lawyer** (professional mode, technical register, document generation), and **firm/despacho** (on-premise sovereign model with private adapters).
 
-The pipeline for every query:
+The production pipeline is a **two-agent conversation**:
 
-1. **Analysis** — matter classification, jurisdiction detection (federal vs. 32 states).
-2. **Normalization** — colloquial citizen language → statutory terminology ("me despidieron" → "despido injustificado... artículo 48 LFT"). This stage improved FTS retrieval dramatically.
-3. **Interview** — dynamic, LLM-driven clarification rounds (configurable pre/post-retrieval) that build a structured case file (expediente).
-4. **Retrieval** — PostgreSQL full-text search with Spanish stemming over the corpus, source-weighted (statutes 1.3×, jurisprudence 1.2×), with relevance filtering.
-5. **Generation** — anchored responses: every legal claim must carry a citation `[n]` to a retrieved passage.
-6. **Verification** — an entailment pass over each cited sentence; below a support threshold, the system **abstains honestly** rather than answering.
+1. **Izel** — an empathic conversational assistant (streaming, voice in/out) that interviews the citizen in plain language, builds a structured case file (expediente), and answers with concrete procedure. First tokens in ~2 seconds.
+2. **The Bibliotecario (librarian subagent)** — runs *in parallel* with Izel: identifies the applicable statute from the conversation, searches *inside* that statute with phrase-aware full-text ranking, and returns the exact articles while Izel is still answering.
+3. **Verified citations** — every legal claim carries an inline `[n]` citation backed by the official fragment; a references card (law, article number, fragment) is attached to each answer, expandable and exportable.
+
+A public transparency dashboard (aijusticia.mx/estado) reports the live state of every source — documents, coverage window, last ingestion, and a traffic-light computed against each source's expected cadence.
 
 ### 3.1 The abstention lesson
 
@@ -71,20 +70,21 @@ An instructive failure: our first full evaluation showed 93% abstention — the 
 
 | Source family | Contents | Approx. tokens |
 |---|---|---|
-| **Semanario Judicial de la Federación** | 150K jurisprudencias + isolated theses | ~22M |
-| **DOF (federal gazette)** | 1999–2026, per-note full text | ~300M+ |
+| **Semanario Judicial de la Federación** | 150,187 tesis (jurisprudencia + aisladas), 1900–2026, differential harvest past an Imperva WAF | ~22M |
+| **DOF (federal gazette)** | 1999–2026, per-note full text, daily differential | ~300M+ |
 | **Federal statutes & regulations** | LeyesBiblio corpus + reglamentos/manuales + lex-mx (317 statutes, daily-synced Markdown) | ~50M |
-| **State legislation (32 states)** | Consolidated codes/laws/reglamentos per state | ~85M |
+| **State legislation (32 states)** | **24,076 consolidated codes/laws/reglamentos via Orden Jurídico Nacional** — every state covered | ~85M |
 | **Gaceta CDMX** | Complete 2014–2026 archive (via Wayback CDX) | 143M |
-| **State case law — CDMX (SIVEPJ)** | 28,146 sentences, full universe enumerated | ~34M |
-| **State case law — Edomex** | ~85K unique public sentences via judiciary API | ~3–4B |
-| **State case law — Jalisco** | 84,371 sentences via S3-signed URLs | ~2–3B |
+| **State case law — CDMX (SIVEPJ)** | 42,947 sentences, full universe ingested | ~52M |
+| **State case law — Baja California** | 147K-record public API; 2,849 ingested in first pass, harvest ongoing | ~250M |
+| **State case law — Edomex** | 178,439-sentence manifest enumerated via judiciary Elasticsearch API; extraction in progress | ~3–4B |
+| **State case law — Jalisco** | 84,731-sentence universe enumerated via reCAPTCHA-gated API; PDFs via CDP-driven S3 pre-signed URLs | ~2–3B |
 | **State case law — Querétaro, NL, +** | JWT chains, ASP.NET harvesting | ~1–2B |
 | **Doctrina: BJV (IIJ-UNAM)** | 5,680 complete books via OAI-PMH | ~1B |
 | **Theses: Repositorio UNAM** | 43,423 theses (~40% with full PDF) | ~2–3B |
 | **English instructive data (SFT only)** | 269K reasoning examples — NLI, LSAT logic, case briefs; **no foreign statutes** | SFT mix |
 
-Current status: **>1.5B tokens ingested and queryable**; remainder in active harvest; total discovered and accessible universe exceeds 12B tokens.
+Current status: **421,119 documents · 10.7M chunks · ~3.3B tokens ingested and queryable** (434M prompt-token calibrations against the live RAG); all 32 states already represented through the Orden Jurídico ingestion; remainder in active harvest; total discovered and accessible universe exceeds 12B tokens. A public dashboard (aijusticia.mx/estado) reports every source's count, coverage window, and freshness against its expected cadence.
 
 ### 4.2 Data engineering: the reproducible part nobody publishes
 
@@ -97,7 +97,13 @@ Every source required bespoke reverse-engineering. We document the techniques be
 - **Geo-blocked portals** (CDX Consejería Jurídica, Veracruz SEGOB): harvest from a Mexican-IP machine; ship JSONL to the data server.
 - **Wayback CDX as legal-archive rescue**: the CDMX gazette's own search is an unautomatable ZK Java app; the complete PDF archive exists in the Wayback Machine index and is fully enumerable.
 - **Scanned doctrine → OCR**: Apple Vision OCR (es-ES, ~0.7s/page) recovered 445 SCJN cuadernillos and full doctrinal books that had zero embedded text.
-- **Everything differential**: each harvester's script, watermark state, and incremental strategy lives in a Postgres registry (`harvest_scripts`) — laws change, gazettes publish daily, courts upload constantly. A corpus of Mexican law is not a dataset; it is a **living system of record**.
+- **TLS-fingerprint impersonation past Imperva** (SCJN Semanario): the Semanario's API sits behind an Imperva WAF that silently drops any client whose TLS handshake is not a real browser — curl with a browser User-Agent, cloudscraper, and rotating residential proxies all fail. A Chrome-fingerprint HTTP client (curl_cffi, `impersonate="chrome"`) passes without executing the challenge. The 403 handshake cost us seven weeks of harvest before diagnosis.
+- **API contract archaeology from obfuscated SPA bundles** (same SCJN portal): the thesis-detail endpoint changed contract silently — it now requires `isSemanal` and `hostName` query parameters, discoverable only by extracting the route from the webpack chunk that implements the public search UI. When a listing returns empty, the harvest died, not the data.
+- **reCAPTCHA v3 score gating** (Jalisco STJ): every API call requires a fresh v3 token (`X-Recaptcha-Token`, action `visitor_verify`) generated in-page; the backend scores the *browser reputation*, so automated Chromium fails while the engineer's daily-profile Chrome passes. Production harvest runs through CDP against a real Chrome profile (or a Chrome extension generating tokens in-page), and presigned S3 URLs carry the files.
+- **ASP.NET WebForms postbacks** (Nuevo León): search state lives in `__VIEWSTATE`; the harvest replays viewstate + button event per page.
+- **JHipster API-key gating** (Chihuahua PJECZ): the v3 API authenticates with an obfuscated `X-Api-Key` extracted from the SPA's config bundle; routes discoverable from the frontend's own service files.
+- **Public transparency as part of the harvest**: every source's count, coverage window, and freshness-vs-cadence traffic light is published live (aijusticia.mx/estado) — a corpus of Mexican law is not a dataset; it is a **living system of record**, and the system of record is public.
+- **Everything differential**: each harvester's script, watermark state, and incremental strategy lives in a versioned registry — laws change, gazettes publish daily, courts upload constantly.
 
 ## 5. Training Strategy: Tlamatini
 
@@ -139,22 +145,28 @@ This is our central claim: for jurisdiction-specific legal AI, **harness-in-the-
 - Abstention calibration: false abstention rate vs. hallucination rate.
 - Professional mode: motion/contract drafting evaluated by practicing attorneys.
 
+### 5.4 Applicability triage: where small, fast, calibrated models fit
+
+The Bibliotecario's core step — *given a citizen case and N candidate passages, which statutes actually apply?* — is a structured classification, not a generation task. We benchmarked our production model (MiniMax-M3) against a frontier model (GPT-4o) on 4 candidate passages for an unauthorized-charge case: identical verdicts on 3 of 4 passages, with the frontier model *less* inclusive on the genuinely contested one (the passage our triage should keep — recall matters more than precision here). Latency: 37.7s vs 2.0s. Conclusion: the triage step does not need a frontier LLM; it needs a **calibrated, fast, structured-output classifier** — the "System One" model class now emerging (e.g., TypeSafe's Jev: 70–500 ms, calibrated probabilities, $0.042/MTok, designed to never hallucinate on typed outputs). Our roadmap assigns this step to such a model, reserving Tlamatini for what it is uniquely trained for: grounded Mexican legal generation.
+
 ## 6. Privacy Architecture as Product
 
 The citizen tier is anonymous by design: no email required (recovery phrase), interview data stays local until explicit opt-in, and consent is a first-class UI object. The firm tier is the strategic differentiator: a sovereign model on-premise, private adapters, zero external API calls. In a market where every cloud legal AI is legally unusable for Mexican despachos, compliance *is* the moat.
 
 ## 7. Contributions
 
-1. The first large-scale, documented, **living corpus of Mexican law** (10B+ tokens, differential harvest registry, reproducible techniques for every source).
-2. A production **retrieval-anchored legal assistant** with honest abstention, evaluated 3-way (cloud generalist +RAG vs. legal foundation +RAG vs. legal foundation bare), with the token-budget pathology of reasoning models in RAG pipelines identified and fixed.
+1. The first large-scale, documented, **living corpus of Mexican law** (421K documents ingested, 10.7M chunks queryable, 10B+ token universe mapped, 32/32 states covered in primary legislation, differential harvest registry, reproducible techniques for every source).
+2. A production **retrieval-anchored legal assistant** with a two-agent conversational architecture (empathic interview + librarian subagent), verified citations, and honest abstention — with the token-budget pathology of reasoning models in RAG pipelines identified and fixed.
 3. A training recipe unifying **SaulLM replay + Thomson merge + harness training**, targeting Tlamatini, the first sovereign Mexican legal base model.
 4. Evidence that **citation hallucination survives domain CPT** — jurisdiction grounding requires retrieval, and harness format can be trained.
+5. Evidence that **applicability triage is solved by small calibrated classifiers, not frontier LLMs** — with a reproduction harness.
 
 ## 8. Status & Roadmap
 
-- Corpus: 1.5B+ ingested, 10B+ accessible, harvest ongoing across 17 registered sources.
-- System: live at aijusticia.mx (citizen/lawyer tiers), firm tier in development pending base model.
-- Training: Tlamatini CPT run (Tohil pipeline) planned on rented 4×H200 upon corpus completion; base decision (Qwen 3.6-35B-A3B vs Qwen 3.8 27B dense) pending the running evaluation; battery automated.
+- Corpus: **421K documents · 10.7M chunks · ~3.3B tokens ingested and queryable**; 10B+ token universe mapped; 32/32 states covered in primary legislation; harvests ongoing across registered sources (BC, Edomex, Jalisco in flight).
+- System: live at aijusticia.mx (citizen/lawyer tiers, two-agent conversational architecture, public corpus dashboard); firm tier in development pending base model.
+- Training: Tlamatini CPT run (Tohil pipeline) on rented 4×H200 upon corpus completion; base decision (Qwen 3.6-35B-A3B vs Qwen 3.8 27B dense) pending the running evaluation; evaluation battery automated.
+- Applicability triage: migrating to a calibrated structured-output classifier when System One models reach general availability; comparison harness ready.
 
 ---
 
