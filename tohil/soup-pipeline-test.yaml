@@ -1,0 +1,29 @@
+# ============================================================
+# Pipeline validation — Tlamatini smoke en Mac (MPS)
+# ============================================================
+# Objetivo: validar la CADENA completa (config → data → training loop
+# → checkpoint → merge → GGUF) con un modelo pequeño, no la calidad.
+# Cualquier carencia que salte aquí es una menos el lunes en Vast.ai.
+# ============================================================
+
+base: Qwen/Qwen2.5-0.5B
+task: pretrain
+
+data:
+  train: ./data_smoke.jsonl
+  format: plaintext
+  val_split: 0.05
+  max_length: 1024
+
+training:
+  epochs: 1
+  lr: 1e-5
+  batch_size: auto
+  gradient_accumulation_steps: 4
+  packing: true
+  lora:
+    r: 16
+    alpha: 32
+    target_modules: auto
+
+output: ./output_pipeline_test
