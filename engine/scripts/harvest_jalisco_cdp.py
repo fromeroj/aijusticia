@@ -110,9 +110,11 @@ def main():
                 if err_consec == 1 or err_consec % 5 == 0:
                     print(f"  {rel}: {res.get('body', '')[:100]}", flush=True)
                 if err_consec >= 10:
-                    print("10 fallos seguidos — ¿tu Chrome abrió con --remote-debugging-port=9222?",
-                          flush=True)
-                    break
+                    print("10 fallos seguidos — enfriando 15 minutos (reCAPTCHA bajo)", flush=True)
+                    time.sleep(900)
+                    page.goto(FRONT, timeout=90000, wait_until="domcontentloaded")
+                    page.wait_for_timeout(10000)
+                    err_consec = 0
             if ok and ok % 50 == 0:
                 ESTADO.write_text(json.dumps(sorted(hechos)))
                 print(f"  {ok} descargados ({err} errores)", flush=True)

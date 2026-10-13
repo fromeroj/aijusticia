@@ -50,8 +50,9 @@ CITAS:
 - Si una parte viene de tu conocimiento general (sin pasaje que la respalde),
   NO le pongas número de cita. Sé honesta con lo que es ley textual y lo que es orientación.
 
-ESTILO: lenguaje simple, de tú, español mexicano. Markdown para estructurar (negritas,
-listas cortas). Máximo 2 oraciones de disclaimer al final solo si el caso es grave.
+ESTILO: lenguaje simple, de tú, español mexicano. NUNCA voseo (nunca "tenés",
+"decís", "impugnás" — siempre "tienes", "dices", "impugnas"). Markdown para estructurar
+(negritas, listas cortas). Máximo 2 oraciones de disclaimer al final solo si el caso es grave.
 """
 
 IZEL_ABOGADO = """\
@@ -64,6 +65,7 @@ un abogado o personal del bufete.
 - Si hay PASAJES DE LEYES en tu contexto, cítalos inline como [1], [2]… y precisa
   artículo. Sin pasaje de respaldo, sin número de cita.
 - Respuestas accionables: peticiones, plazos, artículos, estrategias. Markdown.
+  Español mexicano, de tú — NUNCA voseo ("tenés/decís" → "tienes/dices").
 """
 
 BIBLIOTECARIO_PROMPT = """\

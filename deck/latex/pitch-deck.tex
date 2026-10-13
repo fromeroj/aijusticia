@@ -1,0 +1,423 @@
+% AI Justicia — Pitch Deck (LaTeX / Beamer, 16:9)
+% Build:  make   (in this folder)
+% Edit the COLORS block below to retune the brand,
+% and the FRAMES section at the bottom for content.
+\documentclass[aspectratio=169,11pt]{beamer}
+
+% ── Fonts (XeLaTeX) ────────────────────────────────────────────────────────
+\usepackage{fontspec}
+\setmainfont{Palatino}                       % display serif (brand voice)
+\setsansfont{Helvetica Neue}                 % body sans
+\usefonttheme{serif}
+
+% ── Colors ─────────────────────────────────────────────────────────────────
+\usepackage{xcolor}
+\definecolor{emerald}{HTML}{047857}
+\definecolor{emeralddeep}{HTML}{065F46}
+\definecolor{teal}{HTML}{0D9488}
+\definecolor{ink}{HTML}{16241F}
+\definecolor{muted}{HTML}{5B6B64}
+\definecolor{bglight}{HTML}{FAFAF6}
+\definecolor{bgdark}{HTML}{052019}
+\definecolor{line}{HTML}{E3E7E0}
+\definecolor{mint}{HTML}{34D399}
+
+% ── Layout ─────────────────────────────────────────────────────────────────
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage[most]{tcolorbox}
+\usepackage{graphicx}
+
+\setbeamersize{text margin left=1.6cm, text margin right=1.6cm}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{page number in head/foot}{}%
+\setbeamercolor{normal text}{fg=ink,bg=bglight}
+\setbeamercolor{structure}{fg=emerald}
+\setbeamercolor{frametitle}{fg=ink}
+\setbeamerfont{frametitle}{series=\bfseries,size=\large}
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip
+  \begin{beamercolorbox}[wd=\paperwidth,sep=2pt]{frametitle}
+    \hspace*{1.6cm}\insertframetitle
+  \end{beamercolorbox}\vspace*{-2mm}}
+
+\newcommand{\kicker}[1]{{\footnotesize\bfseries\color{emerald}\uppercase{#1}}}
+\newcommand{\muted}[1]{\textcolor{muted}{#1}}
+\newcommand{\acc}[1]{\textcolor{emerald}{#1}}
+
+% rounded card
+\newtcolorbox{card}[1][]{
+  enhanced, frame hidden, boxrule=0pt,
+  colback=white, borderline={0.6pt}{0pt}{line},
+  arc=6pt, left=8pt, right=8pt, top=6pt, bottom=6pt, #1
+}
+\newtcolorbox{darkcard}[1][]{
+  enhanced, frame hidden, boxrule=0pt,
+  colback=white!5!bgdark, borderline={0.6pt}{0pt}{white!18!bgdark},
+  arc=6pt, left=8pt, right=8pt, top=6pt, bottom=6pt, #1
+}
+% pill
+\newcommand{\pill}[1]{\tcbox[on line, enhanced, frame hidden, boxrule=0pt,
+  colback=emerald!8, arc=8pt, left=6pt, right=6pt, top=2.5pt, bottom=2.5pt]
+  {\small\bfseries\color{emeralddeep}#1}}
+
+% footer on light frames
+\newcommand{\deckfooter}[1]{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \draw[line, line width=0.5pt] (current page.south west) ++(1.6cm,0.72cm) -- ++([xshift=-3.2cm]current page.south east);
+    \node[anchor=south west, text=muted, font=\tiny\bfseries] at ([xshift=1.6cm,yshift=0.36cm]current page.south west)
+      {AI JUSTICIA — MEXICO EARLY STAGE 100};
+    \node[anchor=south east, text=muted, font=\tiny\bfseries] at ([xshift=-1.6cm,yshift=0.36cm]current page.south east) {#1};
+  \end{tikzpicture}}
+
+\begin{document}
+
+% ═══ 1 · COVER ═════════════════════════════════════════════════════════════
+\begingroup
+\setbeamercolor{background canvas}{bg=bgdark}
+\begin{frame}[plain]
+  \vspace{0.2cm}
+  {\color{mint}\footnotesize\bfseries AI JUSTICIA \hfill \textnormal{\color{muted}MEXICO EARLY STAGE 100 · 2026}}\\[2pt]
+  {\color{emeralddeep}\rule{\textwidth}{0.8pt}}
+
+  \vfill
+  {\fontsize{31}{37}\selectfont\bfseries\color{white}Legal help for Mexico:\\[3pt]
+   \fontsize{31}{37}\selectfont\bfseries\color{mint}cited, verifiable, sovereign.}
+   \vspace{9pt}
+
+  {\large\color{white!75!bgdark}A legal AI platform for citizens and law firms,\\ powered by our own LLM trained on Mexican law.}
+  \vfill
+
+  {\color{emeralddeep}\rule{\textwidth}{0.8pt}}\\[3pt]
+  {\tiny\bfseries\color{muted}AIJUSTICIA.MX \hfill LIVE BETA · MEXICO \hfill 2026}
+\end{frame}
+\endgroup
+
+% ═══ 2 · PROBLEM ═══════════════════════════════════════════════════════════
+\begin{frame}{\kicker{The problem}\\[2pt] Justice in Mexico is a \acc{luxury good}}
+  \vspace{2pt}
+  \muted{\footnotesize Rent hikes, wrongful dismissal, unauthorized charges, custody — every household faces legal moments. Almost nobody knows what the law says for them, and lawyers are priced for companies.}
+  \vspace{6pt}
+  \begin{columns}[T]
+    \begin{column}{0.32\textwidth}
+      \begin{card}
+        {\fontsize{21}{21}\selectfont\bfseries\color{emerald}130M}\\[3pt]
+        {\footnotesize\bfseries People under Mexican law}\\[2pt]
+        {\scriptsize\color{muted}Federal + 32 state systems. Consumer, labor, family — every household.}
+      \end{card}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \begin{card}
+        {\fontsize{21}{21}\selectfont\bfseries\color{emerald}Weeks}\\[3pt]
+        {\footnotesize\bfseries To learn what applies to you}\\[2pt]
+        {\scriptsize\color{muted}Laws are public but unreadable: technical language, scattered sources, thousands of pages.}
+      \end{card}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \begin{card}
+        {\fontsize{21}{21}\selectfont\bfseries\color{emerald}\$\$\$}\\[3pt]
+        {\footnotesize\bfseries First consultation}\\[2pt]
+        {\scriptsize\color{muted}General AI chatbots answer confidently — and invent articles. A hallucinated citation is worse than none.}
+      \end{card}
+    \end{column}
+  \end{columns}
+  \deckfooter{02}
+\end{frame}
+
+% ═══ 3 · TLAMATINI ═════════════════════════════════════════════════════════
+\begingroup
+\setbeamercolor{background canvas}{bg=bgdark}
+\setbeamercolor{frametitle}{fg=white}
+\begin{frame}{\kicker{1 — Tlamatini}\\[2pt] {\color{white}Mexico's own legal LLM,} \acc{trained on its law}}
+  \muted{\footnotesize Not a foreign model translated to Spanish. Tlamatini is trained on a
+  \textbf{\color{mint}10B+ token corpus} of official Mexican law we harvest daily — and
+  specialized expert agents grounded in it don't just match general-purpose frontier
+  models on Mexican legal knowledge: they beat them, with citations instead of guesses.}
+  \vspace{6pt}
+  \begin{columns}[T]
+    \begin{column}{0.24\textwidth}
+      \begin{darkcard}
+        {\fontsize{19}{19}\selectfont\bfseries\color{mint}10B+}\\[3pt]
+        {\footnotesize\bfseries\color{white}Corpus tokens}\\[2pt]
+        {\scriptsize\color{white!60!bgdark}Official Mexican law — the training ground of the model.}
+      \end{darkcard}
+    \end{column}
+    \begin{column}{0.24\textwidth}
+      \begin{darkcard}
+        {\fontsize{19}{19}\selectfont\bfseries\color{mint}300+}\\[3pt]
+        {\footnotesize\bfseries\color{white}Federal laws ingested}\\[2pt]
+        {\scriptsize\color{white!60!bgdark}LeyesBiblio, DOF, SJF — harvested and updated automatically.}
+      \end{darkcard}
+    \end{column}
+    \begin{column}{0.24\textwidth}
+      \begin{darkcard}
+        {\fontsize{19}{19}\selectfont\bfseries\color{mint}10.6M}\\[3pt]
+        {\footnotesize\bfseries\color{white}Indexed text chunks}\\[2pt]
+        {\scriptsize\color{white!60!bgdark}Article-level retrieval, serving citizens and firms today.}
+      \end{darkcard}
+    \end{column}
+    \begin{column}{0.24\textwidth}
+      \begin{darkcard}
+        {\fontsize{19}{19}\selectfont\bfseries\color{mint}32}\\[3pt]
+        {\footnotesize\bfseries\color{white}States, in progress}\\[2pt]
+        {\scriptsize\color{white!60!bgdark}State codes and gazettes — the long tail.}
+      \end{darkcard}
+    \end{column}
+  \end{columns}
+  \vspace{6pt}
+  \centering
+  {\footnotesize\color{white!75!bgdark}Specialization wins: an expert agent with the corpus behind it
+  answers what a generalist can only improvise.}
+  \begin{tikzpicture}[remember picture, overlay]
+    \draw[white!14!bgdark, line width=0.5pt] (current page.south west) ++(1.6cm,0.72cm) -- ++([xshift=-3.2cm]current page.south east);
+    \node[anchor=south west, text=muted, font=\tiny\bfseries] at ([xshift=1.6cm,yshift=0.36cm]current page.south west)
+      {AI JUSTICIA — MEXICO EARLY STAGE 100};
+    \node[anchor=south east, text=muted, font=\tiny\bfseries] at ([xshift=-1.6cm,yshift=0.36cm]current page.south east) {03};
+  \end{tikzpicture}
+\end{frame}
+\endgroup
+
+% ═══ 4 · FIRM SOVEREIGNTY ══════════════════════════════════════════════════
+\begin{frame}{\kicker{2 — For law firms}\\[2pt] Absolute sovereignty on the \acc{law workbench}}
+  \muted{\footnotesize The full stack — model, corpus, files, chat — runs inside the firm's own
+  servers. \textbf{Not one byte of client data ever reaches an international LLM endpoint.}
+  Professional secrecy and data-protection law are honored by architecture, not by contract.}
+  \vspace{6pt}
+  \begin{columns}[T]
+    \begin{column}{0.49\textwidth}
+      \begin{card}
+        {\footnotesize\bfseries On-premise, full stop}\\[2pt]
+        {\scriptsize\color{muted}Model + retrieval + workspace deployed in-house, on hardware the firm owns. Air-gap capable.}
+      \end{card}
+    \end{column}
+    \begin{column}{0.49\textwidth}
+      \begin{card}
+        {\footnotesize\bfseries Zero data abroad}\\[2pt]
+        {\scriptsize\color{muted}No prompts, files or metadata sent to foreign AI providers. Ever. Auditable at the network layer.}
+      \end{card}
+    \end{column}
+  \end{columns}
+  \vspace{4pt}
+  \begin{columns}[T]
+    \begin{column}{0.49\textwidth}
+      \begin{card}
+        {\footnotesize\bfseries Privacy without compromise}\\[2pt]
+        {\scriptsize\color{muted}Secrecía profesional, LFPDPPP and client confidentiality enforced by design — the firm keeps full control.}
+      \end{card}
+    \end{column}
+    \begin{column}{0.49\textwidth}
+      \begin{card}
+        {\footnotesize\bfseries A workbench, not a chatbot}\\[2pt]
+        {\scriptsize\color{muted}Cases, vault with version history, deadlines, ethical wall and Izel as a firm member — all sovereign.}
+      \end{card}
+    \end{column}
+  \end{columns}
+  \deckfooter{04}
+\end{frame}
+
+% ═══ 5 · GUIDANCE FOR ALL ══════════════════════════════════════════════════
+\begin{frame}{\kicker{3 — For the public}\\[2pt] Law guidance \acc{for everyone}}
+  \begin{columns}[c]
+    \begin{column}{0.52\textwidth}
+      \pill{Para ti — citizens, free}\\[6pt]
+      {\small\color{muted}Chat with Izel in plain language. She builds your case file with you, finds the exact law that protects you, and hands you next steps — every answer cited against the official text.}\\[12pt]
+      {\footnotesize\color{muted}Anonymous by default: a recovery phrase — not an identity — owns the case file, and sharing works through revocable grants. The same sovereign model, serving the public.}
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \fbox{\includegraphics[width=\linewidth]{../assets/ref-card.png}}
+    \end{column}
+  \end{columns}
+  \deckfooter{05}
+\end{frame}
+
+% ═══ 6 · EVIDENCE ══════════════════════════════════════════════════════════
+\begin{frame}{\kicker{The evidence}\\[2pt] Expert agents \acc{beat generalists} here}
+  \begin{columns}[c]
+    \begin{column}{0.55\textwidth}
+      \fbox{\includegraphics[width=\linewidth]{../assets/chat-answer.png}}
+    \end{column}
+    \begin{column}{0.41\textwidth}
+      {\small\bfseries Verified references card}\\[2pt]
+      {\footnotesize\color{muted}Law, article number, official fragment — expandable, exportable. General chatbots cannot show you this, because they never had it.}\\[9pt]
+      {\small\bfseries Procedure, not trivia}\\[2pt]
+      {\footnotesize\color{muted}Concrete phases, statutory deadlines, documents to keep — knowledge that only lives in the corpus.}\\[9pt]
+      {\small\bfseries Two agents, one answer}\\[2pt]
+      {\footnotesize\color{muted}While Izel converses, the Bibliotecario searches inside the identified law and returns the exact articles.}
+    \end{column}
+  \end{columns}
+  \deckfooter{06}
+\end{frame}
+
+% ═══ 7 · HOW IT WORKS ══════════════════════════════════════════════════════
+\begin{frame}{\kicker{How it works}\\[2pt] Two agents, one \acc{verifiable answer}}
+  \begin{columns}[c]
+    \begin{column}{0.31\textwidth}
+      \begin{card}
+        {\small\bfseries Izel — conversation}\\[3pt]
+        {\footnotesize\color{muted}Listens with empathy, asks the right questions, builds the case file. Streams in seconds, with voice in and out.}
+      \end{card}
+    \end{column}
+    \begin{column}{0.03\textwidth}\centering {\large\color{emerald}$\rightarrow$}\end{column}
+    \begin{column}{0.31\textwidth}
+      \begin{card}
+        {\small\bfseries Bibliotecario — retrieval}\\[3pt]
+        {\footnotesize\color{muted}Identifies the applicable law and searches inside it with phrase-aware ranking, returning exact articles while Izel answers.}
+      \end{card}
+    \end{column}
+    \begin{column}{0.03\textwidth}\centering {\large\color{emerald}$\rightarrow$}\end{column}
+    \begin{column}{0.31\textwidth}
+      \begin{card}
+        {\small\bfseries Verified citation}\\[3pt]
+        {\footnotesize\color{muted}The answer cites law + article, backed by the official fragment. Users expand, export and share the sources.}
+      \end{card}
+    \end{column}
+  \end{columns}
+  \vspace{6pt}
+  \centering{\footnotesize
+  \pill{18+ agentic tools}\;
+  \pill{Document review \& versioning}\;
+  \pill{Voice (TTS / STT)}\\[3pt]
+  \pill{Deadlines \& case timeline}\;
+  \pill{Sharing with granular grants}}
+  \deckfooter{07}
+\end{frame}
+
+% ═══ 8 · TRUST ═════════════════════════════════════════════════════════════
+\begin{frame}{\kicker{Trust by design}\\[2pt] Built for the standard law \acc{requires}}
+  \vspace{4pt}
+  \begin{columns}[T]
+    \begin{column}{0.49\textwidth}
+      \begin{card}
+        {\footnotesize\bfseries Anonymous by default}\\[2pt]
+        {\scriptsize\color{muted}Citizens consult without giving a name. A recovery phrase — not an identity — owns the case file. LFPDPPP consent, revocable.}
+      \end{card}
+    \end{column}
+    \begin{column}{0.49\textwidth}
+      \begin{card}
+        {\footnotesize\bfseries Ownership \& granular access}\\[2pt]
+        {\scriptsize\color{muted}Files always belong to the citizen. Sharing works through revocable grants with roles — never through copies.}
+      \end{card}
+    \end{column}
+  \end{columns}
+  \vspace{4pt}
+  \begin{columns}[T]
+    \begin{column}{0.49\textwidth}
+      \begin{card}
+        {\footnotesize\bfseries Ethical wall for firms}\\[2pt]
+        {\scriptsize\color{muted}Conflicts of interest are enforced at the database: a firm member walled out of a case cannot see it exists.}
+      \end{card}
+    \end{column}
+    \begin{column}{0.49\textwidth}
+      \begin{card}
+        {\footnotesize\bfseries Auditable by design}\\[2pt]
+        {\scriptsize\color{muted}Every access, version and grant change lands on a case timeline — the firm and the client can both see what happened.}
+      \end{card}
+    \end{column}
+  \end{columns}
+  \deckfooter{08}
+\end{frame}
+
+% ═══ 9 · BUSINESS MODEL ════════════════════════════════════════════════════
+\begin{frame}{\kicker{Business model}\\[2pt] Free to citizens. Paid where \acc{value lands}}
+  \vspace{4pt}
+  \begin{columns}[T]
+    \begin{column}{0.49\textwidth}
+      \begin{card}
+        {\footnotesize\bfseries Consumers \muted{(B2C funnel)}}\\[6pt]
+        {\fontsize{19}{19}\selectfont\bfseries\color{emerald}\$0}\ {\scriptsize\color{muted}unlimited guidance — acquisition engine}\par\vspace{4pt}
+        {\fontsize{19}{19}\selectfont\bfseries\color{emerald}\$100}\ {\scriptsize\color{muted}MXN — lawyer validation of their case}\par\vspace{4pt}
+        {\fontsize{19}{19}\selectfont\bfseries\color{emerald}\$250}\ {\scriptsize\color{muted}MXN — monthly accompaniment}
+      \end{card}
+    \end{column}
+    \begin{column}{0.49\textwidth}
+      \begin{card}
+        {\footnotesize\bfseries Law firms \muted{(B2B)}}\\[5pt]
+        {\scriptsize\color{muted}Per-seat subscription to the Studio workspace — cases, vault, deadlines, Izel as a firm member.}\\[5pt]
+        {\footnotesize\bfseries On-prem sovereign license}\\[2pt]
+        {\scriptsize\color{muted}Stack + model, inside the firm's walls — the flagship for firms that cannot leave their files.}
+      \end{card}
+    \end{column}
+  \end{columns}
+  \vspace{6pt}
+  \muted{\footnotesize Citizens arrive free and stay as paying cases; firms pay for the workspace — and for the model underneath.}
+  \deckfooter{09}
+\end{frame}
+
+% ═══ 10 · MARKET ═══════════════════════════════════════════════════════════
+\begin{frame}{\kicker{Market}\\[2pt] Every Mexican is a \acc{legal subject}}
+  \muted{\footnotesize Legal need is universal and recurring; affordable, reliable guidance barely exists. Law firms, from solos to the largest despachos, still run on paper and WhatsApp.}
+  \vspace{6pt}
+  \begin{columns}[T]
+    \begin{column}{0.32\textwidth}
+      \begin{card}
+        {\fontsize{19}{19}\selectfont\bfseries\color{emerald}B2C}\\[3pt]
+        {\footnotesize\bfseries Every adult in Mexico}\\[2pt]
+        {\scriptsize\color{muted}First structurally affordable legal guidance, monetized at the moment of real need.}
+      \end{card}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \begin{card}
+        {\fontsize{19}{19}\selectfont\bfseries\color{emerald}B2B}\\[3pt]
+        {\footnotesize\bfseries Tens of thousands of firms}\\[2pt]
+        {\scriptsize\color{muted}Solos, boutiques and despachos digitizing case management with an AI member that already knows Mexican law.}
+      \end{card}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \begin{card}
+        {\fontsize{19}{19}\selectfont\bfseries\color{emerald}B2G+}\\[3pt]
+        {\footnotesize\bfseries Institutions \& govtech}\\[2pt]
+        {\scriptsize\color{muted}Sovereign deployment for agencies, universities and legaltech — the model is theirs to run.}
+      \end{card}
+    \end{column}
+  \end{columns}
+  \deckfooter{10}
+\end{frame}
+
+% ═══ 11 · ROADMAP ══════════════════════════════════════════════════════════
+\begin{frame}{\kicker{Where we are}\\[2pt] Live today. Training the model \acc{next month}}
+  \vspace{8pt}
+  \begin{columns}[T]
+    \begin{column}{0.32\textwidth}
+      \begin{card}[enhanced, borderline north={2pt}{0pt}{emerald}]
+        {\footnotesize\bfseries\color{emeralddeep}Now — private beta}\\[4pt]
+        {\scriptsize\color{muted}Live at aijusticia.mx: citizen chat with verified citations, firm Studio, documents, deadlines and voice — in daily use by a pilot firm.}
+      \end{card}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \begin{card}[enhanced, borderline north={2pt}{0pt}{teal}]
+        {\footnotesize\bfseries\color{teal}Next — Tlamatini v1}\\[4pt]
+        {\scriptsize\color{muted}Continued pre-training of our open-weight legal model on the 10B+ token corpus, plus embeddings over 10.6M chunks.}
+      \end{card}
+    \end{column}
+    \begin{column}{0.32\textwidth}
+      \begin{card}[enhanced, borderline north={2pt}{0pt}{gray}]
+        {\footnotesize\bfseries\color{black!70}Then — the republic}\\[4pt]
+        {\scriptsize\color{muted}All 32 state corpora online, voice-first mobile, and sovereign on-prem deployments.}
+      \end{card}
+    \end{column}
+  \end{columns}
+  \deckfooter{11}
+\end{frame}
+
+% ═══ 12 · TEAM & CONTACT ═══════════════════════════════════════════════════
+\begingroup
+\setbeamercolor{background canvas}{bg=bgdark}
+\begin{frame}[plain]
+  \vspace{0.2cm}
+  {\color{mint}\footnotesize\bfseries TEAM \& CONTACT \hfill \textnormal{\color{muted}AI JUSTICIA}}\\[2pt]
+  {\color{emeralddeep}\rule{\textwidth}{0.8pt}}
+  \vfill
+  {\fontsize{27}{33}\selectfont\bfseries\color{white}Built by people who\\ refuse to wait for \color{mint}the system.}
+  \vspace{14pt}
+
+  {\small\color{white!75!bgdark}\textbf{\color{white}Fabian Romero} — founder \& engineer. Designed and shipped the full platform end to end:\\
+  product, retrieval, security, infrastructure and the training pipeline.\\
+  \color{muted}Backed by a founding team driving legal operations and the pilot firms.}
+  \vfill
+
+  {\color{emeralddeep}\rule{\textwidth}{0.8pt}}\\[3pt]
+  {\tiny\bfseries\color{muted}FABIAN@AIJUSTICIA.MX \hfill AIJUSTICIA.MX \hfill @AIJUSTICIA}
+\end{frame}
+\endgroup
+
+\end{document}

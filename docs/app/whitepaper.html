@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tlamatini — El LLM jurídico soberano de México | Licenciamiento del modelo</title>
+<meta name="description" content="Documento técnico-comercial: Tlamatini, el LLM entrenado exclusivamente con derecho mexicano. 10B+ tokens de fuentes primarias, citas verificables, pesos desplegables en su infraestructura. Licencie el modelo.">
+<link rel="icon" type="image/png" href="assets/tlamatini-glyph.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F6F3EC;
+  --paper-2:#EFEBE0;
+  --ink:#12203A;
+  --ink-soft:#3D4B63;
+  --ink-faint:#6B7690;
+  --navy:#0D1E3C;
+  --navy-2:#122847;
+  --gold:#C0922B;
+  --gold-soft:#AF915F;
+  --cream:#FCE1B6;
+  --teal:#177E80;
+  --teal-bright:#2BA3A5;
+  --rule:rgba(18,32,58,.16);
+  --rule-dark:rgba(252,225,182,.16);
+  --serif:'Fraunces', Georgia, serif;
+  --sans:'Inter', -apple-system, sans-serif;
+  --mono:'IBM Plex Mono', ui-monospace, monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);
+  background:var(--paper);
+  color:var(--ink);
+  font-size:17px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--gold);color:var(--navy)}
+img{max-width:100%}
+
+/* ---------- top bar ---------- */
+.topbar{
+  position:fixed;inset:0 0 auto 0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 28px;
+  transition:background .4s ease, box-shadow .4s ease, padding .4s ease;
+}
+.topbar.solid{background:rgba(13,30,60,.92);backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--rule-dark);padding:10px 28px}
+.topbar .brand{display:flex;align-items:center;gap:14px;text-decoration:none}
+.topbar .brand img{height:42px;width:auto;display:block}
+.topbar .brand .doc-tag{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gold-soft);border-left:1px solid var(--rule-dark);padding-left:14px;
+}
+.topbar nav{display:flex;gap:2px}
+.topbar nav a{
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  color:rgba(252,225,182,.65);text-decoration:none;padding:8px 11px;border-radius:3px;
+  transition:color .25s, background .25s;
+}
+.topbar nav a:hover{color:var(--cream);background:rgba(252,225,182,.08)}
+.topbar nav a .n{color:var(--gold-soft);margin-right:5px}
+.topbar .cta-nav{
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--navy);background:var(--gold);text-decoration:none;
+  padding:9px 16px;border-radius:3px;font-weight:500;transition:background .25s;
+  white-space:nowrap;
+}
+.topbar .cta-nav:hover{background:var(--cream)}
+@media(max-width:1080px){.topbar nav{display:none}}
+@media(max-width:560px){.topbar .brand .doc-tag{display:none}}
+
+/* ---------- hero ---------- */
+.hero{
+  background:var(--navy);color:#fff;
+  padding:170px 28px 90px;
+  position:relative;overflow:hidden;
+}
+.hero::after{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(1100px 500px at 78% -10%, rgba(192,146,43,.14), transparent 60%),
+             radial-gradient(700px 420px at 8% 110%, rgba(23,126,128,.16), transparent 60%);
+  pointer-events:none;
+}
+.hero-inner{max-width:1180px;margin:0 auto;position:relative;z-index:1}
+.hero .doc-meta{
+  display:flex;flex-wrap:wrap;gap:10px 34px;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gold-soft);margin-bottom:52px;
+}
+.hero .doc-meta span b{color:var(--cream);font-weight:500}
+.hero h1{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(40px, 5.6vw, 76px);
+  line-height:1.08;letter-spacing:-.015em;
+  max-width:16ch;margin-bottom:34px;
+}
+.hero h1 .hl{opacity:.28;transition:opacity .1s linear}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero .lede{
+  font-size:19px;line-height:1.7;color:rgba(255,255,255,.78);
+  max-width:56ch;margin-bottom:60px;
+}
+.hero .lede b{color:#fff;font-weight:600}
+.hero-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-top:1px solid var(--rule-dark);
+}
+.hero-stats .stat{
+  padding:26px 26px 6px 0;border-right:1px solid var(--rule-dark);margin-right:26px;
+}
+.hero-stats .stat:last-child{border-right:none;margin-right:0}
+.hero-stats .num{
+  font-family:var(--serif);font-size:clamp(30px,3.2vw,44px);font-weight:500;
+  color:var(--cream);line-height:1;display:block;margin-bottom:10px;
+}
+.hero-stats .num i{font-style:normal;color:var(--gold)}
+.hero-stats .lbl{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(252,225,182,.55);line-height:1.6;display:block;
+}
+@media(max-width:860px){
+  .hero-stats{grid-template-columns:1fr 1fr;row-gap:24px}
+  .hero-stats .stat{border-right:none;margin-right:0;padding-right:12px}
+}
+
+/* ---------- abstract strip ---------- */
+.abstract{
+  background:var(--navy);color:#fff;padding:0 28px 100px;
+}
+.abstract-inner{
+  max-width:1180px;margin:0 auto;
+  border-top:1px solid var(--rule-dark);padding-top:46px;
+  display:grid;grid-template-columns:220px 1fr;gap:60px;
+}
+.abstract .k{
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-soft);
+}
+.abstract p{color:rgba(255,255,255,.8);font-size:16.5px;max-width:70ch}
+.abstract p b{color:var(--cream);font-weight:600}
+@media(max-width:860px){.abstract-inner{grid-template-columns:1fr;gap:18px}}
+
+/* ---------- document sections ---------- */
+.doc{padding:110px 28px}
+.doc.alt{background:var(--paper-2)}
+.doc.dark{background:var(--navy);color:#fff}
+.sheet{max-width:1180px;margin:0 auto}
+.sec-head{
+  display:grid;grid-template-columns:110px 1fr;gap:40px;align-items:start;
+  border-top:1px solid var(--rule);padding-top:34px;margin-bottom:56px;
+}
+.doc.dark .sec-head{border-top-color:var(--rule-dark)}
+.sec-head .num{
+  font-family:var(--mono);font-size:13px;color:var(--gold);letter-spacing:.1em;padding-top:10px;
+}
+.sec-head h2{
+  font-family:var(--serif);font-weight:500;font-size:clamp(30px,3.4vw,46px);
+  line-height:1.14;letter-spacing:-.01em;max-width:22ch;
+}
+.sec-head h2 em{font-style:italic;color:var(--teal)}
+.doc.dark .sec-head h2 em{color:var(--gold)}
+.sec-head .sub{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-faint);margin-top:14px;display:block;
+}
+.doc.dark .sec-head .sub{color:rgba(252,225,182,.5)}
+.body-col{max-width:72ch}
+.body-col p{margin-bottom:22px;color:var(--ink-soft)}
+.body-col p b{color:var(--ink);font-weight:600}
+.doc.dark .body-col p{color:rgba(255,255,255,.75)}
+.doc.dark .body-col p b{color:#fff}
+@media(max-width:860px){.sec-head{grid-template-columns:1fr;gap:12px}}
+
+/* ---------- citation comparison ---------- */
+.compare{
+  display:grid;grid-template-columns:1fr 1fr;gap:0;
+  border:1px solid var(--rule);margin:54px 0;
+}
+.compare .cell{padding:36px 38px 42px}
+.compare .cell.bad{border-right:1px solid var(--rule);background:rgba(18,32,58,.025)}
+.compare .tag{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+  display:block;margin-bottom:20px;
+}
+.compare .bad .tag{color:#A4443A}
+.compare .good .tag{color:var(--teal)}
+.compare blockquote{
+  font-family:var(--serif);font-size:19px;line-height:1.55;color:var(--ink);
+  margin-bottom:24px;font-weight:400;
+}
+.compare blockquote .wrong{background:rgba(164,68,58,.14);padding:1px 4px;border-radius:2px}
+.compare blockquote .right{background:rgba(23,126,128,.14);padding:1px 4px;border-radius:2px}
+.compare .verdict{font-size:14.5px;line-height:1.6;color:var(--ink-soft)}
+.compare .verdict b{font-weight:600}
+.compare .bad .verdict b{color:#A4443A}
+.compare .good .verdict b{color:var(--teal)}
+@media(max-width:860px){.compare{grid-template-columns:1fr}.compare .cell.bad{border-right:none;border-bottom:1px solid var(--rule)}}
+
+/* ---------- corpus table ---------- */
+.table-wrap{margin:54px -28px 0;padding:0 28px;overflow-x:auto}
+table.corpus{
+  width:100%;min-width:760px;border-collapse:collapse;
+  font-size:14px;line-height:1.5;
+}
+table.corpus caption{
+  text-align:left;font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-faint);padding-bottom:16px;
+}
+table.corpus th{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-faint);font-weight:500;text-align:left;
+  padding:12px 16px;border:1px solid var(--rule);background:rgba(18,32,58,.03);
+}
+table.corpus td{padding:13px 16px;border:1px solid var(--rule);vertical-align:top;color:var(--ink-soft)}
+table.corpus td:first-child{font-weight:600;color:var(--ink);width:26%}
+table.corpus td.tok{font-family:var(--mono);font-size:12.5px;white-space:nowrap;color:var(--ink);width:12%}
+table.corpus tr:hover td{background:rgba(192,146,43,.05)}
+table.corpus td .flag{
+  font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--teal);
+  border:1px solid rgba(23,126,128,.35);border-radius:2px;padding:1px 6px;margin-left:8px;white-space:nowrap;
+}
+
+/* ---------- recipe / model ---------- */
+.recipe{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--rule-dark);margin-top:54px}
+.recipe .step{padding:34px 30px 40px;border-right:1px solid var(--rule-dark)}
+.recipe .step:last-child{border-right:none}
+.recipe .rn{font-family:var(--mono);font-size:11px;color:var(--gold-soft);letter-spacing:.12em;display:block;margin-bottom:18px}
+.recipe h3{font-family:var(--serif);font-size:22px;font-weight:500;color:var(--cream);margin-bottom:14px;line-height:1.25}
+.recipe p{font-size:14.5px;color:rgba(255,255,255,.68);margin-bottom:0}
+.recipe p b{color:#fff}
+@media(max-width:900px){.recipe{grid-template-columns:1fr}.recipe .step{border-right:none;border-bottom:1px solid var(--rule-dark)}.recipe .step:last-child{border-bottom:none}}
+
+.mix{display:flex;height:64px;border:1px solid var(--rule-dark);margin-top:40px;font-family:var(--mono);font-size:11px;letter-spacing:.06em}
+.mix div{display:flex;align-items:center;justify-content:center;text-align:center;padding:0 10px;line-height:1.4}
+.mix .m1{flex:80;background:rgba(192,146,43,.22);color:var(--cream)}
+.mix .m2{flex:15;background:rgba(23,126,128,.3);color:#CFEAEA;border-left:1px solid var(--rule-dark)}
+.mix .m3{flex:5;background:rgba(252,225,182,.1);color:rgba(252,225,182,.75);border-left:1px solid var(--rule-dark)}
+.mix-legend{display:flex;gap:28px;margin-top:14px;font-family:var(--mono);font-size:11px;color:rgba(252,225,182,.55);flex-wrap:wrap}
+.mix-legend i{font-style:normal;display:inline-block;width:9px;height:9px;margin-right:7px;border-radius:1px}
+
+/* ---------- evidence ---------- */
+.evidence-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:10px}
+@media(max-width:900px){.evidence-grid{grid-template-columns:1fr}}
+.bar-row{margin-bottom:34px}
+.bar-row .bar-label{display:flex;justify-content:space-between;font-size:14px;margin-bottom:9px;color:var(--ink-soft)}
+.bar-row .bar-label b{color:var(--ink);font-weight:600}
+.bar-row .track{height:34px;background:rgba(18,32,58,.06);position:relative}
+.bar-row .fill{position:absolute;inset:0 auto 0 0;width:0;background:var(--navy);transition:width 1.2s cubic-bezier(.22,.9,.28,1)}
+.bar-row .fill.gold{background:var(--gold)}
+.bar-row .fill.teal{background:var(--teal)}
+.bar-row .fill .val{
+  position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  font-family:var(--mono);font-size:12px;color:#fff;
+}
+.bar-row .fill.outside .val{right:auto;left:calc(100% + 10px);color:var(--ink)}
+.metric-line{
+  display:flex;align-items:baseline;gap:18px;padding:20px 0;border-bottom:1px solid var(--rule);
+}
+.metric-line .big{font-family:var(--serif);font-size:clamp(28px,3vw,40px);font-weight:500;color:var(--navy);min-width:150px}
+.metric-line .big i{font-style:normal;color:var(--gold)}
+.metric-line p{font-size:14px;color:var(--ink-soft);margin:0}
+
+/* ---------- sovereignty ---------- */
+.sov-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:70px;align-items:start}
+@media(max-width:900px){.sov-grid{grid-template-columns:1fr}}
+.invariant{
+  border:1px solid var(--rule-dark);padding:38px 40px;margin-top:8px;
+  background:linear-gradient(160deg, rgba(192,146,43,.07), transparent 55%);
+}
+.invariant .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-soft);display:block;margin-bottom:22px}
+.invariant .flow{display:flex;align-items:center;gap:0;margin-bottom:26px;flex-wrap:wrap;row-gap:14px}
+.invariant .node{
+  font-family:var(--mono);font-size:12px;padding:10px 14px;border:1px solid var(--rule-dark);
+  color:var(--cream);border-radius:3px;white-space:nowrap;
+}
+.invariant .node.priv{border-color:rgba(43,163,165,.55);color:#BFE6E6}
+.invariant .arrow{color:var(--gold-soft);padding:0 12px;font-family:var(--mono);font-size:14px}
+.invariant .x{color:#C66;font-family:var(--mono);font-size:12px;padding:0 4px}
+.invariant p{font-size:14.5px;color:rgba(255,255,255,.7);margin:0}
+.invariant p b{color:var(--cream)}
+.sov-list{list-style:none;margin-top:34px}
+.sov-list li{
+  padding:20px 0 20px 44px;border-bottom:1px solid var(--rule-dark);position:relative;
+  font-size:15.5px;color:rgba(255,255,255,.78);
+}
+.sov-list li::before{
+  content:"§";position:absolute;left:4px;top:18px;font-family:var(--serif);
+  font-size:20px;color:var(--gold);
+}
+.sov-list li b{color:#fff;font-weight:600}
+
+/* ---------- access / pricing ---------- */
+.tiers{border:1px solid var(--rule);margin-top:20px}
+.tier{
+  display:grid;grid-template-columns:250px 1fr 240px;gap:44px;
+  padding:44px 44px;border-bottom:1px solid var(--rule);align-items:start;
+  transition:background .3s;
+}
+.tier:last-child{border-bottom:none}
+.tier:hover{background:rgba(18,32,58,.025)}
+.tier .t-name .t-num{font-family:var(--mono);font-size:11px;color:var(--gold);letter-spacing:.12em;display:block;margin-bottom:12px}
+.tier .t-name h3{font-family:var(--serif);font-size:27px;font-weight:500;line-height:1.15;margin-bottom:10px}
+.tier .t-name .for{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+.tier .t-body p{font-size:14.5px;color:var(--ink-soft);margin-bottom:16px}
+.tier .t-body ul{list-style:none}
+.tier .t-body li{
+  font-size:14px;color:var(--ink-soft);padding:7px 0 7px 22px;position:relative;
+  border-bottom:1px dashed var(--rule);
+}
+.tier .t-body li:last-child{border-bottom:none}
+.tier .t-body li::before{content:"—";position:absolute;left:0;color:var(--gold)}
+.tier .t-price{text-align:right}
+.tier .t-price .amount{font-family:var(--serif);font-size:30px;font-weight:500;color:var(--navy);line-height:1.1}
+.tier .t-price .per{font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:.08em;display:block;margin:6px 0 22px}
+.tier .t-price .ph{
+  font-family:var(--mono);font-size:9.5px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;
+  display:block;margin-top:10px;
+}
+.btn{
+  display:inline-block;font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;
+  text-decoration:none;padding:13px 22px;border-radius:3px;font-weight:500;transition:all .25s;
+}
+.btn.solid{background:var(--navy);color:var(--paper)}
+.btn.solid:hover{background:var(--teal);color:#fff}
+.btn.line{border:1px solid var(--ink);color:var(--ink)}
+.btn.line:hover{background:var(--ink);color:var(--paper)}
+.btn.goldb{background:var(--gold);color:var(--navy)}
+.btn.goldb:hover{background:var(--cream)}
+@media(max-width:960px){
+  .tier{grid-template-columns:1fr;gap:26px;padding:34px 26px}
+  .tier .t-price{text-align:left}
+}
+.price-note{
+  font-family:var(--mono);font-size:11px;color:var(--ink-faint);margin-top:18px;letter-spacing:.04em;
+}
+
+/* ---------- limits ---------- */
+.limits{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--rule);margin-top:20px}
+.limit{padding:38px 34px 44px;border-right:1px solid var(--rule)}
+.limit:last-child{border-right:none}
+.limit .l-no{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--gold);display:block;margin-bottom:16px}
+.limit h3{font-family:var(--serif);font-size:24px;font-weight:500;margin-bottom:14px}
+.limit p{font-size:14.5px;color:var(--ink-soft);margin:0}
+@media(max-width:900px){.limits{grid-template-columns:1fr}.limit{border-right:none;border-bottom:1px solid var(--rule)}.limit:last-child{border-bottom:none}}
+
+/* ---------- roadmap ---------- */
+.roadmap{margin-top:10px}
+.mile{
+  display:grid;grid-template-columns:200px 1fr 200px;gap:40px;
+  padding:34px 0;border-bottom:1px solid var(--rule-dark);align-items:baseline;
+}
+.mile:first-child{border-top:1px solid var(--rule-dark)}
+.mile .m-when{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--gold-soft);text-transform:uppercase}
+.mile .m-what h3{font-family:var(--serif);font-size:22px;font-weight:500;color:#fff;margin-bottom:8px}
+.mile .m-what p{font-size:14.5px;color:rgba(255,255,255,.65);margin:0}
+.mile .m-status{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;text-align:right;
+}
+.mile .m-status.now{color:var(--teal-bright)}
+.mile .m-status.next{color:var(--gold)}
+.mile .m-status.later{color:rgba(252,225,182,.5)}
+@media(max-width:860px){.mile{grid-template-columns:1fr;gap:10px}.mile .m-status{text-align:left}}
+
+/* ---------- final cta ---------- */
+.final{padding:130px 28px;text-align:center;background:var(--navy-2);color:#fff;position:relative;overflow:hidden}
+.final::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(800px 400px at 50% 120%, rgba(192,146,43,.16), transparent 65%);
+}
+.final-inner{max-width:760px;margin:0 auto;position:relative}
+.final img.glyph{width:74px;margin-bottom:36px;opacity:.95}
+.final h2{font-family:var(--serif);font-weight:400;font-size:clamp(32px,4vw,52px);line-height:1.15;margin-bottom:24px;letter-spacing:-.01em}
+.final h2 em{font-style:italic;color:var(--gold)}
+.final p{color:rgba(255,255,255,.7);margin-bottom:44px;font-size:17px}
+.final .actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+/* ---------- footer ---------- */
+footer{background:var(--navy);color:rgba(252,225,182,.55);padding:60px 28px 44px;border-top:1px solid var(--rule-dark)}
+.foot-inner{max-width:1180px;margin:0 auto}
+.foot-top{display:flex;justify-content:space-between;align-items:flex-start;gap:40px;flex-wrap:wrap;margin-bottom:44px}
+.foot-top img{height:26px}
+.foot-links{display:flex;gap:34px;flex-wrap:wrap}
+.foot-links a{color:rgba(252,225,182,.7);text-decoration:none;font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase}
+.foot-links a:hover{color:var(--cream)}
+.foot-legal{font-family:var(--mono);font-size:10.5px;line-height:2;letter-spacing:.04em;border-top:1px solid var(--rule-dark);padding-top:26px}
+.foot-legal b{color:var(--gold-soft);font-weight:500}
+
+/* ---------- reveal defaults ---------- */
+.rv{opacity:0;transform:translateY(44px)}
+@media(prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar" id="topbar">
+  <a class="brand" href="#top">
+    <img src="assets/tlamatini-logo-light.png" alt="Tlamatini — AI Justicia">
+    <span class="doc-tag">Un LLM de AI Justicia · Documento técnico-comercial · 2026</span>
+  </a>
+  <nav>
+    <a href="#problema"><span class="n">01</span>Problema</a>
+    <a href="#corpus"><span class="n">02</span>Corpus</a>
+    <a href="#modelo"><span class="n">03</span>Modelo</a>
+    <a href="#evidencia"><span class="n">04</span>Evidencia</a>
+    <a href="#soberania"><span class="n">05</span>Soberanía</a>
+    <a href="#acceso"><span class="n">06</span>Licenciamiento</a>
+    <a href="#roadmap"><span class="n">08</span>Roadmap</a>
+    <a href="index.html">← Sitio</a>
+  </nav>
+  <a class="cta-nav" href="#acceso">Licenciar el modelo</a>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="top">
+  <div class="hero-inner">
+    <div class="doc-meta">
+      <span><b>Tlamatini</b> · un LLM de AI Justicia</span>
+      <span>Ref. <b>TLM-WP-2026-01</b></span>
+      <span>Septiembre 2026</span>
+      <span>Estado: <b>En entrenamiento</b></span>
+    </div>
+    <h1 id="hero-hl">Tlamatini: el LLM entrenado <em>exclusivamente</em> con derecho mexicano. Ahora, licenciable.</h1>
+    <p class="lede rv">
+      <b>Tlamatini</b> — del náhuatl <i>tlamatini</i>, «el que sabe»: los sabios consejeros del México antiguo —
+      es un modelo de lenguaje fundacional y soberano: <b>más de 10 mil millones de tokens</b> de fuentes primarias
+      oficiales, generación anclada en recuperación con citas verificables, y pesos que se entregan
+      <b>dentro de su infraestructura</b>. Este documento presenta el modelo — y las formas de licenciarlo.
+    </p>
+    <div class="hero-stats">
+      <div class="stat rv"><span class="num"><i>~</i><span class="count" data-to="10" data-suffix="B+">0</span></span><span class="lbl">Tokens de fuentes legales mexicanas mapeadas para entrenamiento</span></div>
+      <div class="stat rv"><span class="num"><span class="count" data-to="32" data-suffix="+1">0</span></span><span class="lbl">Jurisdicciones — ley federal y de cada entidad federativa</span></div>
+      <div class="stat rv"><span class="num"><span class="count" data-to="421119" data-group="1">0</span></span><span class="lbl">Documentos primarios ya ingeridos y consultables</span></div>
+      <div class="stat rv"><span class="num"><span class="count" data-to="10.7" data-decimals="1" data-suffix="M">0</span></span><span class="lbl">Fragmentos indexados en el corpus vivo</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABSTRACT ================= -->
+<section class="abstract">
+  <div class="abstract-inner rv">
+    <span class="k">Resumen</span>
+    <p>
+      Los LLM jurídicos dominantes se entrenan con corpus angloamericanos, <b>citan artículos que no dicen lo que
+      afirman</b> cuando se les pregunta por México, y solo existen detrás de APIs extranjeras — inaceptables para
+      quien opera bajo secreto profesional. <b>Tlamatini es el modelo que falta</b>: un LLM cuyos pesos aprendieron de
+      un corpus propio de fuentes primarias mexicanas, entrenado para responder en un arnés de <b>generación anclada
+      en recuperación</b> donde cada afirmación se verifica contra el pasaje oficial — con abstención honesta cuando
+      la evidencia no alcanza. Y a diferencia de cualquier modelo de nube, <b>Tlamatini se licencia y se entrega</b>:
+      sus pesos corren en su infraestructura, bajo su control.
+    </p>
+  </div>
+</section>
+<!-- ================= 01 PROBLEMA ================= -->
+<section class="doc" id="problema">
+  <div class="sheet">
+    <div class="sec-head rv">
+      <span class="num">§ 01</span>
+      <div>
+        <h2>El problema: una cita fluida y falsa es <em>peor</em> que no responder</h2>
+        <span class="sub">Tres fallas estructurales de la IA jurídica actual en México</span>
+      </div>
+    </div>
+    <div class="body-col">
+      <p class="rv">
+        <b>1.1 · Alucinación de ley.</b> Evaluamos un modelo legal de clase mundial (entrenado en derecho angloamericano)
+        con 30 preguntas ciudadanas canónicas — laboral, familiar, consumo, vivienda. Respondió 30/30 con fluidez
+        profesional y el 93% citó artículos. La inspección reveló errores sistemáticos: citó el «Art. 139 LFT» para la
+        protección contra despido por embarazo (el correcto es el 164) y atribuyó la fórmula de indemnización
+        «3 meses + 20 días por año» al Art. 48 (es el Art. 50).
+      </p>
+      <p class="rv">
+        Una confesión honesta del propio proyecto: al redactar el documento técnico, un autor citó el «Art. 225 CPF»
+        como base del secreto profesional. Son los arts. 210–211 — el revisor lo detectó y la corrección se verificó
+        contra el corpus de este proyecto. <b>La deriva de citas no es una debilidad de los modelos débiles: es el modo
+        de falla por defecto de cualquier razonamiento jurídico basado en memoria, humano o máquina.</b> Ese es el
+        argumento central de la generación anclada en recuperación.
+      </p>
+      <p class="rv">
+        <b>1.2 · Dependencia de nube vs. secreto profesional.</b> Los despachos mexicanos operan bajo secreto profesional
+        con sanción penal (arts. 210–211 del CPF) y bajo la LFPDPPP para datos personales sensibles. Subir expedientes
+        privilegiados a una API extranjera — que puede retenerlos y entrenar con ellos — es jurídicamente inaceptable.
+        Un modelo soberano y desplegable localmente no es un lujo: <b>es un requisito de cumplimiento</b>.
+      </p>
+      <p class="rv">
+        <b>1.3 · No existía un corpus mexicano.</b> Los modelos legales de referencia se entrenaron con 30 mil millones de
+        tokens de derecho inglés. Para México no existía equivalente — no porque el dato no exista, sino porque está
+        disperso en más de 33 portales judiciales, 32 sistemas de gacetas estatales, una gaceta federal de 107 años y
+        repositorios universitarios, la mayoría detrás de protecciones anti-bot.
+      </p>
+    </div>
+
+    <div class="compare rv">
+      <div class="cell bad">
+        <span class="tag">Modelo general entrenado en el extranjero</span>
+        <blockquote>«Si te despidieron estando embarazada, el <span class="wrong">artículo 139</span> de la Ley Federal del Trabajo te protege…»</blockquote>
+        <p class="verdict"><b>✗ Falso.</b> El art. 139 no contiene esa protección; la correcta es el <b>art. 164</b>. Suena perfecto. Es falso — y el ciudadano no puede verificarlo.</p>
+      </div>
+      <div class="cell good">
+        <span class="tag">Tlamatini · generación anclada</span>
+        <blockquote>«…la trabajadora embarazada goza de estabilidad reforzada (<span class="right">art. 164 LFT</span>) [SJI 2a./J. 42/2016]…»</blockquote>
+        <p class="verdict"><b>✓ Verificable.</b> Cada afirmación sale de un pasaje recuperado del corpus, con su fragmento oficial expandible y exportable.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 02 CORPUS ================= -->
+<section class="doc alt" id="corpus">
+  <div class="sheet">
+    <div class="sec-head rv">
+      <span class="num">§ 02</span>
+      <div>
+        <h2>El corpus: <em>diez mil millones de tokens</em> de derecho mexicano</h2>
+        <span class="sub">Fuentes primarias oficiales · cosecha diferencial · sistema de registro vivo</span>
+      </div>
+    </div>
+    <div class="body-col">
+      <p class="rv">
+        Un corpus de derecho mexicano no es un dataset: es un <b>sistema vivo de registro</b>. Las leyes se reforman,
+        las gacetas publican a diario, los tribunales suben sentencias constantemente. Cada cosechador vive en un
+        registro versionado con su marca de agua y su estrategia incremental — y el estado de cada fuente
+        (documentos, ventana de cobertura, frescura contra su cadencia esperada) se publica en un
+        <b>tablero público de transparencia</b>.
+      </p>
+      <p class="rv">
+        La lección de los modelos de referencia es que la ingeniería de calidad domina al volumen: nosotros documentamos
+        además la parte que nadie publica — cómo se atraviesan portales con reCAPTCHA, cadenas JWT, bloqueos
+        geográficos y aplicaciones ASP.NET heredadas, con técnicas reproducibles para cada fuente.
+      </p>
+    </div>
+
+    <div class="table-wrap rv">
+      <table class="corpus">
+        <caption>Tabla 1 — Composición del corpus · estado a septiembre 2026</caption>
+        <thead>
+          <tr><th>Familia de fuente</th><th>Contenido</th><th>Tokens aprox.</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Semanario Judicial de la Federación</td><td>150,187 tesis (jurisprudencia y aisladas), 1900–2026, cosecha diferencial tras el WAF</td><td class="tok">~22M</td></tr>
+          <tr><td>Diario Oficial de la Federación</td><td>1999–2026, texto completo por nota, diferencial diario</td><td class="tok">~300M+</td></tr>
+          <tr><td>Legislación federal y reglamentos</td><td>Corpus LeyesBiblio + reglamentos y manuales + lex-mx (317 leyes en Markdown sincronizado a diario)</td><td class="tok">~50M</td></tr>
+          <tr><td>Legislación estatal (32 estados)</td><td>24,076 códigos, leyes y reglamentos consolidados vía Orden Jurídico Nacional — cobertura total<span class="flag">32/32</span></td><td class="tok">~85M</td></tr>
+          <tr><td>Gaceta Oficial CDMX</td><td>Archivo completo 2014–2026 recuperado vía índice Wayback CDX</td><td class="tok">143M</td></tr>
+          <tr><td>Casos estatales — CDMX (SIVEPJ)</td><td>42,947 sentencias — universo completo ingerido</td><td class="tok">~52M</td></tr>
+          <tr><td>Casos estatales — Baja California</td><td>API pública de 147K registros; cosecha en curso<span class="flag">en curso</span></td><td class="tok">~250M</td></tr>
+          <tr><td>Casos estatales — Edomex</td><td>178,439 sentencias enumeradas vía API Elasticsearch del poder judicial; extracción en progreso<span class="flag">en curso</span></td><td class="tok">~3–4B</td></tr>
+          <tr><td>Casos estatales — Jalisco</td><td>84,731 sentencias enumeradas vía API con reCAPTCHA; PDFs por URLs prefirmadas de S3<span class="flag">en curso</span></td><td class="tok">~2–3B</td></tr>
+          <tr><td>Querétaro, Nuevo León y más</td><td>Cadenas JWT, postbacks ASP.NET WebForms, llaves de API extraídas del frontend</td><td class="tok">~1–2B</td></tr>
+          <tr><td>Doctrina — BJV (IIJ-UNAM)</td><td>5,680 libros completos vía OAI-PMH; 445 cuadernillos SCJN rescatados con OCR</td><td class="tok">~1B</td></tr>
+          <tr><td>Tesis — Repositorio UNAM</td><td>43,423 tesis (~40% con PDF completo)</td><td class="tok">~2–3B</td></tr>
+          <tr><td>Datos instructivos en inglés (solo SFT)</td><td>269K ejemplos de razonamiento — NLI, lógica tipo LSAT, case briefs; <b>cero leyes extranjeras</b></td><td class="tok">mezcla SFT</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+<!-- ================= 03 MODELO ================= -->
+<section class="doc dark" id="modelo">
+  <div class="sheet">
+    <div class="sec-head rv">
+      <span class="num">§ 03</span>
+      <div>
+        <h2>El modelo: <em>harness training</em>, el oficio en los pesos</h2>
+        <span class="sub">La receta de Tlamatini · infraestructura de entrenamiento: Tohil</span>
+      </div>
+    </div>
+    <div class="body-col">
+      <p class="rv">
+        La receta sintetiza los dos modelos legales de referencia — el plano abierto (CPT de dominio con replay) y la
+        validación industrial (CPT fuerte + fusión lineal anti-olvido sobre la misma familia base) — y los extiende con
+        nuestra aportación central: <b>entrenar el comportamiento del arnés dentro de los pesos</b>. Tlamatini opera en
+        un arnés: recuperar pasajes → inyectarlos como contexto → exigir respuestas ancladas en citas. En nuestras
+        pruebas, todos los fallos de abstención fueron fallos del arnés, no del modelo. La extensión natural es incluir
+        millones de ejemplos <b>en el formato exacto de inferencia</b> durante el propio preentrenamiento:
+      </p>
+      <p class="rv" style="font-family:var(--mono);font-size:13.5px;color:var(--cream);border-left:2px solid var(--gold);padding-left:20px;line-height:1.9">
+        &lt;pasaje(s) recuperado(s)&gt; + &lt;pregunta ciudadana&gt;<br>→ &lt;respuesta con anclas [n] por afirmación&gt;
+      </p>
+      <p class="rv">
+        Las tres fuentes de pares ya están en la mano: los <b>considerandos judiciales</b> (afirmación + artículo por
+        naturaleza, minería gratuita sobre 200K+ sentencias), las <b>trazas de producción</b> con consentimiento
+        LFPDPPP explícito y revocable, y la <b>destilación sintética</b> a escala de corpus. Para IA jurídica
+        jurisdiccional, <b>arnés-en-los-pesos más recuperación-en-inferencia supera a cualquiera de los dos por separado</b>.
+      </p>
+    </div>
+
+    <div class="recipe rv">
+      <div class="step">
+        <span class="rn">Etapa 1 · CPT</span>
+        <h3>Preentrenamiento continuo de parámetros completos</h3>
+        <p>~10B tokens del corpus mexicano sobre la familia base de 35B — la elección de arquitectura ya validada por el resultado industrial de referencia. Fusión lineal con el modelo base como mecanismo anti-olvido. <b>4×H200 · ~6 h · ~$70 USD</b> de cómputo rentado por corrida.</p>
+      </div>
+      <div class="step">
+        <span class="rn">Etapa 2 · SFT</span>
+        <h3>Diálogo, citas y abstención calibrada</h3>
+        <p>Ajuste fino sobre diálogo de entrevista, respuestas ancladas en citas y calibración de abstención — más los 269K ejemplos instructivos en inglés de razonamiento puro (NLI contractual, lógica LSAT, case briefs). Patrones de razonamiento, <b>cero leyes extranjeras</b>.</p>
+      </div>
+      <div class="step">
+        <span class="rn">Etapa 3 · Adaptadores</span>
+        <h3>Un adaptador privado por despacho</h3>
+        <p>Adaptadores LoRA entrenados exclusivamente con los documentos consentidos de cada firma, servidos por fusión en tiempo de ejecución. El estilo de la casa, sus estrategias, su memoria institucional — <b>sin que un solo byte salga del perímetro</b>.</p>
+      </div>
+    </div>
+
+    <div class="mix rv">
+      <div class="m1">~80% · derecho primario mexicano</div>
+      <div class="m2">~15% · ejemplos en formato de arnés</div>
+      <div class="m3">~2–5%</div>
+    </div>
+    <div class="mix-legend rv">
+      <span><i style="background:rgba(192,146,43,.6)"></i>Leyes, gacetas, jurisprudencia, doctrina — mezcla natural, deduplicación agresiva</span>
+      <span><i style="background:rgba(23,126,128,.7)"></i>El formato exacto de trabajo, enseñado en preentrenamiento</span>
+      <span><i style="background:rgba(252,225,182,.35)"></i>Replay general (Wikipedia en español, código) — la dosis anti-olvido</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 04 EVIDENCIA ================= -->
+<section class="doc" id="evidencia">
+  <div class="sheet">
+    <div class="sec-head rv">
+      <span class="num">§ 04</span>
+      <div>
+        <h2>Evidencia: el especialista vence al generalista <em>en su terreno</em></h2>
+        <span class="sub">Mediciones propias · mismas fuentes · mismo arnés</span>
+      </div>
+    </div>
+    <div class="evidence-grid">
+      <div class="rv">
+        <div class="bar-row">
+          <div class="bar-label"><span><b>Especialista jurídico 35B + RAG</b> — preguntas respondidas</span></div>
+          <div class="track"><div class="fill teal" data-w="33"><span class="val">33%</span></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label"><span><b>Gigante generalista (nube) + RAG</b> — preguntas respondidas</span></div>
+          <div class="track"><div class="fill outside" data-w="7"><span class="val">7%</span></div></div>
+        </div>
+        <p style="font-size:13.5px;color:var(--ink-faint);margin-top:6px">
+          Batería propia de 30 preguntas ciudadanas · mismas fuentes · mismo motor de recuperación.
+          El especialista respondió <b>4× más</b> — y citó mejor.
+        </p>
+      </div>
+      <div class="rv">
+        <div class="metric-line">
+          <span class="big">2 → 18<i>/30</i></span>
+          <p>Tasa de respuesta tras corregir la ingeniería de presupuesto de tokens para modelos razonadores — sin pérdida en integridad de citas.</p>
+        </div>
+        <div class="metric-line">
+          <span class="big">37.7<i>s</i> → 2.0<i>s</i></span>
+          <p>Latencia del paso de clasificación de aplicabilidad: no requiere un LLM frontera, sino un clasificador calibrado y rápido — con veredictos idénticos en los casos medidos.</p>
+        </div>
+        <div class="metric-line">
+          <span class="big">93<i>%</i></span>
+          <p>De las respuestas del modelo angloamericano citaban artículos — con errores sistemáticos de jurisdicción. La fluidez no es evidencia de corrección.</p>
+        </div>
+      </div>
+    </div>
+    <div class="body-col" style="margin-top:44px">
+      <p class="rv">
+        La conclusión estratégica: <b>no competimos contra la frontera general — competimos donde la frontera no puede
+        llegar</b>: derecho mexicano, anclado en fuentes oficiales, desplegable en su despacho. La brecha entre modelos
+        abiertos y cerrados se cierra a velocidad medible, y en dominios especializados un modelo enfocado no iguala a
+        la frontera: <b>la supera</b>.
+      </p>
+    </div>
+  </div>
+</section>
+<!-- ================= 05 SOBERANIA ================= -->
+<section class="doc dark" id="soberania">
+  <div class="sheet">
+    <div class="sec-head rv">
+      <span class="num">§ 05</span>
+      <div>
+        <h2>Soberano: la ley de su despacho <em>no cruza la frontera</em></h2>
+        <span class="sub">Cumplimiento como arquitectura, no como política</span>
+      </div>
+    </div>
+    <div class="sov-grid">
+      <div class="body-col rv">
+        <p>
+          El secreto profesional es un deber con sanción penal: los arts. 210–211 del Código Penal Federal castigan
+          con 1 a 5 años de prisión y suspensión de la profesión la revelación de secretos por quien presta servicios
+          profesionales. Subir expedientes de clientes a una API extranjera que puede retenerlos
+          <b>no es una opción para un despacho mexicano</b>.
+        </p>
+        <p>
+          Tlamatini se entrega como pesos que corren <b>dentro de la infraestructura de la firma</b>: inferencia 100%
+          local, cero llamadas a nubes extranjeras, compatible con la LFPDPPP y el deber de sigilo. En un mercado donde
+          todo LLM jurídico de nube es jurídicamente inutilizable para los despachos, <b>el cumplimiento es el foso
+          defensivo del modelo</b>.
+        </p>
+        <ul class="sov-list">
+          <li><b>Inferencia 100% local</b> — cero llamadas a nubes extranjeras, trazabilidad completa dentro de su perímetro.</li>
+          <li><b>Adaptador privado por despacho</b> — con aislamiento verificable y consentimiento documentado.</li>
+          <li><b>La base mejora para todos; su know-how jamás se mezcla</b> — la separación es arquitectónica.</li>
+        </ul>
+      </div>
+      <div class="invariant rv">
+        <span class="k">El invariante del doble adaptador</span>
+        <div class="flow">
+          <span class="node priv">Documentos del despacho</span>
+          <span class="arrow">→</span>
+          <span class="node priv">Adaptador privado</span>
+        </div>
+        <div class="flow">
+          <span class="node">Corpus público mexicano</span>
+          <span class="arrow">→</span>
+          <span class="node">Adaptador general</span>
+        </div>
+        <div class="flow" style="margin-bottom:26px">
+          <span class="node priv">Datos del despacho</span>
+          <span class="x">✗</span>
+          <span class="node">Adaptador general</span>
+          <span style="font-family:var(--mono);font-size:11px;color:rgba(252,225,182,.5);padding-left:12px">nunca</span>
+        </div>
+        <p>
+          Los datos de la firma <b>nunca entran al adaptador general</b>; el adaptador general <b>nunca ve documentos
+          privilegiados</b>. Es la expresión arquitectónica de los arts. 210–211 CPF y de la LFPDPPP.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 06 ACCESO ================= -->
+<section class="doc" id="acceso">
+  <div class="sheet">
+    <div class="sec-head rv">
+      <span class="num">§ 06</span>
+      <div>
+        <h2>Licenciamiento del modelo: <em>tres formas de obtener Tlamatini</em></h2>
+        <span class="sub">El producto es el LLM — sus pesos, su arnés y sus adaptadores</span>
+      </div>
+    </div>
+    <div class="body-col" style="margin-bottom:34px">
+      <p class="rv">
+        Tlamatini no es un servicio de nube del que usted depende: es <b>un modelo que se licencia</b>. Cada nivel
+        entrega una forma distinta del mismo LLM — acceso hospedado, acceso vía API, o los pesos completos dentro de su
+        infraestructura — con el mismo contrato de honestidad: citas verificables o abstención declarada.
+      </p>
+    </div>
+    <div class="tiers rv">
+      <div class="tier">
+        <div class="t-name">
+          <span class="t-num">Nivel I</span>
+          <h3>Tlamatini Hospedado</h3>
+          <span class="for">Equipos jurídicos · acceso inmediato</span>
+        </div>
+        <div class="t-body">
+          <p>Acceso al modelo completo en nuestra infraestructura mexicana, con el arnés de recuperación y citas verificadas incluido. La puerta de entrada al LLM.</p>
+          <ul>
+            <li>Modelo + arnés RAG con citas [n] y fragmentos oficiales</li>
+            <li>Registro técnico-jurídico y generación de documentos</li>
+            <li>Sensibilidad a reformas: pre- y post-reforma del artículo citado</li>
+            <li>Datos alojados en México; sin entrenamiento sobre sus consultas</li>
+          </ul>
+        </div>
+        <div class="t-price">
+          <span class="amount">$2,900 MXN</span>
+          <span class="per">por licencia / mes · lista de espera 2027</span>
+          <a class="btn solid" href="mailto:despachos@aijusticia.mx?subject=Licencia%20Tlamatini%20Hospedado">Unirse a la lista</a>
+          <span class="ph">* precio placeholder</span>
+        </div>
+      </div>
+      <div class="tier">
+        <div class="t-name">
+          <span class="t-num">Nivel II</span>
+          <h3>Tlamatini API</h3>
+          <span class="for">Legaltech e integradores · por consumo</span>
+        </div>
+        <div class="t-body">
+          <p>El modelo como componente: endpoints de generación anclada y de clasificación de aplicabilidad para construir sus propios productos jurídicos sobre Tlamatini.</p>
+          <ul>
+            <li>Generación con citas verificables como contrato de salida</li>
+            <li>Endpoint de triage de aplicabilidad (clasificador calibrado, ~2 s)</li>
+            <li>Abstención estructurada: el modelo declara cuándo no hay sustento</li>
+            <li>SLA, versionado de modelo y notas de reforma del corpus</li>
+          </ul>
+        </div>
+        <div class="t-price">
+          <span class="amount">$0.08 USD</span>
+          <span class="per">por 1K tokens de salida · pilotos 2027</span>
+          <a class="btn solid" href="mailto:despachos@aijusticia.mx?subject=Acceso%20API%20Tlamatini">Solicitar acceso API</a>
+          <span class="ph">* precio placeholder</span>
+        </div>
+      </div>
+      <div class="tier">
+        <div class="t-name">
+          <span class="t-num">Nivel III</span>
+          <h3>Tlamatini Soberano</h3>
+          <span class="for">Firmas y despachos · pesos on-premise</span>
+        </div>
+        <div class="t-body">
+          <p>Los pesos del modelo entregados dentro de su infraestructura, con un adaptador privado entrenado exclusivamente con los casos consentidos de su firma. El LLM es suyo de operar.</p>
+          <ul>
+            <li>Pesos completos del modelo base — inferencia 100% local</li>
+            <li>Adaptador LoRA privado: estilo, estrategias y memoria de la casa</li>
+            <li>Invariante de doble adaptador con aislamiento verificable</li>
+            <li>Compatibilidad documentada con arts. 210–211 CPF y LFPDPPP</li>
+            <li>Implantación, evaluación con su batería propia y soporte dedicado</li>
+          </ul>
+        </div>
+        <div class="t-price">
+          <span class="amount">Licencia anual</span>
+          <span class="per">de pesos + implantación · pilotos 2027</span>
+          <a class="btn goldb" href="mailto:despachos@aijusticia.mx?subject=Licencia%20Tlamatini%20Soberano">Agendar piloto</a>
+          <span class="ph">* precio placeholder</span>
+        </div>
+      </div>
+    </div>
+    <p class="price-note">* Precios y empaquetado indicativos — pendientes de definición comercial. Editables antes de publicación. Las licencias inician con la primera versión del modelo base, 2027. El nivel Hospedado convive con la orientación ciudadana gratuita que AI Justicia ya opera como demostración pública del estándar de citas del modelo.</p>
+  </div>
+</section>
+<!-- ================= 07 LIMITES ================= -->
+<section class="doc alt" id="limites">
+  <div class="sheet">
+    <div class="sec-head rv">
+      <span class="num">§ 07</span>
+      <div>
+        <h2>Lo que Tlamatini <em>no</em> es</h2>
+        <span class="sub">La honestidad como especificación de producto</span>
+      </div>
+    </div>
+    <div class="limits rv">
+      <div class="limit">
+        <span class="l-no">No es juez</span>
+        <h3>No decide casos</h3>
+        <p>No sustituye la función jurisdiccional ni emite resoluciones. Orienta con la ley en la mano — la decisión pertenece a los órganos jurisdiccionales.</p>
+      </div>
+      <div class="limit">
+        <span class="l-no">No es abogado</span>
+        <h3>No firma escritos</h3>
+        <p>La respuesta formal, la estrategia y la firma de una licenciada o licenciado con cédula siguen siendo insustituibles. Tlamatini es su instrumento, no su relevo.</p>
+      </div>
+      <div class="limit">
+        <span class="l-no">No es oráculo</span>
+        <h3>No responde todo</h3>
+        <p>Cuando las fuentes no sustentan una respuesta, se abstiene y lo dice — en lugar de inventar con confianza. Esa virtud le da nombre.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 08 ROADMAP ================= -->
+<section class="doc dark" id="roadmap">
+  <div class="sheet">
+    <div class="sec-head rv">
+      <span class="num">§ 08</span>
+      <div>
+        <h2>Camino al <em>primer release</em></h2>
+        <span class="sub">Dónde estamos y qué sigue</span>
+      </div>
+    </div>
+    <div class="roadmap rv">
+      <div class="mile">
+        <span class="m-when">2025 — hoy</span>
+        <div class="m-what">
+          <h3>Corpus</h3>
+          <p>Miles de millones de tokens cosechados de fuentes oficiales; ingesta diaria diferencial; 421,119 documentos y 10.7M de fragmentos ya consultables; tablero público de transparencia en vivo.</p>
+        </div>
+        <span class="m-status now">● En curso</span>
+      </div>
+      <div class="mile">
+        <span class="m-when">Siguiente</span>
+        <div class="m-what">
+          <h3>Entrenamiento (CPT)</h3>
+          <p>Preentrenamiento continuo sobre derecho mexicano en infraestructura dedicada (Tohil), 4×H200 rentados por corrida; decisión de base informada por la evaluación en curso.</p>
+        </div>
+        <span class="m-status next">◐ Siguiente</span>
+      </div>
+      <div class="mile">
+        <span class="m-when">2027</span>
+        <div class="m-what">
+          <h3>Evaluación pública</h3>
+          <p>Batería de preguntas ciudadanas con citas verificables y resultados abiertos: tasa de respuesta, precisión de citas, exactitud a nivel de artículo y calibración de abstención.</p>
+        </div>
+        <span class="m-status later">○ 2027</span>
+      </div>
+      <div class="mile">
+        <span class="m-when">2027</span>
+        <div class="m-what">
+          <h3>Despliegue en despachos</h3>
+          <p>Primeros pilotos on-premise con adaptadores privados. Lista de espera abierta para firmas fundadoras.</p>
+        </div>
+        <span class="m-status later">○ 2027</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA FINAL ================= -->
+<section class="final">
+  <div class="final-inner rv">
+    <img class="glyph" src="assets/tlamatini-glyph-light.png" alt="">
+    <h2>El derecho mexicano ya tiene su modelo. <em>Póngalo a trabajar para usted</em>.</h2>
+    <p>Tlamatini se licencia: hospedado, vía API, o con sus pesos dentro de su infraestructura. Asegure su lugar en los pilotos 2027 — y vea hoy mismo el estándar de citas del modelo en la demostración pública de AI Justicia.</p>
+    <div class="actions">
+      <a class="btn goldb" href="mailto:despachos@aijusticia.mx?subject=Licencia%20Tlamatini%20Soberano">Licenciar el modelo — agendar piloto</a>
+      <a class="btn" style="border:1px solid rgba(252,225,182,.4);color:var(--cream)" href="https://aijusticia.mx" target="_blank" rel="noopener">Ver la demostración en vivo</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-inner">
+    <div class="foot-top">
+      <img src="assets/tlamatini-logo-light.png" alt="Tlamatini">
+      <div class="foot-links">
+        <a href="https://aijusticia.mx" target="_blank" rel="noopener">aijusticia.mx</a>
+        <a href="https://aijusticia.mx/estado" target="_blank" rel="noopener">Estado del corpus</a>
+        <a href="https://aijusticia.mx/tlamatini" target="_blank" rel="noopener">Tlamatini</a>
+        <a href="mailto:despachos@aijusticia.mx">Contacto</a>
+      </div>
+    </div>
+    <div class="foot-legal">
+      <b>Tlamatini</b> — un LLM de <b>AI Justicia</b>. Documento técnico-comercial de trabajo, septiembre 2026. Tlamatini es un modelo de lenguaje: no sustituye la función jurisdiccional ni la firma de una persona con cédula profesional. Las cifras de corpus y desempeño corresponden al estado del modelo a la fecha de este documento. Las fuentes del corpus son portales públicos de gobierno y repositorios universitarios de acceso abierto; su redistribución sigue los términos de cada fuente.
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- topbar solid on scroll ---- */
+  var bar = document.getElementById('topbar');
+  function onScroll(){ bar.classList.toggle('solid', window.scrollY > 40); }
+  window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+  /* ---- hero headline: split into words for scroll-scrub highlight ---- */
+  var h1 = document.getElementById('hero-hl');
+  (function splitWords(node){
+    var walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+    var texts = [];
+    while(walker.nextNode()) texts.push(walker.currentNode);
+    texts.forEach(function(t){
+      var frag = document.createDocumentFragment();
+      t.textContent.split(/(\s+)/).forEach(function(part){
+        if(!part) return;
+        if(/^\s+$/.test(part)){ frag.appendChild(document.createTextNode(' ')); return; }
+        var s = document.createElement('span');
+        s.className = 'hl'; s.textContent = part;
+        frag.appendChild(s);
+      });
+      t.parentNode.replaceChild(frag, t);
+    });
+  })(h1);
+
+  if(reduce){
+    document.querySelectorAll('.rv').forEach(function(el){ el.style.opacity=1; el.style.transform='none'; });
+    document.querySelectorAll('.hl').forEach(function(el){ el.style.opacity=1; });
+    document.querySelectorAll('.fill').forEach(function(f){ f.style.width = f.dataset.w + '%'; });
+    document.querySelectorAll('.count').forEach(function(c){ c.textContent = fmt(c, parseFloat(c.dataset.to)); });
+    return;
+  }
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* ---- scroll-scrub word highlight ---- */
+  var words = h1.querySelectorAll('.hl');
+  var scrollWindow = window.innerHeight * 0.55;
+  words.forEach(function(w, i){
+    gsap.fromTo(w, {opacity:.28}, {
+      opacity:1, ease:'none',
+      scrollTrigger:{
+        trigger:h1,
+        start:'top+=' + (scrollWindow / words.length) * i + 'px 18%',
+        end:'top+=' + (scrollWindow / words.length) * (i+1) + 'px 80%',
+        scrub:true
+      }
+    });
+  });
+
+  /* ---- staggered entrances ---- */
+  document.querySelectorAll('.rv').forEach(function(el){
+    gsap.fromTo(el, {y:44, opacity:0}, {
+      y:0, opacity:1, duration:.65, ease:'power2.out',
+      scrollTrigger:{ trigger:el, start:'top 82%', toggleActions:'play none none reverse' }
+    });
+  });
+
+  /* ---- evidence bars ---- */
+  document.querySelectorAll('.fill').forEach(function(f){
+    ScrollTrigger.create({
+      trigger:f, start:'top 85%', once:true,
+      onEnter:function(){ f.style.width = f.dataset.w + '%'; }
+    });
+  });
+
+  /* ---- animated counters ---- */
+  function fmt(c, v){
+    var d = parseInt(c.dataset.decimals || 0, 10);
+    var out = d ? v.toFixed(d) : Math.round(v).toString();
+    if(c.dataset.group) out = Math.round(v).toLocaleString('es-MX');
+    return out + (c.dataset.suffix || '');
+  }
+  document.querySelectorAll('.count').forEach(function(c){
+    var to = parseFloat(c.dataset.to);
+    ScrollTrigger.create({
+      trigger:c, start:'top 88%', once:true,
+      onEnter:function(){
+        var obj = {v:0};
+        gsap.to(obj, { v:to, duration:1.6, ease:'power2.out',
+          onUpdate:function(){ c.textContent = fmt(c, obj.v); },
+          onComplete:function(){ c.textContent = fmt(c, to); }
+        });
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

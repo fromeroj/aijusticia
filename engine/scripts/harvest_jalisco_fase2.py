@@ -111,15 +111,18 @@ def main():
             else:
                 err += 1
                 err_consec += 1
-                if err_consec == 1 or err_consec % 10 == 0:
+                if err_consec == 1 or err_consec % 5 == 0:
                     print(f"  {rel}: {res.get('body', '')[:100]}", flush=True)
-                if err_consec >= 25:
-                    print("25 fallos consecutivos — abortando (reanudar más tarde)", flush=True)
-                    break
-            if ok and ok % 100 == 0:
+                if err_consec >= 8:
+                    print("8 fallos seguidos — enfriando 10 minutos (reCAPTCHA bajo)", flush=True)
+                    time.sleep(600)
+                    page.goto(FRONT, timeout=90000, wait_until="domcontentloaded")
+                    page.wait_for_timeout(10000)
+                    err_consec = 0
+            if ok and ok % 25 == 0:
                 ESTADO.write_text(json.dumps(sorted(hechos)))
                 print(f"  {ok} descargados ({err} errores)", flush=True)
-            time.sleep(0.3)
+            time.sleep(6)
     finally:
         ESTADO.write_text(json.dumps(sorted(hechos)))
         browser.close()

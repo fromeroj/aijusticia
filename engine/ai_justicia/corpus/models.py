@@ -22,13 +22,18 @@ class Fuente(str, Enum):
     EJECUTORIAS_SJF = "EjecutoriasSJF" # Ejecutorias (sentencias completas) del SJF
     ORDEN_JURIDICO = "OrdenJuridico"   # ordenjuridico.gob.mx
     GACETA_ESTATAL = "GacetaEstatal"   # Gacetas de las 32 entidades
+    GACETA_CDMX = "GacetaCDMX"         # Gaceta Oficial CDMX
     # Sentencias y acervos de poderes judiciales estatales
     SENTENCIAS_EDOMEX = "SentenciasEdomex"
     SENTENCIAS_CDMX = "SentenciasCDMX"
     SENTENCIAS_QRO = "SentenciasQro"
     SENTENCIAS_BC = "SentenciasBC"
+    SENTENCIAS_CHIAPAS = "SentenciasChiapas"
+    SENTENCIAS_COAHUILA = "SentenciasCoahuila"
+    SENTENCIAS_SONORA = "SentenciasSonora"
     SCJN_LIBROS = "SCJN-Libros"
     JUSTIA_ESTATAL = "JustiaEstatal"
+    PREGUNTAS_ENTRENAMIENTO = "PreguntasEntrenamiento"
 
 
 class Materia(str, Enum):

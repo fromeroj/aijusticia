@@ -102,12 +102,12 @@ def main():
             except Exception as e2:
                 print(f"edo {edo}: falló definitivamente ({str(e2)[:60]})", flush=True)
                 continue
-        t = r.text
+        t = r.content.decode("windows-1252", errors="replace")
         if "incap_ses" in t or "Loading" in t[:3000]:
             print(f"edo {edo}: reto WAF — recalentando…", flush=True)
             s.get(f"{BASE}/", timeout=30)
             time.sleep(3)
-            t = s.get(f"{BASE}/despliegaedo2.php?ordenar=&edo={edo}&idi=&catTipo=0", timeout=60).text
+            t = s.get(f"{BASE}/despliegaedo2.php?ordenar=&edo={edo}&idi=&catTipo=0", timeout=60).content.decode("windows-1252", errors="replace")
 
         filas = []
         for m in _FICHA_RE.finditer(t):
@@ -128,7 +128,7 @@ def main():
                 break
             try:
                 rf = s.get(f"{BASE}/fichaOrdenamiento.php?idArchivo={id_arch}&ambito=estatal", timeout=60)
-                mf = _FILE_RE.search(rf.text)
+                mf = _FILE_RE.search(rf.content.decode("windows-1252", errors="replace"))
                 if not mf:
                     err += 1
                     continue
@@ -160,6 +160,12 @@ def main():
                 )]
                 n = batch_upsert_documentos(docs)
                 ok += n
+                # el texto ya está en la DB — el archivo es prescindible
+                # (el VPS tiene 8GB libres; 30-60K archivos lo llenan)
+                try:
+                    dest.unlink()
+                except OSError:
+                    pass
                 hechos.add(id_arch)
                 est["hechos"] = sorted(hechos)
                 est["entidades"] = est.get("entidades", {}) | {id_arch: estado_nombre}

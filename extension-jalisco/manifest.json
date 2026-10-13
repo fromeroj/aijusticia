@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "AI Justicia — cosecha Jalisco",
+  "version": "1.0",
+  "description": "Descarga las tocas de sentencias del STJ Jalisco con tu sesión (reCAPTCHA v3) y las envía al receptor local.",
+  "permissions": ["scripting"],
+  "host_permissions": [
+    "https://publicacionsentencias.stjjalisco.gob.mx/*",
+    "https://publica-sentencias-backend.stjjalisco.gob.mx/*",
+    "http://127.0.0.1:8765/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://publicacionsentencias.stjjalisco.gob.mx/*"],
+      "js": ["inject.js"],
+      "run_at": "document_idle",
+      "world": "MAIN"
+    }
+  ]
+}

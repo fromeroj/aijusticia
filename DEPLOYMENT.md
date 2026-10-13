@@ -1,6 +1,6 @@
 # Runbook de Producción — AI Justicia
 
-> Última actualización: 22 agosto 2026
+> Última actualización: 12 octubre 2026
 > Estado: **LIVE** en https://aijusticia.mx y https://laley.com.mx
 
 ---
@@ -11,63 +11,40 @@
                         INTERNET
                            │
         DNS: aijusticia.mx, www, laley.com.mx, www
-        (aijusticia.com.mx pendiente de registro A)
                            │
                            ▼
 ┌─────────────────────────────────────────────────┐
 │  RACKNERD — 192.227.167.147                     │
 │  hostname: netmaker.konen.guru                  │
-│  Ubuntu 20.04 · 1 vCPU · 729MB RAM              │
 │                                                 │
 │  Caddy (Docker, :80/:443)                       │
 │  ├─ TLS Let's Encrypt automático                │
 │  └─ reverse_proxy → 66.154.100.25:6234          │
-│                                                 │
-│  También corre: Netmaker VPN, smtp-proxy,       │
-│  MQTT, CoreDNS (no tocar)                       │
 └───────────────────────┬─────────────────────────┘
                         │ HTTP interno (sin TLS)
                         ▼
 ┌─────────────────────────────────────────────────┐
-│  VPS APP — 66.154.100.25 (SSH puerto 22)        │
-│  Ubuntu 22.04 · 3 vCPU · 2GB RAM · swap 2GB     │
+│  VPS APP — 66.154.100.25 (bandit.konen.guru)    │
+│  Ubuntu 22.04 · 3 vCPU · 2GB RAM · 30GB disco   │
 │                                                 │
 │  nginx :6234 (edge interno)                     │
-│  ├─ /health /query/ /dossiers/ /auth/           │
-│  │  /abogados/registro /admin/ /jobs/           │
-│  │  /documentos/  → FastAPI :8000               │
-│  └─ / (resto)     → Next.js :3000               │
-│                                                 │
-│  systemd:                                       │
-│  ├─ aijusticia-engine.service (uvicorn ×2)      │
-│  └─ aijusticia-web.service   (next start)       │
+│  ├─ API (FastAPI :8000, systemd aijusticia-     │
+│  │   engine): /chat/stream /corpus/status       │
+│  │   /query/ /dossiers/ /auth/ /admin/ …        │
+│  └─ / (resto)     → Next.js :3000 (aijusticia-  │
+│                     web)                        │
 │                                                 │
 │  Código: /opt/aijusticia/{engine,app}           │
-│  También corre: vozclara :5050, biow :6128,     │
-│  bandit (no tocar)                              │
-└───────────────────────┬─────────────────────────┘
-                        │ TÚNEL SSH REVERSO (autossh)
-                        │ reenvía VPS 127.0.0.1:
-                        │   :1235 → Mac :1235 (LLM)
-                        │   :1234 → Mac :1234 (embeddings)
-                        │   :5433 → Mac :5433 (PostgreSQL)
-                        ▼
-┌─────────────────────────────────────────────────┐
-│  MAC STUDIO M3 Ultra — 275GB (casa)             │
-│                                                 │
-│  ├─ mlx_lm.server :1235                         │
-│  │    Qwen3-30B-A3B-Instruct-2507-bf16 (57GB)   │
-│  │    + LoRA v5 (rank 32, val loss 0.853)       │
-│  ├─ LM Studio :1234                             │
-│  │    nomic-embed-text-v1.5 (768 dim)           │
-│  │    ⚠ SOLO nomic debe estar cargado           │
-│  └─ PostgreSQL 16 + pgvector :5433 (Docker)     │
-│       162,870 documentos · 17GB                 │
+│  LLM: MiniMax-M3 vía https://api.minimax.io/v1  │
+│  (cloud — no depende de la Mac)                 │
+│  DB: PostgreSQL en 182.255.84.124:5432          │
+│  (conexión DIRECTA — el túnel SSH de la Mac ya  │
+│  no participa; 397K docs · 10.6M chunks)        │
 └─────────────────────────────────────────────────┘
 ```
 
-**Regla de oro**: la Mac es la única con la IA y la base de datos. Si la Mac
-se apaga, el sitio sigue arriba pero no genera respuestas.
+**Regla de oro (v2)**: el VPS es autónomo — LLM cloud + DB remota. La Mac
+solo hace harvesting/cosecha pesada y entrenamiento (Soup/Tlamatini).
 
 ---
 
@@ -121,44 +98,47 @@ journalctl -u aijusticia-engine -f                # logs
 
 **Engine .env** — `/opt/aijusticia/engine/.env`:
 ```
-LMSTUDIO_BASE_URL=http://127.0.0.1:1235/v1     # LLM vía túnel
-EMBED_BASE_URL=http://127.0.0.1:1234/v1        # nomic vía túnel
-PG_HOST=127.0.0.1
-PG_PORT=5433                                    # Postgres vía túnel
+LMSTUDIO_BASE_URL=https://api.minimax.io/v1    # MiniMax-M3 (cloud)
+PG_HOST=182.255.84.124                         # Postgres producción (directo)
+PG_PORT=5432
+PG_DB=aijusticia
+PG_USER=aijusticia
+PG_PASSWORD=<ver .env, NO commitear>
 ```
+⚠ El túnel autossh de la Mac (`com.aijusticia.tunnel`) ya NO es necesaria
+para el sitio; sigue instalada para los harvesters locales. Si quitas el
+forward `5433`, verificar que nada use `127.0.0.1:5433` en el VPS.
 
 ### 3.3 Mac (casa)
 
-| Servicio | Cómo arranca | Comando manual |
-|----------|--------------|----------------|
-| Túnel | **launchd** `com.aijusticia.tunnel` (auto) | `launchctl kickstart -k gui/$(id -u)/com.aijusticia.tunnel` |
-| LLM | manual | `cd engine && ./start.sh` (levanta mlx_lm+LoRA :1235) |
-| Embeddings | LM Studio GUI | cargar solo `nomic-embed-text-v1.5` |
-| PostgreSQL | Docker Desktop | `cd engine && docker compose up -d` |
+| Servicio | Cómo arranca | Notas |
+|----------|--------------|-------|
+| Túnel | launchd `com.aijusticia.tunnel` | forward `-R 5433→Mac:5432` (fix 12-oct; el plist viejo apuntaba a 5433→5433 y la DB nunca llegaba) |
+| Harvesters pesados | manual / setsid | ordenjuridico, estados (ver §5) |
+| Entrenamiento Tlamatini | Soup CLI | `tohil/` (configs + Makefile) |
 
-Túnel (plist en `~/Library/LaunchAgents/com.aijusticia.tunnel.plist`):
-autossh con `ServerAliveInterval=30`, reintentos cada 15s, logs en
-`/tmp/aij-tunnel.log`. Verificar desde el VPS:
-`ssh root@66.154.100.25 "curl -s http://127.0.0.1:1235/v1/models | head -c 80"`
+### 3.4 DB de producción (182.255.84.124)
 
-⚠ LM Studio: descargar (`lms unload`) cualquier LLM grande — solo nomic
-(84MB). El LLM lo sirve mlx_lm :1235. El guard está en `engine/start.sh status`.
+PostgreSQL 16 — 397K documentos, 10.6M chunks, ~2.97B tokens.
+Columnas clave añadidas el 12-oct-2026 (ver scripts):
+- `documentos.titulo_search` — tsvector GENERATED de `titulo`
+- `documentos_chunks.articulo_num` — int, primer artículo del chunk (backfill
+  por rangos con regex; índice parcial)
+
+Estado por fuente: `GET /corpus/status` (o ver https://aijusticia.mx/estado).
 
 ---
 
 ## 4. Operación diaria
 
-### Arranque tras apagón de la Mac
+### Arranque tras mantenimiento
 ```bash
-# 1. Docker Desktop (Postgres)      → abrir la app
-# 2. LM Studio                      → cargar nomic-embed-text-v1.5
-# 3. Túnel                          → automático (launchd)
-# 4. LLM
-cd ~/workspace/aijusticia/engine && ./start.sh
-# 5. Verificar producción
+ssh root@66.154.100.25 "systemctl restart aijusticia-engine aijusticia-web"
 curl -s https://aijusticia.mx/health
+curl -s -o /dev/null -w '%{http_code}\n' https://aijusticia.mx/estado
 ```
-El VPS no requiere ningún arranque (systemd + túnel auto-reconectan).
+El sitio es autónomo (LLM cloud + DB remota): si la Mac se apaga, el sitio
+sigue funcionando completo. La Mac solo hace harvesting y entrenamiento.
 
 ### Actualizar código (desde la Mac)
 ```bash
@@ -192,33 +172,56 @@ curl -s https://aijusticia.mx/health
 | Síntoma | Causa probable | Fix |
 |---------|---------------|-----|
 | 502 en dominio | app caída en 66.154 | `systemctl restart aijusticia-engine aijusticia-web` |
-| `/health` degraded, llm=False | túnel caído o Mac apagada | verificar Mac + `launchctl kickstart -k gui/$(id -u)/com.aijusticia.tunnel` |
-| Respuestas no generan, embeddings ok | mlx_lm caído en Mac | `./start.sh` en la Mac |
-| Respuestas desviadas / lento | LLM grande cargado en LM Studio | `lms ps` → `lms unload <modelo>` (dejar solo nomic) |
-| DB connection refused | Docker Postgres caído | Mac: `docker compose up -d` (engine/) |
+| `/health` ok pero sin respuesta | MiniMax cloud caído / API key | revisar `LMSTUDIO_BASE_URL` en el .env del VPS |
+| Chat sin eventos `laws` | buscar_en_ley falla (col falta) | revisar `journalctl -u aijusticia-engine \| grep buscar_en_ley` |
+| DB connection refused/fatal | DB en 182.255 caída o password | `ssh root@66.154.100.25 "pg_isready -h 182.255.84.124"` |
 
 ---
 
-## 5. Modelo en producción
+## 5. Corpus — estado y scripts (12 oct 2026)
+
+| Fuente | Docs | Nota |
+|--------|------|------|
+| DOF | 161,577 | vivo (diario) |
+| SJF | 149,995 | tesis + ejecutorias |
+| SentenciasEdomex/CDMX/Qro | 66,726 | harvests por estado |
+| GacetaEstatal | 15,123 | 31 entidades (gacetas oficiales) |
+| GacetaCDMX | 2,193 | |
+| LeyesBiblio / LexMX / Justia | 1,195 | leyes federales/estatales |
+| **OrdenJuridico** | creciendo | **32 estados — leyes consolidadas; harvest en curso (script `harvest_ordenjuridico.py`, resume con estado.json, borra archivos tras extraer)** |
+
+### Limpieza de corpus (el texto estaba sucio)
+```bash
+# en el VPS, tras un harvest grande:
+cd /opt/aijusticia/engine
+.venv/bin/python scripts/limpieza_profunda.py   # idempotente, solo filas sucias
+.venv/bin/python scripts/fix_titulos_oj.py      # títulos mojibake de ordenjuridico
+.venv/bin/python scripts/migrar_articulo_num.py # (solo si falta la columna)
+```
+`limpieza_profunda` arregla: guiones partidos, saltos/espacios, números de
+página, controles/form-feeds, mojibake, "Artículo N" en minúsculas, títulos.
+FTS se reindexa solo (columnas GENERATED). Embeddings no cambian.
+
+---
+
+## 6. Modelo en producción
 
 | Componente | Valor |
 |------------|-------|
-| LLM | Qwen3-30B-A3B-Instruct-2507-bf16 (57GB, MLX) |
-| Adapter | `data/lora_adapter_v5` (rank 32, val loss 0.853) |
-| Inferencia | `mlx_lm.server :1235`, `chat_template_kwargs.enable_thinking=false` |
-| Embeddings | nomic-embed-text-v1.5, 768 dim |
-| DB | PostgreSQL 16 + pgvector, 162,870 docs, 1.5M chunks |
+| LLM | MiniMax-M3 (cloud, razonador — emite `<think>` que el engine purga) |
+| Chat | 2 agentes: Izel (conversacional, streaming SSE) + Bibliotecario (leyes) |
+| Streaming | `POST /chat/stream` — eventos `token`/`laws`/`done`/`reset` |
+| Embeddings | desactivados; recuperación 100% FTS español (GIN tsvector) |
+| DB | PostgreSQL 16 — 397K docs, 10.6M chunks (182.255.84.124) |
 
-### Retrain del LoRA (en la Mac)
-```bash
-cd engine
-python scripts/generate_synthetic_v2.py --count 5000   # más sintéticos si hace falta
-python -m mlx_lm lora --config data/lora_adapter_v5/config.yaml
-# ~3.5 min, val loss esperada ≤ 0.86
-systemctl… no aplica: reiniciar mlx_lm (./start.sh) para cargar el adapter nuevo
-```
-Con datos consentidos de usuarios: `python scripts/train_lora.py --extraer-consentidos`
-Adapters de bufete (aislados): `python scripts/train_lora.py --bufete <uuid>`
+### Guardas del chat (implementadas en chat_stream.py)
+- Purga de caracteres CJK por token (M3 desliza chino en español)
+- Detección de repetición degenerada → reintento + evento `reset`
+- `enable_thinking` off en llamadas cortas
+- Prompt anti-voseo (español mexicano, de tú)
+
+### Entrenamiento Tlamatini (en la Mac)
+Ver `tohil/` (Makefile, configs Soup, eval_bateria.py) y `docs/`.
 
 ---
 
@@ -242,6 +245,9 @@ Adapters de bufete (aislados): `python scripts/train_lora.py --bufete <uuid>`
 - [ ] Google OAuth: crear proyecto Google Cloud + secrets
 - [ ] Fase C: bóveda cifrada de documentos (UI + WebCrypto)
 - [ ] Fase D: compartir dossiers con abogados + audit log + directorio
-- [ ] DOF backfill completo (murió con Docker; reiniciar en la Mac)
+- [x] ~~DOF backfill~~ — DOF vivo vía scheduler (161K docs, al día)
 - [ ] Monitoreo externo (UptimeRobot o similar sobre /health)
-- [ ] Respaldos de la DB de la Mac (17GB — pg_dump semanal a disco externo o S3)
+- [ ] Respaldos de la DB de producción (397K docs en 182.255 — pg_dump semanal)
+- [ ] CPT Tlamatini v1: reexportar corpus con `prep_cpt_completo.py` DESPUÉS
+      de que `limpieza_profunda` + harvest OrdenJuridico terminen (12-oct)
+- [ ] Voz (TTS/STT) en el chat — sesión 3 del plan de rediseño
