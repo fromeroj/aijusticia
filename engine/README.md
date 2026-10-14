@@ -1,3 +1,9 @@
+> ⚠️ **DOCUMENTO HISTÓRICO (jul 2026)** — describe la arquitectura original
+> (LoRA v5 local, embeddings nomic, DB vía túnel). La realidad actual está en
+> [`DEPLOYMENT.md`](../DEPLOYMENT.md) (operación) y
+> [`docs/arquitectura-corpus-rag.md`](../docs/arquitectura-corpus-rag.md)
+> §8 (corpus/retrieval, 14-oct-2026). Se conserva como referencia del diseño inicial.
+
 # AI Justicia — Motor LLM + RAG
 
 Motor de IA jurídica mexicana: LLM destilado + RAG con verificación de citas.

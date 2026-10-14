@@ -303,3 +303,49 @@ La batería de evaluación de Tlamatini (30 preguntas ciudadanas) está en
 5. **Ingiere** con `ingest_sentencias.py Sentencias{Estado} '{JSONL pattern}'`
 6. **Agrega el enum** en `models.py` si es una fuente nueva
 7. **Verifica** en `/estado` que el mapa se pinte
+
+---
+
+## 8. Estado al 14-oct-2026 (producción real)
+
+> La DB canónica es el postgres **LOCAL del VPS 162.35.113.166** (no 182).
+> Ver `DEPLOYMENT.md` §topología.
+
+### 8.1 Números de producción
+
+| Métrica | Valor |
+|---|---|
+| Documentos | 473,848 |
+| Chunks | 14.4M |
+| DOF | 161,491 — **diario automatizado** (cron 11:30 CDMX en 162) |
+| SJF | 150,312 |
+| Sentencias estatales | Edomex 63K · CDMX 43K+30K SIVEPJ (en ingesta) · Chiapas 3K · BC 2.8K · Qro 1.3K |
+| Leyes consolidadas (OrdenJuridico) | 26,470 — **32/32 estados** |
+| LeyesBiblio | 14 leyes federales **canónicas con texto vigente** (`LB:<code>`; la LFT incluye la reforma de 40 h) |
+
+### 8.2 Chat: arquitectura de 2 agentes (chat_stream.py)
+
+- **Izel** (conversacional, streaming SSE ~2s primer token) + **Bibliotecario** (subagente de leyes, corre en paralelo).
+- Eventos SSE: `token` / `laws` / `done` / `reset` / `error`.
+- Guardas M3: purga CJK por token, streams 100%-`<think>` cuentan como vacíos y fuerzan reintento (3 intentos, el último con 5000 tokens), reglas de prompt: fecha solo del pasaje, "gana el pasaje fresco", pasajes irrelevantes se declaran, nunca voseo.
+
+### 8.3 Recuperación de leyes (buscar_en_ley + rama de recientes)
+
+1. **Fase 1 (barata)**: pool de docs por título (FTS `titulo_search`, filtro `^(ley|código|reglamento|constitución|decreto|acuerdo)`, LIMIT 1500) — sin este pre-corte el join reventaba el statement timeout.
+2. **Fase 2**: chunks de ese pool; ORDER BY cobertura DESC, `rank × (es_articulo ? 1.5 : 1.0) × recencia` — recencia = `1 + 1.2·e^(−edad/180d)`.
+3. **Rama determinística de recientes**: SIEMPRE consulta DOF de los últimos 150 días (solo instrumentos normativos, boost ×2.2 a decretos de reforma, fecha de publicación explícita en cada pasaje, alias número↔palabra "40 horas"↔"cuarenta horas"). Los nav-blocks del DOF se limpan conservando el encabezado `DOF: dd/mm/aaaa …`.
+4. Los pasajes recientes van **primero** en el contexto de Izel.
+
+### 8.4 Medición: batería de evaluación
+
+```
+python3 engine/scripts/eval_bateria_prod.py --guardar
+```
+8 casos B/C contra producción con claves verificadas del corpus (resultados JSON en `engine/data/eval/`). Estado 13-oct: **6-7/8 estricto**, varianza ±1 por muestreo de MiniMax-M3 (los fallos residuales son de atención del modelo, no de retrieval). Es la batería de demo competitivo y el bench de Tlamatini.
+
+### 8.5 Deuda conocida del corpus
+
+- Limpieza profunda (`scripts/limpieza_profunda.py`, portable a ambos schemas) corriendo; pausada en 162 por carga — reanudar en ventana muerta.
+- 27 estados sin sentencias en producción (solo Edomex/CDMX/Chiapas/BC/Qro/Sonora-48). Cosechas pendientes: NL (Playwright, metadatos sin texto), Jalisco (CDP a medias), Coahuila (API lista, sin correr).
+- 11 códigos de `LEYES_CLAVE` dan 404 en diputados.gob.mx.
+- Morelos: solo 4 leyes en OrdenJuridico — revisar.

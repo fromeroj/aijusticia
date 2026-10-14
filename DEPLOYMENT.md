@@ -1,6 +1,6 @@
 # Runbook de Producción — AI Justicia
 
-> Última actualización: 13 octubre 2026
+> Última actualización: 14 octubre 2026
 > Estado: **LIVE** en https://aijusticia.mx y https://laley.com.mx
 
 > ## ⚠️ TOPOLOGÍA REAL (verificada 13-oct-2026)
@@ -32,13 +32,13 @@
 │                                                 │
 │  Caddy (Docker, :80/:443)                       │
 │  ├─ TLS Let's Encrypt automático                │
-│  └─ reverse_proxy → 66.154.100.25:6234          │
+│  └─ reverse_proxy → 162.35.113.166:6234         │
 └───────────────────────┬─────────────────────────┘
                         │ HTTP interno (sin TLS)
                         ▼
 ┌─────────────────────────────────────────────────┐
-│  VPS APP — 66.154.100.25 (bandit.konen.guru)    │
-│  Ubuntu 22.04 · 3 vCPU · 2GB RAM · 30GB disco   │
+│  PRODUCCIÓN — 162.35.113.166                    │
+│  (vps3603848.trouble-free.net)                  │
 │                                                 │
 │  nginx :6234 (edge interno)                     │
 │  ├─ API (FastAPI :8000, systemd aijusticia-     │
@@ -47,17 +47,22 @@
 │  └─ / (resto)     → Next.js :3000 (aijusticia-  │
 │                     web)                        │
 │                                                 │
-│  Código: /opt/aijusticia/{engine,app}           │
 │  LLM: MiniMax-M3 vía https://api.minimax.io/v1  │
-│  (cloud — no depende de la Mac)                 │
-│  DB: PostgreSQL en 182.255.84.124:5432          │
-│  (conexión DIRECTA — el túnel SSH de la Mac ya  │
-│  no participa; 397K docs · 10.6M chunks)        │
+│  DB: PostgreSQL LOCAL 127.0.0.1:5432            │
+│  473,848 docs · 14.4M chunks                    │
+│  Cron: DOF diario 11:30 CDMX (dof_diario.sh),   │
+│  backup_db.sh 04:00                             │
 └─────────────────────────────────────────────────┘
+
+  AUXILIARES:
+  ├─ 66.154.100.25 — harvest ordenjuridico (32 estados
+  │   → DB archivo 182) + limpieza del archivo
+  └─ Mac Studio — túnel vestigial, cosechas con
+      navegador (Playwright/CDP), entrenamiento Soup
 ```
 
-**Regla de oro (v2)**: el VPS es autónomo — LLM cloud + DB remota. La Mac
-solo hace harvesting/cosecha pesada y entrenamiento (Soup/Tlamatini).
+**Regla de oro (v2)**: producción es autónoma (LLM cloud + DB local de 162).
+La Mac solo hace cosechas que requieren navegador y entrenamiento (Soup/Tlamatini).
 
 ---
 
@@ -96,7 +101,7 @@ laley.com.mx, www.laley.com.mx {
 Cambios: editar `/tmp/Caddyfile` en el host (bind mount), luego
 `docker restart caddy`. TLS se emite/renueva solo.
 
-### 3.2 VPS App (66.154.100.25)
+### 3.2 VPS Producción (162.35.113.166)
 
 **nginx** — `/etc/nginx/sites-available/aijusticia` (symlink en sites-enabled):
 un solo `server { listen 6234; }` con los location de API → :8000 y el resto
@@ -112,7 +117,7 @@ journalctl -u aijusticia-engine -f                # logs
 **Engine .env** — `/opt/aijusticia/engine/.env`:
 ```
 LMSTUDIO_BASE_URL=https://api.minimax.io/v1    # MiniMax-M3 (cloud)
-PG_HOST=182.255.84.124                         # Postgres producción (directo)
+PG_HOST=127.0.0.1                              # Postgres LOCAL de 162
 PG_PORT=5432
 PG_DB=aijusticia
 PG_USER=aijusticia
@@ -130,7 +135,7 @@ forward `5433`, verificar que nada use `127.0.0.1:5433` en el VPS.
 | Harvesters pesados | manual / setsid | ordenjuridico, estados (ver §5) |
 | Entrenamiento Tlamatini | Soup CLI | `tohil/` (configs + Makefile) |
 
-### 3.4 DB de producción (182.255.84.124)
+### 3.4 DB de producción (LOCAL en 162)
 
 PostgreSQL 16 — 397K documentos, 10.6M chunks, ~2.97B tokens.
 Columnas clave añadidas el 12-oct-2026 (ver scripts):
@@ -146,7 +151,7 @@ Estado por fuente: `GET /corpus/status` (o ver https://aijusticia.mx/estado).
 
 ### Arranque tras mantenimiento
 ```bash
-ssh root@66.154.100.25 "systemctl restart aijusticia-engine aijusticia-web"
+ssh root@162.35.113.166 "systemctl restart aijusticia-engine aijusticia-web"
 curl -s https://aijusticia.mx/health
 curl -s -o /dev/null -w '%{http_code}\n' https://aijusticia.mx/estado
 ```
@@ -157,15 +162,15 @@ sigue funcionando completo. La Mac solo hace harvesting y entrenamiento.
 ```bash
 cd ~/workspace/aijusticia
 rsync -az --exclude data/ --exclude __pycache__ --exclude .env \
-  engine/ root@66.154.100.25:/opt/aijusticia/engine/
+  engine/ root@162.35.113.166:/opt/aijusticia/engine/
 rsync -az --exclude node_modules --exclude .next \
-  app/ root@66.154.100.25:/opt/aijusticia/app/
+  app/ root@162.35.113.166:/opt/aijusticia/app/
 
 # Si cambió el backend:
-ssh root@66.154.100.25 "systemctl restart aijusticia-engine"
+ssh root@162.35.113.166 "systemctl restart aijusticia-engine"
 
 # Si cambió el frontend:
-ssh root@66.154.100.25 "cd /opt/aijusticia/app && \
+ssh root@162.35.113.166 "cd /opt/aijusticia/app && \
   NODE_OPTIONS=--max-old-space-size=1536 npm run build && \
   systemctl restart aijusticia-web"
 ```
@@ -173,21 +178,23 @@ ssh root@66.154.100.25 "cd /opt/aijusticia/app && \
 
 ### Verificar salud ( checklist)
 ```bash
-# Túnel
-ssh root@66.154.100.25 "curl -s http://127.0.0.1:1235/v1/models | head -c 60"
-# VPS servicios
-ssh root@66.154.100.25 "systemctl is-active aijusticia-engine aijusticia-web"
 # Producción
 curl -s https://aijusticia.mx/health
+curl -s https://aijusticia.mx/corpus/status | head -c 200
+# Servicios + ingesta diaria en 162
+ssh root@162.35.113.166 "systemctl is-active aijusticia-engine aijusticia-web; \
+  tail -2 /var/log/aijusticia_dof.log; crontab -l | tail -2"
+# Harvest auxiliar (66.154 → DB archivo 182)
+ssh root@66.154.100.25 "tail -1 /opt/aijusticia/ordenjuridico_full.log"
 ```
 
 ### Diagnóstico rápido
 | Síntoma | Causa probable | Fix |
 |---------|---------------|-----|
-| 502 en dominio | app caída en 66.154 | `systemctl restart aijusticia-engine aijusticia-web` |
+| 502 en dominio | app caída en 162 | `systemctl restart aijusticia-engine aijusticia-web` |
 | `/health` ok pero sin respuesta | MiniMax cloud caído / API key | revisar `LMSTUDIO_BASE_URL` en el .env del VPS |
 | Chat sin eventos `laws` | buscar_en_ley falla (col falta) | revisar `journalctl -u aijusticia-engine \| grep buscar_en_ley` |
-| DB connection refused/fatal | DB en 182.255 caída o password | `ssh root@66.154.100.25 "pg_isready -h 182.255.84.124"` |
+| DB connection refused/fatal | postgres local de 162 caído | `ssh root@162.35.113.166 "pg_isready -h 127.0.0.1"` |
 
 ---
 
@@ -240,7 +247,7 @@ Ver `tohil/` (Makefile, configs Soup, eval_bateria.py) y `docs/`.
 
 ## 6. Seguridad
 
-- SSH solo con llave en ambos servidores (root@66.154 y root@192.227)
+- SSH solo con llave en los servidores (162.35, 66.154, 192.227, 182.255)
 - El :6234 del VPS es HTTP plano — solo aceptable porque viaja entre
   servidores propios; si se expone a internet directo, poner TLS o restricción
   por IP en nginx (`allow 192.227.167.147; deny all;`)

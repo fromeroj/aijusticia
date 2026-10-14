@@ -1,3 +1,9 @@
+> ⚠️ **DOCUMENTO HISTÓRICO (jul 2026)** — describe la arquitectura original
+> (LoRA v5 local, embeddings nomic, DB vía túnel). La realidad actual está en
+> [`DEPLOYMENT.md`](../DEPLOYMENT.md) (operación) y
+> [`docs/arquitectura-corpus-rag.md`](../docs/arquitectura-corpus-rag.md)
+> §8 (corpus/retrieval, 14-oct-2026). Se conserva como referencia del diseño inicial.
+
 # Subsistema de Adquisición de Datos — AI Justicia
 
 > Diseño del sistema que mantiene TODAS las leyes de México al día.
