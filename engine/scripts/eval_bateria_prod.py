@@ -51,10 +51,10 @@ CASOS = [
     {
         "id": "B2",
         "q": "¿Un gobernador puede tener doble nacionalidad?",
-        "requiere_txt": [r"no\b[^.]{0,120}\bpuede|\ben principio, no\b|ya no\b", r"nacionalidad"],
-        "prohibe_txt": [r"^¡?s[ií],? un gobernador (sí |si )?puede", r"\*\*s[ií]\*\*,? un gobernador puede tener doble"],
+        "requiere_txt": [r"renunci|nacionalidad [uú]nica|art[íi]culo[s]? (82|116|122)|7 de octubre"],
+        "prohibe_txt": [r"respuesta corta: s[ií]", r"s[ií],? un gobernador (mexicano )?(sí |si )?puede tener"],
         "ley_panel": ["82"],
-        "nota": "decreto DOF 07/10/2026 (arts 82/116/122) en panel; ideal: menciona renuncia previa",
+        "nota": "decreto DOF 07/10/2026 (arts 82/116/122) en panel; el decreto fresco manda sobre art. 32 (1997)",
     },
     {
         "id": "B3",
@@ -150,14 +150,13 @@ def correr_q(url: str, pregunta: str, timeout: float = 150.0) -> dict:
 
 def calificar(caso: dict, res: dict) -> dict:
     txt = res.get("texto", "")
-    low = txt.lower()
     fallas, avisos = [], []
 
     for pat in caso["requiere_txt"]:
-        if not re.search(pat, low):
+        if not re.search(pat, txt, re.I):
             fallas.append(f"falta patrón requerido: {pat}")
     for pat in caso["prohibe_txt"]:
-        if re.search(pat, low):
+        if re.search(pat, txt, re.I):
             fallas.append(f"aparece patrón prohibido: {pat}")
     for sub in caso["ley_panel"]:
         if not any(sub.lower() in t.lower() for t in res.get("leyes", [])):

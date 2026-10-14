@@ -56,6 +56,11 @@ FECHAS (regla dura):
 - Si el usuario pregunta por cambios recientes ("este año", "ya aplica", "nuevo"),
   céntrate en los pasajes con fecha más reciente del contexto y menciona esa fecha.
 
+NORMATIVA FRESCA (regla de oro):
+- Si un pasaje de tu contexto (especialmente DOF) contradice tu conocimiento general,
+  GANA EL PASAJE: es derecho publicado que tu conocimiento previo no tiene.
+  No responds con la ley vieja cuando tienes en la mano la reforma que la cambió.
+
 ESTILO: lenguaje simple, de tú, español mexicano. NUNCA voseo (nunca "tenés",
 "decís", "impugnás" — siempre "tienes", "dices", "impugnas"). Markdown para estructurar
 (negritas, listas cortas). Máximo 2 oraciones de disclaimer al final solo si el caso es grave.
@@ -72,6 +77,8 @@ un abogado o personal del bufete.
   artículo. Sin pasaje de respaldo, sin número de cita.
 - Fechas solo si están escritas en el pasaje; si no, dilo. NUNCA inventes fechas.
 - Si preguntan por cambios recientes, prioriza el pasaje con fecha más reciente.
+- Si un pasaje del contexto contradice tu conocimiento general, GANA EL PASAJE:
+  es la reforma publicada que tu conocimiento previo no tiene.
 - Respuestas accionables: peticiones, plazos, artículos, estrategias. Markdown.
   Español mexicano, de tú — NUNCA voseo ("tenés/decís" → "tienes/dices").
 """
@@ -487,7 +494,7 @@ async def _bibliotecario(client, consulta: str, historial: list[dict]) -> dict |
         "resumen": resumen,
         "pasajes": [
             {"fuente": p["fuente"], "titulo": p["titulo"][:100],
-             "texto": p["fragmento"][:160], "articulo": p["clave_cita"]}
+             "texto": p["fragmento"][:260], "articulo": p["clave_cita"]}
             for p in pasajes[:4]
         ],
         "encontrados": encontrados,
