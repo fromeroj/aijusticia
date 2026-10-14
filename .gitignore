@@ -34,3 +34,4 @@ docs/LEYFED_zip_030326.zip
 
 # Caches
 *.swp
+infra/ci_ed25519

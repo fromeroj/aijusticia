@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "*/30 * * * *"   # monitoreo externo cada 30 min
+  workflow_dispatch:
+
+jobs:
+  checks:
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compila todo el Python (engine + data + eval + infra)
+        run: python -m compileall -q engine/ai_justicia data/ eval/ infra/
+      - name: Sintaxis de scripts shell
+        run: |
+          for f in infra/*.sh data/ingestion/*.sh data/harvesters/*.sh; do
+            [ -f "$f" ] && bash -n "$f"
+          done
+      - name: Salud de producción (pre-merge, sin SSH)
+        run: python3 infra/salud.py
+        env:
+          SALUD_SIN_SSH: "1"
+      - uses: actions/setup-node@v4
+        if: github.event_name == 'push' || github.event_name == 'pull_request'
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - name: Build Next.js
+        if: github.event_name == 'push' || github.event_name == 'pull_request'
+        working-directory: apps/web
+        run: npm ci && npm run build
+
+  monitor:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Salud externa (falla solo en críticos)
+        run: |
+          python3 infra/salud.py || code=$?
+          [ "${code:-0}" -le 1 ] && exit 0 || exit 1
+        env:
+          SALUD_SIN_SSH: "1"
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: checks
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.CI_SSH_KEY }}" > ~/.ssh/ci_ed25519
+          chmod 600 ~/.ssh/ci_ed25519
+          ssh-keyscan -H 162.35.113.166 >> ~/.ssh/known_hosts 2>/dev/null
+          ssh-keyscan -H 66.154.100.25 >> ~/.ssh/known_hosts 2>/dev/null
+          printf "Host 162.35.113.166 66.154.100.25\n  User root\n  IdentityFile ~/.ssh/ci_ed25519\n" > ~/.ssh/config
+      - name: Deploy API + web
+        run: bash infra/deploy.sh all
+      - name: Gate de salud post-deploy
+        run: python3 infra/salud.py
