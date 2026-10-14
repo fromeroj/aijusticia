@@ -90,36 +90,80 @@ def titulo_limpio(t: str) -> str:
     return unicodedata.normalize("NFC", t2)
 
 
-def procesar_tabla_chunks(cur) -> None:
+def _schema(cur) -> dict:
+    """Detecta diferencias entre DBs: 182 tiene chunks.id y texto_search
+    GENERATED; 162 no tiene chunks.id y texto_search es columna mantenida."""
+    cur.execute("""
+        SELECT column_name, is_generated FROM information_schema.columns
+        WHERE table_name = 'documentos_chunks'
+    """)
+    cols = {c: g for c, g in cur.fetchall()}
+    return {
+        "chunk_id": "id" in cols,
+        "search_generated": cols.get("texto_search") == "ALWAYS",
+    }
+
+
+def procesar_tabla_chunks(cur, esquema: dict) -> None:
     t0 = time.time()
-    cur.execute("SELECT coalesce(max(id), 0) FROM documentos_chunks")
-    max_id = cur.fetchone()[0]
-    lo, n_scan, n_fix = 0, 0, 0
-    print(f"chunks: max_id={max_id:,}", flush=True)
-    while lo <= max_id:
-        hi = lo + PASO
-        cur.execute(f"""
-            SELECT id, texto FROM documentos_chunks
-            WHERE id > %s AND id <= %s AND ({SUCIO_SQL})
-        """, (lo, hi))
+    upd_search = "" if esquema["search_generated"] else \
+        ", texto_search = to_tsvector('spanish', v.nuevo)"
+    n_scan = n_fix = 0
+
+    if esquema["chunk_id"]:
+        # 182: paginar por id
+        cur.execute("SELECT coalesce(max(id), 0) FROM documentos_chunks")
+        max_id = cur.fetchone()[0]
+        print(f"chunks (por id): max_id={max_id:,}", flush=True)
+        rangos = [("id", lo, lo + PASO) for lo in range(0, max_id + 1, PASO)]
+        lo = 0
+        while lo <= max_id:
+            hi = lo + PASO
+            cur.execute(f"""
+                SELECT id, texto FROM documentos_chunks
+                WHERE id > %s AND id <= %s AND ({SUCIO_SQL})
+            """, (lo, hi))
+            filas = cur.fetchall()
+            fixes = [(limpiar(t), cid) for cid, t in filas
+                     if (n := limpiar(t)) and n != t]
+            n_scan += len(filas)
+            if fixes:
+                psycopg.execute_values(cur, f"""
+                    UPDATE documentos_chunks c SET texto = v.nuevo {upd_search}
+                    FROM (VALUES %s) AS v(nuevo, id)
+                    WHERE c.id = v.id
+                """, fixes, page_size=500)
+                conn.commit()
+                n_fix += len(fixes)
+                print(f"  [{hi:>12,}] scanned={n_scan:,} fixed={n_fix:,} "
+                      f"({time.time()-t0:.0f}s)", flush=True)
+            lo = hi
+    else:
+        # 162: keyset por (documento_id, ordinal)
+        cur.execute("""
+            SELECT documento_id, ordinal, texto FROM documentos_chunks
+            WHERE ({sucio})
+            ORDER BY documento_id, ordinal
+            LIMIT 200000
+        """.format(sucio=SUCIO_SQL))
         filas = cur.fetchall()
-        n_scan += len(filas)
         fixes = []
-        for cid, texto in filas:
+        for did, ordinal, texto in filas:
             nuevo = limpiar(texto)
             if nuevo and nuevo != texto:
-                fixes.append((nuevo, cid))
+                fixes.append((nuevo, did, ordinal))
+        n_scan = len(filas)
         if fixes:
-            psycopg.execute_values(cur, """
-                UPDATE documentos_chunks c SET texto = v.nuevo
-                FROM (VALUES %s) AS v(nuevo, id)
-                WHERE c.id = v.id
+            psycopg.execute_values(cur, f"""
+                UPDATE documentos_chunks c
+                SET texto = v.nuevo {upd_search}
+                FROM (VALUES %s) AS v(nuevo, did, ordinal)
+                WHERE c.documento_id = v.did AND c.ordinal = v.ordinal
             """, fixes, page_size=500)
             conn.commit()
-            n_fix += len(fixes)
-            print(f"  [{hi:>12,}] scanned={n_scan:,} fixed={n_fix:,} "
-                  f"({time.time()-t0:.0f}s)", flush=True)
-        lo = hi
+            n_fix = len(fixes)
+        print(f"  scanned={n_scan:,} fixed={n_fix:,} "
+              f"({time.time()-t0:.0f}s)", flush=True)
     print(f"CHUNKS LISTO: scanned={n_scan:,} fixed={n_fix:,} en {time.time()-t0:.0f}s", flush=True)
 
 
@@ -159,9 +203,12 @@ def procesar_documentos(cur) -> None:
 
 if __name__ == "__main__":
     with psycopg.connect(settings.psycopg_dsn) as conn:
+        with conn.cursor() as cur:
+            esquema = _schema(cur)
+            print("schema:", esquema, flush=True)
         # chunks primero (lo que ve la recuperación), luego docs
         with conn.cursor() as cur:
-            procesar_tabla_chunks(cur)
+            procesar_tabla_chunks(cur, esquema)
         conn.commit()
         with conn.cursor() as cur:
             procesar_documentos(cur)

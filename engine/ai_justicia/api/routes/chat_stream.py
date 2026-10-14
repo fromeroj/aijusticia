@@ -223,8 +223,25 @@ def _frase_a_tsquery(frase: str) -> str:
     return con if planas == palabras else f"({con}) | ({sin})"
 
 
-_NUM_A_PALABRA = {
-    "2": "dos", "3": "tres", "4": "cuatro", "5": "cinco", "6": "seis",
+_NAV_DOF_RE = re.compile(r"DOF:\s*\d{1,2}/\d{1,2}/\d{4}")
+
+
+def _limpia_nav_dof(texto: str) -> str:
+    """Los chunks del DOF empiezan con el nav del sitio ('DOF - Diario Oficial
+    de la Federación Su navegador no soporta JavaScript! …'). El bloque es
+    basura PERO justo después viene 'DOF: 07/10/2026 DECRETO por el que…' —
+    la fecha y el título que el modelo necesita. Cortar el nav y conservar
+    desde ahí."""
+    if "Su navegador no soporta" not in texto and not texto.lstrip().startswith("DOF - Diario"):
+        return texto
+    m = _NAV_DOF_RE.search(texto)
+    if m:
+        return texto[m.start():].strip()
+    # sin fecha visible: si el nav domina el chunk, descartarlo
+    return "" if len(texto) < 900 else texto
+
+
+_NUM_A_PALABRA = {    "2": "dos", "3": "tres", "4": "cuatro", "5": "cinco", "6": "seis",
     "8": "ocho", "10": "diez", "12": "doce", "15": "quince", "20": "veinte",
     "30": "treinta", "36": "treinta y seis", "40": "cuarenta",
     "42": "cuarenta y dos", "44": "cuarenta y cuatro", "46": "cuarenta y seis",
@@ -397,8 +414,6 @@ def _buscar_recientes(terminos: list[str], dias: int = 150, top_k: int = 3) -> l
                   AND (d.titulo ~* '^(decreto|ley|código|codigo|reglamento)'
                        OR d.titulo ~* '(reform|adicion|derog)')
                   AND c.texto_search @@ to_tsquery('spanish', %s)
-                  AND left(regexp_replace(c.texto, '\\s+', ' ', 'g'), 30)
-                      !~* '^(DOF - Diario|Encuestas|INDICADORES|Consulta Por)'
                 ORDER BY rank DESC
                 LIMIT %s
                 """,
@@ -412,6 +427,9 @@ def _buscar_recientes(terminos: list[str], dias: int = 150, top_k: int = 3) -> l
     vistos: set = set()
     out: list[dict] = []
     for fuente, titulo, articulo, texto, _rank, fecha_pub in filas:
+        texto = _limpia_nav_dof(texto or "")
+        if len(texto.strip()) < 100:
+            continue
         clave = (titulo or "")[:60] + "|" + (texto or "")[:40]
         if clave in vistos:
             continue
