@@ -158,23 +158,23 @@ curl -s -o /dev/null -w '%{http_code}\n' https://aijusticia.mx/estado
 El sitio es autónomo (LLM cloud + DB remota): si la Mac se apaga, el sitio
 sigue funcionando completo. La Mac solo hace harvesting y entrenamiento.
 
-### Actualizar código (desde la Mac)
+### Actualizar código — CI/CD (14-oct)
+
+**El push a `main` deploya solo** (GitHub Actions): compila Python, build de
+Next.js, deploy por rsync con la llave de CI, y gate de salud post-deploy.
+Monitoreo externo cada 30 min (job `monitor` — falla solo en críticos).
+
 ```bash
-cd ~/workspace/aijusticia
-rsync -az --exclude data/ --exclude __pycache__ --exclude .env \
-  engine/ root@162.35.113.166:/opt/aijusticia/engine/
-rsync -az --exclude node_modules --exclude .next \
-  app/ root@162.35.113.166:/opt/aijusticia/app/
-
-# Si cambió el backend:
-ssh root@162.35.113.166 "systemctl restart aijusticia-engine"
-
-# Si cambió el frontend:
-ssh root@162.35.113.166 "cd /opt/aijusticia/app && \
-  NODE_OPTIONS=--max-old-space-size=1536 npm run build && \
-  systemctl restart aijusticia-web"
+make deploy       # manual, igual que CI (rsync + restart + gate de salud)
+make salud        # chequeo integral (~15s, exit≠0 si algo crítico falla)
+make salud-full   # + smoke real del chat
+make bateria      # batería de evaluación contra producción
+make deploy-data  # sincroniza data/ a 162 y 66
 ```
-⚠ No borrar el `.env` del engine en el VPS (los rsync de arriba lo excluyen).
+
+⚠ No borrar el `.env` del engine en el VPS (el rsync lo excluye).
+Para exigir aprobación antes de deployar: GitHub → Environments → production →
+required reviewers (la llave de CI vive en el secret `CI_SSH_KEY`).
 
 ### Verificar salud ( checklist)
 ```bash
