@@ -392,6 +392,8 @@ def _buscar_recientes(terminos: list[str], dias: int = 150, top_k: int = 3) -> l
                 JOIN documentos d ON c.documento_id = d.id
                 WHERE d.fuente = 'DOF'
                   AND d.fecha_publicacion > now() - (%s || ' days')::interval
+                  AND (d.titulo ~* '^(decreto|ley|código|codigo|reglamento)'
+                       OR d.titulo ~* '(reform|adicion|derog)')
                   AND c.texto_search @@ to_tsquery('spanish', %s)
                   AND left(regexp_replace(c.texto, '\\s+', ' ', 'g'), 30)
                       !~* '^(DOF - Diario|Encuestas|INDICADORES|Consulta Por)'
