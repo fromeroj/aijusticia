@@ -108,7 +108,7 @@ ningún proveedor, y para poder exportarse on-premise.
 | API producto | 🟢 live | `components/api-producto.md` |
 | Web app | 🟢 live | `components/web-app.md` |
 | Auth | 🟢 anónimo→email→frase funcionando; Google OAuth pendiente | `components/auth.md` |
-| Office | 🟡 en migración Mac→162 | `components/office.md` |
+| Office | 🟢 **migrado a 162** (:8080); Mac apagado | `components/office.md` |
 | Eval | 🟢 batería de producción + eval de entrenamiento | `components/eval.md` |
 | Infra/Ops | 🟢 4 servers + storage caído; monitoreo externo pendiente | `components/infra.md` |
 | Marca/GTM | 🟢 tlamatini.live + deck con cifras reales | `components/marca.md` |
@@ -116,7 +116,7 @@ ningún proveedor, y para poder exportarse on-premise.
 ## 5. Próximos hitos
 
 1. Terminar ingesta SIVEPJ + limpieza (ventana nocturna) → re-medir batería limpia.
-2. Migrar Office a 162 y apagar los contenedores de la Mac.
+2. ~~Migrar Office a 162~~ hecho; falta dominio `oficina.aijusticia.mx`.
 3. Harvest OJ completo (32/32 en archivo) → `prep_cpt_completo.py` desde **162** →
    **primer entrenamiento Tlamatini** → A/B con batería.
 4. Storage server arriba → NFS para Office (y reconsiderar corpus_downloads).
