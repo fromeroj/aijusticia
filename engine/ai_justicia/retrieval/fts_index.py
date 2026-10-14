@@ -193,6 +193,8 @@ def busqueda_fts(
             (t.documento_id * 1000000 + t.ordinal) AS chunk_id, t.documento_id, t.texto,
             __ART__ts_rank_cd(setweight(d.titulo_search, 'A') || t.texto_search,
                        to_tsquery('spanish', %s)) *
+            (1.0 + 1.5 * exp(-extract(epoch from
+                (now() - coalesce(d.fecha_publicacion, '2005-01-01'::timestamptz))) / 15552000.0)) *
             CASE
                 WHEN d.fuente = 'LeyesBiblio' THEN 1.5
                 WHEN d.fuente = 'SJF' THEN 1.2
@@ -204,14 +206,20 @@ def busqueda_fts(
                 WHEN t.texto ILIKE '%%CÁMARA DE DIPUTADOS%%' THEN 0.05
                 WHEN t.texto ILIKE '%%Secretaría de Servicios%%' THEN 0.05
                 WHEN t.texto ILIKE '%%Nuevo Código publicado%%' THEN 0.05
-                WHEN t.texto ILIKE '%%DECRETO%%' AND t.texto ILIKE '%%reform%%' THEN 0.05
-                WHEN t.texto ILIKE '%%ARTICULO PRIMERO%%' THEN 0.05
-                WHEN t.texto ILIKE '%%ARTICULO SEGUNDO%%' THEN 0.05
-                WHEN t.texto ILIKE '%%ARTICULO TERCERO%%' THEN 0.05
+                WHEN t.texto ILIKE '%%DECRETO%%' AND t.texto ILIKE '%%reform%%'
+                     AND length(t.texto) < 300 THEN 0.1
+                WHEN t.texto ILIKE '%%ARTICULO PRIMERO%%'
+                     AND length(t.texto) < 300 THEN 0.1
+                WHEN t.texto ILIKE '%%ARTICULO SEGUNDO%%'
+                     AND length(t.texto) < 300 THEN 0.1
+                WHEN t.texto ILIKE '%%ARTICULO TERCERO%%'
+                     AND length(t.texto) < 300 THEN 0.1
                 WHEN t.texto ILIKE '%%Publicado en el Diario Oficial%%' AND length(t.texto) < 600 THEN 0.1
-                WHEN t.texto ILIKE '%%DISPOSICIONES TRANSITORIAS%%' THEN 0.1
+                WHEN t.texto ILIKE '%%DISPOSICIONES TRANSITORIAS%%'
+                     AND length(t.texto) < 300 THEN 0.1
                 WHEN t.texto ILIKE '%%Rúbrica%%' AND length(t.texto) < 500 THEN 0.1
-                WHEN t.texto ILIKE '%%Presidente Constitucional%%' THEN 0.05
+                WHEN t.texto ILIKE '%%Presidente Constitucional%%'
+                     AND length(t.texto) < 300 THEN 0.1
                 WHEN length(t.texto) < 80 THEN 0.3
                 -- tablas/nóminas: densidad numérica = no es texto normativo
                 WHEN length(regexp_replace(t.texto, '[^0-9]', '', 'g'))::float

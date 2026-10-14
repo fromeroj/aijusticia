@@ -244,14 +244,18 @@ def _buscar_en_ley(ley: str, terminos: list[str], top_k: int = 6) -> list[dict]:
                     SELECT d.fuente, d.titulo, c.articulo_num, c.texto,
                            d.jerarquia, d.vinculante,
                            ({cobertura}) AS cobertura,
-                           ts_rank_cd(c.texto_search, to_tsquery('spanish', %s)) AS rank,
+                           ts_rank_cd(setweight(d.titulo_search, 'A') || c.texto_search,
+                                      to_tsquery('spanish', %s)) *
+                           (1.0 + 1.2 * exp(-extract(epoch from
+                               (now() - coalesce(d.fecha_publicacion, '2005-01-01'::timestamptz)))
+                               / 15552000.0)) AS rank,
                            (left(regexp_replace(c.texto, '\\s+', ' ', 'g'), 24)
                             ~ '^(Artículo|ARTÍCULO) ') AS es_articulo
                     FROM documentos_chunks c
                     JOIN documentos d ON c.documento_id = d.id
                     WHERE NOT d.derogado
                       AND d.fuente IN ('LeyesBiblio', 'LexMX', 'DOF')
-                      AND left(d.titulo, 40) ~* '^(ley|código|codigo|reglamento|constitución|constitucion)'
+                      AND left(d.titulo, 40) ~* '^(ley|código|codigo|reglamento|constitución|constitucion|decreto|acuerdo)'
                       AND d.titulo_search @@ to_tsquery('spanish', %s)
                       AND c.texto_search @@ to_tsquery('spanish', %s)
                     ORDER BY es_articulo DESC, cobertura DESC, rank DESC
@@ -434,7 +438,7 @@ async def chat_stream(req: ChatStreamRequest, actor=Depends(actor_opcional)):
         def _degenerado(txt: str) -> bool:
             return bool(degenerado_re.search(txt[-120:])) if len(txt) > 60 else False
 
-        async def _un_intento(temp: float, estado: dict):
+        async def _un_intento(temp: float, estado: dict, max_tokens: int = 3000):
             """Un intento de stream. Escribe texto/degenerado en `estado`."""
             full = ""
             pend = ""
@@ -445,7 +449,7 @@ async def chat_stream(req: ChatStreamRequest, actor=Depends(actor_opcional)):
                 messages=messages,
                 temperature=temp,
                 frequency_penalty=0.1,
-                max_tokens=3000,
+                max_tokens=max_tokens,
                 stream=True,
                 extra_body={"chat_template_kwargs": {"enable_thinking": False}},
             )
@@ -484,11 +488,14 @@ async def chat_stream(req: ChatStreamRequest, actor=Depends(actor_opcional)):
                     pass
             estado.update(texto=full, degenerado=False)
 
-        intentos = [0.3, 0.2] if not es_abogado else [0.2, 0.2]
-        for i, temp in enumerate(intentos):
+        # 3er intento con más presupuesto: M3 a veces agota los tokens pensando
+        # y termina el stream sin emitir ni un token de contenido.
+        intentos = [(0.3, 3000), (0.2, 3000), (0.5, 5000)] if not es_abogado \
+            else [(0.2, 3000), (0.2, 3000), (0.5, 5000)]
+        for i, (temp, mtok) in enumerate(intentos):
             estado: dict = {"texto": "", "degenerado": False}
             try:
-                async for t in _un_intento(temp, estado):
+                async for t in _un_intento(temp, estado, max_tokens=mtok):
                     yield _sse("token", t)
             except Exception as e:
                 logger.error("izel stream: %s", str(e)[:300])
@@ -498,9 +505,14 @@ async def chat_stream(req: ChatStreamRequest, actor=Depends(actor_opcional)):
             if not estado["degenerado"] and estado["texto"].strip():
                 break
             if i < len(intentos) - 1:
-                logger.warning("izel degenerado — reintentando (temp %s)", temp)
+                logger.warning("izel degenerado/vacío — reintentando (temp %s)", temp)
                 yield _sse("reset", {})
         full_text = estado["texto"]
+        if not full_text.strip():
+            logger.error("izel stream vacío tras %d intentos (consulta: %s)",
+                         len(intentos), req.consulta[:80])
+            yield _sse("error", {"mensaje":
+                       "Izel no generó respuesta (intenta de nuevo)."})
 
         clean = re.sub(r"<think>.*?</think>", "", full_text, flags=re.S).strip()
         # M3 a veces desliza caracteres CJK en texto español — nunca son válidos
