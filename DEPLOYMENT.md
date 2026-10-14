@@ -1,7 +1,20 @@
 # Runbook de Producción — AI Justicia
 
-> Última actualización: 12 octubre 2026
+> Última actualización: 13 octubre 2026
 > Estado: **LIVE** en https://aijusticia.mx y https://laley.com.mx
+
+> ## ⚠️ TOPOLOGÍA REAL (verificada 13-oct-2026)
+>
+> | Servidor | Rol |
+> |---|---|
+> | **162.35.113.166** (vps3603848.trouble-free.net) | **PRODUCCIÓN** — app + engine + **postgres LOCAL** (473K docs, 14.4M chunks). El Caddy manda aijusticia.mx AQUÍ. |
+> | 192.227.167.147 (RackNerd) | Caddy TLS, reverse_proxy → 162.35.113.166:6234 |
+> | 182.255.84.124 | Postgres PARALELO (397K docs) — al que apunta el .env de la Mac; recibía la ingesta/harvest del flujo viejo |
+> | 66.154.100.25 (bandit) | VPS viejo — hoy auxiliar para harvests; el engine/web ahí NO recibe tráfico público |
+>
+> **Consecuencias:** (1) deploy de producción = `root@162.35.113.166`;
+> (2) la DB canónica para retrieval/corpus es la LOCAL de 162 — la de 182 es
+> archivo/entrenamiento; (3) export CPT de Tlamatini debe salir de 162.
 
 ---
 
@@ -72,12 +85,12 @@ Caddyfile dentro del contenedor `caddy` (`docker exec caddy cat /etc/caddy/Caddy
 ```
 # Aijusticia
 aijusticia.com.mx, www.aijusticia.com.mx, aijusticia.mx, www.aijusticia.mx {
-	reverse_proxy http://66.154.100.25:6234
+	reverse_proxy http://162.35.113.166:6234
 }
 
 # LaLey
 laley.com.mx, www.laley.com.mx {
-	reverse_proxy http://66.154.100.25:6234
+	reverse_proxy http://162.35.113.166:6234
 }
 ```
 Cambios: editar `/tmp/Caddyfile` en el host (bind mount), luego
