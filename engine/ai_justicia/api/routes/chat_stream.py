@@ -374,10 +374,17 @@ def _buscar_recientes(terminos: list[str], dias: int = 150, top_k: int = 3) -> l
             cur = conn.cursor()
             cur.execute("SET statement_timeout = '20s'")
             or_q = " | ".join(frases)
+            # además de frases, OR de palabras sueltas: el usuario dice "doble
+            # nacionalidad" y el decreto dice "nacionalidad única" — la frase
+            # exacta no cruza, la palabra sí
+            palabras = sorted({w for t in terminos[:6]
+                               for w in re.findall(r"[a-záéíóúñü0-9]{4,}", t.lower())})[:12]
+            or_q_total = or_q + (" | " + " | ".join(palabras) if palabras else "")
             cur.execute(
                 """
                 SELECT d.fuente, d.titulo, c.articulo_num, c.texto,
-                       ts_rank_cd(c.texto_search, to_tsquery('spanish', %s)) AS rank
+                       ts_rank_cd(c.texto_search, to_tsquery('spanish', %s)) AS rank,
+                       d.fecha_publicacion::date::text AS fecha_pub
                 FROM documentos_chunks c
                 JOIN documentos d ON c.documento_id = d.id
                 WHERE d.fuente = 'DOF'
@@ -388,7 +395,7 @@ def _buscar_recientes(terminos: list[str], dias: int = 150, top_k: int = 3) -> l
                 ORDER BY rank DESC
                 LIMIT %s
                 """,
-                (or_q, str(dias), or_q, top_k * 3),
+                (or_q_total, str(dias), or_q_total, top_k * 3),
             )
             filas = cur.fetchall()
     except Exception as e:
@@ -397,7 +404,7 @@ def _buscar_recientes(terminos: list[str], dias: int = 150, top_k: int = 3) -> l
 
     vistos: set = set()
     out: list[dict] = []
-    for fuente, titulo, articulo, texto, _rank in filas:
+    for fuente, titulo, articulo, texto, _rank, fecha_pub in filas:
         clave = (titulo or "")[:60] + "|" + (texto or "")[:40]
         if clave in vistos:
             continue
@@ -410,6 +417,7 @@ def _buscar_recientes(terminos: list[str], dias: int = 150, top_k: int = 3) -> l
             "fragmento": (texto or "")[:350],
             "jerarquia": 100,
             "reciente": True,
+            "fecha_publicacion": fecha_pub,
         })
         if len(out) >= top_k:
             break
@@ -493,9 +501,10 @@ async def _bibliotecario(client, consulta: str, historial: list[dict]) -> dict |
         "institucion": institucion,
         "resumen": resumen,
         "pasajes": [
-            {"fuente": p["fuente"], "titulo": p["titulo"][:100],
-             "texto": p["fragmento"][:260], "articulo": p["clave_cita"]}
-            for p in pasajes[:4]
+            {"fuente": p["fuente"], "titulo": p["titulo"][:140],
+             "texto": p["fragmento"][:260], "articulo": p["clave_cita"],
+             **({"fecha": p["fecha_publicacion"]} if p.get("fecha_publicacion") else {})}
+            for p in pasajes[:6]
         ],
         "encontrados": encontrados,
     }
@@ -552,7 +561,9 @@ async def chat_stream(req: ChatStreamRequest, actor=Depends(actor_opcional)):
             nota_norma = f" — norma: {triage_previo['ley']}"
         if leyes_previas:
             pasajes_txt = "\n".join(
-                f"[{i}] ({p.get('fuente', '')} | {p.get('titulo', '')[:70]}) "
+                f"[{i}] ({p.get('fuente', '')}"
+                f"{', publicado ' + p['fecha_publicacion'] if p.get('fecha_publicacion') else ''}"
+                f" | {p.get('titulo', '')[:70]}) "
                 f"{(p.get('fragmento') or p.get('texto') or '')[:400]}"
                 for i, p in enumerate(leyes_previas[:6], 1)
             )

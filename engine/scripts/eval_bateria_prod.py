@@ -75,7 +75,7 @@ CASOS = [
     {
         "id": "B5",
         "q": "¿Existe ya el reglamento de la Ley de Infraestructura de la Calidad?",
-        "requiere_txt": [r"existe|s[ií]\b"],
+        "requiere_txt": [r"reglamento", r"public|existe|vigente|s[ií]\b|2026"],
         "prohibe_txt": [r"31 de marzo de 2023"],
         "ley_panel": [],
         "nota": "no inventar fecha (real: DOF 04/09/2026)",
