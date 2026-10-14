@@ -344,6 +344,71 @@ def _buscar_en_ley(ley: str, terminos: list[str], top_k: int = 6) -> list[dict]:
     return out
 
 
+def _buscar_recientes(terminos: list[str], dias: int = 150, top_k: int = 3) -> list[dict]:
+    """Pasajes de DOF reciente (últimos `dias` días) que crucen con los términos.
+
+    Rama determinística del bibliotecario: NO depende de que el LLM extraiga
+    el nombre de la ley. Es la ventaja del consumo diario del DOF hecha
+    retrieval — cualquier reforma publicada en los últimos meses entra sola
+    a la candidatura, aunque el bibliotecario haya identificado solo la ley vieja.
+    """
+    frases: list[str] = []
+    for t in terminos[:6]:
+        for variante in _variantes_frase(t):
+            tq = _frase_a_tsquery(variante)
+            if tq and tq not in frases:
+                frases.append(tq)
+    if not frases:
+        return []
+    try:
+        from ai_justicia.corpus.store import get_conn
+
+        with get_conn() as conn:
+            cur = conn.cursor()
+            cur.execute("SET statement_timeout = '20s'")
+            or_q = " | ".join(frases)
+            cur.execute(
+                """
+                SELECT d.fuente, d.titulo, c.articulo_num, c.texto,
+                       ts_rank_cd(c.texto_search, to_tsquery('spanish', %s)) AS rank
+                FROM documentos_chunks c
+                JOIN documentos d ON c.documento_id = d.id
+                WHERE d.fuente = 'DOF'
+                  AND d.fecha_publicacion > now() - (%s || ' days')::interval
+                  AND c.texto_search @@ to_tsquery('spanish', %s)
+                  AND left(regexp_replace(c.texto, '\\s+', ' ', 'g'), 30)
+                      !~* '^(DOF - Diario|Encuestas|INDICADORES|Consulta Por)'
+                ORDER BY rank DESC
+                LIMIT %s
+                """,
+                (or_q, str(dias), or_q, top_k * 3),
+            )
+            filas = cur.fetchall()
+    except Exception as e:
+        logger.warning("buscar_recientes: %s", str(e)[:150])
+        return []
+
+    vistos: set = set()
+    out: list[dict] = []
+    for fuente, titulo, articulo, texto, _rank in filas:
+        clave = (titulo or "")[:60] + "|" + (texto or "")[:40]
+        if clave in vistos:
+            continue
+        vistos.add(clave)
+        out.append({
+            "titulo": (titulo or "DOF")[:80],
+            "fuente": fuente or "DOF",
+            "clave_cita": f"art. {articulo}" if articulo else _clave_cita(texto),
+            "vinculante": True,
+            "fragmento": (texto or "")[:350],
+            "jerarquia": 100,
+            "reciente": True,
+        })
+        if len(out) >= top_k:
+            break
+    return out
+
+
 async def _bibliotecario(client, consulta: str, historial: list[dict]) -> dict | None:
     """Identifica ley aplicable + busca pasajes. None si no encuentra nada."""
     lineas = [
@@ -396,12 +461,32 @@ async def _bibliotecario(client, consulta: str, historial: list[dict]) -> dict |
             break
     pasajes = encontrados
 
+    # Rama determinística de recientes: SIEMPRE consultar el DOF de los
+    # últimos ~5 meses. Es lo que distingue a un asistente que consume el
+    # DOF diario: la reforma de ayer entra a la conversación aunque el
+    # bibliotecario LLM solo haya identificado la ley consolidada vieja.
+    try:
+        recientes = await asyncio.to_thread(_buscar_recientes, terminos, 150, 3)
+    except Exception as e:
+        logger.warning("recientes: %s", str(e)[:150])
+        recientes = []
+    if recientes:
+        vistos_r = {(p.get("titulo", "")[:60], p.get("fragmento", "")[:40]) for p in pasajes}
+        for p in recientes:
+            k = (p.get("titulo", "")[:60], p.get("fragmento", "")[:40])
+            if k not in vistos_r:
+                pasajes.append(p)
+                vistos_r.add(k)
+        # los recientes van primero: son la novedad normativa
+        pasajes.sort(key=lambda p: 0 if p.get("reciente") else 1)
+    pasajes = pasajes[:8]
+
     return {
         "ley": ley,
         "institucion": institucion,
         "resumen": resumen,
         "pasajes": [
-            {"fuente": p["fuente"], "titulo": p["titulo"][:60],
+            {"fuente": p["fuente"], "titulo": p["titulo"][:100],
              "texto": p["fragmento"][:160], "articulo": p["clave_cita"]}
             for p in pasajes[:4]
         ],
