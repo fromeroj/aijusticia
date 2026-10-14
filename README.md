@@ -11,14 +11,18 @@ corpus oficial de 473K documentos (DOF diario, SJF, leyes consolidadas de los
 2. [`docs/arquitectura-corpus-rag.md`](docs/arquitectura-corpus-rag.md) — corpus y retrieval (§8 = estado actual)
 3. [`docs/INDEX.md`](docs/INDEX.md) — índice completo de documentación con estado por documento
 
-## Layout
+## Layout (por subsistema — reordenado 14-oct)
 
 ```
-engine/   FastAPI + ingestión + retrieval + scripts de cosecha
-app/      Next.js (aijusticia.mx)
-tohil/    Entrenamiento Tlamatini (Soup CLI: CPT, merge, eval)
-docs/     Diseño, specs, recon de portales, historial
-pilot/    Piloto Nextcloud para bufetes
-www/      Sitio tlamatini.live
-deck/     Pitch deck
+engine/       API producto + agents (Izel) + retrieval (RAG)  [deploy: 162 /opt/aijusticia/engine]
+apps/web/     Next.js aijusticia.mx                            [deploy: 162 /opt/aijusticia/app]
+data/         Data consumer: harvesters/, ingestion/, quality/, prep/
+models/tlamatini/  Entrenamiento Soup (CPT, merge, eval, GGUF) [ex tohil/]
+eval/         Batería de evaluación + corridas
+office/       Piloto Nextcloud/Collabora (migrándose a 162)    [ex pilot/]
+brand/        deck + www (tlamatini.live)
+infra/        deploy, crons, nginx
+docs/         VISION.md (intent+colaboración), INDEX.md, components/, diseño
 ```
+
+Mapa completo: [`docs/INDEX.md`](docs/INDEX.md)

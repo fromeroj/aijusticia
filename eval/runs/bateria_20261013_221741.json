@@ -1,0 +1,178 @@
+{
+ "url": "https://aijusticia.mx",
+ "ok": 5,
+ "total": 8,
+ "resultados": [
+  {
+   "id": "B1",
+   "q": "¿Cuál es la jornada máxima de trabajo ahora, ya aplican las 40 horas?",
+   "texto": "\n\n¡Buena pregunta! Esto ha cambiado hace poco, así que vale la pena aclararlo.\n\n**Lo que ya sabes cambió:** Sí se aprobó una reforma al **Artículo 123 constitucional** y a la **Ley Federal del Trabajo** para reducir la jornada máxima de **48 a 40 horas** semanales. Pero la reducción **NO es de un día para otro**: es gradual.\n\n**Lo importante para ti:**\n\n- La jornada actual sigue siendo de **48 horas semanales** como máximo (salvo que ya estés en un esquema reducido por tu patrón, porque la ley permite ir adelantando).\n- El camino está pensado para bajar así: **48 → 47 → 46 → 45 → 40**, con reducciones año con año.\n- **Todavía NO se aplican las 40 horas completas.** Falta camino.\n\n📌 Para no equivocarte con las fechas, te recomiendo:\n\n1. **Consultar el Diario Oficial de la Federación** (DOF) donde se publicó el decreto — ahí viene el calendario exacto de cuándo entra cada reducción.\n2. **Preguntar a tu patrón o al área de RH** cómo van a aplicarlo en tu empresa.\n3. Si quieres certeza legal, **acudir con un abogado laboralista** o a la **PROFEDET** (Procuraduría Federal de la Defensa del Trabajo), que te orientan gratis.\n\n⚠️ **Aclaración honesta:** no tengo a la mano las fechas exactas de cada reducción (el decreto salió en 2024, pero no quiero darte un día preciso de memoria y que armes planes con base en algo mal dicho). Confirma en el DOF, que ahí sí viene tal cual.\n\n¿Tú trabajas en una empresa grande o pequeña? Porque el tamaño sí cambia algunas obligaciones patronales en este tema.",
+   "leyes": [
+    "LEY Federal del Trabajo",
+    "Ley Federal del Trabajo",
+    "Ley Federal del Trabajo"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 16.7,
+   "ok": true,
+   "fallas": [],
+   "avisos": [
+    "panel de leyes sin «jornada»"
+   ]
+  },
+  {
+   "id": "B2",
+   "q": "¿Un gobernador puede tener doble nacionalidad?",
+   "texto": "\n\nSí, en principio sí puede. Te explico qué dice la Constitución y dónde hay que poner atención.\n\n## Lo que dice la Constitución Federal (Artículo 32)\n\nEl **Artículo 32** permite la doble nacionalidad para quienes son mexicanos por nacimiento. Sin embargo, **restringe el acceso a ciertos cargos federales** para quienes tengan otra nacionalidad. Entre los cargos que **exige que sean mexicanos por nacimiento y sin otra nacionalidad** están:\n\n- Presidente de la República\n- Diputados y Senadores\n- Secretarios de Estado\n- Procurador/ Fiscal General\n- Ministros de la SCJN\n\n**El Gobernador no aparece en ese listado.** Entonces, a nivel federal, no hay una prohibición expresa para que un gobernador tenga doble nacionalidad.\n\n## Pero ojo: la Constitución estatal\n\nCada estado tiene su propia constitución, y ahí es donde puede estar el detalle. La mayoría de las constituciones estatales exigen que el gobernador sea:\n\n- **Mexicano por nacimiento**\n- **Ciudadano del estado** (con residencia previa, generalmente de 5 años)\n- Mayor de edad y otros requisitos\n\nAlgunas constituciones estatales son más estrictas y podrían exigir **no tener otra nacionalidad**, pero esto **varía según el estado**. Por ejemplo, estados como CDMX, Jalisco, Nuevo León, Puebla, entre otros, tienen sus propios textos.\n\n## ¿Qué te recomiendo hacer?\n\nSi tu pregunta va a un caso concreto (tuyo, de alguien que conoces, o un funcionario de tu estado), dime:\n\n1. **¿Qué estado?** (para revisar su constitución local)\n2. **¿Es un caso real o hipotético?** (campaña electoral, candidatura, funcionario en funciones, etc.)\n\nCon eso te puedo orientar mejor sobre si hay algún candado específico que aplique.",
+   "leyes": [
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Decreto por el que se reforman y adicionan los artículos 82,",
+    "Acuerdo del Consejo General del Instituto Nacional Electoral"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 27.0,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: no\\b[^.]{0,120}\\bpuede|\\ben principio, no\\b|ya no\\b"
+   ],
+   "avisos": []
+  },
+  {
+   "id": "B3",
+   "q": "¿Hay algún estímulo por pagar con tarjeta de crédito este año?",
+   "texto": "\n\nHola, buena pregunta. Mira, te explico lo que sé y lo que no:\n\n**Lo que no tengo a la mano:** No tengo en este momento un pasaje específico de una ley vigente de 2025 o 2026 que diga \"hay estímulo por pagar con tarjeta de crédito este año\". Hace algunos años existió un estímulo fiscal para ciertos contribuyentes (sobre todo pequeños negocios) que podían deducir un porcentaje adicional de las compras pagadas con tarjeta, pero no quiero asegurarte si sigue vigente ni en qué términos exactos, porque no tengo el texto a la vista.\n\n**Para darte una respuesta útil, necesito entender mejor tu caso:** ¿Tú estás en alguna de estas situaciones?\n\n- **Tienes un negocio y quieres deducir** compras/comisiones pagadas con tarjeta.\n- **Eres persona física** y quieres saber si hay algún reembolso o beneficio al pagar con tarjeta.\n- **Te referiste al \"Cashback\" o devolución** que ofrecen algunos bancos o el SAT por facturar.\n\nTambién dime:\n\n1. ¿Eres persona física o moral?\n2. ¿A cuánto ascendería el pago o las compras?\n3. ¿Es para declarar impuestos o para un beneficio directo?\n\nCon eso te puedo orientar mejor — ya sea por el camino del estímulo fiscal (Artículo 1.10 del CFF y resoluciones misceláneas), por la deducción de gastos con tarjeta, o por algún otro beneficio que aplique a tu situación.",
+   "leyes": [
+    "Ley Federal de Protección al Consumidor",
+    "Ley Federal de Protección al Consumidor",
+    "Decreto por el que se reforman y adicionan diversos artículo",
+    "Ley para la Transparencia y Ordenamiento de los Servicios Fi"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 13.6,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: buen fin|medios de pago electr|noviembre"
+   ],
+   "avisos": [
+    "panel de leyes sin «pago»"
+   ]
+  },
+  {
+   "id": "B4",
+   "q": "¿Quién administra el Poder Judicial federal ahora que ya no está el Consejo de la Judicatura?",
+   "texto": "\n\n¡Buena pregunta! Es un tema reciente que ha generado mucha confusión. Te lo explico con lo que sé:\n\n## La nueva estructura del Poder Judicial federal\n\nCon la reforma constitucional de finales de 2024, se eliminó el **Consejo de la Judicatura Federal** y sus funciones se repartieron entre **dos órganos nuevos**:\n\n### 1. Órgano de Administración Judicial\nSe encarga de todo lo que era la parte \"administrativa\" del antiguo Consejo:\n- Administración de recursos humanos, presupuesto y patrimonio del Poder Judicial\n- Gestión de la capacitación y carrera judicial\n- Infraestructura y organización interna de los tribunales\n\n### 2. Tribunal de Disciplina Judicial\nAsume la parte \"disciplinaria\":\n- Investigar y sancionar a jueces y magistrados por faltas\n- Resolver quejas administrativas\n- Velar por la conducta ética de los integrantes del Poder Judicial\n\n## ¿Y los ministros de la SCJN?\nLa **Suprema Corte de Justicia de la Nación** sigue siendo el máximo tribunal, pero ahora sus integrantes también son electos por voto popular (ya no son nombrados por el Presidente como antes).\n\n## Sobre las fuentes\nNo tengo a la mano en este momento los **artículos específicos reformados** de la Constitución (creo que se modificaron varios, incluyendo el 94, 100 y otros), ni la fecha exacta de publicación en el DOF. **Te recomiendo verificar estos datos directamente en el Diario Oficial de la Federación** si necesitas citarlos formalmente, porque son detalles importantes que no quiero darte mal.\n\n¿Hay algo específico sobre este tema que necesites profundizar? Por ejemplo, si quieres saber cómo afecta a un juicio que estés llevando o algún procedimiento particular, con gusto te ayudo.",
+   "leyes": [
+    "Acuerdo General del Pleno del Órgano de Administración Judic",
+    "Acuerdo General del Pleno del Órgano de Administración Judic",
+    "Acuerdo General del Pleno del Órgano de Administración Judic",
+    "Constitución Política de los Estados Unidos Mexicanos"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 18.6,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: [ÓO]rgano de Administraci[oó]n Judicial"
+   ],
+   "avisos": []
+  },
+  {
+   "id": "B5",
+   "q": "¿Existe ya el reglamento de la Ley de Infraestructura de la Calidad?",
+   "texto": "\n\nSí, ya existe. El **Reglamento de la Ley de Infraestructura de la Calidad** se publicó en el Diario Oficial de la Federación el **29 de marzo de 2023**.\n\nEste reglamento desarrolla varios aspectos clave de la Ley, como:\n\n- Los procedimientos para la **elaboración de Normas Oficiales Mexicanas (NOM)** y Normas Mexicanas (NMX).\n- El funcionamiento del **Sistema Nacional de Infraestructura de la Calidad**.\n- Las reglas para la **acreditación, evaluación de la conformidad y metrología**.\n- Las funciones de las entidades como la SE (Secretaría de Economía), los organismos nacionales de normalización y las entidades de acreditación.\n\nDesde su publicación, ha tenido algunas reformas, así que si necesitas consultarlo para algo específico, te recomiendo revisar la versión más reciente en el DOF o en la página del **Diario Oficial** para asegurarte de tener el texto vigente.\n\n¿Estás revisando el reglamento para algún trámite o situación en particular? Si me cuentas el contexto, te puedo ayudar a ubicar el artículo o sección que te interesa.",
+   "leyes": [
+    "Ley de Infraestructura de la Calidad",
+    "Decreto por el que se expide la Ley de Infraestructura de la",
+    "Decreto por el que se expide la Ley de Infraestructura de la"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 12.7,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "B6",
+   "q": "¿Qué cambió en materia de derecho de autor en septiembre?",
+   "texto": "\n\nHola, gracias por tu pregunta. Para poder orientarte bien, necesito un poquito más de contexto, porque **en materia de derechos de autor ha habido cambios en distintos meses de septiembre** y no quiero darte información inexacta. 😊\n\n¿Podrías decirme a qué año te refieres? Las opciones más comunes que llegan a mi mesa son:\n\n- **Septiembre 2024** — entró en vigor la Ley Federal de Protección de la Propiedad Industrial (LFPPI) que reemplazó a la vieja Ley de la Propiedad Industrial de 1991. Esto impactó más a **marcas, patentes y secretos industriales**, aunque de manera indirecta también al ecosistema creativo.\n- **Septiembre 2023** — publicaron reformas relevantes al **Código Penal Federal** en materia de delitos contra la propiedad intelectual (aumento de penas y nuevas modalidades de fraude).\n- **Septiembre 2022 o 2020** — suelen venir reformas reglamentarias al **Reglamento de la Ley Federal del Derecho de Autor** o actualizaciones de tarifas del INDAUTOR.\n\n### Lo que sí te puedo adelantar en general\n\nEn los últimos años, la tendencia fuerte en derechos de autor en México ha sido:\n\n1. **Eliminar cargas burocráticas innecesarias** — desde 2020 ya **no es obligatorio inscribir la obra en el Registro Público del Derecho de Autor** para tener protección (la protección nace con la creación misma).\n2. **Fortalecer la persecución penal** de la piratería y los delitos en línea.\n3. **Adaptar el marco** a entornos digitales, plataformas y streaming.\n\n### Para ayudarte mejor, dime:\n\n- ¿**Qué año** te interesa?\n- ¿**Te afecta algo concreto** (una obra tuya, un contrato, una demanda que recibiste)?\n- ¿Estás del lado del **autor**, del **usuario**, o de una **empresa** que usa contenidos?\n\nCon eso te puedo señalar el artículo exacto y los pasos a seguir. 🙂\n\n*(Soy una IA orientadora, no sustituyo a un abogado; si tu caso ya está en litigio, te recomiendo buscar representación formal.)*",
+   "leyes": [
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor",
+    "Decreto por el que se reforman, adicionan y derogan diversas"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 12.9,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "C1",
+   "q": "¿Qué regula el artículo 135 Bis de la Constitución?",
+   "texto": "\n\nMira, te explico con lo que tengo en mente, pero quiero ser honesta contigo: **no tengo el texto literal del artículo 135 Bis** en mi contexto en este momento, así que lo que te voy a dar es de conocimiento general, no de cita textual de ley.\n\n## ¿Qué regula el 135 Bis?\n\nEste artículo es **relativamente nuevo** (se incorporó a la Constitución hace pocos años, alrededor de 2020) y se enfoca en un mecanismo muy específico del artículo 135: la **consulta popular previa a la ratificación de una reforma constitucional**.\n\nEn pocas palabras, funciona así:\n\n1. **Una iniciativa de reforma constitucional es aprobada por las dos terceras partes** del Congreso (es el primer paso del 135 tradicional).\n2. **Antes de mandarla a los congresos estatales para su ratificación**, se puede convocar a una **consulta popular** para que la ciudadanía opine sobre la reforma.\n3. **El resultado es vinculante**: si la mayoría dice \"no\", el Congreso tiene que tomarlo en cuenta.\n\n## ¿Cuándo aplica la consulta?\n\nLa consulta popular **no es automática**, se activa cuando la reforma toca temas sensibles:\n\n- **Derechos humanos**\n- **Derechos políticos de los ciudadanos** (voto, ser votado, asociación política)\n- **Materias del sistema electoral**\n\nTambién puede pedirse cuando lo solicite la **mayoría de los congresos estatales** o un porcentaje de ciudadanas y ciudadanos inscritos en el padrón electoral.\n\n## ¿Por qué importa?\n\nEs un candado para que las reformas constitucionales más delicadas **no pasen solo por el filtro de los partidos políticos**, sino que también pasen por el pueblo.\n\n---\n\n¿Te interesa algo más específico sobre este artículo? Por ejemplo, si quieres saber **quién puede pedir la consulta, cómo se cuentan los votos, o si aplica a alguna reforma reciente**, dime y te ayudo a profundizar.",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 27.6,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "C2",
+   "q": "Explícame la Ley General de Economía Colaborativa",
+   "texto": "\n\n## Sobre la Ley General de Economía Colaborativa\n\nTe soy honesta: en mi contexto de trabajo **no tengo cargado el texto de esa ley**, y antes de explicártela artículo por artículo, necesito aclarártelo para no inventarte nada.\n\n### Lo que sí puedo decirte desde mi conocimiento general\n\nEn México **no existe, hasta donde tengo referencia, una \"Ley General de Economía Colaborativa\" publicada a nivel federal** como ordenamiento vigente con ese nombre exacto. Lo que sí ha habido es:\n\n- **Iniciativas y propuestas en el Congreso** (sobre todo entre 2018-2021) para regular plataformas digitales tipo Uber, DiDi, Rappi, Airbnb, etc., pero no llegaron a publicarse como ley federal.\n- **Regulación local y dispersa**: la Ciudad de México y otros estados han emitido sus propias reglas (por ejemplo, sobre taxis de app, hospedaje tipo Airbnb, entregas a domicilio).\n- **Regulación indirecta**: la Ley Federal del Trabajo, la Ley del ISR y la Ley del IVA tocan temas relacionados (prestadores de servicios \"autónomos\", retención de impuestos por plataformas, etc.).\n\n### Lo que necesito de ti para ayudarte mejor\n\nPara no quedarme en lo general y darte algo útil, dime:\n\n1. **¿Dónde la viste mencionada?** ¿Fue en una noticia, en un oficio, en una página de gobierno, en un correo de alguna plataforma? Eso me dice si es ley vigente, iniciativa, o reglamento local.\n2. **¿Tu caso tiene que ver con una plataforma específica?** (Uber, Rappi, Airbnb, otra) — porque regularización fiscal, laboral o de hospedaje cambia mucho según el sector.\n3. **¿Eres prestador de servicios, consumidor, o estás enfrentando algún problema concreto?**\n\nCon eso puedo orientarte con mayor precisión. Lo que **no voy a hacer** es citarte artículos de una ley que no tengo confirmada como vigente.",
+   "leyes": [
+    "Acuerdo por el que se establecen las bases para la coordinac",
+    "Acuerdo por el que se establecen las bases para la coordinac",
+    "Acuerdo por el que se establecen las bases para la coordinac",
+    "Acuerdo por el que se aprueba el Programa Nacional de Protec"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 11.3,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  }
+ ]
+}

@@ -1,0 +1,196 @@
+{
+ "url": "https://aijusticia.mx",
+ "ok": 5,
+ "total": 8,
+ "resultados": [
+  {
+   "id": "B1",
+   "q": "¿Cuál es la jornada máxima de trabajo ahora, ya aplican las 40 horas?",
+   "texto": "\n\n¡Buena pregunta! Esto es un tema reciente que ha generado mucha confusión.\n\nTe explico lo que tengo claro, y al final te digo dónde verificar los detalles exactos:\n\n**Lo que sé (conocimiento general):**\n- La **reforma al Artículo 123 constitucional y a la Ley Federal del Trabajo (LFT)** que reduce la jornada máxima de **48 a 40 horas semanales** ya fue aprobada por el Congreso y publicada en el DOF.\n- Sin embargo, **NO entra en vigor de golpe**. La reducción es **gradual**, en varias etapas, hasta llegar a las 40 horas.\n\n**Lo que NO puedo confirmarte con certeza ahora mismo:**\n- La tabla exacta con las fechas de cada reducción (cuándo pasa de 48 a 47, luego a 46, etc.) y la fecha en que finalmente quedarán las 40 horas.\n- Los porcentajes específicos por industria o tipo de jornada.\n\nNo quiero darte una fecha inventada, porque el calendario gradual es lo más importante y necesito el texto oficial para no equivocarte.\n\n## ¿Qué te recomiendo?\n\n1. **Consulta directamente el DOF** (diariooficial.gob.gob.mx) y busca el decreto de la reforma a la LFT en materia de jornada laboral.\n2. **Revisa la página de la STPS** (Secretaría del Trabajo): stps.gob.mx — ahí suelen publicar guías y el calendario de aplicación.\n\n## ¿Me cuentas tu caso?\n\nSi me dices:\n- ¿Trabajas en una empresa privada, gobierno, o eres patrón?\n- ¿Tu jornada actual es de cuántas horas?\n- ¿Ya te avisaron de algún cambio?\n\nTe puedo orientar mejor sobre **qué te corresponde por ley** y **qué pasos seguir si tu patrón no respeta la jornada que aplica en este momento**.",
+   "leyes": [
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones de la",
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones de la",
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones de la",
+    "Ley Federal del Trabajo",
+    "Ley Federal del Trabajo",
+    "Ley Federal de los Trabajadores al Servicio del Estado, Reglamentaria del Aparta"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 24.9,
+   "ok": true,
+   "fallas": [],
+   "avisos": [
+    "panel de leyes sin «jornada»"
+   ]
+  },
+  {
+   "id": "B2",
+   "q": "¿Un gobernador puede tener doble nacionalidad?",
+   "texto": "\n\nBuena pregunta, y la respuesta corta es **no**.\n\nEn México se reconoce la **doble nacionalidad** desde 1997, pero la propia Constitución pone un candado para ciertos cargos públicos: deben ser **mexicanos por nacimiento y no poseer otra nacionalidad**. Y los gobernadores están expresamente incluidos en esa lista.\n\nEsto está en el **artículo 32 de la Constitución Política de los Estados Unidos Mexicanos**, donde se listan los cargos reservados a mexicanos por nacimiento sin segunda nacionalidad. Entre ellos están:\n\n- Presidente y Vicepresidente de la República\n- Secretarios de Estado\n- Procurador (hoy Fiscal) General de la República\n- **Gobernadores de los estados**\n- Embajadores, cónsules y senadores\n- Mileijares y miembros de la Marina y Fuerza Aérea\n\nEn pocas palabras: cualquier persona con doble nacionalidad **no puede ser gobernador** mientras mantenga la otra ciudadanía. Si ya es gobernador y adquiere otra nacionalidad, pierde el cargo por mandato constitucional.\n\n---\n\n> *Nota: te respondo desde mi conocimiento general del artículo 32 constitucional, ya que no tengo pasajes de ley en esta conversación para citártelos con número exacto de párrafo. Si quieres, dime en qué estado estás pensando y lo aterrizamos con la Constitución de ese estado también.*",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 24.7,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: renunci|nacionalidad [uú]nica|art[íi]culo[s]? (82|116|122)|7 de octubre"
+   ],
+   "avisos": [
+    "panel de leyes sin «82»"
+   ]
+  },
+  {
+   "id": "B3",
+   "q": "¿Hay algún estímulo por pagar con tarjeta de crédito este año?",
+   "texto": "\n\n¡Hola! Sí, este beneficio sigue vigente y es uno de los más usados en la declaración anual. Te explico.\n\n## ¿Cómo funciona?\n\nEl **artículo 151 de la Ley del Impuesto sobre la Renta (LISR)** permite a las personas físicas deducir una parte de los pagos que hicieron durante el año con **tarjeta de crédito, tarjeta de débito o monederos electrónicos autorizados** (como CoDi, Mercado Pago, etc.) [conocimiento general de la LISR, no tengo el texto literal del artículo en mi contexto en este momento].\n\nEs un estímulo para que más personas se formalicen bancariamente, y aplica para gastos que de otra forma no podrías deducir (supermercado, restaurantes, ropa, servicios, etc.).\n\n## ¿Qué monto te corresponde?\n\nEl tope de deducción **depende de tu nivel de ingresos anuales**, y la propia ley lo divide en tres niveles. Los montos se actualizan cada año en la Miscelánea Fiscal o en el Decreto de Estímulos Fiscales correspondiente.\n\n> **Aquí una limitante honesta:** no tengo en mi contexto el texto actualizado para 2025 con las cifras exactas, y no quiero darte un número que ya haya cambiado. Los montos de 2024 quedaron en un rango de aproximadamente **$25,000 a $50,000 pesos** según el nivel de ingreso, pero para este año te conviene confirmarlo.\n\n## Lo que sí te puedo asegurar\n\n- **Aplica solo para personas físicas** que declaran (régimen de sueldos y salarios, arrendamiento, o actividad empresarial).\n- Solo cuenta lo que pagues con **medios electrónicos**, no efectivo ni transferencias SPEI comunes.\n- Los **recibos de nómina, facturas de servicios básicos y otros gastos personales deducibles** se suman aparte; este beneficio es adicional.\n- Necesitas conservar los **estados de cuenta** que muestren los cargos.\n\n## ¿Qué te recomiendo hacer?\n\n1. **Revisa el Anexo o Decreto de Estímulos Fiscales 2025** publicado en el DOF (o la Miscelánea Fiscal vigente) para confirmar el tope exacto que te aplica.\n2. **Acumula tus estados de cuenta bancarios** de todo el año, no solo los de una tarjeta.\n3. Si tu declaración es compleja, un contador te ayuda a sacarle más jugo a este y otros estímulos.\n\n¿Quieres que te explique cómo se aplica el deducible en tu declaración anual paso a paso, o tienes dudas sobre si calificas para este régimen?",
+   "leyes": [
+    "Decreto por el que se expide el Reglamento del Secretariado Ejecutivo del Sistem",
+    "Decreto por el que se expide el Reglamento Interior de la Secretar&iacute;a de I",
+    "Decreto por el que se expide el Reglamento del Secretariado Ejecutivo del Sistem",
+    "LEY Federal de Protección al Consumidor",
+    "Ley Federal de Protección al Consumidor",
+    "Ley Federal de Protección al Consumidor"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 17.7,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: buen fin|medios de pago electr|noviembre"
+   ],
+   "avisos": [
+    "panel de leyes sin «pago»"
+   ]
+  },
+  {
+   "id": "B4",
+   "q": "¿Quién administra el Poder Judicial federal ahora que ya no está el Consejo de la Judicatura?",
+   "texto": "\n\n¡Buena! Esa reforma sí cambió todo el esquema. Te explico cómo quedó:\n\n## ¿Quién administra el PJF ahora?\n\nCon la reforma constitucional de finales de 2023 (publicada en el DOF en noviembre de ese año), el **Consejo de la Judicatura Federal desapareció** y sus funciones se repartieron entre **dos órganos nuevos**:\n\n### 1. **Órgano de Administración Judicial**\nSe encarga de todo lo administrativo, presupuestal y de gestión:\n- Manejo de recursos del Poder Judicial\n- Personal, carrera judicial, capacitación\n- Infraestructura y tecnología\n- Equivaldría a la parte \"administrativa\" del antiguo Consejo.\n\n### 2. **Tribunal de Disciplina Judicial**\nSe quedó con la parte disciplinaria y de vigilancia:\n- Sancionar y suspender a jueces y magistrados\n- Investigar faltas y quejas\n- Substanciar los juicios disciplinarios\n- Es la autoridad que puede remover a juzgadores federales.\n\n## ¿Y cómo se eligen sus integrantes?\n\nAmbos órganos están integrados por **5 miembros electos por voto popular**, en el mismo proceso que eligió a ministras, magistradas y juezas (la primera elección fue en junio de 2025, si no mal recuerdo, pero esa parte te la confirmo mejor porque no la tengo exactamente en mi material a la mano).\n\n> **Aclaración honesta:** No tengo en este momento pasajes de ley de mi contexto para citarte artículo por artículo, así que lo anterior es la orientación general sobre cómo quedó estructurado el PJF. Si necesitas los artículos exactos (creo que son el **94, 97, 100 y 101 constitucionales** los que más cambiaron, pero confírmalos en una versión actualizada del DOF), te recomiendo consultar directamente el texto constitucional vigente en [diputados.gob.mx/LeyesBiblio](https://www.diputados.gob.mx/LeyesBiblio/index.htm) o el DOF.\n\n¿Lo necesitas para algún trámite o asunto específico? Si me cuentas el caso, te puedo decir qué órgano te tocaría tocar según lo que buscas.",
+   "leyes": [
+    "Decreto por el que se reforman y adicionan diversas disposiciones de la Constitu",
+    "Acuerdo General del Pleno del Órgano de Administración Judicial que reforma el s",
+    "Acuerdo General del Pleno del Órgano de Administración Judicial que reforma el s",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 22.9,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "B5",
+   "q": "¿Existe ya el reglamento de la Ley de Infraestructura de la Calidad?",
+   "texto": "\n\nSí, por lo que sé, la Ley de Infraestructura de la Calidad (publicada en el **DOF el 1 de julio de 2020**) sí cuenta ya con un Reglamento, además de diversos Lineamientos, Disposiciones y otros ordenamientos que se han ido emitiendo para desarrollar temas específicos (normalización, evaluación de la conformidad, metrología, etc.).\n\n**Eso sí, te soy honesta:** no tengo a la mano la fecha exacta de publicación del Reglamento principal, y no quiero darte un dato que no pueda confirmar. Para verificarlo sin riesgo:\n\n1. **Busca directo en el DOF** ([dof.gob.mx](https://www.dof.gob.mx)) con las palabras clave *\"Reglamento de la Ley de Infraestructura de la Calidad\"*. Ahí te saldrá la fecha oficial de publicación y, si ha tenido reformas, las encontrarás enlistadas.\n2. **El portal de la Secretaría de Economía**, en su sección de Normas ([economia.gob.mx](https://www.economia.gob.mx)) concentra los ordenamientos vigentes relacionados con la Ley.\n3. **El Sistema de Compilaciones Normativas** (compilaciones.funcionpublica.gob.mx) permite buscar por ordenamiento y ver su texto vigente.\n\n¿Lo que te interesa es saber si el Reglamento ya aplica a algún tema en concreto (normalización, acreditación, evaluación de la conformidad, sanciones)? Si me cuentas el caso, te oriento con más precisión.",
+   "leyes": [
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se expide la Ley de Infraestructura de la Calidad y se abroga",
+    "Ley de Infraestructura de la Calidad",
+    "Ley de Infraestructura de la Calidad"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 29.0,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "B6",
+   "q": "¿Qué cambió en materia de derecho de autor en septiembre?",
+   "texto": "\n\n¡Buena pregunta! Pero necesito que me aclares algo antes: **¿de qué año hablas?** \"Septiembre\" puede ser muchos septiembres, y en derecho de autor ha habido varias reformas importantes en meses recientes.\n\nDéjame contarte lo que tengo en mente y tú me dices cuál te interesa:\n\n- **2024** – Hubo actividad en la agenda de propiedad intelectual, con discusiones sobre regulación de IA y derechos de autor.\n- **2025** – Se han discutido reformas a la **Ley Federal del Derecho de Autor (LFDA)** vinculadas al uso de obras por sistemas de inteligencia artificial y plataformas digitales.\n\nAhora, **te soy honesta**: en este momento no tengo pasajes de ley cargados en nuestra conversación sobre reformas específicas de septiembre, así que no puedo citarte el artículo exacto o la fecha de publicación del DOF sin arriesgarme a inventar. Eso no lo voy a hacer.\n\nPara darte una respuesta con cita legal sólida, lo ideal sería que me dijeras:\n\n1. **¿De qué año quieres saber?** (2024, 2025, u otro)\n2. **¿Te interesa algún tema en particular?** (IA, plataformas streaming, obras musicales, software, etc.)\n\nCon eso, si tengo el material, te cito el artículo preciso; y si no, te lo digo claro y te oriento desde lo que sí conozco. ¿Cuál es tu caso o interés?",
+   "leyes": [
+    "Decreto por el que se expide la Ley Federal de Cine y el Audiovisual, y se abrog",
+    "Decreto por el que se expide la Ley Federal de Cine y el Audiovisual, y se abrog",
+    "Decreto por el que se expide la Ley Federal de Cine y el Audiovisual, y se abrog",
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor",
+    "LEY Federal del Derecho de Autor"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 13.6,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "C1",
+   "q": "¿Qué regula el artículo 135 Bis de la Constitución?",
+   "texto": "\n\nNo existe un **artículo 135 Bis** en la Constitución Política de los Estados Unidos Mexicanos. Te lo digo con certeza porque la numeración del texto constitucional es continua: después del 135 viene el 136, sin intermedios tipo \"Bis\".\n\nLo que sí existe y mucha gente confunde es:\n\n- **Artículo 135** → regula el procedimiento de **reformas a la propia Constitución** (la llamada \"Constitución eterna\"). Establece que el Congreso de la Unión puede adicionar o reformar la Carta Magna, pero toda reforma debe ser aprobada por la mayoría de los Congresos estatales. Por eso se dice que el 135 es el artículo más difícil de tocar.\n\nSi te interesa ese, te lo explico a fondo. Y si lo que buscas es en realidad otro artículo (¿quizá uno de derechos, laboral, mercantil, penal?), dime el asunto y te oriento: \"el que habla de…\", \"el de…\", y lo ubicamos juntos.",
+   "leyes": [
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones del R",
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones del R",
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones del R",
+    "LEY Reglamentaria de la Fracción XIII Bis del Apartado B, del Artículo 123 de la",
+    "Ley Reglamentaria de la Fracción XIII Bis del Apartado B, del Artículo 123 de la",
+    "Acuerdo del Consejo General del Instituto Nacional Electoral mediante el cual se"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 20.4,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "C2",
+   "q": "Explícame la Ley General de Economía Colaborativa",
+   "texto": "\n\nA ver, te voy a ser honesta de entrada: **en mi conocimiento, México no tiene una \"Ley General de Economía Colaborativa\" publicada como ley federal**. Sé que ha habido varias **iniciativas** en el Congreso (Senado y Cámara de Diputados) para regular plataformas como Uber, DiDi, Airbnb y Rappi, pero ninguna ha sido promulgada como ley general hasta ahora.\n\nLo que **sí** existe es un mosaico regulatorio:\n\n## 🚗 Movilidad y transporte (apps como Uber, DiDi, Cabify)\n- La **Ley de Movilidad de la Ciudad de México** (publicada en la Gaceta Oficial de la CDMX) ya regula el servicio de transporte de pasajeros vía plataformas tecnológicas y las motos de entrega.\n- Varios estados de la República tienen sus propias regulaciones o han reconocido las plataformas bajo esquemas de concesión o permiso.\n- El tema central de esas regulaciones es: registro de vehículos y conductores, seguros de viajero, y obligaciones fiscales.\n\n## 🏠 Hospedaje (Airbnb, Booking)\n- No hay ley federal. Lo que aplica es una mezcla de:\n  - **Reglamentos vecinales y de turismo locales** (algunos municipios prohíven o limitan estancias cortas en zonas residenciales).\n  - **Obligaciones fiscales** ante el SAT (los anfitriones deben declarar ingresos).\n  - En CDMX y algunas playas hay límites o restricciones por colonia.\n\n## 🛵 Entregas a domicilio (Rappi, DiDi Food, Uber Eats)\n- Se discute mucho si los repartidores son **trabajadores subordinados** (con todas las prestaciones de Ley Federal del Trabajo) o **trabajadores independientes**.\n- La SCJN y los tribunales laborales han emitido criterios en ambos sentidos según el caso concreto (subordinación real vs. autonomía).\n- Reformas recientes a la LFT han intentado encuadrar la economía digital, sin un artículo específico de \"economía colaborativa\".\n\n## 💡 Qué se ha propuesto en las iniciativas (sin ser ley aún)\nLas propuestas que han circulado en el Congreso suelen coincidir en:\n1. **Registro de plataformas** ante una dependencia federal.\n2. **Transparencia fiscal**: que las plataformas reporten ingresos de usuarios al SAT.\n3. **Derechos mínimos** para conductores/repartidores (seguro, condiciones claras).\n4. **Protección al consumidor** y al usuario final.\n5. **Competencia**: evitar monopolios de una sola plataforma.\n\n---\n\n## ¿Cómo te ayudo más?\n\nPara orientarte bien necesito saber **qué te interesa en particular**:\n\n- ¿Eres **conductor o repartidor** y quieres saber tus derechos?\n- ¿Eres **anfitrión de Airbnb** y te cobran o multan?\n- ¿Eres **usuario** que tuvo un problema con una plataforma?\n- ¿Quieres **crear una plataforma** y saber qué regulación te aplica?\n\nCuéntame tu situación concreta y aterrizamos. 🙂",
+   "leyes": [
+    "Decreto por el que se adicionan diversas disposiciones al Reglamento de la Ley F",
+    "Decreto por el que se expide la Ley Federal de Cine y el Audiovisual, y se abrog",
+    "Decreto por el que se adicionan diversas disposiciones al Reglamento de la Ley F",
+    "Ley Federal del Trabajo",
+    "Ley Federal del Trabajo",
+    "Ley Federal del Trabajo"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 31.6,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: no me consta|no existe|no hay una ley|no tengo"
+   ],
+   "avisos": []
+  }
+ ]
+}

@@ -6,6 +6,8 @@
 
 | Doc | Qué contiene | Estado |
 |---|---|---|
+| [`VISION.md`](VISION.md) | **El intento y la colaboración**: misión, principios, los 12 subsistemas, reglas de dependencia, ciclo de valor diario, hitos | ✅ al día (14-oct) |
+| [`components/`](components/) | Una página por subsistema (12): qué es, dónde vive, contrato, reglas, pendientes | ✅ al día (14-oct) |
 | [`DEPLOYMENT.md`](../DEPLOYMENT.md) | **Operación de producción**: topología real (162 es producción, DB local 473K docs), deploys, cron DOF diario, crons, diagnóstico rápido, scripts de corpus | ✅ al día (14-oct) |
 | [`arquitectura-corpus-rag.md`](arquitectura-corpus-rag.md) | DB, ingestion, retrieval (buscar_en_ley 2 fases + rama de recientes), chat 2-agentes, §8 estado 14-oct con números y deuda | ✅ al día (14-oct) |
 | [`tlamatini-readiness.md`](tlamatini-readiness.md) | Preparación para el entrenamiento de Tlamatini (Soup, pasos) | ⚠️ vigente en método; re-exportar corpus desde **162** cuando termine la limpieza |

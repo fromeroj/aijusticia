@@ -1,0 +1,201 @@
+{
+ "url": "https://aijusticia.mx",
+ "ok": 6,
+ "total": 8,
+ "resultados": [
+  {
+   "id": "B1",
+   "q": "¿Cuál es la jornada máxima de trabajo ahora, ya aplican las 40 horas?",
+   "texto": "\n\n¡Buena pregunta, y muy al día! **No, todavía no rigen las 40 horas.** La reforma que reduce la jornada máxima de 48 a 40 horas es **gradual**, no entra de golpe.\n\nLo que necesitas tener claro:\n\n- A finales de **2024** se publicó una reforma al artículo 123 constitucional y a la Ley Federal del Trabajo que manda bajar la jornada por **etapas**, hasta llegar a 40 horas semanales.\n- La meta son 40, pero es el último tramo. Antes hay reducciones intermedias que se aplican conforme al calendario de la propia reforma.\n- En este momento, la jornada máxima legal **ya es menor a 48 horas** (por el primer tramo ya en vigor), pero todavía **no son 40**.\n\n**Lo que no cambia y ya puedes exigir hoy:**\n- Ningún patrón puede obligarte a laborar más de la jornada máxima vigente, ni siquiera con tu \"voluntad\" o un \"acuerdo\" firmado.\n- Las horas extras tienen tope (3 horas diarias, 3 veces por semana) y pago doble; las que excedan eso son triples.\n- Si te están haciendo trabajar más de lo permitido, ya hay base para quejarse ante la STPS o Demandar.\n\n⚠️ **Te debo ser transparente:** estoy respondiendo desde mi conocimiento general sobre la reforma; **no tengo aquí el texto del DOF con las cifras exactas de cada etapa ni el calendario preciso**. Antes de tomar decisiones legales o una demanda, confirma los números directamente en **dof.gob.mx** (busca \"jornada laboral\") o en **stps.gob.mx**.\n\n¿Lo preguntas porque en tu trabajo ya te están pidiendo más horas de lo legal, o es por saber a qué atenerse?",
+   "leyes": [
+    "LEY Federal del Trabajo",
+    "Ley Federal del Trabajo",
+    "Ley Federal del Trabajo",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 29.6,
+   "ok": true,
+   "fallas": [],
+   "avisos": [
+    "panel de leyes sin «jornada»"
+   ]
+  },
+  {
+   "id": "B2",
+   "q": "¿Un gobernador puede tener doble nacionalidad?",
+   "texto": "\n\nBuena pregunta. Sí, en principio **un gobernador puede tener doble nacionalidad** en México, y te explico por qué:\n\n## La regla general\n\nLa **Constitución Federal, en su artículo 32**, fue reformada para permitir la doble nacionalidad. Esa reforma estableció que ser **mexicano por nacimiento** ya no es lo mismo que ser **exclusivamente mexicano**: puedes ser mexicano por nacimiento y al mismo tiempo tener otra nacionalidad.\n\n## ¿Y los gobernadores?\n\nAquí viene el matiz importante: los gobernadores son cargos **estatales**, no federales. Las restricciones más fuertes (como no tener doble nacionalidad) aplican sobre todo a puestos federales como **Secretario de Estado, embajador o diputado/senador al Congreso de la Unión** — no a los gobernadores.\n\nLo que aplica a los gobernadores depende de **cada Constitución estatal**. En general, los estados piden:\n\n- Ser ciudadano mexicano por nacimiento\n- Tener cierta edad (usualmente 30 o 35 años)\n- Ser originario o residente del estado por un mínimo de años\n\nPero **ser \"mexicano por nacimiento\" después de la reforma al 32 ya no te prohíbe tener otra nacionalidad**.\n\n## Lo que sí debes revisar\n\n1. **La Constitución de tu estado** (la del estado donde se postula el gobernador). Algunas podrían tener restricciones expresas, aunque hoy esto es raro.\n2. Si la doble nacionalidad fue adquirida **por nacimiento** o **después** (naturalización), porque hay cargos donde importa la distinción.\n\nEn resumen: **a nivel federal la doble nacionalidad ya no es un problema**, y para gobernador depende de lo que diga la Constitución local. Si tienes un caso concreto o un nombre en particular, cuéntame y lo afinamos.",
+   "leyes": [
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Acuerdo del Consejo General del Instituto Nacional Electoral por el que en acata",
+    "Acuerdo del Consejo General del Instituto Nacional Electoral por el que se modif",
+    "Acuerdo del Consejo General del Instituto Nacional Electoral por el que se modif"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 37.5,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: renunci|nacionalidad [uú]nica|art[íi]culo[s]? (82|116|122)|7 de octubre"
+   ],
+   "avisos": [
+    "panel de leyes sin «82»"
+   ]
+  },
+  {
+   "id": "B3",
+   "q": "¿Hay algún estímulo por pagar con tarjeta de crédito este año?",
+   "texto": "\n\n¡Buena pregunta! El estímulo al que te refieres es el que aplica a contribuyentes del **régimen de actividades empresariales y profesionales** que reciben ingresos a través de medios electrónicos (tarjetas de débito, crédito, transferencias, monederos, etc.).\n\nTe platico lo que tengo en mente:\n\n**¿En qué consiste?**\nHistóricamente, el artículo 186 de la Ley del Impuesto sobre la Renta (LISR) ha permitido **deducir** un porcentaje adicional de los ingresos cobrados por medios electrónicos, siempre que se cumplieran ciertos requisitos (como que el monto no excediera cierta cantidad anual y que se informara en declaración informativa).\n\n**Para este 2026:**\nNo tengo a la mano el texto vigente de la LISR con las reformas aplicables a este ejercicio fiscal, así que no puedo asegurarte con certeza si el estímulo se mantuvo igual, cambió de porcentaje (antes era 8% o 2% dependiendo del monto) o se modificó algún requisito. Esto es importante porque las condiciones han cambiado bastante en los últimos años.\n\n**Te sugiero verificar directamente en:**\n- El **artículo 186 de la LISR vigente en 2026** (puedes consultarlo en el DOF o en el SIPRES de la SHCP).\n- La **Guía de cumplimiento del régimen RESICO o de actividades empresariales** que publica el SAT cada año.\n\n¿Eres persona física con actividad empresarial o profesional? Si me dices un poco más sobre tu situación (por ejemplo, a cuánto ascienden tus cobros anuales con tarjeta), te puedo orientar mejor sobre si te convendría aplicar este beneficio.",
+   "leyes": [
+    "Ley del Impuesto sobre la Renta",
+    "Ley del Impuesto sobre la Renta",
+    "Ley del Impuesto sobre la Renta",
+    "Ley para la Transparencia y Ordenamiento de los Servicios Financieros",
+    "Decreto por el que se expide la Ley para la Transparencia y Ordenamiento de los ",
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones de la"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 36.1,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: buen fin|medios de pago electr|noviembre"
+   ],
+   "avisos": [
+    "panel de leyes sin «pago»"
+   ]
+  },
+  {
+   "id": "B4",
+   "q": "¿Quién administra el Poder Judicial federal ahora que ya no está el Consejo de la Judicatura?",
+   "texto": "\n\n¡Buena pregunta! Es de los cambios más grandes que ha tenido el Poder Judicial en décadas.\n\nCon la **reforma constitucional de 2024** (la del \"Plan C\" judicial), se eliminó el Consejo de la Judicatura Federal y sus funciones se repartieron entre dos órganos nuevos:\n\n## 🏛️ Órgano de Administración Judicial\nSe quedó con todo lo que era **administración, presupuesto, carrera judicial y gestión** de los tribunales federales. Es el que ahora maneja el dinero, los nombramientos del personal y la infraestructura de los juzgados.\n\n## ⚖️ Tribunal de Disciplina Judicial\nSe quedó con la **fiscalización, vigilancia y disciplina** de jueces y magistrados (antes esto también era del Consejo).\n\n## 🔹 Lo que NO cambió\n- La **Suprema Corte de Justicia de la Nación** sigue como tribunal constitucional y máxima autoridad jurisdiccional.\n- El **Tribunal Electoral del Poder Judicial de la Federación** (TEPJF) sigue igual.\n- Los **tribunales colegiados y unitarios de circuito**, y los **juzgados de distrito**, siguen funcionando, pero ahora con titulares electos por voto popular.\n\n---\n\n## ⚠️ Aclaración importante\n\nNo tengo a la mano el **texto literal del DOF con los artículos transitorios** de esta reforma, así que no puedo citarte el número exacto de artículo que lo establece ni la fecha precisa de publicación sin riesgo de equivocarme. Si necesitas los artículos exactos (creo que están en los **artículos 94, 100 y 103 de la Constitución**, y un transitorio importante sobre la transición), te recomiendo consultar directamente el DOF o preguntarme de nuevo trayendo el texto, y ahí te lo cito línea por línea.\n\n¿Necesitas algo más sobre cómo te afecta este nuevo esquema?",
+   "leyes": [
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Acuerdo General Conjunto de los Plenos del Tribunal Electoral, del Tribunal de D",
+    "Acuerdo General del Pleno del Órgano de Administración Judicial que establece la",
+    "Acuerdo General del Pleno del Órgano de Administración Judicial que establece la"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 36.4,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "B5",
+   "q": "¿Existe ya el reglamento de la Ley de Infraestructura de la Calidad?",
+   "texto": "\n\nSí, **ya existe y está vigente**. Se trata del **Reglamento de la Ley de Infraestructura de la Calidad**, publicado en el **Diario Oficial de la Federación el 2 de marzo de 2023**.\n\n### ¿Qué debes saber en breve?\n\n- **¿Para qué sirve?** Desarrolla los procedimientos que la LIC dejó solo enunciados, sobre todo en materia de:\n  - Evaluación de la conformidad (certificación, verificación, laboratorios de prueba).\n  - Normalización (elaboración, revisión y cancelación de Normas Oficiales Mexicanas y Normas Mexicanas).\n  - Metrología (patrones nacionales, instrumentos de medición).\n  - Acreditación y organismos de normalización.\n\n- **¿Por qué se hizo esperar?** La propia LIC, en su **Artículo Segundo Transitorio**, otorgó un plazo de 180 días posteriores a su entrada en vigor para expedir el reglamento. En la práctica, el reglamento tardó más de dos años en publicarse, lo que generó incertidumbre operativa durante ese periodo.\n\n- **¿Cómo se relaciona con la ley?** El reglamento no puede crear obligaciones nuevas más allá de la ley (principio de subordinación jerárquica del reglamento), pero sí precisa cómo se aplican en la práctica los artículos de la LIC.\n\n### ¿Te interesa algo específico?\n\nPor ejemplo, ¿quieres saber cómo aplica a **certificación de productos**, a **laboratorios**, a **NOMs de tu sector**, o al **procedimiento de inspección y sanción**? Dime en qué andas y bajamos a lo concreto.",
+   "leyes": [
+    "Decreto por el que se expide la Ley de Infraestructura de la Calidad y se abroga",
+    "Decreto por el que se expide la Ley de Infraestructura de la Calidad y se abroga",
+    "Decreto por el que se expide la Ley de Infraestructura de la Calidad y se abroga",
+    "Decreto por el que se expide la Ley de Infraestructura de la Calidad y se abroga",
+    "Decreto por el que se expide la Ley de Infraestructura de la Calidad y se abroga",
+    "Decreto por el que se expide la Ley de Infraestructura de la Calidad y se abroga"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 26.2,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "B6",
+   "q": "¿Qué cambió en materia de derecho de autor en septiembre?",
+   "texto": "\n\nHola, entiendo tu interés en los cambios recientes en derecho de autor.\n\nPara darte información precisa, necesito un poco más de contexto, porque no tengo en este momento pasajes de ley específicos sobre reformas de **septiembre** en materia de derecho de autor en mi base de contexto activa. Eso puede significar dos cosas:\n\n- Que no cuento con el documento DOF de ese mes cargado todavía, o\n- Que el cambio que te interesa es de un año específico que necesito confirmar contigo:\n\n**¿Me podrías precisar alguno de estos datos?**\n1. **¿Qué año te interesa?** (2023, 2024, 2025…)\n2. **¿Se trata de la Ley Federal del Derecho de Autor (LFDA)** o de algún reglamento relacionado, como los de la **INDAUTOR**?\n3. **¿Lo escuchaste en noticias o te llegó alguna publicación oficial?** Si me compartes el nombre del decreto o el tema (por ejemplo: \"uso de obras en inteligencia artificial\", \"plataformas digitales\", \"remuneración por copia privada\"), puedo buscarlo con más enfoque.\n\nEn cuanto a lo que sí puedo orientarte de forma general sobre la LFDA:\n\n- El **artículo 27** establece que las obras protegidas pueden usarse libremente cuando no exista un fin de lucro y se cite la fuente.\n- Las infracciones en materia de derechos de autor pueden denunciarse ante **INDAUTOR** o mediante **querella ante el Ministerio Público**, dependiendo de la gravedad.\n\nEn cuanto tenga el dato del año y el tema específico, te traigo el pasaje con la fecha y el artículo que cambió. 😊",
+   "leyes": [
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 33.2,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "C1",
+   "q": "¿Qué regula el artículo 135 Bis de la Constitución?",
+   "texto": "\n\n¡Buena pregunta! Te explico lo que tengo claro y lo que necesito verificar:\n\n**El artículo 135** (sin \"Bis\") sí lo conozco bien: regula el **procedimiento para reformar la propia Constitución**. Establece que toda reforma requiere:\n- Voto de **dos terceras partes** de los diputados y senadores presentes.\n- Aprobación de la **mayoría de las legislaturas estatales**.\n\nUna vez cumplido eso, se declara por parte del Ejecutivo Federal y se publica en el DOF.\n\n**Sobre el artículo 135 Bis**, te soy honesta: **no tengo su texto a la mano en este momento**, así que no quiero inventarte de qué trata y arriesgarme a darte información equivocada. Prefiero ser clara contigo.\n\nPara poder ayudarte bien, ¿me dices en qué contexto lo encontraste? Por ejemplo:\n\n- ¿Viste una referencia en una resolución judicial, una ley secundaria o un amparo?\n- ¿Lo estás revisando para un caso concreto, una tesis o un trabajo escolar?\n\nSi me compartes el tema del que se trata (por ejemplo, si tiene que ver con derechos sociales, procedimientos legislativos, algún órgano autónomo, etc.), con gusto te oriento con base en lo que sí tenga claro y te indico cómo localizar el texto oficial en el DOF o en la página de la Cámara de Diputados.",
+   "leyes": [
+    "Acuerdo del Consejo General del Instituto Federal Electoral mediante el cual se ",
+    "Acuerdo del Consejo General del Instituto Federal Electoral mediante el cual se ",
+    "Acuerdo del Consejo General del Instituto Federal Electoral mediante el cual se ",
+    "Reglamento del Banco de México relativo a la Ley Federal de Transparencia y Acce",
+    "Ley del Banco de México",
+    "Ley del Banco de México"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 32.9,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "C2",
+   "q": "Explícame la Ley General de Economía Colaborativa",
+   "texto": "\n\n# Sobre la \"Ley General de Economía Colaborativa\"\n\nAntes que nada, te soy honesta: **no tengo a la mano el texto exacto de una ley federal con ese nombre** publicado en el DOF. En México ha habido **iniciativas y discusiones en el Congreso** para regular plataformas como Uber, DiDi, Airbnb o Rappi, pero hasta donde llega mi conocimiento, **no existe una Ley General federal vigente con esa denominación exacta**.\n\nLo que **sí existe** es un mosaico de regulación:\n\n**A nivel federal:**\n- La Ley Federal de Telecomunicaciones y Radiodifusión toca algunos puntos de plataformas digitales, pero no las regula como \"economía colaborativa\".\n- Disposiciones fiscales del SAT que obligan a plataformas a reportar ingresos de usuarios (los famosos \"reportes de plataformas tecnológicas\" del artículo 186 de la LISR).\n\n**A nivel local (estados y municipios):**\n- Varios estados han emitido sus propias leyes o reglamentos. Por ejemplo, **Quintana Roo** tuvo una Ley de Economía Colaborativa del Estado, y la **CDMX** ha regulado via reglamento a servicios como Uber y Airbnb.\n- Cada entidad regula temas de movilidad, hospedaje, sanidad y competencia de forma distinta.\n\n**Lo que se ha discutido en iniciativas:**\n- Reconocer tres figuras: **prestador, plataforma y usuario**.\n- Obligaciones de registro, seguridad social para prestadores, transparencia de algoritmos.\n- Reparto de cargas tributarias entre plataforma y prestador.\n\n---\n\nPara ayudarte mejor, dime:\n\n1. **¿Te interesa la ley federal (general) o una ley estatal en particular?** Si es estatal, dime cuál estado.\n2. **¿Tu pregunta va por el lado laboral (derechos de los conductores/repartidores), fiscal (declaración de impuestos), o de protección al consumidor?**\n3. **¿Tienes un problema concreto con alguna plataforma** (Uber, Airbnb, Rappi, otra) o es solo por conocer el marco legal?\n\nCon eso te doy una respuesta mucho más puntual y, si aplica, con los artículos específicos que te amparan.",
+   "leyes": [
+    "Acuerdo por el que se establecen las bases para la coordinación, participación y",
+    "Acuerdo por el que se establecen las bases para la coordinación, participación y",
+    "Acuerdo por el que se establecen las bases para la coordinación, participación y",
+    "Acuerdo por el que se aprueba el Programa Nacional de Protección a los Derechos ",
+    "Ley Federal de Protección al Consumidor",
+    "Ley Federal de Protección al Consumidor"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 34.7,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  }
+ ]
+}

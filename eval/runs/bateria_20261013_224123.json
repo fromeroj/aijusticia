@@ -1,0 +1,197 @@
+{
+ "url": "https://aijusticia.mx",
+ "ok": 6,
+ "total": 8,
+ "resultados": [
+  {
+   "id": "B1",
+   "q": "¿Cuál es la jornada máxima de trabajo ahora, ya aplican las 40 horas?",
+   "texto": "\n\nLa jornada de **40 horas todavía no aplica**. La reforma al artículo 123 constitucional publicada en el DOF a fines de 2023 estableció una **reducción gradual**, no un cambio de un día para otro.\n\n**El calendario que manejo es este:**\n\n- 2024 → 48 horas semanales\n- 2025 → 46 horas semanales\n- **2026 → 44 horas semanales** ← la que aplica ahorita\n- 2027 → 42 horas semanales\n- 2030 → 40 horas semanales\n\n**Entonces, hoy en 2026**, tu jornada máxima legal es de **44 horas por semana** (distribuidas en máximo 6 días; 8 horas en jornada diurna, 7 en nocturna y 7.5 en mixta).\n\nTe soy honesta: te lo digo desde mi conocimiento porque **no tengo el DOF",
+   "leyes": [
+    "Ley Federal de los Trabajadores al Servicio del Estado, Reglamentaria del Aparta",
+    "Ley Federal de los Trabajadores al Servicio del Estado, Reglamentaria del Aparta",
+    "LEY Federal de los Trabajadores al Servicio del Estado, Reglamentaria del Aparta"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 26.4,
+   "ok": true,
+   "fallas": [],
+   "avisos": [
+    "panel de leyes sin «jornada»"
+   ]
+  },
+  {
+   "id": "B2",
+   "q": "¿Un gobernador puede tener doble nacionalidad?",
+   "texto": "\n",
+   "leyes": [
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Acuerdo del Consejo General del Instituto Federal Electoral por el que se da res",
+    "Acuerdo del Consejo General del Instituto Federal Electoral por el que se da res",
+    "Acuerdo por el que se dan a conocer los formatos denominados DNN-1, que correspo"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 42.8,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: renunci|nacionalidad [uú]nica|art[íi]culo[s]? (82|116|122)|7 de octubre",
+    "respuesta vacía",
+    "respuesta demasiado corta (1 chars)"
+   ],
+   "avisos": [
+    "panel de leyes sin «82»"
+   ]
+  },
+  {
+   "id": "B3",
+   "q": "¿Hay algún estímulo por pagar con tarjeta de crédito este año?",
+   "texto": "\n\n¡Buena pregunta! Depende un poco a qué te refieras con \"estímulo\", porque hay varias cosas que pueden entrar ahí:\n\n**Lo que sí te puedo decir de entrada:**\nEn México existe un beneficio fiscal clásico por pagar con tarjeta de crédito (o débito): los comercios que te dan **factura** reportan tus consumos al SAT, y tú puedes **acumular deducciones personales** en tu declaración anual (siempre que el patrón te haga retenciones y presentes Declaración Anual).\n\nSin embargo, **no tengo a la mano el monto exacto vigente este año ni si hubo algún cambio reciente** en el porcentaje deducible o en los topes, así que prefiero no darte una cifra que no pueda respaldar.\n\n**Para orientarte mejor, dime:**\n\n1. ¿Estás preguntando por el **beneficio fiscal** (deducción en tu declaración anual)?\n2. ¿O por alguna **promoción o cashback** de algún banco o comercio en particular?\n3. ¿O te refieres a algún **programa del gobierno** (tipo \"Mes del Buen Fin\", \"El Hot Sale\", etc.) que dé estímulos por usar tarjeta?\n\nCon eso te puedo dar una respuesta más aterrizada. 😊",
+   "leyes": [
+    "Ley para la Transparencia y Ordenamiento de los Servicios Financieros",
+    "Decreto por el que se abroga la Ley para la Transparencia y Ordenamiento de los ",
+    "Ley para la Transparencia y Ordenamiento de los Servicios Financieros",
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones de la",
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones de la",
+    "Ley de Instituciones de Crédito"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 29.3,
+   "ok": true,
+   "fallas": [],
+   "avisos": [
+    "panel de leyes sin «pago»"
+   ]
+  },
+  {
+   "id": "B4",
+   "q": "¿Quién administra el Poder Judicial federal ahora que ya no está el Consejo de la Judicatura?",
+   "texto": "\n\nCon la **reforma constitucional de 2024** al Poder Judicial, el **Consejo de la Judicatura Federal desapareció** y en su lugar se creó el **Órgano de Administración Judicial** [artículos 94 a 100 de la Constitución, reformados].\n\n## ¿Quién administra ahora el Poder Judicial federal?\n\nSon **tres órganos** los que se reparten las funciones:\n\n1. **La Suprema Corte de Justicia de la Nación (SCJN)** — sigue siendo el tribunal constitucional y la cabeza del Poder Judicial. Ahora elige a su propia presidencia de entre sus ministras y ministros.\n\n2. **El Tribunal de Disciplina Judicial** — es el nuevo órgano encargado de sancionar, investigar y, en su caso, remover a quienes impartan justicia federal. Sustituye la función disciplinaria que tenía el viejo Consejo.\n\n3. **El Órgano de Administración Judicial** — es el que se encarga de la **administración, presupuesto, carrera judicial, gestión de los tribunales** y todo lo que antes manejaba la Judicatura.\n\n## ¿Quiénes integran el Órgano de Administración Judicial?\n\nEstá encabezado por **una persona electa** por las juezas y jueces federales, junto con **cinco miembros electos** también por el propio Poder Judicial mediante voto. Ya nadie es designado por el Ejecutivo ni por el Senado para esos cargos.\n\n---\n\n**En resumen:** el Poder Judicial ahora se gobierna desde adentro — las y los propios juzgadores eligen a quienes los administran y a quienes los disciplinan.\n\n¿Tienes alguna duda más sobre cómo funciona o te afecta algo concreto de esta nueva estructura?",
+   "leyes": [
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Acuerdo General del Pleno del Órgano de Administración Judicial en el   que se e",
+    "Acuerdo General Conjunto de los Plenos del Tribunal Electoral, del Tribunal de D",
+    "Acuerdo General Conjunto de los Plenos del Tribunal Electoral, del Tribunal de D"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 35.9,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "B5",
+   "q": "¿Existe ya el reglamento de la Ley de Infraestructura de la Calidad?",
+   "texto": "\n\n¡Buena pregunta! Sí, **ya existe el Reglamento de la Ley de Infraestructura de la Calidad** (LIC). La Ley se publicó en el DOF en 2020 y sustituyó a la vieja Ley Federal sobre Metrología y Normalización, y su Reglamento vino después a aterrizar cómo se aplica en la práctica.\n\nEntre otras cosas, el Reglamento desarrolla temas como:\n\n- **Organismos de normalización** y cómo se acreditan.\n- **Procedimiento para elaborar Normas Oficiales Mexicanas (NOM)** y Normas Mexicanas (NMX).\n- **Evaluación de la conformidad** (laboratorios de calibración, unidades de verificación, organismos de certificación).\n- **Metrología** y los sistemas de medición.\n- **Sanciones y vigilancia** por parte de la SE, la CRE y otras autoridades.\n\n**Sobre la fecha exacta**: no tengo a la mano el dato preciso de publicación del Reglamento en el DOF (no quiero darte una fecha que no pueda respaldarte), pero puedes confirmarlo directamente en:\n- La página del **DOF** (dof.gob.mx) buscando \"Reglamento de la Ley de Infraestructura de la Calidad\".\n- La página de la **Secretaría de Economía**, que es la dependencia coordinadora del Sistema Nacional de Infraestructura de la Calidad.\n\n¿Lo necesitas para algo en particular — un trámite, un procedimiento de evaluación de la conformidad, o conocer si aplica a tu sector? Con gusto te oriento con el artículo específico.",
+   "leyes": [
+    "Decreto por el que se expide la Ley de Infraestructura de la Calidad y se abroga",
+    "Decreto por el que se expide la Ley de Infraestructura de la Calidad y se abroga",
+    "Ley de Infraestructura de la Calidad"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 44.1,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "B6",
+   "q": "¿Qué cambió en materia de derecho de autor en septiembre?",
+   "texto": "\n\nHola. Para orientarte bien necesito aclararme un dato:\n\n**¿Te refieres a septiembre de algún año en particular?** (2023, 2024, 2025…)\n\nSin esa referencia no puedo precisarte, porque en los últimos años ha habido varios movimientos en la **Ley Federal del Derecho de Autor (LFDA)** y su Reglamento, pero son reformas diferentes:\n\n- **Reforma de 2020 (publicada en el DOF el 1 de julio de 2020):** amplió las excepciones al derecho de autor, incluyendo usos para minería de textos, bibliotecas, preservación digital y uso sin fines de lucro con fines educativos. Esta es una de las más importantes de los últimos años.\n- **Reforma de 2023 (publicada el 24 de enero de 2023):** ajustes al sistema de sociedades de gestión colectiva.\n- **Reforma de 2024 (publicada el 1 de abril de 2024):** cambios en notificaciones y procedimientos ante el **INDAUTOR**.\n\nMientras me dices el año y el tema específico (¿te interesa algo sobre obras, software, plataformas digitales, regalías?), te dejo algunas preguntas que me ayudarían a darte una respuesta precisa:\n\n1. **¿Qué área te interesa?** (por ejemplo: obras musicales, libros, software, inteligencia artificial, uso justo)\n2. **¿Es para un caso concreto tuyo o solo consulta general?**\n3. **¿Quieres revisar el texto de una ley o entender cómo te aplica a ti?**\n\nCon eso te traigo el artículo exacto y los puntos clave que cambiaron.\n\n*Nota: no tengo cargada la fecha precisa de cada publicación en este momento, por lo que prefiero confirmarla contigo antes que darte un dato que pudiera estar desactualizado.*",
+   "leyes": [
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 32.1,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "C1",
+   "q": "¿Qué regula el artículo 135 Bis de la Constitución?",
+   "texto": "\n\nHonestamente, el **artículo 135 Bis** no me aparece claro en lo que tengo a la mano, y no quiero inventarte de qué trata.\n\nLo que sí te puedo decir con certeza es lo que regula el **artículo 135** (sin \"Bis\"), por si te referías a ese:\n\n- **Es el procedimiento para reformar la Constitución.** Establece que la Constitución puede reformarse por el Congreso de la Unión, pero requiere:\n  - Que la Cámara de Diputados apruebe la reforma por **mayoría absoluta** (mitad más uno de los miembros presentes).\n  - Que el proyecto pase luego a la Cámara de Senadores, donde se necesita la misma mayoría absoluta.\n  - Que la reforma sea aprobada por **la mayoría de las legislaturas estatales** (Congresos locales).\n- Esa fue la regla que se siguió, por ejemplo, para la reforma de 2024 en materia judicial.\n\n**Para poder ayudarte mejor, me ayudas con dos cosas:**\n\n1. ¿De dónde sacaste la referencia al 135 Bis? (¿un documento, un oficio, un curso, una noticia?)\n2. ¿Recuerdas el tema que regula? (derechos laborales, justicia, medio ambiente, pueblos indígenas…)\n\nSi resulta que el artículo existe en una reforma reciente y yo no lo tengo en mi contexto, prefiero decírtelo a ponerte una cita falsa. Dame los datos y te ayudo a ubicarlo.",
+   "leyes": [
+    "LEY Reglamentaria de la Fracción XIII Bis del Apartado B, del Artículo 123 de la",
+    "Ley Reglamentaria de la Fracción XIII Bis del Apartado B, del Artículo 123 de la",
+    "Ley Reglamentaria de la Fracción XIII Bis del Apartado B, del Artículo 123 de la",
+    "Ley Federal del Trabajo",
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones de la",
+    "Ley Federal del Trabajo"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 32.3,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: no (tengo|encuentro|consta|existe)|no tengo certeza|no existe"
+   ],
+   "avisos": []
+  },
+  {
+   "id": "C2",
+   "q": "Explícame la Ley General de Economía Colaborativa",
+   "texto": "\n\nCon mucho gusto te explico, pero antes quiero ser honesta contigo: **no tengo a la mano el texto de una \"Ley General de Economía Colaborativa\" publicada a nivel federal** con ese nombre exacto. Sí ha habido varias **iniciativas** en el Congreso de la Unión para regular plataformas como Uber, DiDi, Rappi o Airbnb, pero no puedo asegurarte que ya exista una ley federal con ese título promulgada en el DOF — y como no quiero inventarte lo que dice una norma que no tengo enfrente, prefiero aclarártelo de entrada.\n\nLo que sí te puedo platicar es cómo se ha regulado (y cómo se ha discutido) la economía colaborativa en México:\n\n**🏛️ A nivel federal**\n- No existe una ley general expedida con ese nombre, hasta donde llega mi información.\n- Lo que aplica son **normas dispersas**: Ley Federal del Trabajo (para quien sí es trabajador subordinado), Ley del ISR, Ley del IVA, y reglamentos de tránsito federales cuando aplica.\n\n**🏙️ A nivel local (lo más relevante en el día a día)**\n- **CDMX**: la **Ley de Movilidad** de 2014 y sus reformas reconocen las plataformas tecnológicas de transporte (tipo Uber/DiDi), pero les imponen requisitos (registro vehicular, seguro, capacitación, etc.). Ha sido una relación de ida y vuelta entre el Gobierno capitalino y las apps.\n- **Jalisco, Nuevo León, Quintana Roo y otros estados** también han emitido reglamentos o reformas para encuadrar a las apps, especialmente de transporte y hospedaje.\n- El enfoque suele ser: **no se prohíbe la plataforma, pero se le exige cumplir reglas de seguridad, fiscalidad y competencia**.\n\n**⚖️ El debate central que ha rodeado las iniciativas**\n1. **¿Son trabajadores subordinados o socios?** Esto determina si Rappi o Uber deben dar prestaciones (IMSS, Infonavit, aguinaldo).\n2. **¿Quién fiscaliza los impuestos?** El SAT ha emitido criterios para que las plataformas reporten operaciones.\n3. **Libertad de elección vs. regulación**: las apps argumentan competencia; taxistas y hoteleros piden reglas parejas.\n\n**Para poder ayudarte mejor**, dime:\n\n- ¿Te interesa por un tema de **trabajo** (si eres repartidor o conductor y quieres saber si te corresponde prestaciones)?\n- ¿Es por un tema **fiscal/declaración**?\n- ¿O necesitas la regulación **local** de algún estado en particular?\n\nCon eso te llevo a la ley o artículo específico que sí aplica a tu situación. 🙂",
+   "leyes": [
+    "Ley Federal de Protección al Consumidor",
+    "Ley Federal de Protección al Consumidor",
+    "Ley Federal de Protección al Consumidor",
+    "Decreto por el que se reforman y adicionan diversas disposiciones del Código Civ",
+    "Decreto por el que se reforman y adicionan diversas disposiciones de la Ley de A",
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones de la"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 41.1,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  }
+ ]
+}

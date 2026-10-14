@@ -1,0 +1,184 @@
+{
+ "url": "https://aijusticia.mx",
+ "ok": 6,
+ "total": 8,
+ "resultados": [
+  {
+   "id": "B1",
+   "q": "¿Cuál es la jornada máxima de trabajo ahora, ya aplican las 40 horas?",
+   "texto": "\n\nBuena pregunta, te la resuelvo:\n\n**No, las 40 horas todavía no aplican.** La reforma constitucional al artículo 123 (publicada en el DOF a finales de 2024) plantea una reducción **gradual**, no inmediata. Te comparto esto desde mi conocimiento general, porque en esta conversación no me pasaste el texto del decreto.\n\n**El calendario de reducción que se maneja es:**\n\n- **2025:** 48 horas semanales (lo que sigue vigente ahora)\n- **2026:** 46 horas\n- **2027:** 44 horas\n- **2028:** 42 horas\n- **2030:** 40 horas semanales\n\n**Mientras tanto, hoy aplica** la jornada máxima de:\n- **8 horas diarias** en turno diurno\n- **7 horas diarias** en turno nocturno\n- **Tope semanal de 48 horas**\n\nConforme al artículo 123 constitucional, Apartado A, y a la Ley Federal del Trabajo.\n\n⚠️ **Tómalo como referencia general, no como cita textual del decreto.** Los transitorios de la reforma a veces se ajustan, así que vale la pena que verifiques las fechas exactas en el DOF o preguntes a un laboralista si tienes una duda concreta.\n\nPara orientarte mejor: ¿esto te interesa porque te redujeron la jornada en tu trabajo, porque estás contratando gente, o solo por curiosidad?",
+   "leyes": [
+    "Ley Federal del Trabajo",
+    "Ley Federal del Trabajo",
+    "LEY Federal del Trabajo",
+    "Constitución Política de los Estados Unidos Mexicanos"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 29.6,
+   "ok": true,
+   "fallas": [],
+   "avisos": [
+    "panel de leyes sin «jornada»"
+   ]
+  },
+  {
+   "id": "B2",
+   "q": "¿Un gobernador puede tener doble nacionalidad?",
+   "texto": "\n\n¡Buena pregunta! Es un tema constitucional interesante. Te lo explico:\n\n## ¿Qué dice la Constitución Federal?\n\nEl **artículo 32 de la Constitución** (reformado en 1997) reconoce el derecho a la **doble nacionalidad** para los mexicanos por nacimiento. Esto significa que adquirir otra nacionalidad **no te quita la mexicana**.\n\nAhora bien, el mismo artículo sí prohíbe que los **doble nacionales** ocupen ciertos cargos federales, principalmente:\n- Las **Fuerzas Armadas**\n- Cuerpos de **seguridad pública federal**\n- Algunos **cargos de la administración pública federal**\n\n## ¿Y para los gobernadores?\n\nLa buena noticia es que el artículo 32 **no prohíbe explícitamente que un gobernador tenga doble nacionalidad**. La restricción está pensada para cargos federales, no para los estatales.\n\nLo que sí exige la Constitución Federal es que el gobernador sea **ciudadano mexicano por nacimiento**, y tener otra nacionalidad no te convierte en extranjero (sigue vigente el artículo 32, sección A).\n\n## Lo que debes revisar\n\nCada estado tiene su **propia Constitución local**, y ahí es donde pueden poner requisitos adicionales para ser gobernador. Entonces:\n\n1. **Revisa la Constitución de tu entidad federativa** — algunos estados podrían exigir \"plena\" o \"exclusiva\" nacionalidad mexicana.\n2. **Revisa también la Ley de Responsabilidades** local, por si añaden alguna restricción.\n\nEn la práctica, como México reconoce la doble nacionalidad desde 1997, **no hay una prohibición federal** para que un gobernador tenga doble nacionalidad. Pero el detalle está en la Constitución de cada estado.\n\n¿Me dices de qué estado estamos hablando? Así te puedo orientar mejor sobre lo que dice la Constitución local.",
+   "leyes": [
+    "Acuerdo del Consejo General del Instituto Nacional Electoral",
+    "Ley de la Comisión Nacional Bancaria y de Valores",
+    "Ley de Nacionalidad"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 110.5,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: no\\b[^.]{0,120}\\bpuede|\\ben principio, no\\b|ya no\\b"
+   ],
+   "avisos": [
+    "panel de leyes sin «82»"
+   ]
+  },
+  {
+   "id": "B3",
+   "q": "¿Hay algún estímulo por pagar con tarjeta de crédito este año?",
+   "texto": "\n\nSí, hasta donde tengo referencia, en México ha habido un **estímulo fiscal** que beneficia a quienes realizan pagos con tarjeta de crédito o débito, generalmente ligado al **Artículo 32 de la Ley del Impuesto sobre la Renta (LISR)**, que permite deducir gastos personales con medios electrónicos y limita la deducción de depósitos en efectivo.\n\nSin embargo, para darte una respuesta precisa, necesito entender mejor tu caso:\n\n- **¿Eres persona física o moral?** (asalariado, profesionista independiente, dueño de negocio, etc.)\n- **¿El pago que te interesa es tuyo como gasto deducible, o es una venta que tú recibes como negocio?**\n- **¿En qué régimen fiscal estás?** (ej. RESICO, Actividad Empresarial, Arrendamiento, Sueldos y Salarios)\n\nTambién te soy honesta — **no tengo a la mano la fecha exacta de la última reforma ni el texto vigente más reciente de este estímulo**, así que prefiero confirmar contigo los detalles antes que darte un dato que pudiera estar desactualizado.\n\nCon eso te puedo decir con certeza si aplica a tu situación, cómo aprovecharlo y qué necesitas comprobar ante el SAT.",
+   "leyes": [
+    "Ley Federal de Protección al Consumidor",
+    "Ley Federal de Protección al Consumidor",
+    "Ley Federal de Protección al Consumidor",
+    "Ley para la Transparencia y Ordenamiento de los Servicios Fi"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 28.0,
+   "ok": true,
+   "fallas": [],
+   "avisos": [
+    "panel de leyes sin «pago»"
+   ]
+  },
+  {
+   "id": "B4",
+   "q": "¿Quién administra el Poder Judicial federal ahora que ya no está el Consejo de la Judicatura?",
+   "texto": "\n\n¡Buena pregunta! Es un cambio reciente. Con la **reforma constitucional en materia del Poder Judicial** (publicada en el Diario Oficial de la Federación a finales de 2024), el **Consejo de la Judicatura Federal desapareció** y sus funciones se repartieron entre **dos órganos nuevos**:\n\n### 1. **Órgano de Administración Judicial**\n- Se encarga de la **administración, vigilancia y gestión** del Poder Judicial federal.\n- Maneja temas como presupuesto, recursos humanos, infraestructura y carrera judicial.\n- Tiene su propia presidencia y está integrado por varios miembros.\n\n### 2. **Tribunal de Disciplina Judicial**\n- Se encarga de la **disciplina y responsabilidad** de las personas juzgadoras federales.\n- Sustituye al Consejo en funciones sancionadoras (quejas, sanciones, separación del cargo).\n\n### 3. **Cambio en la Corte**\n- Además, la **Suprema Corte** dejó de funcionar con dos Salas y ahora sesiona como **pleno único** (también conocida ahora como \"Suprema Corte de Justicia de la Nación\" en su nueva conformación).\n\n---\n\n**Honestidad jurídica:** te doy esta información con base en mi conocimiento general de la reforma, porque **en esta conversación no tengo cargado el texto literal del decreto** con los artículos transitorios. Si necesitas los artículos exactos o quieres saber en qué fechas entran en vigor las nuevas reglas, te recomiendo consultar el DOF directamente o decirme qué punto específico te interesa para profundizar.\n\n¿Esto responde a tu duda o quieres que ahondemos en alguno de los dos órganos nuevos?",
+   "leyes": [
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Ley Orgánica del Poder Judicial de la Federación"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 10.6,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: [ÓO]rgano de Administraci[oó]n Judicial"
+   ],
+   "avisos": []
+  },
+  {
+   "id": "B5",
+   "q": "¿Existe ya el reglamento de la Ley de Infraestructura de la Calidad?",
+   "texto": "\n\nBuena pregunta, y me parece importante que la aclares antes de tomar decisiones sobre temas de normalización, acreditación o evaluación de la conformidad.\n\nLo que te puedo decir con base en lo que tengo a la mano:\n\n- La **Ley de Infraestructura de la Calidad (LIC)** se publicó en el Diario Oficial de la Federación el **1 de julio de 2020**, y derogó la antigua Ley Federal sobre Metrología y Normalización [esto es conocimiento general, no de un pasaje específico en mi contexto].\n- Sobre si ya existe un **reglamento propio de la LIC** publicado en el DOF: no tengo a la mano en este momento la confirmación precisa de su publicación, su fecha o su contenido, y **no quiero inventártela**.\n\n### Qué te sugiero hacer para verificarlo\n\n1. **Consultar el DOF directamente**: busca en https://dof.gob.mx el término \"Ley de Infraestructura de la Calidad\" o \"Reglamento\". Los reglamentos se publican como ediciones completas del DOF.\n2. **Revisar el portal de la SE** (Secretaría de Economía): ahí suele haber un micrositio sobre la LIC con documentos actualizados y, en su caso, el reglamento y lineamientos derivados.\n3. **Consultar la página del CONACy como sistema**: la LIC reorganizó funciones y ahí puedes ver qué normas ya operan bajo el nuevo marco.\n4. **Preguntarle a la SE por escrito** (vía transparencia o correo institucional), si necesitas certeza documental para un trámite o procedimiento.\n\n### Mientras tanto, ten en cuenta esto\n\nAunque no exista reglamento específico, la propia **LIC** es de aplicación directa desde su entrada en vigor (que fue gradual conforme sus transitorios), y muchas de las figuras que operaban antes —NOM, NMX, acreditación, verificación— ya tienen su base legal en la propia ley. Así que no todo depende del reglamento para tener efectos jurídicos.\n\nSi me cuentas **para qué lo necesitas** (por ejemplo: estás tramitando una NOM, una acreditación, te están aplicando una verificación, o quieres impugnar algo), te puedo orientar mejor sobre el camino legal concreto que te aplica.",
+   "leyes": [
+    "Ley de Infraestructura de la Calidad",
+    "Ley de Infraestructura de la Calidad",
+    "Decreto por el que se expide el Reglamento de la Ley de Infr",
+    "Ley de Infraestructura de la Calidad"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 16.6,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "B6",
+   "q": "¿Qué cambió en materia de derecho de autor en septiembre?",
+   "texto": "\n\nCon gusto te ayudo, pero necesito un poco más de contexto para no inventarte nada.\n\n**¿De qué año hablas?** México ha tenido movimientos en la **Ley Federal del Derecho de Autor (LFDA)** en distintos septiembres, y el alcance cambia mucho según la fecha.\n\nSin un pasaje de ley específico en mi contexto actual sobre ese septiembre en particular, no quiero arriesgarme a darte una fecha o un artículo inexacto —prefiero ser honesta contigo.\n\n**Para orientarte mejor, cuéntame:**\n- ¿Es un tema que te afecta ya (uso de obra, plagio, contrato editorial, IA)?\n- ¿Lo viste en una nota periodística o te lo mencionó alguien y quieres verificarlo?\n\nCon eso te confirmo qué artículo aplica y qué dice la ley hoy.",
+   "leyes": [
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 11.6,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "C1",
+   "q": "¿Qué regula el artículo 135 Bis de la Constitución?",
+   "texto": "\n\n¡Hola! Mira, te lo explico con lo que sé, pero quiero ser honesta contigo: **no tengo en mi contexto actual el texto literal y fechado del artículo 135 Bis**, así que voy a orientarte desde mi conocimiento general, sin inventar fechas.\n\n## ¿Qué regula?\n\nEl **artículo 135 Bis** fue una adición a la Constitución mexicana que **regula la consulta popular** como un mecanismo de participación ciudadana directa. En pocas palabras:\n\n1. **¿Quién la puede convocar?** El Presidente de la República, en cualquier momento de su encargo, puede convocar a consulta popular sobre temas de **importancia nacional o de decisiones trascendentales**.\n\n2. **¿Los ciudadanos pueden pedirla?** Sí. Cuando menos el **1% del padrón electoral** (aproximadamente 850,000 firmas) puede solicitar al Presidente que convoque una.\n\n3. **¿Qué NO se puede consultar?** La propia Constitución prohíbe someter a consulta:\n   - **Materia tributaria o fiscal** (impuestos)\n   - **Derechos humanos**\n   - **Materia electoral**\n\n4. **¿Los resultados son obligatorios?** Solo si **participa al menos el 40% del padrón electoral**. Si no se llega a ese umbral, el resultado es orientador, pero no vinculante.\n\n---\n\n¿Te interesa saber algo más específico, por ejemplo **cómo se solicitó una consulta popular específica** o **si hay algún procedimiento vigente que te aplique**? Dime y te ayudo con el detalle que necesites.",
+   "leyes": [
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Ley Orgánica del Congreso General de los Estados Unidos Mexi"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 19.5,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "C2",
+   "q": "Explícame la Ley General de Economía Colaborativa",
+   "texto": "\n\nSobre la **Ley General de Economía Colaborativa** en México, quiero ser honesta contigo: hasta donde llega mi conocimiento, **no existe una ley federal con ese nombre que haya sido publicada y esté vigente**. Sé que ha habido iniciativas y propuestas en el Congreso (especialmente hacia 2019-2020 para regular plataformas como Uber, DiDi, Rappi, Airbnb, etc.), pero no llegaron a concretarse como ley general.\n\nLo que sí existe es un **marco disperso** que toca aspectos de economía colaborativa:\n\n- **Regulaciones estatales y de la Ciudad de México** para plataformas de transporte y alojamiento (cada entidad ha regulado a su manera, lo que ha generado criterios judiciales importantes).\n- La **Ley Federal del Trabajo** y criterios de la Suprema Corte (como la Tesis sobre la naturaleza de la relación entre conductores de apps y las plataformas).\n- La **Ley Federal de Protección de Datos Personales**, que aplica al manejo de información de usuarios por estas plataformas.\n\nPara poder explicarte mejor, ¿podrías aclararme a qué te refieres exactamente?\n\n1. ¿Te preguntan por una **iniciativa o propuesta** específica que viste en alguna parte?\n2. ¿Es una **ley estatal** (de algún estado en particular) que quieres que te explique?\n3. ¿O te interesa más el **marco jurídico general** que aplica hoy a las plataformas de economía colaborativa en México (transporte, entregas, alojamiento)?\n\nCon eso te doy una respuesta a tu medida, con los artículos y tesis que correspondan.",
+   "leyes": [
+    "Ley Federal de Protección al Consumidor",
+    "Ley Federal de Protección al Consumidor",
+    "Ley Federal de Protección al Consumidor",
+    "Ley Federal del Trabajo"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 28.5,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  }
+ ]
+}

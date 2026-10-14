@@ -1,0 +1,194 @@
+{
+ "url": "https://aijusticia.mx",
+ "ok": 6,
+ "total": 8,
+ "resultados": [
+  {
+   "id": "B1",
+   "q": "¿Cuál es la jornada máxima de trabajo ahora, ya aplican las 40 horas?",
+   "texto": "\n\n## Sobre la reducción de la jornada a 40 horas\n\nSí, **la reforma existe y ya está publicada** en el Diario Oficial de la Federación. Modificó el **artículo 123 de la Constitución** y establece una **reducción gradual** de la jornada máxima — **no aplica las 40 horas de un golpe**.\n\n### ¿Cómo va la reducción gradual?\n\nLa jornada se va bajando por **hitos**, algo así:\n\n| Año (aprox.) | Horas semanales |\n|---|---|\n| Antes de la reforma | 48 horas |\n| Primera fase | 46 horas |\n| Segunda fase | 44 horas |\n| Tercera fase | 42 horas |\n| Fase final | **40 horas** |\n\nCada reducción suele entrar en vigor en **enero** del año que corresponde.\n\n### Lo importante que tienes que saber\n\n- **Tus 40 horas todavía no aplican en su totalidad.** El esquema es progresivo.\n- **Lo que negocies con tu patrón sí puede ser mejor.** Si tu contrato o tu empresa te da 40 horas desde ahora, eso es válido (la ley pone un **máximo**, no un mínimo igualado hacia abajo).\n- **Las horas extras siguen reglas aparte** (artículo 67-68 LFT): máximo 9 horas semanales, pago doble hasta 9 y triple después.\n- Si tu patrón te pasa de la jornada que **ya debería estar vigente** según la fase actual, te conviene documentarlo: guarda recibos de nómina, horarios y avisos de entrada/salida.\n\n---\n\n> ⚠️ **Honestidad jurídica:** no tengo a la mano el pasaje exacto del DOF con las fechas precisas de cada fase para citarte el dato textual. Te recomiendo buscar la reforma constitucional publicada en el DOF o volver a preguntarme **pegando el texto del decreto** — así te confirmo la fase exacta que aplica este año y los artículos transitorios.\n\n¿Quieres que te ayude a calcular cuánto te deben si te han hecho trabajar horas extra, o a redactar algo para tu patrón o para PROFEDET?",
+   "leyes": [
+    "Reglamento Interior de Trabajo del Corredor Interoceánico del Istmo de Tehuantep",
+    "Acuerdo General 49/2011 del Pleno del Consejo de la Judicatura Federal, que esta",
+    "Acuerdo General 49/2011 del Pleno del Consejo de la Judicatura Federal, que esta",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 30.3,
+   "ok": true,
+   "fallas": [],
+   "avisos": [
+    "panel de leyes sin «jornada»"
+   ]
+  },
+  {
+   "id": "B2",
+   "q": "¿Un gobernador puede tener doble nacionalidad?",
+   "texto": "\n\nBuena pregunta, y la respuesta corta es: **depende del estado**, porque cada Constitución estatal fija sus propios requisitos. Te explico el marco:\n\n## Marco federal\n\n**Artículo 32 de la Constitución** (reformado en 1997-1998 cuando se reconoció la doble nacionalidad): establece que los mexicanos por nacimiento que tengan otra nacionalidad **no pueden ocupar cargos federales de elección popular** (Presidente, senadores, diputados, ministros de la SCJN, etc.).\n\nLos gobernadores **no aparecen listados expresamente** en esa restricción federal, porque los estados son soberanos para definir los requisitos de sus propios titulares.\n\n## Marco estatal\n\nCada Constitución estatal exige, como regla general, ser **\"mexicano por nacimiento\"**. Pero el tratamiento de la doble nacionalidad varía:\n\n- Algunos estados **sí prohíben explícitamente** la doble nacionalidad para gobernador (ej. Querétaro, Sonora, Yucatán, entre otros).\n- Otros **son silencios** al respecto, lo que en la práctica ha generado debates.\n- La tendencia tras la reforma de 1998 es que **ser mexicano por nacimiento + tener otra nacionalidad no te quita el carácter de \"nacido mexicano\"**, pero el estado puede restringirlo como requisito de elegibilidad.\n\n## Qué hacer en tu caso\n\nPara responderte de forma concreta, necesitaría saber:\n\n1. **¿De qué estado estamos hablando?** (ej. Jalisco, CDMX, Nuevo León, etc.)\n2. ¿Estás investigando la elegibilidad de alguien, o es una duda académica/personal?\n\nCon el nombre del estado te confirmo qué dice su Constitución local y si hay jurisprudencia electoral (TEPJF) al respecto, porque ha habido casos donde se ha impugnado una candidatura de doble nacional.\n\n*Nota: te respondo con base en derecho constitucional general. Si necesitas asesoría para un caso concreto de impugnación o candidatura, conviene revisar la legislación estatal específica y, en su caso, consultar a un abogado electoralista.*",
+   "leyes": [
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Acuerdo por el que se dan a conocer las formalidades necesarias para que los par",
+    "Acuerdo por el que se dan a conocer las formalidades necesarias para que los par",
+    "Acuerdo por el que se dan a conocer las formalidades necesarias para que los par"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 36.2,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: renunci|nacionalidad [uú]nica|art[íi]culo[s]? (82|116|122)|7 de octubre"
+   ],
+   "avisos": [
+    "panel de leyes sin «82»"
+   ]
+  },
+  {
+   "id": "B3",
+   "q": "¿Hay algún estímulo por pagar con tarjeta de crédito este año?",
+   "texto": "\n\nBuena pregunta. Te cuento lo que sé, y al final te digo cómo confirmarlo al día de hoy.\n\n## El estímulo que existió\n\nHistóricamente, el **Artículo 32 de la Ley del Impuesto sobre la Renta (LISR)** contempló un estímulo fiscal para personas físicas (asalariadas y con actividad empresarial) que les permitía aplicarse un crédito contra el ISR equivalente a un **porcentaje de los pagos realizados con tarjeta de crédito, débito o transferencia electrónica**. La idea era impulsar la formalidad y bancarización.\n\n## ¿Qué pasó con él?\n\nEse estímulo se fue **reduciendo gradualmente** en reformas fiscales y terminó por **eliminarse hace ya varios ejercicios fiscales**. No está vigente en la LISR actual.\n\nLo que sí existe hoy es la **deducción de gastos personales** en tu declaración anual (servicios educativos, médicos, dentales, hospitalarios, transporte escolar, aportaciones complementarias a tu Afore, donativos, entre los más comunes), pero eso aplica por el comprobante fiscal, **no por el medio de pago**.\n\n## Para confirmarlo este año\n\nComo no tengo a la mano el texto vigente del DOF con la fecha de la última reforma, te sugiero verificar directamente en:\n\n- El **artículo 32 LISR vigente** en el portal del SAT o en [diputados.gob.mx](https://www.diputados.gob.mx)\n- La **Guía de Declaración Anual** del ejercicio fiscal en curso que publica el SAT\n\nSi lo que te interesa es pagar para acumular puntos, meses sin intereses o beneficios del banco (no fiscales), eso depende de cada institución financiera y ahí te conviene revisar los términos de tu banco emisor.",
+   "leyes": [
+    "Ley del Impuesto Sobre la Renta",
+    "Ley del Impuesto sobre la Renta",
+    "Ley del Impuesto Sobre la Renta",
+    "Decreto por el que se expide la Ley de Ingresos de la Federación para el ejercic",
+    "Reglamento del Código Fiscal de la Federación",
+    "Código Fiscal de la Federación"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 35.3,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: buen fin|medios de pago electr|noviembre"
+   ],
+   "avisos": [
+    "panel de leyes sin «pago»"
+   ]
+  },
+  {
+   "id": "B4",
+   "q": "¿Quién administra el Poder Judicial federal ahora que ya no está el Consejo de la Judicatura?",
+   "texto": "\n\n¡Buena pregunta! Con la **reforma judicial de 2024** se eliminó el Consejo de la Judicatura Federal y en su lugar se crearon **dos órganos nuevos** que se reparten las funciones que antes concentraba:\n\n## 1. Órgano de Administración Judicial\n- Se encarga de todo lo **administrativo**: presupuesto, gestión de recursos humanos, capacitación, infraestructura y funcionamiento de los juzgados.\n- Es el equivalente práctico del antiguo Consejo, pero solo en su faceta administrativa.\n\n## 2. Tribunal de Disciplina Judicial\n- Se ocupa de la **disciplina y vigilancia** de los juzgadores (sanciones, quejas, responsabilidad).\n- Antes esa función también la tenía el Consejo, pero ahora se separa para darle independencia.\n\n## La base constitucional\nEsta reforma modificó principalmente los **artículos 94, 97 y 100** de la Constitución Política de los Estados Unidos Mexicanos, donde antes estaba regulado el Consejo de la Judicatura. Ahí se establecen ahora las competencias de los dos nuevos órganos, su integración y forma de designación.\n\n### En resumen\n> **Antes:** un solo Consejo de la Judicatura → administraba + disciplinaba.\n> **Ahora:** Órgano de Administración (administra) + Tribunal de Disciplina (vigila y sanciona).\n\n---\n\n📎 **Nota importante:** no tengo a la mano la fecha exacta de publicación en el DOF ni los textos literales de los artículos reformados para citártelos verbatim, pero si necesitas el fundamento textual para un trámite o escrito legal, te recomiendo consultar directamente el DOF o el portal de la Suprema Corte para confirmar los artículos vigentes.\n\n¿Esto es para entender cómo presentar una queja, un trámite administrativo, o solo para tenerlo claro? Si me dices el caso, te oriento mejor.",
+   "leyes": [
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Acuerdo del Pleno del Órgano de Administración Judicial por el que se habilitan ",
+    "Acuerdo General Conjunto de los Plenos del Tribunal Electoral, del Tribunal de D",
+    "Acuerdo General 10/2025 del Pleno del Tribunal de Disciplina Judicial del Poder "
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 38.8,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "B5",
+   "q": "¿Existe ya el reglamento de la Ley de Infraestructura de la Calidad?",
+   "texto": "\n\nSobre el **Reglamento de la Ley de Infraestructura de la Calidad**, te soy honesta: no tengo cargado ningún pasaje específico de mi contexto que me confirme con certeza si ya fue publicado de manera integral en el DOF, su fecha de expedición o su contenido.\n\nLo que sí puedo orientarte, con base en lo que conozco del tema:\n\n1. **La Ley** (publicada el 1 de julio de 2020, vigente desde el 1 de agosto de 2020) abrogó la Ley Federal sobre Metrología y Normalización, y desde su entrada en vigor ha requerido diversos instrumentos secundarios para operar plenamente (reglamentos interiores de la SE, SENER, Cofepris, etc., así como disposiciones sobre evaluación de la conformidad, comités de normalización, y acreditación).\n\n2. **Lo que se ha emitido hasta donde llega mi conocimiento** son *acuerdos y disposiciones específicas* derivados de la Ley, no necesariamente un reglamento único y completo. Pero te repito: no quiero asegurarte algo que mi contexto actual no respalde.\n\n**Para salir de dudas con certeza**, te sugiero consultar directamente:\n\n- El **Diario Oficial de la Federación** → busqueda por \"Infraestructura de la Calidad\" en [dof.gob.mx](https://www.dof.gob.mx).\n- La **Secretaría de Economía** → sección de Infraestructura de la Calidad y Normalización.\n- El **Centro Nacional de Metrología (CENAM)** y la **entidad mexicana de acreditación (ema)**.\n\n¿La pregunta te surge porque estás tramitando algo con normas oficiales, evaluación de la conformidad o acreditación? Si me cuentas el caso concreto, puedo ayudarte a ubicarte mejor dentro de la Ley aunque el Reglamento no esté en mi contexto.",
+   "leyes": [
+    "Decreto por el que se expide la Ley de Infraestructura de la Calidad y se abroga",
+    "Ley de Infraestructura de la Calidad",
+    "Ley de Infraestructura de la Calidad",
+    "Decreto por el que se expide la Ley de Infraestructura de la Calidad y se abroga",
+    "Ley de Infraestructura de la Calidad",
+    "Ley de Infraestructura de la Calidad"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 25.9,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "B6",
+   "q": "¿Qué cambió en materia de derecho de autor en septiembre?",
+   "texto": "\n\nMira, te soy honesta: en los pasajes de ley que tengo a la mano tengo varios artículos de la **Ley Federal del Derecho de Autor** (sobre sanciones, obras audiovisuales, gestión colectiva, INDAUTOR), pero **no traen fecha de publicación o reforma visible** en el texto, así que no puedo confirmarte con certeza qué numeral entró en vigor específicamente en septiembre sin arriesgarme a inventarte una fecha.\n\nLo que sí te puedo decir es que entre los pasajes que traigo aparece un **Artículo 19 Ter** (pasa como [5]) que habla de **Sociedades de Gestión Colectiva** — incluyendo cómo se regulan, su relación con el INDAUTOR y los derechos de los autores—, y ese artículo es de los que más recientemente se reformaron en la ley. Si me dices que la reforma que te interesa es esa, te lo desarrollo.\n\nPara darte una respuesta más útil, cuéntame:\n\n- ¿Te refieres a **gestión colectiva** (sociedades como SACM, SGAE, ANDI)?\n- ¿O a **sanciones** (arts. 145, 147, 154)?\n- ¿O a **obras audiovisuales** (arts. 25 y 70)?\n- ¿O a las obligaciones del **INDAUTOR** (art. 56)?\n\nDime en qué tema andas y te paso el artículo completo con lo que aplica hoy.",
+   "leyes": [
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 31.4,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "C1",
+   "q": "¿Qué regula el artículo 135 Bis de la Constitución?",
+   "texto": "\n\nBuena pregunta. Déjame aclararte algo importante, porque hay un detalle que puede estar causando confusión:\n\n## El artículo 135 (sin \"Bis\")\n\nEl **artículo 135** de la Constitución federal es la llamada **cláusula de reforma constitucional**. Lo que regula es el **procedimiento para reformar, adicionar o derogar artículos de la propia Constitución**. Exige:\n\n- Voto de **dos terceras partes** de los miembros presentes en la Cámara de Diputados y en la de Senadores.\n- Aprobación por la **mayoría de las legislaturas estatales**.\n\nEs el único camino legal para modificar el texto constitucional.\n\n## Sobre el \"135 Bis\"\n\nAquí viene la honestidad: **no tengo confirmado en mi contexto qué regula un \"artículo 135 Bis\"** en la Constitución federal. La Constitución mexicana no usa habitualmente la numeración \"Bis\" en sus artículos (eso es más común en códigos como el Civil o el Penal).\n\nPara no inventarte nada, te pido que me aclares:\n\n1. ¿Quizás te refieres al **artículo 135** a secas y se te añadió el \"Bis\" por error?\n2. ¿Es de la **Constitución de algún estado** en particular? (cada entidad tiene la suya)\n3. ¿Lo viste citado en algún documento? Si me dices dónde, puedo orientarte mejor.\n\nCon eso te doy la respuesta completa y con el fundamento que necesitas.",
+   "leyes": [
+    "Ley Reglamentaria de la Fracción XIII Bis del Apartado B, del Artículo 123 de la",
+    "LEY Reglamentaria de la Fracción XIII Bis del Apartado B, del Artículo 123 de la",
+    "LEY Reglamentaria de la Fracción XIII Bis del Apartado B, del Artículo 123 de la",
+    "Acuerdo por el que se dan a conocer los formatos a utilizar para el registro de ",
+    "Acuerdo por el que se dan a conocer los formatos a utilizar para el registro de ",
+    "Acuerdo por el que se dan a conocer los formatos a utilizar para el registro de "
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 38.1,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "C2",
+   "q": "Explícame la Ley General de Economía Colaborativa",
+   "texto": "\n\n## Sobre la \"Ley General de Economía Colaborativa\"\n\nTe soy honesta: **no tengo en mi contexto un texto federal publicado con ese nombre exacto**. Y hasta mi fecha de corte (enero 2026), no existe en México una ley general federal promulgada que regule de manera integral la economía colaborativa (Uber, DiDi, Airbnb, Rappi, etc.).\n\nLo que sí hay es un **mosaico regulatorio** que te conviene entender:\n\n### 1. Concepto base\nLa \"economía colaborativa\" agrupa plataformas digitales que conectan oferta y demanda de servicios (transporte, hospedaje, entregas, tareas) usando apps. El debate central ha sido: ¿son estas plataformas simples intermediarios tecnológicos, o son prestadores de servicios que deben cumplir las mismas reglas que los tradicionales?\n\n### 2. Lo que SÍ existe\n- **CDMX – Ley de Movilidad (2015 y reformas posteriores)**: reconoció por primera vez a las plataformas de transporte como un servicio de movilidad, distinto al taxi. Permitió operar a Uber, Cabify y similares bajo un registro.\n- **Reglamentos estatales y municipales**: varios estados han emitido su propia normatividad (Jalisco, Nuevo León, Querétaro, Quintana Roo, entre otros), con requisitos distintos de registro, seguro vehicular, antigüedad del auto, etc.\n- **Códigos fiscales**: el SAT y las leyes de Hacienda estatales han emitido reglas para gravar ingresos de estas plataformas (retenciones de ISR, IVA en hospedaje tipo Airbnb, etc.).\n- **Ley Federal del Trabajo**: hay criterios de la Suprema Corte (jurisprudencia) sobre si los conductores son empleados o trabajadores independientes, lo cual ha sido un tema central.\n\n### 3. Lo que se ha discutido (iniciativas)\nHa habido **múltiples iniciativas de ley** en el Congreso de la Unión desde 2016 buscando una regulación federal homogénea, pero **no han logrado consolidarse** en una ley general vigente. Cada nueva legislatura las vuelve a presentar.\n\n### 4. ¿Qué te interesa concretamente?\nComo esto no es un tema resuelto con una sola ley, la respuesta útil depende de qué te atañe:\n\n- ¿Eres **conductor de plataforma** y te preocupa una sanción, registro o tu relación laboral?\n- ¿Operas **hospedaje** tipo Airbnb y te clausuraron o te quieren cobrar impuestos?\n- ¿Eres **usuario** y tuviste un problema con un servicio?\n- ¿Quieres **iniciar un negocio** en este modelo?\n\nDime tu caso y bajo qué ciudad/estado estás, y te bajo a tierra con la normatividad específica que sí te aplica. Si tienes un documento, sanción o requerimiento en la mano, pásamelo y lo revisamos juntos.",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 18.8,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  }
+ ]
+}

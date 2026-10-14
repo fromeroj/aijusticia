@@ -1,0 +1,199 @@
+{
+ "url": "https://aijusticia.mx",
+ "ok": 6,
+ "total": 8,
+ "resultados": [
+  {
+   "id": "B1",
+   "q": "¿Cuál es la jornada máxima de trabajo ahora, ya aplican las 40 horas?",
+   "texto": "\n\n¡Buena pregunta y muy actual! Te explico lo que sé sobre la **reforma de reducción de la jornada laboral** en México:\n\n## ¿Qué cambió?\n\nSí, se publicó una **reforma al Artículo 123 constitucional y a la Ley Federal del Trabajo (LFT)** que reduce la jornada máxima semanal. Antes eran **48 horas**, y el objetivo es llegar a **40 horas semanales**.\n\n## ¿Ya aplica?\n\nLa implementación es **gradual**, no de golpe. Es decir, no pasó de 48 a 40 de un día para otro, sino que se está reduciendo por **escalones año con año** hasta llegar a las 40 horas. \n\nPor lo que tengo en mente, la primera reducción ya empezó a aplicarse en **2025**, y el plazo total para llegar a 40 horas se extiende por varios años (el plazo completo ronda hasta 2030, según cómo se haya publicado el decreto transitorio).\n\n## Lo importante para ti\n\n- **Tu patrón NO puede obligarte a trabajar más horas** de las que marque la ley vigente este año.\n- Si te hacen trabajar horas extra, deben pagártelas como establece la ley (el doble por las primeras 9 horas extras a la semana, triple después de eso).\n- La jornada se puede distribuir de distintas formas (5 días de 8 horas, 4 días de 10 horas, etc.), siempre que no se exceda el máximo.\n\n## Para ayudarte mejor, cuéntame:\n\n1. **¿Trabajas actualmente y te están pidiendo más horas de las que deberían?** ¿O es duda general para conocer tus derechos?\n2. Si ya trabajas, **¿cuántas horas a la semana te están marcando actualmente?**\n3. **¿Tu empresa ya te notificó algo** sobre el nuevo horario o reducción de jornada?\n\nCon eso te puedo decir con precisión si te están respetando la ley o si hay algo que puedas reclamar. 🙂",
+   "leyes": [
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Ley Federal del Trabajo",
+    "Ley Federal del Trabajo",
+    "Ley Federal de los Trabajadores al Servicio del Estado, Reglamentaria del Aparta"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 16.2,
+   "ok": true,
+   "fallas": [],
+   "avisos": [
+    "panel de leyes sin «jornada»"
+   ]
+  },
+  {
+   "id": "B2",
+   "q": "¿Un gobernador puede tener doble nacionalidad?",
+   "texto": "\n\n# ¿Un gobernador puede tener doble nacionalidad?\n\nLa respuesta corta: **en general sí, salvo que la constitución de ese estado lo prohíba.** Te explico por qué.\n\n## El principio constitucional\n\nLa Constitución federal (artículo 37) reconoce desde 1997 la **doble nacionalidad para mexicanos por nacimiento**. Si naciste mexicano y adquieres otra nacionalidad, **no pierdes la mexicana** y puedes ejercer tus derechos políticos en México.\n\n## ¿Y para qué cargos?\n\nAquí está el detalle importante:\n\n| Cargo | ¿Puede tener otra nacionalidad? |\n|-------|--------------------------------\n\nSí, en términos generales **sí puede**. Te explico el porqué.\n\n## La regla general\n\nEl artículo 32 de la Constitución prohíbe la doble nacionalidad **únicamente** para dos casos:\n\n1. Los integrantes de las Fuerzas Armadas (Ejército, Marina, Fuerza Aérea)\n2. Los ministros de cultos religiosos\n\nPara todos los demás cargos públicos, incluyendo el de gobernador, la reforma a ese mismo artículo (de 1998) permite que un **mexicano por nacimiento** ostente otra nacionalidad sin perder la suya.\n\n## Los requisitos para ser gobernador\n\nEl artículo 116 constitucional fija los requisitos mínimos que debe cumplir un gobernador:\n\n- Ser **mexicano por nacimiento**\n- Tener al menos 30 años (varía según la constitución local)\n- Ser nativo del estado o residente haberlos por un periodo determinado\n- No ser ministro de culto religioso\n- No estar en servicio militar activo\n\nLa doble nacionalidad **no aparece** como causal de inelegibilidad.\n\n## Dos detalles importantes a considerar\n\n- **Constituciones locales**: técnicamente, una constitución estatal podría añadir restricciones, pero si fueran más allá de lo que permite la Constitución federal, serían impugnables.\n- **Práctica política**: aunque legalmente es posible, en México es políticamente raro porque suele generar cuestionamientos mediáticos.\n\nEn resumen: si eres mexicano por nacimiento, tienes otra nacionalidad, y cumples los requisitos del artículo 116, **no hay impedimento constitucional** para que seas gobernador.\n\n¿Esto responde a tu duda o quieres que profundice en algún caso particular, por ejemplo, si la persona nació en el extranjero pero es hija de mexicanos?",
+   "leyes": [
+    "Decreto por el que se reforman y adicionan los artículos 82, 116 y 122 de la Con",
+    "Decreto por el que se reforman y adicionan diversas disposiciones de la Constitu",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Decreto por el que se reforman y adicionan los artículos 82, 116 y 122 de la Con",
+    "Acuerdo del Consejo General del Instituto Nacional Electoral, por el que se apru"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 1
+   },
+   "segundos": 26.7,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "B3",
+   "q": "¿Hay algún estímulo por pagar con tarjeta de crédito este año?",
+   "texto": "\n\nBuena pregunta. Sí existe, se conoce como el **estímulo fiscal por pagos con medios electrónicos** (tarjeta de crédito, débito, transferencia o monedero electrónico) y está en la Ley del Impuesto sobre la Renta (LISR).\n\n## ¿De qué trata?\n\nLas personas físicas que **declaran** pueden deducir un porcentaje adicional de los gastos que paguen con estos medios, siempre que rebasen los límites de donativos y deducción personal ordinaria. El tope se calcula en **Unidades de Medida y Actualización (UMA)** y se actualiza anualmente.\n\nEn palabras simples: el SAT te premia con una deducción extra por no pagar todo en efectivo.\n\n## ¿Cómo aprovecharlo?\n\n1. **Acumular facturas electrónicas (CFDI)** de todos los gastos deducibles pagados con tarjeta: médicos, dentales, lentes ópticos, colegiaturas, donativos, transporte escolar, etc.\n2. Al hacer tu declaración anual (abril), sumar esos comprobantes como **deducción adicional**.\n3. Solo aplica si declaras — si eres asalariado con sueldo menor al mínimo exento, probablemente no te convenga meterte.\n\n## Dos preguntas para afinar:\n\n- ¿Estás pensando en aplicarlo **tú** o lo preguntas en general? (mejoro la respuesta)\n- ¿Buscas cuánto es el tope exacto este año (2025)? Para eso necesitaría tener a la mano el artículo vigente de la LISR; te lo confirmo si me dices en qué caso concreto lo quieres usar.",
+   "leyes": [
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se expide la Ley Federal de Cine y el Audiovisual, y se abrog",
+    "Decreto por el que se establecen las tarifas de acceso al \"Parque del Jaguar\", y",
+    "Decreto por el que se otorgan diversos beneficios fiscales en materia de los imp",
+    "Decreto por el que se otorga un estímulo fiscal en materia de impuesto sobre la ",
+    "Decreto por el que se otorga un estímulo fiscal en materia de impuesto sobre la "
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 21.6,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: buen fin|medios de pago electr|noviembre"
+   ],
+   "avisos": [
+    "panel de leyes sin «pago»"
+   ]
+  },
+  {
+   "id": "B4",
+   "q": "¿Quién administra el Poder Judicial federal ahora que ya no está el Consejo de la Judicatura?",
+   "texto": "\n\n¡Buena pregunta! Con el cambio constitucional reciente, el **Consejo de la Judicatura Federal desapareció** y sus funciones se repartieron entre dos órganos nuevos:\n\n## 1. Órgano de Administración Judicial 🏛️\nEs el que se encarga ahora de la **administración, vigilancia y gestión** del Poder Judicial federal. Entre sus funciones están:\n- Manejar el presupuesto del Poder Judicial\n- Administrar los recursos humanos, materiales y tecnológicos\n- Supervisar el funcionamiento de los tribunales\n- Resolver asuntos administrativos del personal judicial\n\n## 2. Tribunal de Disciplina Judicial ⚖️\nEs el nuevo órgano encargado de la **disciplina y responsabilidad** de las personas servidoras públicas del Poder Judicial federal. Sustituye la función disciplinaria que antes tenía el Consejo.\n\n---\n\n### ¿Y cómo queda la Suprema Corte?\nLa **Suprema Corte de Justicia de la Nación (SCJN)** sigue como tribunal constitucional y máximo tribunal del país, pero su integración también cambió: ahora las ministras y ministros son **electos por voto ciudadano**, al igual que las magistradas y magistrados de circuito y juezas y jueces de distrito.\n\n---\n\n> **Una nota importante:** Te comparto esto desde mi conocimiento general sobre la reforma constitucional al Poder Judicial. Como no tengo a la mano los pasajes específicos del DOF en esta conversación, te recomiendo **verificar el texto del Decreto publicado en el Diario Oficial de la Federación** para citas exactas de artículos y fechas de transición. Si necesitas que te ayude con algún trámite o procedimiento concreto dentro de estos nuevos órganos, dime y te oriento con gusto.",
+   "leyes": [
+    "Decreto por el que se reforman y adicionan diversas disposiciones de la Constitu",
+    "Decreto por el que se reforman y adicionan diversas disposiciones de la Constitu",
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones de la",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones de la",
+    "Constitución Política de los Estados Unidos Mexicanos"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 16.1,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "B5",
+   "q": "¿Existe ya el reglamento de la Ley de Infraestructura de la Calidad?",
+   "texto": "\n\n¡Hola! Sí, **sí existe el Reglamento de la Ley de Infraestructura de la Calidad**. Fue publicado en el Diario Oficial de la Federación (DOF) por el Ejecutivo Federal para desarrollar y detallar las disposiciones de la Ley publicada el 1 de julio de 2020, que a su vez sustituyó a la antigua Ley Federal sobre Metrología y Normalización.\n\n### ¿Qué regula este Reglamento?\n\nEl Reglamento complementa la Ley en temas operativos clave, entre ellos:\n\n- **Procedimientos** para la elaboración de Normas Oficiales Mexicanas (NOM) y Estándares.\n- **Funcionamiento** del Comité Consultivo Nacional de Normalización y de los Comités Técnicos.\n- **Evaluación de la conformidad** (certificación, verificación, laboratorios de prueba, unidades de inspección).\n- **Metrología** (patrones nacionales, instrumentos de medición).\n- **Vigilancia, sanciones y medios de defensa**.\n\n### Recomendación práctica\n\nComo no tengo a la mano el archivo del DOF en este momento para darte la **fecha exacta de publicación** del Reglamento (prefiero no darte una fecha inventada), te sugiero verificarlo directamente en:\n\n🔗 [dof.gob.mx](https://www.dof.gob.mx) — busca en el buscador por *\"Reglamento de la Ley de Infraestructura de la Calidad\"*.\n\nAhí podrás confirmar la fecha de publicación, el texto vigente y, si te interesa, las reformas que haya tenido.\n\n¿Necesitas que te ayude con algo específico de esta Ley o su Reglamento? Por ejemplo, si tienes un caso relacionado con normalización, certificación o una multa, cuéntame los detalles y te oriento mejor.",
+   "leyes": [
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se expide la Ley de Infraestructura de la Calidad y se abroga",
+    "Decreto por el que se expide la Ley de Infraestructura de la Calidad y se abroga",
+    "Ley de Infraestructura de la Calidad"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 13.1,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "B6",
+   "q": "¿Qué cambió en materia de derecho de autor en septiembre?",
+   "texto": "\n\n¡Hola! Con gusto te ayudo con eso. Para orientarte bien, me faltan un par de datos:\n\n1. **¿Te refieres a septiembre de 2025, o de algún otro año?** Dependiendo del año, los temas son muy distintos.\n2. **¿Te interesa algo en particular dentro del derecho de autor?** Por ejemplo:\n   - Registro de obras ante INDAUTOR\n   - Plazos de protección (vida del autor + X años)\n   - Uso de obras en plataformas digitales (YouTube, TikTok, etc.)\n   - Sanciones por piratería o plagio\n   - Contratos de edición, licenciamiento o cesión de derechos\n   - Software, música, libros, fotografía, etc.\n\nCon eso puedo darte una respuesta mucho más útil, en lugar de aventurarme a decirte algo que no tengo bien apuntado a la mano.",
+   "leyes": [
+    "Decreto por el que se expide la Ley Federal de Cine y el Audiovisual, y se abrog",
+    "Decreto por el que se expide la Ley Federal de Cine y el Audiovisual, y se abrog",
+    "Decreto por el que se expide la Ley Federal de Cine y el Audiovisual, y se abrog",
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor",
+    "LEY Federal del Derecho de Autor"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 8.1,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "C1",
+   "q": "¿Qué regula el artículo 135 Bis de la Constitución?",
+   "texto": "\n\n¡Hola! El **artículo 135 Bis** de la Constitución Política de los Estados Unidos Mexicanos se agregó con la **reforma constitucional de derechos humanos de junio de 2011**. Es un artículo clave porque establece las **obligaciones del Estado frente a los derechos humanos**.\n\nEn esencia, regula tres cosas:\n\n**1. Obligación de todas las autoridades**\n- Promover, respetar, proteger y garantizar los derechos humanos reconocidos en la Constitución y en los tratados internacionales.\n\n**2. Obligación del Estado en caso de violaciones**\n- Prevenir, investigar, sancionar y reparar las violaciones a derechos humanos.\n\n**3. Principios que deben guiar la actuación del Estado:**\n- **Universalidad** → los derechos son para todas las personas sin distinción.\n- **Interdependencia** → los derechos están vinculados entre sí.\n- **Indivisibilidad** → no puedes exigir unos y abandonar otros.\n- **Progresividad** → los derechos siempre pueden avanzar, nunca restringirse de manera injustificada.\n\nEn pocas palabras: este artículo es el que obliga a cualquier autoridad (federal, estatal o municipal) a respetar tus derechos y a responder si no lo hace. Si quieres profundizar en cómo usarlo en un caso concreto, dime qué situación tienes y lo aterrizamos.\n\n> Esta es solo orientación general basada en mi conocimiento. No sustituye la consulta con un abogado, sobre todo si tienes un asunto legal en curso.",
+   "leyes": [
+    "Decreto por el que se expide el Reglamento Interior de la Secretaría de Infraest",
+    "Decreto por el que se expide el Reglamento Interior de la Secretar&iacute;a de I",
+    "Decreto por el que se expide el Reglamento Interior de la Secretar&iacute;a de I",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Decreto por el que se abroga la Ley Federal de Remuneraciones de los Servidores ",
+    "Decreto por el que se expide la Ley de la Economía Social y Solidaria, Reglament"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 17.2,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: no (tengo|encuentro|consta|existe)|no tengo certeza|no existe"
+   ],
+   "avisos": []
+  },
+  {
+   "id": "C2",
+   "q": "Explícame la Ley General de Economía Colaborativa",
+   "texto": "\n\n# Sobre la Ley General de Economía Colaborativa\n\nTe voy a ser honesta de entrada: **a la fecha, México no cuenta con una Ley General de Economía Colaborativa vigente a nivel federal**. Ha habido varias iniciativas en el Congreso de la Unión (en distintos periodos legislativos) para crear un marco específico que regule plataformas como Uber, DiDi, Airbnb o Rappi, pero ninguna ha logrado aprobarse como ley general.\n\n## ¿Qué existe hoy en la materia?\n\nLo que sí hay es un **marco normativo disperso** que se aplica según la actividad:\n\n**1. Plataformas de transporte (tipo Uber/DiDi):**\n- Se rigen por las **leyes de movilidad estatales y de la CDMX**. Cada entidad ha regulado a su manera (la CDMX, por ejemplo, ha emitido reglamentos específicos para plataformas de transporte).\n- También aplica la **Ley de Caminos, Puentes y Autotransporte Federal** y la normatividad local de movilidad.\n\n**2. Alojamiento (tipo Airbnb):**\n- Se aplican las **leyes de turismo estatales** y reglamentos de uso de suelo.\n- En CDMX, por ejemplo, la **Ley de Turismo** local y reglamentos de condóminos han sido el campo de batalla principal.\n\n**3. Entrega de alimentos y mensajería (tipo Rappi):**\n- Tema laboral espinoso: la **Ley Federal del Trabajo** y los criterios de la Suprema Corte sobre la relación laboral vs. trabajo autónomo.\n- En 2021, la **Reforma de Plataformas Digitales** (publicada en el DOF el 24 de diciembre de 2020, en vigor en 2021) estableció un régimen especial de presunción laboral para repartidores.\n\n**4. Obligaciones fiscales comunes:**\n- **Ley del ISR**: los ingresos generados deben declararse (como actividad empresarial o en plataforma de servicios).\n- **Ley del IVA**: aplica a los servicios gravados.\n- El SAT ha emitido criterios específicos para quienes operan en plataformas digitales (esquema de \"plataformas tecnológicas\").\n\n**5. Protección al consumidor:**\n- La **Ley Federal de Protección al Consumidor (LFPC)** y la **PROFECO** intervienen cuando hay abusos o cobros indebidos.\n\n## ¿Por qué no hay una ley general?\n\nLos obstáculos principales han sido:\n- Disputas entre regulación federal vs. local\n- Presión de las propias plataformas\n- Diferencias entre modelos de negocio (transporte, hospedaje, entrega)\n- Debate sobre si regular protege o limita la innovación\n\n---\n\n**Si tienes una situación concreta** (por ejemplo: te dieron de baja de una plataforma, te quieren cobrar una comisión, tienes un problema fiscal con el SAT por ingresos de plataforma, o quieres saber si eres trabajador subordinado o independiente), cuéntame los detalles y te oriento con base en la ley que sí te aplique.",
+   "leyes": [
+    "Decreto por el que se expide la Ley Federal de Cine y el Audiovisual, y se abrog",
+    "Decreto por el que se expide el Reglamento Interior de la Secretar&iacute;a de I",
+    "Decreto por el que se expide el Reglamento Interior de la Secretar&iacute;a de I",
+    "Acuerdo por el que se establecen las bases para la coordinación, participación y",
+    "Acuerdo por el que se establecen las bases para la coordinación, participación y",
+    "Acuerdo por el que se establecen las bases para la coordinación, participación y"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 17.1,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  }
+ ]
+}

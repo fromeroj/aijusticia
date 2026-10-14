@@ -1,0 +1,197 @@
+{
+ "url": "https://aijusticia.mx",
+ "ok": 7,
+ "total": 8,
+ "resultados": [
+  {
+   "id": "B1",
+   "q": "¿Cuál es la jornada máxima de trabajo ahora, ya aplican las 40 horas?",
+   "texto": "\n\n¡Buena pregunta! Es un tema que está moviéndose justo ahora. Te explico:\n\n**¿Ya aplican las 40 horas? No, todavía no.** La reforma al **Artículo 123 constitucional** y a la **Ley Federal del Trabajo** establece una **reducción gradual** desde las 48 horas actuales hasta llegar a 40, no de un golpe. Entró en vigor en 2025 con una primera bajada, pero el plazo completo de transición corre **hasta 2030**, según lo que se aprobó.\n\n## ¿Cómo va la transición?\n\nLa idea es que cada año baje una hora la jornada máxima, más o menos así (los plazos exactos conviene verificarlos en el DOF porque cítartelos con precisión sin tener el texto a la mano):\n\n- **2025** → primera reducción (ya en vigor)\n- **...** → bajadas sucesivas\n- **2030** → se llega a **40 horas semanales**\n\n## Lo que sí te puedo adelantar\n\n- La jornada máxima legal de **8 horas diarias / 48 semanales** (Artículo 123, fracción I y Artículo 61 de la LFT) sigue siendo la regla general **mientras no termine la transición**, salvo que tu patrón ya te la haya bajado voluntariamente.\n- La reforma aplica primero en **jurisdicción federal**; los estados deben ir homologando su propia legislación laboral conforme avance el calendario.\n- La jornada nocturna, la de menores y otras siguen con sus reglas especiales propias.\n\n## Lo que te recomiendo hacer\n\n1. **Revisa tu contrato colectivo o individual** y pregunta a Recursos Humanos si tu empresa ya ajustó la jornada (algunas lo hicieron por iniciativa propia).\n2. **Consulta el DOF** directamente la publicación de la reforma para confirmar las fechas exactas de cada etapa, porque ahí viene el calendario puntual. Esto es importante: yo no tengo en este momento el texto oficial cargado, así que prefiero decirte \"verifica\" a inventarte una fecha.\n\n¿Trabajas en empresa privada, gobierno, o estás revisando esto para un caso concreto? Te puedo orientar mejor si me cuentas un poco más.",
+   "leyes": [
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "LEY Federal del Trabajo",
+    "Ley Federal del Trabajo",
+    "Ley Federal del Trabajo"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 21.2,
+   "ok": true,
+   "fallas": [],
+   "avisos": [
+    "panel de leyes sin «jornada»"
+   ]
+  },
+  {
+   "id": "B2",
+   "q": "¿Un gobernador puede tener doble nacionalidad?",
+   "texto": "\n\n¡Buena pregunta! Es un tema que genera mucha confusión. Te lo explico claro:\n\n## Sí, un gobernador **puede** tener doble nacionalidad\n\nLa clave está en la **reforma al artículo 37 de la Constitución de 1997**, que permitió a los mexicanos por nacimiento tener otra nacionalidad sin perder la mexicana.\n\n## Lo que SÍ está prohibido\n\nAunque tener doble nacionalidad es válido, los mexicanos por nacimiento **no pueden**:\n\n- Aceptar o usar **títulos nobiliarios** que impliquen sumisión a un gobierno extranjero\n- Aceptar **condecoraciones extranjeras** sin permiso del Congreso de la Unión (en ciertos casos)\n\n## Requisitos para ser gobernador (artículo 116)\n\nPara ser gobernador necesitas:\n\n- Ser **ciudadano mexicano por nacimiento**\n- Tener al menos **30 años**\n- Ser **residente del estado** por 5 años previos a la elección\n- No estar en el ejército activo\n- No ser ministro de culto religioso\n\n## Un dato importante\n\nLa doble nacionalidad **no es impedimento** para acceder a cargos de elección popular, incluidos los de gobernador. Esto se confirmó con la propia reforma de 1997, que buscaba precisamente que los mexicanos con vínculos en el extranjero pudieran participar en la vida política del país.\n\nEso sí: si tienes el caso concreto de alguien que está compitiendo por una gubernatura y tiene otra nacionalidad, te recomiendo verificar también la **Constitución local del estado** correspondiente, porque algunas entidades podrían tener restricciones adicionales.\n\n¿Esto responde a tu duda o necesitas que profundice en algún punto?",
+   "leyes": [
+    "Decreto por el que se reforman y adicionan los artículos 82, 116 y 122 de la Con",
+    "Decreto por el que se reforman y adicionan diversas disposiciones de la Constitu",
+    "Decreto por el que se adiciona un inciso a la base VI del artículo 41 de la Cons",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Decreto por el que se reforma el artículo 30 de la Constitución Política de los "
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 18.7,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "B3",
+   "q": "¿Hay algún estímulo por pagar con tarjeta de crédito este año?",
+   "texto": "\n\nHola. Mira, no tengo en mi contexto un artículo específico sobre un estímulo por pagar con tarjeta de crédito vigente este año, así que te voy a orientar con lo que sí puedo decirte con base en cómo funcionan estos estímulos en México.\n\n**Lo que sé en general**\n\nLos estímulos fiscales en México normalmente se publican de dos formas:\n\n1. **En el Decreto de estímulos fiscales** que se publica en el DOF (buscado como \"DECREFIS\"), donde cada año se incluyen beneficios como descuentos en multas, recargos, o facilidad de pago para quien pague en plazos o por medios electrónicos.\n2. **En leyes específicas** como el Código Fiscal de la Federación (CFF), que en su artículo 22 y relacionados regula cuándo procede la condonación o reducción de multas y recargos.\n\nPagar con tarjeta de crédito **en sí** no suele ser el motivo del estímulo; lo que se estimula normalmente es *pagar a tiempo*, *pagar en una sola exhibición* o *usar el portal de tu banco autorizado*. La tarjeta es solo el medio.\n\n**Para ayudarte mejor, dime:**\n\n- ¿Estás hablando de **impuestos federales** (ISR, IVA, tenencia, etc.) o de algún **servicio o trámite específico**?\n- ¿Es para una persona física o para una empresa?\n- ¿Ya viste algún estímulo en particular en el DOF y quieres que te ayude a interpretarlo?\n\nCon eso te puedo decir si aplica en tu caso y qué artículo te respalda.",
+   "leyes": [
+    "Decreto por el que se expide la Ley Federal de Cine y el Audiovisual, y se abrog",
+    "Decreto por el que se establecen las tarifas de acceso al \"Parque del Jaguar\", y",
+    "Decreto por el que se otorgan estímulos fiscales para incentivar el uso de medio",
+    "Ley del Impuesto Sobre la Renta",
+    "Ley del Impuesto Sobre la Renta",
+    "Decreto por el que se reforman, adicionan, derogan y establecen diversas disposi"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 12.3,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: buen fin|medios de pago electr|noviembre"
+   ],
+   "avisos": [
+    "panel de leyes sin «pago»"
+   ]
+  },
+  {
+   "id": "B4",
+   "q": "¿Quién administra el Poder Judicial federal ahora que ya no está el Consejo de la Judicatura?",
+   "texto": "\n\nAhora la administración interna del Poder Judicial de la Federación está a cargo del **Órgano de Administración Judicial**, que sustituyó al antiguo Consejo de la Judicatura Federal.\n\nLo que debes saber, en simple:\n\n- **Órgano de Administración Judicial** → se encarga de la administración, vigilancia, disciplina y carrera judicial (lo que antes hacía el Consejo). Tiene su propia presidencia y está pensado como un cuerpo técnico y profesional.\n- **Tribunal de Disciplina Judicial** → es el órgano que conoce y sanciona las faltas administrativas y responsabilidades de los integrantes del Poder Judicial. Funciona de forma independiente del de Administración.\n- **Suprema Corte de Justicia de la Nación** → sigue siendo el órgano cúpula del Poder Judicial, pero ahora ya no concentra funciones administrativas.\n\nEstos cambios vienen de la **reforma constitucional al Poder Judicial publicada en el Diario Oficial de la Federación en septiembre de 2024**. Los nuevos órganos empezaron a integrarse a finales de ese mismo año.\n\n⚠️ **Aclaración honesta:** te respondo con base en mi conocimiento general sobre esa reforma; no tengo a la mano el texto del DOF para citarte artículo por artículo, así que si necesitas los artículos exactos (por ejemplo para un escrito legal), te recomiendo consultar directamente el DOF o la página de la SCJN.\n\n¿Esto es para un trámite específico, un amparo o solo para entender cómo funciona ahora?",
+   "leyes": [
+    "Acuerdo General del Pleno del Órgano de Administración Judicial que reforma el s",
+    "Acuerdo General del Pleno del Órgano de Administración Judicial que reforma el s",
+    "Acuerdo General del Pleno del Órgano de Administración Judicial que reforma el s",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos",
+    "Constitución Política de los Estados Unidos Mexicanos"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 16.2,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "B5",
+   "q": "¿Existe ya el reglamento de la Ley de Infraestructura de la Calidad?",
+   "texto": "\n\nSí, el **Reglamento de la Ley de Infraestructura de la Calidad** ya fue publicado en el Diario Oficial de la Federación. Según mi memoria, se publicó el **27 de septiembre de 2022**, más de dos años después de que la propia Ley entrara en vigor (DOF del 1 de marzo de 2020, con un periodo de transición amplio precisamente para permitir la emisión del Reglamento y los nuevos lineamientos).\n\nConviene tener presente que la LIC reemplazó al viejo esquema de la Ley Federal sobre Metrología y Normalización (LFMN), y su Reglamento desarrolla temas clave como:\n\n- El funcionamiento del **Consejo Nacional de Infraestructura de la Calidad**\n- Los **Lineamientos** y **Normas** (con su distinción)\n- La **acreditación** y **evaluación de la conformidad**\n- El **Mutuo Reconocimiento** y la **Metrología**\n- Las atribuciones de la **Secretaría de Economía**, las entidades de acreditación y los organismos de normalización\n\nNo tengo a la mano en este momento los artículos específicos del Reglamento para citarte el pasaje textual, así que prefiero no inventar numeraciones.\n\n**¿Qué necesitas específicamente?** Si me cuentas qué tema buscas (por ejemplo, acreditación de laboratorios, норма voluntaria vs obligatoria, sanciones, o transición de normas viejas a la NOM bajo la LIC), con gusto te oriento con lo que tenga disponible y, si hace falta, te indico cómo consultarlo directamente en el DOF o el sitio del **Centro Nacional de Metrología (CENAM)** y la **SE**.",
+   "leyes": [
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se expide la Ley de Infraestructura de la Calidad y se abroga",
+    "Decreto por el que se expide la Ley de Infraestructura de la Calidad y se abroga",
+    "Ley de Infraestructura de la Calidad"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 16.3,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "B6",
+   "q": "¿Qué cambió en materia de derecho de autor en septiembre?",
+   "texto": "\n\nCon gusto te ayudo, pero me hace falta un dato clave: **¿de qué año hablas?** \"Septiembre\" puede ser 2020, 2024, 2025… y las reformas son muy distintas.\n\nDicho eso, te comento lo que tengo en mente para que vayas ubicando:\n\n**Reformas recientes a la Ley Federal del Derecho de Autor (LFDA) que vale la pena revisar:**\n\n- **2020** – Se reformó la LFDA para ampliar derechos de autores, fortalecer la protección de obras digitales y actualizar figuras como las \"obras huérfanas\" (DOF 1-jul-2020).\n- **2024-2025** – Se han discutido y promovido reformas vinculadas a **inteligencia artificial generativa** y uso de obras para entrenamiento de modelos, así como ajustes en entidades de gestión colectiva (SOGEM, SACM, etc.).\n\nSi me dices el año exacto, te puedo:\n1. Buscar el **pasaje del DOF** que corresponda,\n2. Explicarte qué artículos cambiaron,\n3. Decirte qué te afecta concretamente (si eres autor, editor, músico, programador, etc.).\n\n**¿De qué año es tu interés y a qué te dedicas?** Así te doy una respuesta útil, no genérica. 📚",
+   "leyes": [
+    "Decreto por el que se expide la Ley Federal de Cine y el Audiovisual, y se abrog",
+    "Decreto por el que se expide la Ley Federal de Cine y el Audiovisual, y se abrog",
+    "Decreto por el que se expide la Ley Federal de Cine y el Audiovisual, y se abrog",
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 15.1,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "C1",
+   "q": "¿Qué regula el artículo 135 Bis de la Constitución?",
+   "texto": "\n\n¡Buena pregunta! Te lo explico de forma clara:\n\n## ¿Qué regula el artículo 135 Bis?\n\nEste artículo fue adicionado a la Constitución Política de los Estados Unidos Mexicanos como parte de la **reforma política de 2014** y establece el principio de **Parlamento Abierto** en el proceso legislativo federal.\n\nEn términos prácticos, lo que regula es que **el Congreso de la Unión debe legislar bajo principios de**:\n\n- **Máxima publicidad** — que la ciudadanía pueda conocer cómo se discute, modifica y vota cada iniciativa.\n- **Transparencia** — acceso a la información sobre el trabajo legislativo.\n- **Participación ciudadana** — abrir canales para que la sociedad pueda opinar, proponer o ser consultada en el proceso de creación de leyes.\n- **Rendición de cuentas** — que los legisladores justifiquen sus decisiones y sean evaluables.\n\nEn pocas palabras: busca que el trabajo del Congreso **no ocurra a puerta cerrada**, sino que la gente pueda observar e incluso incidir en cómo se hacen las leyes.\n\n---\n\n⚠️ **Aclaración importante**: Te comparto lo que sé del artículo por mi formación general, pero no tengo a la mano el texto textual exacto publicado en el DOF. Si necesitas el texto literal para un trámite, cita o procedimiento legal, te recomiendo verificarlo directamente en la página del Diario Oficial de la Federación o del Senado, porque cada palabra cuenta en temas jurídicos.\n\n¿Te interesa saber cómo se aplica este principio en la práctica, o necesitas información sobre algún otro artículo?",
+   "leyes": [
+    "Decreto por el que se reforman y adicionan diversas disposiciones de la Constitu",
+    "Decreto por el que se adiciona un inciso a la base VI del artículo 41 de la Cons",
+    "Decreto por el que se reforman y adicionan los artículos 82, 116 y 122 de la Con",
+    "Decreto por el que se reforma el artículo Décimo Sexto Transitorio del \"Decreto ",
+    "Decreto por el que se reforman y adicionan diversas disposiciones de la Constitu",
+    "Decreto por el que se reforman y adicionan los artículos 16, 17 y 73 de la Const"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 20.1,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "C2",
+   "q": "Explícame la Ley General de Economía Colaborativa",
+   "texto": "\n\n# Sobre la Ley General de Economía Colaborativa\n\nAntes que nada, una aclaración honesta: **no tengo en mi contexto el texto oficial de esa ley**, y quiero ser transparente contigo en lugar de inventarte artículos o fechas que no pueda respaldar.\n\nSin embargo, sí puedo orientarte sobre el panorama general de cómo se ha regulado la economía colaborativa en México:\n\n## Lo que sí existe y te puede servir\n\n**1. Obligaciones fiscales para plataformas digitales (CFF y LISR)**\nDesde reformas fiscales recientes, las plataformas como Uber, DiDi, Rappi o Airbnb están obligadas a:\n- Registrar ante el SAT a los prestadores de servicios\n- Retener y enterar impuestos\n- Proporcionar información sobre las operaciones\n\n**2. Regulación local de movilidad**\n- La **CDMX** y otros estados (Jalisco, Nuevo León, Querétaro) han emitido sus propias regulaciones para servicios de transporte por приложение.\n- Hay requisitos de registro vehicular, licencias y, en algunos casos, límites de unidades.\n\n**3. Marco general aplicable**\nAunque no exista una \"Ley General\" específica con ese nombre, las actividades de economía colaborativa se rigen por:\n- Ley Federal del Trabajo (en debate si aplica relación laboral o no)\n- Ley Federal de Protección al Consumidor (en materia de servicio)\n- Legislación fiscal y mercantil\n\n## ¿Por qué te interesa en particular?\n\nPara darte una respuesta que te sirva de verdad, me ayudaría saber:\n\n- ¿Te interesa por **trabajo en plataformas** (conductor, repartidor)?\n- ¿Por un **negocio de hospedaje** (tipo Airbnb)?\n- ¿Por **inversión en una plataforma**?\n- ¿Por un **conflicto específico** con alguna plataforma?\n\nCuéntame tu situación y entramos al detalle. Lo que sí puedo prometerte: si tocas un tema donde aplique una ley específica que tenga en contexto, te la cito tal cual.",
+   "leyes": [
+    "Decreto por el que se determina la información adicional que de manera proactiva",
+    "Decreto por el que se determina la información adicional que de manera proactiva",
+    "Decreto por el que se expide el Reglamento del Secretariado Ejecutivo del Sistem",
+    "Ley Federal de Protección al Consumidor",
+    "Ley Federal de Protección al Consumidor",
+    "Ley Federal de Protección al Consumidor"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 28.4,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  }
+ ]
+}
