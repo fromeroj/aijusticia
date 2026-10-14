@@ -50,6 +50,12 @@ CITAS:
 - Si una parte viene de tu conocimiento general (sin pasaje que la respalde),
   NO le pongas número de cita. Sé honesta con lo que es ley textual y lo que es orientación.
 
+FECHAS (regla dura):
+- Solo cita fechas (publicación, vigencia, reforma) que estén ESCRITAS en un pasaje de tu
+  contexto. Si el pasaje no trae fecha, di que no tienes la fecha a la mano — NUNCA la inventes.
+- Si el usuario pregunta por cambios recientes ("este año", "ya aplica", "nuevo"),
+  céntrate en los pasajes con fecha más reciente del contexto y menciona esa fecha.
+
 ESTILO: lenguaje simple, de tú, español mexicano. NUNCA voseo (nunca "tenés",
 "decís", "impugnás" — siempre "tienes", "dices", "impugnas"). Markdown para estructurar
 (negritas, listas cortas). Máximo 2 oraciones de disclaimer al final solo si el caso es grave.
@@ -64,6 +70,8 @@ un abogado o personal del bufete.
   sea relevante — el equipo comparte este chat.
 - Si hay PASAJES DE LEYES en tu contexto, cítalos inline como [1], [2]… y precisa
   artículo. Sin pasaje de respaldo, sin número de cita.
+- Fechas solo si están escritas en el pasaje; si no, dilo. NUNCA inventes fechas.
+- Si preguntan por cambios recientes, prioriza el pasaje con fecha más reciente.
 - Respuestas accionables: peticiones, plazos, artículos, estrategias. Markdown.
   Español mexicano, de tú — NUNCA voseo ("tenés/decís" → "tienes/dices").
 """
@@ -206,6 +214,33 @@ def _frase_a_tsquery(frase: str) -> str:
     return con if planas == palabras else f"({con}) | ({sin})"
 
 
+_NUM_A_PALABRA = {
+    "2": "dos", "3": "tres", "4": "cuatro", "5": "cinco", "6": "seis",
+    "8": "ocho", "10": "diez", "12": "doce", "15": "quince", "20": "veinte",
+    "30": "treinta", "36": "treinta y seis", "40": "cuarenta",
+    "42": "cuarenta y dos", "44": "cuarenta y cuatro", "46": "cuarenta y seis",
+    "48": "cuarenta y ocho", "50": "cincuenta",
+}
+_PALABRA_A_NUM = {v: k for k, v in _NUM_A_PALABRA.items()}
+
+
+def _variantes_frase(frase: str) -> list[str]:
+    """Expande variantes número↔palabra: '40 horas' ↔ 'cuarenta horas'.
+
+    La ley dice 'cuarenta horas semanales'; el usuario pregunta '40 horas'.
+    Sin alias, la frase del decreto no cruza con la de la consulta.
+    """
+    bajas = frase.lower()
+    out = [bajas]
+    for num, palabra in _NUM_A_PALABRA.items():
+        if re.search(rf"\b{num}\b", bajas):
+            out.append(re.sub(rf"\b{num}\b", palabra, bajas))
+    for palabra, num in _PALABRA_A_NUM.items():
+        if palabra in bajas:
+            out.append(re.sub(rf"\b{palabra}\b", num, bajas))
+    return list(dict.fromkeys(out))
+
+
 def _buscar_en_ley(ley: str, terminos: list[str], top_k: int = 6) -> list[dict]:
     """Busca los artículos más relevantes DENTRO de la ley identificada.
 
@@ -220,9 +255,10 @@ def _buscar_en_ley(ley: str, terminos: list[str], top_k: int = 6) -> list[dict]:
 
     frases: list[str] = []
     for t in terminos[:7]:
-        tq = _frase_a_tsquery(t)
-        if tq and tq not in frases:
-            frases.append(tq)
+        for variante in _variantes_frase(t):
+            tq = _frase_a_tsquery(variante)
+            if tq and tq not in frases:
+                frases.append(tq)
     if not frases:
         return []
 
@@ -235,33 +271,50 @@ def _buscar_en_ley(ley: str, terminos: list[str], top_k: int = 6) -> list[dict]:
 
         with get_conn() as conn:
             cur = conn.cursor()
+            cur.execute("SET statement_timeout = '25s'")
+
+            # Fase 1 (barata): docs candidatos por TÍTULO — solo FTS de título,
+            # sin join de chunks. 'decreto|acuerdo' entró al filtro y el pool
+            # creció ×10; sin este pre-corte el join reventaba el timeout.
+            cur.execute("""
+                SELECT d.id FROM documentos d
+                WHERE NOT d.derogado
+                  AND d.fuente IN ('LeyesBiblio', 'LexMX', 'DOF')
+                  AND left(d.titulo, 40) ~* '^(ley|código|codigo|reglamento|constitución|constitucion|decreto|acuerdo)'
+                  AND d.titulo_search @@ to_tsquery('spanish', %s)
+                LIMIT 1500
+            """, (ley_q,))
+            ids = [r[0] for r in cur.fetchall()]
+            if not ids:
+                return []
+
             for grupo in variantes:
                 cobertura = " + ".join(
                     "(CASE WHEN c.texto_search @@ to_tsquery('spanish', %s) THEN 1 ELSE 0 END)"
                     for _ in grupo
                 )
                 sql = f"""
-                    SELECT d.fuente, d.titulo, c.articulo_num, c.texto,
-                           d.jerarquia, d.vinculante,
-                           ({cobertura}) AS cobertura,
-                           ts_rank_cd(setweight(d.titulo_search, 'A') || c.texto_search,
-                                      to_tsquery('spanish', %s)) *
-                           (1.0 + 1.2 * exp(-extract(epoch from
-                               (now() - coalesce(d.fecha_publicacion, '2005-01-01'::timestamptz)))
-                               / 15552000.0)) AS rank,
-                           (left(regexp_replace(c.texto, '\\s+', ' ', 'g'), 24)
-                            ~ '^(Artículo|ARTÍCULO) ') AS es_articulo
-                    FROM documentos_chunks c
-                    JOIN documentos d ON c.documento_id = d.id
-                    WHERE NOT d.derogado
-                      AND d.fuente IN ('LeyesBiblio', 'LexMX', 'DOF')
-                      AND left(d.titulo, 40) ~* '^(ley|código|codigo|reglamento|constitución|constitucion|decreto|acuerdo)'
-                      AND d.titulo_search @@ to_tsquery('spanish', %s)
-                      AND c.texto_search @@ to_tsquery('spanish', %s)
-                    ORDER BY es_articulo DESC, cobertura DESC, rank DESC
+                    SELECT * FROM (
+                        SELECT d.fuente, d.titulo, c.articulo_num, c.texto,
+                               d.jerarquia, d.vinculante,
+                               ({cobertura}) AS cobertura,
+                               ts_rank_cd(setweight(d.titulo_search, 'A') || c.texto_search,
+                                          to_tsquery('spanish', %s)) *
+                               (1.0 + 1.2 * exp(-extract(epoch from
+                                   (now() - coalesce(d.fecha_publicacion, '2005-01-01'::timestamptz)))
+                                   / 15552000.0)) AS rank,
+                               (left(regexp_replace(c.texto, '\\s+', ' ', 'g'), 24)
+                                ~ '^(Artículo|ARTÍCULO) ') AS es_articulo
+                        FROM documentos_chunks c
+                        JOIN documentos d ON c.documento_id = d.id
+                        WHERE c.documento_id = ANY(%s)
+                          AND c.texto_search @@ to_tsquery('spanish', %s)
+                    ) q
+                    ORDER BY q.cobertura DESC,
+                             q.rank * (CASE WHEN q.es_articulo THEN 1.5 ELSE 1.0 END) DESC
                     LIMIT 24
                 """
-                params = [*grupo, " | ".join(grupo), ley_q, " | ".join(grupo)]
+                params = [*grupo, " | ".join(grupo), ids, " | ".join(grupo)]
                 cur.execute(sql, params)
                 filas = cur.fetchall()
                 if len(filas) >= 2:
