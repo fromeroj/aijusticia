@@ -40,8 +40,8 @@ SUCIO_SQL = """
     OR texto ~ '^[ \\t\\n]+'
     OR texto ~ '(?i)p[áa]gina\\s+\\d+'
     OR texto ~ '\\n\\d{1,4}\\n'
-    OR texto LIKE '%Ã©%' OR texto LIKE '%Ã­%' OR texto LIKE '%Ã³%'
-    OR texto LIKE '%Ãº%' OR texto LIKE '%Ã±%' OR texto LIKE '%Ã¡%'
+    OR strpos(texto, 'Ã©') > 0 OR strpos(texto, 'Ã­') > 0 OR strpos(texto, 'Ã³') > 0
+    OR strpos(texto, 'Ãº') > 0 OR strpos(texto, 'Ã±') > 0 OR strpos(texto, 'Ã¡') > 0
 """
 
 # --- normalización en Python ---
@@ -94,20 +94,23 @@ def _schema(cur) -> dict:
     """Detecta diferencias entre DBs: 182 tiene chunks.id y texto_search
     GENERATED; 162 no tiene chunks.id y texto_search es columna mantenida."""
     cur.execute("""
-        SELECT column_name, is_generated FROM information_schema.columns
-        WHERE table_name = 'documentos_chunks'
+        SELECT table_name, column_name, is_generated
+        FROM information_schema.columns
+        WHERE table_name IN ('documentos_chunks', 'documentos')
+          AND column_name IN ('id', 'texto_search')
     """)
-    cols = {c: g for c, g in cur.fetchall()}
+    cols = {(t, c): g for t, c, g in cur.fetchall()}
     return {
-        "chunk_id": "id" in cols,
-        "search_generated": cols.get("texto_search") == "ALWAYS",
+        "chunk_id": ("documentos_chunks", "id") in cols,
+        "chunk_search_generated":
+            cols.get(("documentos_chunks", "texto_search")) == "ALWAYS",
+        "doc_search_generated":
+            cols.get(("documentos", "texto_search")) == "ALWAYS",
     }
 
 
 def procesar_tabla_chunks(cur, esquema: dict) -> None:
     t0 = time.time()
-    upd_search = "" if esquema["search_generated"] else \
-        ", texto_search = to_tsvector('spanish', v.nuevo)"
     n_scan = n_fix = 0
 
     if esquema["chunk_id"]:
@@ -128,11 +131,16 @@ def procesar_tabla_chunks(cur, esquema: dict) -> None:
                      if (n := limpiar(t)) and n != t]
             n_scan += len(filas)
             if fixes:
-                psycopg.execute_values(cur, f"""
-                    UPDATE documentos_chunks c SET texto = v.nuevo {upd_search}
-                    FROM (VALUES %s) AS v(nuevo, id)
-                    WHERE c.id = v.id
-                """, fixes, page_size=500)
+                for n, cid in fixes:
+                    if esquema["chunk_search_generated"]:
+                        cur.execute(
+                            "UPDATE documentos_chunks SET texto = %s WHERE id = %s",
+                            (n, cid))
+                    else:
+                        cur.execute(
+                            "UPDATE documentos_chunks SET texto = %s, "
+                            "texto_search = to_tsvector('spanish', %s) WHERE id = %s",
+                            (n, n, cid))
                 conn.commit()
                 n_fix += len(fixes)
                 print(f"  [{hi:>12,}] scanned={n_scan:,} fixed={n_fix:,} "
@@ -154,12 +162,18 @@ def procesar_tabla_chunks(cur, esquema: dict) -> None:
                 fixes.append((nuevo, did, ordinal))
         n_scan = len(filas)
         if fixes:
-            psycopg.execute_values(cur, f"""
-                UPDATE documentos_chunks c
-                SET texto = v.nuevo {upd_search}
-                FROM (VALUES %s) AS v(nuevo, did, ordinal)
-                WHERE c.documento_id = v.did AND c.ordinal = v.ordinal
-            """, fixes, page_size=500)
+            for n, did, ordinal in fixes:
+                if esquema["chunk_search_generated"]:
+                    cur.execute(
+                        "UPDATE documentos_chunks SET texto = %s "
+                        "WHERE documento_id = %s AND ordinal = %s",
+                        (n, did, ordinal))
+                else:
+                    cur.execute(
+                        "UPDATE documentos_chunks SET texto = %s, "
+                        "texto_search = to_tsvector('spanish', %s) "
+                        "WHERE documento_id = %s AND ordinal = %s",
+                        (n, n, did, ordinal))
             conn.commit()
             n_fix = len(fixes)
         print(f"  scanned={n_scan:,} fixed={n_fix:,} "
@@ -167,7 +181,7 @@ def procesar_tabla_chunks(cur, esquema: dict) -> None:
     print(f"CHUNKS LISTO: scanned={n_scan:,} fixed={n_fix:,} en {time.time()-t0:.0f}s", flush=True)
 
 
-def procesar_documentos(cur) -> None:
+def procesar_documentos(cur, esquema_doc: dict) -> None:
     t0 = time.time()
     cur.execute("SELECT coalesce(max(id), 0) FROM documentos")
     max_id = cur.fetchone()[0]
@@ -187,10 +201,18 @@ def procesar_documentos(cur) -> None:
             nuevo_t = titulo_limpio(titulo) if titulo else titulo
             nuevo_x = limpiar(texto) if texto else texto
             if nuevo_x != texto or nuevo_t != titulo:
-                cur.execute(
-                    "UPDATE documentos SET texto=%s, titulo=%s WHERE id=%s",
-                    (nuevo_x if nuevo_x != texto else texto,
-                     nuevo_t if nuevo_t != titulo else titulo, did))
+                if esquema_doc["doc_search_generated"]:
+                    cur.execute(
+                        "UPDATE documentos SET texto=%s, titulo=%s WHERE id=%s",
+                        (nuevo_x if nuevo_x != texto else texto,
+                         nuevo_t if nuevo_t != titulo else titulo, did))
+                else:
+                    cur.execute(
+                        "UPDATE documentos SET texto=%s, titulo=%s, "
+                        "titulo_search=to_tsvector('spanish', %s) WHERE id=%s",
+                        (nuevo_x if nuevo_x != texto else texto,
+                         nuevo_t if nuevo_t != titulo else titulo,
+                         (nuevo_t or ""), did))
                 conn.commit()
                 if nuevo_x != texto:
                     n_fix_txt += 1
@@ -211,6 +233,6 @@ if __name__ == "__main__":
             procesar_tabla_chunks(cur, esquema)
         conn.commit()
         with conn.cursor() as cur:
-            procesar_documentos(cur)
+            procesar_documentos(cur, esquema)
         conn.commit()
     print("LIMPIEZA COMPLETA", flush=True)
