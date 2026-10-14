@@ -70,21 +70,21 @@ An instructive failure: our first full evaluation showed 93% abstention — the 
 
 | Source family | Contents | Approx. tokens |
 |---|---|---|
-| **Semanario Judicial de la Federación** | 150,187 tesis (jurisprudencia + aisladas), 1900–2026, differential harvest past an Imperva WAF | ~22M |
+| **Semanario Judicial de la Federación** | 150,312 tesis (jurisprudencia + aisladas), 1900–2026, differential harvest past an Imperva WAF | ~22M |
 | **DOF (federal gazette)** | 1999–2026, per-note full text, daily differential | ~300M+ |
 | **Federal statutes & regulations** | LeyesBiblio corpus + reglamentos/manuales + lex-mx (317 statutes, daily-synced Markdown) | ~50M |
-| **State legislation (32 states)** | **24,076 consolidated codes/laws/reglamentos via Orden Jurídico Nacional** — every state covered | ~85M |
+| **State legislation (32 states)** | **26,470 consolidated codes/laws/reglamentos via Orden Jurídico Nacional** — every state covered | ~85M |
 | **Gaceta CDMX** | Complete 2014–2026 archive (via Wayback CDX) | 143M |
-| **State case law — CDMX (SIVEPJ)** | 42,947 sentences, full universe ingested | ~52M |
+| **State case law — CDMX (SIVEPJ)** | 42,947 sentences ingested, plus a 30,526-sentence batch from SIVEPJ (the tribunal's own system) now ingesting | ~52M |
 | **State case law — Baja California** | 147K-record public API; 2,849 ingested in first pass, harvest ongoing | ~250M |
-| **State case law — Edomex** | 178,439-sentence manifest enumerated via judiciary Elasticsearch API; extraction in progress | ~3–4B |
+| **State case law — Edomex** | 63,211 sentences ingested (of a 178,439-sentence manifest enumerated via the judiciary Elasticsearch API); extraction ongoing | ~3–4B |
 | **State case law — Jalisco** | 84,731-sentence universe enumerated via reCAPTCHA-gated API; PDFs via CDP-driven S3 pre-signed URLs | ~2–3B |
 | **State case law — Querétaro, NL, +** | JWT chains, ASP.NET harvesting | ~1–2B |
 | **Doctrina: BJV (IIJ-UNAM)** | 5,680 complete books via OAI-PMH | ~1B |
 | **Theses: Repositorio UNAM** | 43,423 theses (~40% with full PDF) | ~2–3B |
 | **English instructive data (SFT only)** | 269K reasoning examples — NLI, LSAT logic, case briefs; **no foreign statutes** | SFT mix |
 
-Current status: **421,119 documents · 10.7M chunks · ~3.3B tokens ingested and queryable** (434M prompt-token calibrations against the live RAG); all 32 states already represented through the Orden Jurídico ingestion; remainder in active harvest; total discovered and accessible universe exceeds 12B tokens. A public dashboard (aijusticia.mx/estado) reports every source's count, coverage window, and freshness against its expected cadence.
+Current status: **473,848 documents · 14.1M chunks · ~3.9B tokens ingested and queryable**, refreshed daily by an automated DOF pipeline (434M prompt-token calibrations against the live RAG); all 32 states already represented through the Orden Jurídico ingestion; remainder in active harvest; total discovered and accessible universe exceeds 12B tokens. A public dashboard (aijusticia.mx/estado) reports every source's count, coverage window, and freshness against its expected cadence.
 
 ### 4.2 Data engineering: the reproducible part nobody publishes
 
@@ -155,7 +155,7 @@ The citizen tier is anonymous by design: no email required (recovery phrase), in
 
 ## 7. Contributions
 
-1. The first large-scale, documented, **living corpus of Mexican law** (421K documents ingested, 10.7M chunks queryable, 10B+ token universe mapped, 32/32 states covered in primary legislation, differential harvest registry, reproducible techniques for every source).
+1. The first large-scale, documented, **living corpus of Mexican law** (474K documents ingested, 14.1M chunks queryable, 10B+ token universe mapped, 32/32 states covered in primary legislation — 26K+ consolidated state codes, with the 2026 reforms already in force such as the 40-hour workweek — differential harvest registry, reproducible techniques for every source).
 2. A production **retrieval-anchored legal assistant** with a two-agent conversational architecture (empathic interview + librarian subagent), verified citations, and honest abstention — with the token-budget pathology of reasoning models in RAG pipelines identified and fixed.
 3. A training recipe unifying **SaulLM replay + Thomson merge + harness training**, targeting Tlamatini, the first sovereign Mexican legal base model.
 4. Evidence that **citation hallucination survives domain CPT** — jurisdiction grounding requires retrieval, and harness format can be trained.
@@ -163,7 +163,7 @@ The citizen tier is anonymous by design: no email required (recovery phrase), in
 
 ## 8. Status & Roadmap
 
-- Corpus: **421K documents · 10.7M chunks · ~3.3B tokens ingested and queryable**; 10B+ token universe mapped; 32/32 states covered in primary legislation; harvests ongoing across registered sources (BC, Edomex, Jalisco in flight).
+- Corpus: **474K documents · 14.1M chunks · ~3.9B tokens ingested and queryable**; 10B+ token universe mapped; 32/32 states covered in primary legislation; harvests ongoing across registered sources (Edomex to 178K, Jalisco, Coahuila, NL in flight).
 - System: live at aijusticia.mx (citizen/lawyer tiers, two-agent conversational architecture, public corpus dashboard); firm tier in development pending base model.
 - Training: Tlamatini CPT run (Tohil pipeline) on rented 4×H200 upon corpus completion; base decision (Qwen 3.6-35B-A3B vs Qwen 3.8 27B dense) pending the running evaluation; evaluation battery automated.
 - Applicability triage: migrating to a calibrated structured-output classifier when System One models reach general availability; comparison harness ready.
