@@ -201,18 +201,18 @@ def procesar_documentos(cur, esquema_doc: dict) -> None:
             nuevo_t = titulo_limpio(titulo) if titulo else titulo
             nuevo_x = limpiar(texto) if texto else texto
             if nuevo_x != texto or nuevo_t != titulo:
-                if esquema_doc["doc_search_generated"]:
-                    cur.execute(
-                        "UPDATE documentos SET texto=%s, titulo=%s WHERE id=%s",
-                        (nuevo_x if nuevo_x != texto else texto,
-                         nuevo_t if nuevo_t != titulo else titulo, did))
-                else:
+                vals_x = nuevo_x if nuevo_x != texto else texto
+                vals_t = nuevo_t if nuevo_t != titulo else titulo
+                try:
                     cur.execute(
                         "UPDATE documentos SET texto=%s, titulo=%s, "
                         "titulo_search=to_tsvector('spanish', %s) WHERE id=%s",
-                        (nuevo_x if nuevo_x != texto else texto,
-                         nuevo_t if nuevo_t != titulo else titulo,
-                         (nuevo_t or ""), did))
+                        (vals_x, vals_t, vals_t or "", did))
+                except psycopg.errors.GeneratedAlways:
+                    conn.rollback()
+                    cur.execute(
+                        "UPDATE documentos SET texto=%s, titulo=%s WHERE id=%s",
+                        (vals_x, vals_t, did))
                 conn.commit()
                 if nuevo_x != texto:
                     n_fix_txt += 1
