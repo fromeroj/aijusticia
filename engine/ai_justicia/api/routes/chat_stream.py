@@ -642,7 +642,15 @@ async def chat_stream(req: ChatStreamRequest, actor=Depends(actor_opcional)):
                     await stream.close()
                 except Exception:
                     pass
-            estado.update(texto=full, degenerado=False)
+            # Si M3 quemó todo el presupuesto en <think> y nunca abrió, el
+            # texto visible es vacío: marcar degenerado para forzar reintento
+            # (antes el texto crudo no vacío engañaba al bucle de reintentos).
+            visible = re.sub(r"<think>.*?</think>", "", full, flags=re.S)
+            visible = re.sub(r"<think>.*$", "", visible, flags=re.S).strip()
+            if not visible:
+                estado.update(texto=full, degenerado=True)
+            else:
+                estado.update(texto=full, degenerado=False)
 
         # 3er intento con más presupuesto: M3 a veces agota los tokens pensando
         # y termina el stream sin emitir ni un token de contenido.
