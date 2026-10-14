@@ -383,7 +383,10 @@ def _buscar_recientes(terminos: list[str], dias: int = 150, top_k: int = 3) -> l
             cur.execute(
                 """
                 SELECT d.fuente, d.titulo, c.articulo_num, c.texto,
-                       ts_rank_cd(c.texto_search, to_tsquery('spanish', %s)) AS rank,
+                       ts_rank_cd(c.texto_search, to_tsquery('spanish', %s))
+                       * (CASE WHEN d.titulo ~* '^decreto'
+                                AND d.titulo ~* '(reform|adicion|derog|expide)'
+                          THEN 2.2 ELSE 1.0 END) AS rank,
                        d.fecha_publicacion::date::text AS fecha_pub
                 FROM documentos_chunks c
                 JOIN documentos d ON c.documento_id = d.id
