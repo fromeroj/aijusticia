@@ -17,6 +17,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - run: pip install -r infra/requirements.txt
       - name: Compila todo el Python (engine + data + eval + infra)
         run: python -m compileall -q engine/ai_justicia data/ eval/ infra/
       - name: Sintaxis de scripts shell
@@ -47,6 +48,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - run: pip install -r infra/requirements.txt
       - name: Salud externa (falla solo en críticos)
         run: |
           python3 infra/salud.py || code=$?
@@ -61,6 +63,10 @@ jobs:
     environment: production
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r infra/requirements.txt
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
