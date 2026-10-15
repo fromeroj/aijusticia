@@ -32,6 +32,7 @@ class Fuente(str, Enum):
     SENTENCIAS_COAHUILA = "SentenciasCoahuila"
     SENTENCIAS_SONORA = "SentenciasSonora"
     SCJN_LIBROS = "SCJN-Libros"
+    UNAM_TESIS = "UNAM-Tesis"          # Repositorio institucional UNAM (doctrina)
     JUSTIA_ESTATAL = "JustiaEstatal"
     PREGUNTAS_ENTRENAMIENTO = "PreguntasEntrenamiento"
 

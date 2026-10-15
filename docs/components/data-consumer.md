@@ -38,4 +38,11 @@
 - Morelos: ordenjuridico.gob.mx lista solo 5 ordenamientos para el estado —
   no es un bug nuestro.
 - Storage: 148.135.106.227 (hostname `tlamatini`) reemplaza al caído
-  161.129.70.21 — NFS `/srv/office` y `/srv/backups` montados en 162 (soft).
+  161.129.70.21 — NFS `/srv/office`, `/srv/backups` y `/srv/corpus` (ro) montados en 162.
+- **UNAM-Tesis** (15-oct): 4.5GB / ~43K tesis del Repositorio UNAM con texto
+  extraído (estaban sin procesar en el storage). Ingesta continua con nice —
+  fuente `UNAM-Tesis`, jerarquía DOCTRINA (70), no vinculante, excluida de
+  citación de ley por diseño. Tarda ~2-3 días (chunks+FTS); queda consultable
+  incrementalmente y entra al export CPT.
+- El server de storage guarda además: dump RAG viejo (9GB, redundante),
+  PDFs fuente de Edomex/Qro (ya procesados) — espacio de sobra (159GB).
