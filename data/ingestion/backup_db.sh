@@ -19,6 +19,11 @@ else
   exit 1
 fi
 
+# copia off-site al storage server (148.135.106.227) — best-effort
+if mountpoint -q /mnt/backups_offsite; then
+  cp -f "$DEST/aijusticia_$FECHA.sql.gz" /mnt/backups_offsite/ || echo "aviso: copia off-site falló" >&2
+fi
+
 # retención 14 días
 ls -t "$DEST"/aijusticia_*.sql.gz | tail -n +15 | xargs -r rm --
 echo "$(date -u +%FT%TZ) backup aijusticia_$FECHA.sql.gz ($(du -h $DEST/aijusticia_$FECHA.sql.gz | cut -f1))"

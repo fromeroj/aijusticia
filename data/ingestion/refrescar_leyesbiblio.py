@@ -37,7 +37,20 @@ def descargar_y_extraer(adapter: LeyesBiblioAdapter, code: str) -> str:
     url = f"https://www.diputados.gob.mx/LeyesBiblio/doc/{code.upper()}.doc"
     resp = adapter.client.get(url)
     if resp.status_code != 200:
-        return ""
+        # fallback: muchas leyes solo están como PDF
+        url_pdf = f"https://www.diputados.gob.mx/LeyesBiblio/pdf/{code.upper()}.pdf"
+        resp = adapter.client.get(url_pdf)
+        if resp.status_code != 200:
+            return ""
+        import subprocess, tempfile, os
+        with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as f:
+            f.write(resp.content)
+            tmp = f.name
+        try:
+            r = subprocess.run(["pdftotext", "-q", tmp, "-"], capture_output=True, timeout=180)
+            return r.stdout.decode("utf-8", errors="replace")
+        finally:
+            os.unlink(tmp)
     import subprocess
     import tempfile
     import os

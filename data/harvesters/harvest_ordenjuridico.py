@@ -40,6 +40,7 @@ _FICHA_RE = re.compile(
     r"href\s*=\s*javascript:void\(window\.open\(\"fichaOrdenamiento\.php\?idArchivo=(\d+)&ambito=estatal"
 )
 _TITULO_RE = re.compile(r">\s*([^<>]{10,300}?)\s*</a>", re.I)
+XML_TAG_SUB = re.compile(r"<[^>]+>")
 _FILE_RE = re.compile(r'https?://[^"\']*Documentos/Estatal/([^"\']+)')
 
 
@@ -49,6 +50,19 @@ def extraer_texto(path: Path) -> str:
             r = subprocess.run(["pdftotext", "-q", str(path), "-"], capture_output=True, timeout=120)
             return r.stdout.decode("utf-8", errors="replace")
         if path.suffix.lower() == ".doc":
+            # la mayoría de los .doc son Word 2007+ (OOXML) mal extendidos:
+            # antiword no los lee — probar zipfile primero
+            try:
+                import zipfile
+                with zipfile.ZipFile(path) as z:
+                    xml = z.read("word/document.xml").decode("utf-8", errors="replace")
+                    m = re.search(r"<w:body[ >].*</w:body>", xml, re.S)
+                    if m:
+                        t2 = m.group(0)
+                        t2 = t2.replace("</w:p>", "\n").replace("<w:br/>", "\n")
+                        return XML_TAG_SUB.sub("", t2)
+            except (zipfile.BadZipFile, KeyError, ValueError):
+                pass
             r = subprocess.run(["antiword", str(path)], capture_output=True, timeout=120)
             if r.returncode != 0 or not r.stdout.strip():
                 r = subprocess.run(

@@ -37,7 +37,7 @@ LEYES_CLAVE = {
     "cft": "Código Federal del Trabajo",
     "cpcf": "Código Federal de Procedimientos Civiles",
     "cnpp": "Código Nacional de Procedimientos Penales",
-    "cnpcef": "Código Nacional de Procedimientos Civiles y Familiares",
+    "cnpcf": "Código Nacional de Procedimientos Civiles y Familiares",
     "cff": "Código Fiscal de la Federación",
     "cca": "Código de Comercio",
     "lft": "Ley Federal del Trabajo",
@@ -46,16 +46,16 @@ LEYES_CLAVE = {
     "lamp": "Ley de Amparo",
     "lfpc": "Ley Federal de Protección al Consumidor",
     "lcp": "Ley de Concursos Mercantiles",
-    "lgsc": "Ley General de Sociedades Mercantiles",
+    "lgsm": "Ley General de Sociedades Mercantiles",
     "lie": "Ley de Instituciones de Elecciones",
     "lnsijp": "Ley Nacional del Sistema Integral de Justicia Penal para Adolescentes",
-    "lgpin": "Ley General de Protección de Datos",
+    "lgpdppso": "Ley General de Protección de Datos Personales en Posesión de los Sujetos Obligados",
     "lm": "Ley de Migración",
     "lan": "Ley de Aguas Nacionales",
     "la": "Ley Agraria",
     "lgs": "Ley General de Salud",
     "loapf": "Ley Orgánica de la Administración Pública Federal",
-    "ljudfed": "Ley Orgánica del Poder Judicial de la Federación",
+    "lopjf": "Ley Orgánica del Poder Judicial de la Federación",
 }
 
 
