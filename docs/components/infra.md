@@ -7,7 +7,8 @@
 | 66.154.100.25 | auxiliar: harvest OJ→182, limpieza archivo | 30GB (7.6 libres), 2GB RAM |
 | 192.227.167.147 | RackNerd: Caddy TLS (contenedor `caddy`) | 9GB (**97% lleno** — no meter nada) |
 | 182.255.84.124 | DB archivo/entrenamiento | 59GB (7.3 libres) |
-| 161.129.70.21 | storage NFS (`/srv/corpus`) | ⚠️ **CAÍDO** desde ~ago-2026 |
+| **148.135.106.227** | STORAGE (hostname `tlamatini`): NFS `/srv/office` + `/srv/backups` → 162 (soft) | 197GB (159 libres) |
+| 161.129.70.21 | storage VIEJO (`/srv/corpus`) | ❌ CAÍDO desde ~ago-2026 — desmontado de 162 |
 | Mac Studio | cosechas con navegador, entrenamiento (piloto Nextcloud APAGADO — migrado a 162) | — |
 
 ## Crons en 162 (14-oct)

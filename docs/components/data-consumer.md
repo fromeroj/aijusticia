@@ -24,9 +24,18 @@
 - Cosechas con WAF: curl_cffi impersonate=chrome; con reCAPTCHA: CDP/extension.
 - Trabajos pesados: SOLO en ventana nocturna de 162 o en 66 (lección 14-oct: load 20 = sitio degradado).
 
-## Estado / pendientes
-- SIVEPJ 30,526 sentencias CDMX: en ingesta.
-- Coahuila: harvester listo, sin correr → 162.
+## Estado / pendientes (15-oct)
+- SIVEPJ 30,526 sentencias CDMX: en cola nocturna (mantenimiento 02:30).
+- Harvest OJ: COMPLETO — 24,022 directos + recuperación en curso de 2,789
+  rechazos que eran OOXML mal-extensionados (`recupera_oj.py`, extrae y sube a 182).
+- ❌ **Coahuila BLOQUEADO**: la API lista autoridades y sentencias, pero el
+  acceso a PDF está roto por su lado — URL firmada de GCS devuelve 403 y
+  `?descargar=true` devuelve `url` vacía. Evidencia en 15-oct. Requiere
+  contacto con PJECZ o descubrir el nuevo flujo de descarga.
 - NL: metadatos sin texto — re-corrida Playwright en Mac.
-- 11 códigos 404 en `LEYES_CLAVE`; Morelos con 4 leyes en OJ (investigar).
-- Storage server NFS (161.129.70.21) caído — `corpus_downloads` ahora es disco local de 162.
+- 7 códigos de `LEYES_CLAVE` siguen 404 (lnsijp, lm, la, lamp, lcp, cft, cpcf —
+  abreviaturas oficiales desconocidas; 4 ya corregidos: lgpdppso/lopjf/cnpcf/lgsm).
+- Morelos: ordenjuridico.gob.mx lista solo 5 ordenamientos para el estado —
+  no es un bug nuestro.
+- Storage: 148.135.106.227 (hostname `tlamatini`) reemplaza al caído
+  161.129.70.21 — NFS `/srv/office` y `/srv/backups` montados en 162 (soft).
