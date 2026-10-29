@@ -470,7 +470,8 @@ async def _bibliotecario(client, consulta: str, historial: list[dict]) -> dict |
             messages=[{"role": "user", "content": BIBLIOTECARIO_PROMPT.format(conversacion=conv[:2500])}],
             temperature=0.0,
             max_tokens=1500,
-            extra_body={"chat_template_kwargs": {"enable_thinking": False}},
+            extra_body={"chat_template_kwargs": {"enable_thinking": False},
+                        "reasoning_effort": "low"},
         )
         raw = r.choices[0].message.content or ""
         raw = re.sub(r"<think>.*?</think>", "", raw, flags=re.S).strip()
@@ -635,7 +636,8 @@ async def chat_stream(req: ChatStreamRequest, actor=Depends(actor_opcional)):
                 frequency_penalty=0.1,
                 max_tokens=max_tokens,
                 stream=True,
-                extra_body={"chat_template_kwargs": {"enable_thinking": False}},
+                extra_body={"chat_template_kwargs": {"enable_thinking": False},
+                        "reasoning_effort": "low"},
             )
             try:
                 async for chunk in stream:
