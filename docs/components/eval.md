@@ -4,7 +4,7 @@
 **Vive en**: `eval/` (batería de producción + corridas), `models/tlamatini/eval_bateria.py` (30 preguntas ciudadanas para checkpoints), `data/ingestion/source_health` (DB).
 
 ## Batería de producción
-`python3 engine/scripts/eval_bateria_prod.py --guardar [--solo B1,B3] [--url …]`
+`python3 eval/eval_bateria_prod.py --guardar [--solo B1,B3] [--url …]`
 - 8 casos B/C contra el chat vivo: patrones requeridos/prohibidos en la respuesta
   + títulos esperados en el panel de leyes + salud del stream.
 - Claves construidas del propio corpus (decretos verificados texto en mano).

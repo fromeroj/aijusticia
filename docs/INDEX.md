@@ -38,7 +38,7 @@
 ## Vivos fuera de docs/
 
 - `tohil/README.md` — pipeline de entrenamiento Soup (Makefile: prep/smoke/eval/merge/export-gguf).
-- `engine/scripts/eval_bateria_prod.py` — batería de evaluación contra producción (el "score" del asistente).
+- `eval/eval_bateria_prod.py` — batería de evaluación contra producción (el "score" del asistente).
 - `www/` — sitio tlamatini.live; `deck/` — pitch deck.
 
 ## Pendientes documentadas (14-oct)

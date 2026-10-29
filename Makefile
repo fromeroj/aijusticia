@@ -47,7 +47,7 @@ deploy-data:
 sync-data: deploy-data
 
 bateria:
-	python3 engine/scripts/eval_bateria_prod.py --guardar
+	python3 eval/eval_bateria_prod.py --guardar
 
 ci-key:
 	@test -f infra/ci_ed25519.pub && cat infra/ci_ed25519.pub || \

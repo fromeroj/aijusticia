@@ -1,0 +1,178 @@
+{
+ "url": "https://aijusticia.mx",
+ "ok": 0,
+ "total": 8,
+ "resultados": [
+  {
+   "id": "B1",
+   "q": "¿Cuál es la jornada máxima de trabajo ahora, ya aplican las 40 horas?",
+   "texto": "\n\n\n\n\n\n",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 1,
+    "error": 0,
+    "reset": 2
+   },
+   "segundos": 113.7,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: gradual|etapa|poco a poco|progresiv",
+    "falta patrón requerido: 40 horas|cuarenta horas",
+    "respuesta vacía",
+    "respuesta demasiado corta (6 chars)"
+   ],
+   "avisos": [
+    "panel de leyes sin «jornada»"
+   ]
+  },
+  {
+   "id": "B2",
+   "q": "¿Un gobernador puede tener doble nacionalidad?",
+   "texto": "",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 0,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 0.6,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: renunci|nacionalidad [uú]nica|art[íi]culo[s]? (82|116|122)|7 de octubre",
+    "respuesta vacía",
+    "respuesta demasiado corta (0 chars)"
+   ],
+   "avisos": [
+    "panel de leyes sin «82»"
+   ]
+  },
+  {
+   "id": "B3",
+   "q": "¿Hay algún estímulo por pagar con tarjeta de crédito este año?",
+   "texto": "",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 0,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 0.3,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: est[ií]mulo",
+    "falta patrón requerido: buen fin|medios de pago electr|noviembre",
+    "respuesta vacía",
+    "respuesta demasiado corta (0 chars)"
+   ],
+   "avisos": [
+    "panel de leyes sin «pago»"
+   ]
+  },
+  {
+   "id": "B4",
+   "q": "¿Quién administra el Poder Judicial federal ahora que ya no está el Consejo de la Judicatura?",
+   "texto": "",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 0,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 0.3,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: [ÓO]rgano de Administraci[oó]n Judicial",
+    "respuesta vacía",
+    "respuesta demasiado corta (0 chars)"
+   ],
+   "avisos": []
+  },
+  {
+   "id": "B5",
+   "q": "¿Existe ya el reglamento de la Ley de Infraestructura de la Calidad?",
+   "texto": "",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 0,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 0.3,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: reglamento",
+    "falta patrón requerido: public|existe|vigente|s[ií]\\b|2026",
+    "respuesta vacía",
+    "respuesta demasiado corta (0 chars)"
+   ],
+   "avisos": []
+  },
+  {
+   "id": "B6",
+   "q": "¿Qué cambió en materia de derecho de autor en septiembre?",
+   "texto": "",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 1,
+    "error": 0,
+    "reset": 2
+   },
+   "segundos": 141.8,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: derecho de autor",
+    "respuesta vacía",
+    "respuesta demasiado corta (0 chars)"
+   ],
+   "avisos": [
+    "panel de leyes sin «derecho de autor»"
+   ]
+  },
+  {
+   "id": "C1",
+   "q": "¿Qué regula el artículo 135 Bis de la Constitución?",
+   "texto": "",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 1,
+    "error": 0,
+    "reset": 2
+   },
+   "segundos": 93.9,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: no (tengo|encuentro|consta|existe)|no tengo certeza|no existe",
+    "respuesta vacía",
+    "respuesta demasiado corta (0 chars)"
+   ],
+   "avisos": []
+  },
+  {
+   "id": "C2",
+   "q": "Explícame la Ley General de Economía Colaborativa",
+   "texto": "\n\n",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 1,
+    "error": 0,
+    "reset": 2
+   },
+   "segundos": 130.4,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: no me consta|no existe|no hay una ley|no tengo",
+    "respuesta vacía",
+    "respuesta demasiado corta (2 chars)"
+   ],
+   "avisos": []
+  }
+ ]
+}

@@ -198,7 +198,7 @@ def main():
 
     print(f"== RESULTADO: {ok_n}/{len(casos)} ==", flush=True)
     if args.guardar:
-        out = Path(__file__).resolve().parent.parent / "data" / "eval"
+        out = Path(__file__).resolve().parent.parent / "eval" / "runs"
         out.mkdir(parents=True, exist_ok=True)
         p = out / f"bateria_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
         p.write_text(json.dumps({"url": args.url, "ok": ok_n, "total": len(casos),
