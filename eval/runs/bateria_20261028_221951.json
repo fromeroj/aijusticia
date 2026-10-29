@@ -1,0 +1,181 @@
+{
+ "url": "https://aijusticia.mx",
+ "ok": 3,
+ "total": 8,
+ "resultados": [
+  {
+   "id": "B1",
+   "q": "¿Cuál es la jornada máxima de trabajo ahora, ya aplican las 40 horas?",
+   "texto": "\n\n**En el régimen general de la LFT, no se aplica universalmente una jornada de 40 horas.** La regla federal para la mayoría de los trabajadores al servicio de patrones privados es:\n\n- **8 horas diarias como jornada máxima** y hasta **48 horas semanales** (artículos 35 y 37 de la Ley Federal del Trabajo).\n- Debe concederse **un descanso semanal mínimo de 12 horas consecutivas**, preferentemente en domingo (artículo 36).\n- La jornada puede repartirse en cinco días, sin exceder de 8 horas diarias cuando exista horario fijo; de manera exceptional y por escrito, puede distribuirse hasta en 9 horas durante cuatro días y 5 horas el quinto, siempre bajo las condiciones del artículo 37.\n\nHay **regímenes específicos**: por ejemplo, algunas actividades agrícolas, comerciales, el trabajo doméstico y ciertos sectores? tienen reglas particulares. El sector público federal también puede tener una jornada máxima de 40 horas semanales.\n\nPor tanto, **40 horas semanales puede ser el horario contractual de tu trabajo, pero no es la jornada máxima general para todos los trabajadores privados**. Si te asignan más de 8 horas diarias o no te dan el descanso semanal previsto, conviene revisar tu contrato, recibos y horaires.\n\n¿Trabajas para una empresa privada o para el gobierno? ¿Cuántas horas al día y cuántas a la semana te impusieron?",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 38.0,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: gradual|etapa|poco a poco|progresiv"
+   ],
+   "avisos": [
+    "panel de leyes sin «jornada»"
+   ]
+  },
+  {
+   "id": "B2",
+   "q": "¿Un gobernador puede tener doble nacionalidad?",
+   "texto": "\n\nEntiendo la duda. **Sí, un gobernador mexicano puede tener doble nacionalidad**, siempre que cumple los requisitos legales para ejercer el cargo y para conservar ambas nacionalidades.\n\nLa Constitución mexicana no prohíbe de forma general la doble nacionalidad, pero el artículo 37 establece reglas específicas:\n\n- **Un mexicano por nacimiento no puede naturalizarse en otro país.**\n- Tampoco puede conservar una nacionalidad extranjera **adquirida después de los 18 años**.\n- Si la nacionalidad extranjera se adquiere desde el nacimiento —por ejemplo, porque uno de los padres es extranjero— esa situación es distinta y puede permitir la doble nacionalidad.\n- Un **mexicano por naturalización** también puede conservar otra nacionalidad en determinados casos.\n\nAdemás, para ser gobernador no solo importa la nacionalidad: deben cumplirse los requisitos de la Constitución federal, de la constitución del estado y de la ley electoral estatal —por ejemplo, ser mexicano, tener la edad requerida y no tener una incompatibilidad o licencia pente para el cargo.\n\nPara confirmarlo en un caso concreto, ¿se trata de una persona **mexicana por nacimiento o naturalizada**, cuándo y cómo obtuvo la otra nacionalidad, y para qué estado de México sería candidata?",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 26.1,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: renunci|nacionalidad [uú]nica|art[íi]culo[s]? (82|116|122)|7 de octubre",
+    "aparece patrón prohibido: s[ií],? un gobernador (mexicano )?(sí |si )?puede tener"
+   ],
+   "avisos": [
+    "panel de leyes sin «82»"
+   ]
+  },
+  {
+   "id": "B3",
+   "q": "¿Hay algún estímulo por pagar con tarjeta de crédito este año?",
+   "texto": "\n\nSí. En México, las **personas físicas que pagan con tarjeta de crédito o débito por bienes y servicios de consumo** pueden obtener un **crédito fiscal al presentar la declaración anual del Impuesto sobre la Renta**. No es un reembolso inmediato ni reduce el gasto, sino que se compensa con impuestosFederales.\n\nEl monto depende de:\n\n- Cuánto gastaste mensualmente con la tarjeta.\n- El tipo de consumo.\n- Si también cumplen los requisitos para transporte público, vehículos o demás categorías con tasa distinta.\n- Si presentas declaración anual y tienes ISR a pagar.\n\nPara calcularte cuánto correspondería, **¿te refieres al stimulus de 2025 y eres persona física? ¿Cuánto pagas aproximadamente al mes con tarjeta y para qué lo utilizas?**",
+   "leyes": [
+    "Decreto por el que se expide el Reglamento Interior de la Secretar&iacute;a de I",
+    "Decreto por el que se reforman y adicionan diversas disposiciones de la Ley Gene",
+    "Decreto por el que se expide el Reglamento Interior de la Secretaría de Infraest",
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones de la",
+    "Ley para la Transparencia y Ordenamiento de los Servicios Financieros",
+    "Ley para la Transparencia y Ordenamiento de los Servicios Financieros"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 25.9,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: est[ií]mulo",
+    "falta patrón requerido: buen fin|medios de pago electr|noviembre"
+   ],
+   "avisos": [
+    "panel de leyes sin «pago»"
+   ]
+  },
+  {
+   "id": "B4",
+   "q": "¿Quién administra el Poder Judicial federal ahora que ya no está el Consejo de la Judicatura?",
+   "texto": "\n\nCon la reforma que eliminó al **Consejo de la Judicatura Federal**, la administración del Poder Judicial federal quedó a cargo de la **Suprema Corte de Justicia de la Nación (SCJN)**, mediante su **Pleno**.\n\nEn términos generales, la SCJN ahora administra:\n\n- El presupuesto y los recursos materiales del Poder Judicial federal.\n- La organization, именamientos y régimen laboral de su personal.\n- La infraestructura y los servicios jurisdictional.\n- La disciplina y las medidas de carácter administrativo.\n\nEsto no significa que la Suprema Corte decida todos los asuntos judiciales: los **Plenos de los Tribunales Colegiados y de los Juzgados de Distrito** conservan la autonomía jurisdictionnelle de sus resoluciones. La reforma también previó mecanismos distintos para las **causas contra.INSTANCE**.\n\nEn suma: **ya no hay un Consejo de la Judicatura; la administración federal está concentrada en la SCJN, especialmente en su Pleno**. Esto se deriva de la reforma constitucional reciente y de sus disposiciones transitorias.",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 34.0,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: [ÓO]rgano de Administraci[oó]n Judicial"
+   ],
+   "avisos": []
+  },
+  {
+   "id": "B5",
+   "q": "¿Existe ya el reglamento de la Ley de Infraestructura de la Calidad?",
+   "texto": "\n\n**Sí, ya existe.** El **Reglamento de la Ley de Infraestructura de la Calidad** fue publicado en el **Diario Oficial de la Federación** por la **Secretaría de Economía**. Este reglamento desarrolla los mecanismos de confianza, calibración, verificación metrológica, conformity, vigilancia y accreditation de laboratorios y proveedores de servicios de calibración.\n\nNo tengo a la mano la fecha exacta de publicación en el material disponible. Si buscas saber **cuándo entró en vigor**, qué obligaciones te aplican o cómo puede affectar a tu empresa, dime el sector o actividad involved y te explico el camino concreto.",
+   "leyes": [
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Ley de Infraestructura de la Calidad",
+    "Ley de Infraestructura de la Calidad",
+    "Ley de Infraestructura de la Calidad"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 19.2,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "B6",
+   "q": "¿Qué cambió en materia de derecho de autor en septiembre?",
+   "texto": "\n\nPuedo ayudarte a identificarlo, pero “septiembre” es ambiguo porque puede corresponder a distintas reformas y años. **¿Te refieres a septiembre de 2024, 2025 o a otro año?** Además, ¿buscas cambios en la **Ley Federal del Derecho de Autor** o en algún tema específico, como derechos digitales, obras musicales, contratos, remuneración oместив?",
+   "leyes": [
+    "Decreto por el que se expide el Reglamento Interior de la Secretar&iacute;a de I",
+    "Decreto por el que se adicionan diversas disposiciones al Reglamento de la Ley F",
+    "Decreto por el que se expide el Reglamento Interior de la Secretaría de Infraest",
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 24.1,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "C1",
+   "q": "¿Qué regula el artículo 135 Bis de la Constitución?",
+   "texto": "\n\nEntiendo que quieres identificar qué norma aplica. **En la Constitución Política de los Estados Unidos Mexicanos no existe un artículo 135 Bis**. El **artículo 135, sin “Bis”**, regula la designación del **Director General del Instituto Nacional de Estadística y Geografía (INEGI)** por parte de la Cámara de Diputados.\n\nEl “135 Bis” podría existir en la **Constitución de algún estado** o en una **ley federal secundaria**. ¿De qué estado o ley se trata y quién te entregó ese dato? Si compartes el texto o una imagen, puedo explicarlo de manera precisa.",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 22.6,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "C2",
+   "q": "Explícame la Ley General de Economía Colaborativa",
+   "texto": "\n\nClaro. **La Ley General de Economía Colaborativa (LGEC)** es el marco mexicano que regula las actividades económicas realizadas mediante plataformas digitales, como las de transporte, hospedaje, entregas, servicios profesionales o venta de productos entre usuarios.\n\n> Te la explico con base en su marco general; para algún punto específico conviene contrastarlo con el texto publicado y sus reformas vigentes.\n\n## 1. ¿Qué regula?\n\nSu objetivo es establecer las bases de operación de las **plataformas digitales** que conectan:\n\n- **Colaboradores:** personas que ofrecen un servicio, trabajo o producto.\n- **Usuarios:** personas que reciben ese servicio, trabajo o producto.\n- **Plataformas:** intermediarios digitales que organizan la operación y los pagos.\n\nPor ejemplo, en una app de entregas pueden participar el repartidor, el restaurante, el cliente y la plataforma. La LGEC define las reglas aplicables a esa relación.\n\n## 2. Principios principales\n\nLa operación se orienta por principios como:\n\n- **Participación voluntaria.**\n- **Libre acceso.**\n- **Transparencia sobre reglas, costos y condiciones.**\n- **Respeto a la dignidad humana y no discriminación.**\n- **Cumplimiento de la Constitución y demás leyes.**\n- **Prevención de riesgos y disputes** through clear mechanisms.\n- **Protección de datos personales.**\n- **Responsabilidad de las plataformas en materia de seguridad y calidad.**\n\nLa ley no permite que una plataforma se convierta en un espacio sin reglas, pero tampoco puede usar sus condiciones de uso para ocultarWall violations de other laws.\n\n## 3. Derechos de los colaboradores\n\nEn términos generales, quienes trabajan mediante una plataforma tienen derecho a:\n\n- Conocer previamente las reglas, tarifas, criterios de evaluación y forma de pago.\n- Saber cómo se calcula su remuneración y qué comisiones se deduct.\n- Recibir correctamente lo que le corresponde.\n- Presentar Complaints por errores de pago,Blocked una cuenta o Infectious cualquier otra situación.\n- Contar con mecanismos de mediation and resolution of disputes.\n- tener acceso a sus datos personales y conocer su uso.\n- Usar la plataforma en terms generalmente.Settings y restrictions, bajoOptionally el principio general de no Sera obstructed by abusive clauses.\n\nTambién opera el principio de que la relación puede ser **voluntaria y terminar en cualquier momento**, sin que ello Impida the worker from using other platforms. Sin embargo, una plataforma no debería impedir que un colaborador participe en servicios similares si account blocking or exclusivity has no justification.\n\n## 4. Derechos de los usuarios\n\nLos usuarios que compran o reciben un servicio tienen derecho a:\n\n- Información clara sobre el prestador del servicio.\n- Conocer el precio total, tarifas adicionales y forma de pago.\n- Recibir el servicio sin|ENG discrimination,, unsafe conditions or violations of the law.\n- Presentar complaints y obtener responses.\n- Tener treatment of their personal data respectful and transparent.\n\nLa plataforma tampoco debe ocultar información relevante ni utilizar reseñas, algorithms or classifications in an arbitrary way.\n\n## 5. Obligaciones de las plataformas\n\nLas plataformas deben, entre otras cosas:\n\n- Publicar de manera visible sus términos, reglas y tarifas.\n- Informar cómo funciona el sistema de pagos, comisiones y {[Facturación]}.\n- Identificaradequadamente a colaboradores y usuarios cuando sea necesario.\n- Establecer canales para reportes, quejas, incidentes y requests for support.\n- Brindar assistance or activation of appropriate prevention mechanisms in areas such as seguridad.\n- Proteger los datos personales y limitar su utilization.\n- Contribuir al cumplimiento fiscal y。 que requires it, garantizar pagos, impuestos y registros aplicables.\n- Cooperar con autoridades cuando se investigate una violation.\n- Evitar condiciones abusivas que impidan el ejercicio de derechos o la salida de la plataforma.\n\nLa LGEC tampoco elimina las obligaciones fiscales, laborales, de protección de datos, de seguridad, de competencia económica o de protección al consumidor.\n\n## 6. ¿Una persona que trabaja en una app es independiente o empleado?\n\n**La LGEC no resuelve por sí sola esa pregunta.** El nombre del contrato o que la plataforma diga “colaborador” no es decisivo. Un análisis practical debe considerar, entre otros factores:\n\n- Quién fija el precio o la tarifa.\n- Quién controla el horario, la ruta o la forma de realizar el trabajo.\n- Si el trabajador puede rechazar tareas sin consecuencias.\n- Si existe subordinación, supervisión estrecha o sanciones.\n- Quién aporta el equipo principal de trabajo.\n- Cómo se calculan y pagan las contraprestaciones.\n\nSi la relación presenta subordinación, puede ser aplicable la **legislación laboral**, aunque el servicio se ofrezca mediante una aplicación. Esto se denomina principio de primacía de la realidad de la relación laboral.\n\n## 7. Relación con otras leyes\n\nLa LGEC funciona junto con otras disposiciones. Por ejemplo:\n\n- **Laboral:** si existe relación laboral o subordinación.\n- **Fiscal:** para efectos de ingresos, retenciones y facturación.\n- **Protección de datos personales:** para las plataformas y los datos de usuarios.\n- **Protección al consumidor:** en compras y servicioselective through the app.\n- **Penales y de seguridad:** anteitativeitative incidents, fraud or violence.\n- **Bancaria y financiera:** crowdfunding y plataformas que movilic o de inversión o pagos.\n\nPor eso, que una actividad sea “colaborativa” no significa que quede fuera de las demás leyes.\n\n## 8. Ejemplos\n\n- **Rappi o Uber:** repartidores, conductores,hurler maybe lost orders, restaurants and users.\n- **Airbnb:** anfitriones y huéspedes.\n- **Workana o freelancer platforms:** profesionales y clientes.\n- **Marketplaces:** vendedores y compradores.\n- **Crowdfunding:** personas que finances proyectos mediante una plataforma; además debe observarse la regulación financiera y de crowdfunding.\n\n## ¿Cómo aplicarlo a un caso concreto?\n\nPara determinar qué puedes exigir, necesito saber:\n\n1. ¿Qué plataforma es y qué servicio prestaste o recibiste?\n2. ¿Qué ocurrió exactamente: bloqueo de cuenta, falta de pago, datos Incorrectos, deducción indebida o negativa de<Task?\n3. ¿Tienes capturas de los términos, correos, pagos y conversaciones dentro de la app?",
+   "leyes": [
+    "Decreto por el que se expide la Ley General para el Fortalecimiento y Armonizaci",
+    "Decreto por el que se expide el Reglamento Interior de la Secretaría de Infraest",
+    "Decreto por el que se expide el Reglamento Interior de la Secretar&iacute;a de I",
+    "Acuerdo por el que se establecen las bases para la coordinación, participación y",
+    "Acuerdo por el que se establecen las bases para la coordinación, participación y",
+    "Acuerdo por el que se establecen las bases para la coordinación, participación y"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 43.9,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: no me consta|no existe|no hay una ley|no tengo"
+   ],
+   "avisos": []
+  }
+ ]
+}

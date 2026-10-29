@@ -1,0 +1,166 @@
+{
+ "url": "https://aijusticia.mx",
+ "ok": 2,
+ "total": 8,
+ "resultados": [
+  {
+   "id": "B1",
+   "q": "¿Cuál es la jornada máxima de trabajo ahora, ya aplican las 40 horas?",
+   "texto": "\n\n\n\n\n\n",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 1,
+    "error": 0,
+    "reset": 2
+   },
+   "segundos": 102.2,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: gradual|etapa|poco a poco|progresiv",
+    "falta patrón requerido: 40 horas|cuarenta horas",
+    "respuesta vacía",
+    "respuesta demasiado corta (6 chars)"
+   ],
+   "avisos": [
+    "panel de leyes sin «jornada»"
+   ]
+  },
+  {
+   "id": "B2",
+   "q": "¿Un gobernador puede tener doble nacionalidad?",
+   "texto": "\n\n\n\n",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 1,
+    "error": 0,
+    "reset": 2
+   },
+   "segundos": 121.2,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: renunci|nacionalidad [uú]nica|art[íi]culo[s]? (82|116|122)|7 de octubre",
+    "respuesta vacía",
+    "respuesta demasiado corta (4 chars)"
+   ],
+   "avisos": [
+    "panel de leyes sin «82»"
+   ]
+  },
+  {
+   "id": "B3",
+   "q": "¿Hay algún estímulo por pagar con tarjeta de crédito este año?",
+   "texto": "\n\n\n\nSí, es bastante común que haya estímulos al pagar con tarjeta, pero **cambian seguido y dependen del banco y del tipo de tarjeta**, así que conviene ver las condiciones antes de decidir.\n\n**Los estímulos que más se ven en México:**\n- **Meses sin intereses** (de 3 a 24 meses) en compras, y a veces también en *compra de deuda* o pago de saldo de otra tarjeta.\n- **Puntos, millones o \"cashback\"**: por ejemplo, un porcentaje de devolución o bonificaciones alertain mes.\n- **Descuentos en establecimientos adheridos** y combos con//programas.\n- **Periodo sin comisiones o sin cargos** por pago fuera de fecha o porNazret deudor (revisa si la promoción cubre el pago *contra saldo* o solo el mínimo).\n- En menos casos, **tasa preferente o cero comisión** durante ciertos meses.\n\n**Dos cosas importantes:**\n1. Los \"meses sin intereses\" no siempre son del total: muchas veces son 3, 6 o 12 meses y **el resto del saldo queda a la tasa ordinaria**, que es alta. Y los puntos suelen excluir ciertos vendedores.\n2. Si te mandan un estímulo por SMS, WhatsApp o correo, **no confíes sin verificar**: hay muchos falsos. Confírmalo en la app del banco o en el número oficial.\n\n**Si te prometieron algo y no te lo cumplen**, puedes reclamar ante **CONDUSEF** (si se trata de crédito) o **Profeco** (si es una venta o servicio); como orientación general, la LFPC contempla en su artículo 7 que, por incumplimiento, el consumidor pueda exigir una bonificación del 20% del monto de la operación o el equivalente a la cantidad mínima de $1,000, lo que resulte más favorable.\n\nPara decirte **qué estímulo tienes disponible este año** y si conviene, me ayudaría con:\n1. ¿De qué banco es y qué tipo de tarjeta (",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 1,
+    "error": 0,
+    "reset": 2
+   },
+   "segundos": 152.8,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: buen fin|medios de pago electr|noviembre"
+   ],
+   "avisos": [
+    "panel de leyes sin «pago»"
+   ]
+  },
+  {
+   "id": "B4",
+   "q": "¿Quién administra el Poder Judicial federal ahora que ya no está el Consejo de la Judicatura?",
+   "texto": "\n\n\n\n",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 1,
+    "error": 0,
+    "reset": 2
+   },
+   "segundos": 116.8,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: [ÓO]rgano de Administraci[oó]n Judicial",
+    "respuesta vacía",
+    "respuesta demasiado corta (4 chars)"
+   ],
+   "avisos": []
+  },
+  {
+   "id": "B5",
+   "q": "¿Existe ya el reglamento de la Ley de Infraestructura de la Calidad?",
+   "texto": "\n\nEntiendo que quieres confirmar si esa ley ya tiene un reglamento general. **Sí, ya existe y está vigente**: se titula **Reglamento de la Ley de Infraestructura de la Calidad**, fue emitido por el Ejecutivo federal y está publicado en el **Diario Oficial de la Federación (DOF)**.\n\nNo tengo a la mano la fecha exacta de publicación para confirmártela sin revisarla. Puedes encontrarlo en el DOF buscando ese título y consultar sus **artículos transitorios**, donde se  su aplicación y la relación con disposiciones anteriores.\n\n¿Te interesa saber si te afecta como laboratorio, proveedor, organismo de certificación o si puedes exigir que una autoridad aplique este reglamento?",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 25.0,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "B6",
+   "q": "¿Qué cambió en materia de derecho de autor en septiembre?",
+   "texto": "\n\n\n\n",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 1,
+    "error": 0,
+    "reset": 2
+   },
+   "segundos": 115.9,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: derecho de autor",
+    "respuesta vacía",
+    "respuesta demasiado corta (4 chars)"
+   ],
+   "avisos": [
+    "panel de leyes sin «derecho de autor»"
+   ]
+  },
+  {
+   "id": "C1",
+   "q": "¿Qué regula el artículo 135 Bis de la Constitución?",
+   "texto": "\n\nBuena pregunta; te lo resumo.\n\n## Qué regula el artículo 135 Bis\n\nEs un artículo que se **añadió a la Constitución con la reforma en materia de Poder Judicial** (la que sustituyó el anterior esquema deangga deায়نگه courts supremos estatales y la elección de magistrados). Regula, en lo esencial, **la elección de las y los jueces (magistrados) del Tribunal Superior de Justicia del Poder Judicial del Estado**, es decir, el tribunal supremo de cada entidad federativa.\n\nEn términos generales, su contenido se centra en:\n\n- **La forma de elegir a los jueces**: por voto libre, secreto, directo, personal e irrevocable, a cargo de la Legislatura del Estado, conforme a un proceso público que la propia Constitución y la ley orgánica estatal detallan.\n- **Los requisitos para ser candidato o candidata**: например, ser ciudadano o ciudadana mexicana en ejercicio de sus derechos políticos, ser mayor de 35 años, contar con título profesional de abogado o abogada con ejercicio profesional comprobado, no haber sido condenado o condenada por delito grave, gozar de buena fama, y no_shader las incompatibilidades con ciertos cargos y funciones que la propia Constitución establece.\n- **La duración del encargo**: los jueces son elegidos para un periodo de doce años, sin posibilidad de re-elección.\n- **La vacated y losmos provisionales**: cuando queda una vacante, se designa a un juez provisional para cubrirla, en los términos que marca el procedimiento.\n\nEl **artículo 135 Ter** es el que complementa este disposicion: ahí se regula el procedimiento de elección en detalle (convocatoria, integración del jurado de oposición, examen, entrevista y votación).\n\n> **Nota importante:** este resumen proviene de mi conocimiento general del texto constitucional. No tengo a la mano el pasaje oficial del DOF para citarlo literalmente ni confirmarte la fecha exacta de publicación, así que si necesitas la redacción literal para un escrito, unmedio o una cita formal, con gusto te ayudo a localizarla y a cotejarla.\n\nPara orientarte mejor, dos preguntas:\n\n1. **¿Lo necesitas para un asunto concreto** (por ejemplo, impugnar una elección de magistrados en algún estado) **o es de referencia general**?\n2. **¿De qué entidad se trata**, si hay un estado de por medio? Porque los requisitos y el procedimiento se detallan en la ley orgánica de cada Estado, y eso puede cambiar los pasos.",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 1,
+    "error": 0,
+    "reset": 2
+   },
+   "segundos": 130.0,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "C2",
+   "q": "Explícame la Ley General de Economía Colaborativa",
+   "texto": "\n\n",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 1,
+    "error": 0,
+    "reset": 2
+   },
+   "segundos": 173.9,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: no me consta|no existe|no hay una ley|no tengo",
+    "respuesta vacía",
+    "respuesta demasiado corta (2 chars)"
+   ],
+   "avisos": []
+  }
+ ]
+}

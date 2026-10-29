@@ -17,5 +17,12 @@ Eventos: `token` (texto), `laws` (panel de pasajes: fuente/título/texto/artícu
   "gana el pasaje fresco", pasajes irrelevantes se declaran, nunca inventar artículos.
 
 ## LLM
-- Hoy: MiniMax-M3 cloud (`https://api.minimax.io/v1`) vía env var.
-- Mañana: Tlamatini detrás del mismo contrato OpenAI-compatible — swap sin tocar código.
+- Hoy: **MiniMax-M2.7** (desde 29-oct-2026). El 28-oct MiniMax cambió M3
+  server-side: piensa SIEMPRE (ignora `enable_thinking:false`) → streams vacíos
+  (el thinking quema el presupuesto antes del contenido). Sintomático: respuestas
+  de 2-6 chars, silencios de 100-170s, sin paneles de leyes.
+  Swap de emergencia a M2.7 vía `LMSTUDIO_LLM_MODEL` (una env var — el contrato
+  OpenAI-compatible diseñado para esto). **M2.7: confiable pero más débil**
+  (batería 3/8 vs 6-7/8 de M3 sano).
+- Mañana: Tlamatini detrás del mismo contrato — la dependencia de un proveedor
+  que cambia modelos debajo de ti quedó demostrada en producción.
