@@ -1,0 +1,183 @@
+{
+ "url": "https://aijusticia.mx",
+ "ok": 2,
+ "total": 8,
+ "resultados": [
+  {
+   "id": "B1",
+   "q": "¿Cuál es la jornada máxima de trabajo ahora, ya aplican las 40 horas?",
+   "texto": "En el **sector privado en México, la jornada máxima sigue siendo de 8 horas diarias y 48 horas semanales**, con un descanso semanal mínimo de 24 horas. **Las 40 horas semanales no son una regla general obligatoria para los trabajadores privados**; se han implementado o se están implementando esquemas de esa jornada, sobre todo en el **gobierno federal** y algunas empresas.\n\nTu pregunta es importante porque “jornada máxima” puede significar dos cosas:\n\n- **Horas trabajadas:** máximo 8 horas diarias y 48 semanales.\n- **Jornada máxima semanal:** si tu patrón quiere establecer una jornada de 40 horas, puede pactarla —y normalmente debe reflejarse en tu recibo de nómina— aunque no puede aumentar tus horas más allá de los límites legales ni reducir salario y prestaciones.\n\nEsto se deriva de la **Ley Federal del Trabajo, artículos 76 y 89**. No tengo a la mano un pasaje con la fecha de la última reforma publicada para confirmarte la vigencia exacta de hoy; para un caso concreto, conviene revisar tu contrato, recibo y la norma laboral aplicable.",
+   "leyes": [
+    "Decreto por el que se expide el Reglamento Interior de la Secretaría de Infraest",
+    "Decreto por el que se expide el Reglamento Interior de la Secretaría de Infraest",
+    "Decreto por el que se expide el Reglamento Interior de la Secretar&iacute;a de I"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 59.0,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: gradual|etapa|poco a poco|progresiv"
+   ],
+   "avisos": [
+    "panel de leyes sin «jornada»"
+   ]
+  },
+  {
+   "id": "B2",
+   "q": "¿Un gobernador puede tener doble nacionalidad?",
+   "texto": "Sí, **un gobernador mexicano puede tener doble nacionalidad**, siempre que sea mexicano y cumpla los demás requisitos del cargo.\n\nLa **Constitución Política de los Estados Unidos Mexicanos** exige para ser gobernador:\n\n- Ser **mexicano**;\n- Ser ciudadano del estado correspondiente;\n- Tener al menos **30 años**;\n- No ocupar un puesto federal que reasonably impida ejercer el cargo, y no tener? Actually \"desempeñar o|Ship-shape electivo, la espada?...\" Better don't list all or state \"cumplir los demás requisitos legales aplicables al estado\".\n\nLa doble nacionalidad no queda excluida por el artículo 88. Sin embargo, **la constitución y las leyes de cada estado** pueden establecer requisitos adicionales. Además, si la otra nacionalidad implica una relación de servicio o subordinación con un gobierno extranjero, debe revisarse que no exista una incompatibilidad legal.\n\nLo recomendable es revisar la **constitución y la ley de elecciones del estado** y confirmar el requisito de nacionalidad antes de presentar la candidatura o tomar posesión.",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 30.0,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: renunci|nacionalidad [uú]nica|art[íi]culo[s]? (82|116|122)|7 de octubre"
+   ],
+   "avisos": [
+    "panel de leyes sin «82»"
+   ]
+  },
+  {
+   "id": "B3",
+   "q": "¿Hay algún estímulo por pagar con tarjeta de crédito este año?",
+   "texto": "No existe, hasta donde tengo información, un **estímulo general en México por pagar con tarjeta de crédito** durante este año; normalmente las ventajas son promociones de cada banco o mediante **portales de pago**, como:\n\n- Discountos o puntos adicionales al pagar productos o servicios elegibles.\n- Meses sin intereses en plazos de 3, 6, 9, 12 o más.\n- Reembolso o efectivo sobreCertain compras, con topes y.requirements.\n- Bonificaciones por usar certain canales o activations.\n\nPara decirte si te conviene una opción concreta, dime **qué banco y tarjeta usas**, el monto aproximado y si quieres pagar **tu saldo total o solo una compra**.",
+   "leyes": [
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones de la",
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones de la"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 41.7,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: buen fin|medios de pago electr|noviembre"
+   ],
+   "avisos": [
+    "panel de leyes sin «pago»"
+   ]
+  },
+  {
+   "id": "B4",
+   "q": "¿Quién administra el Poder Judicial federal ahora que ya no está el Consejo de la Judicatura?",
+   "texto": "Entiendo tu confusión: **el antiguo Consejo de la Judicatura fue sustituido, pero el Poder Judicial federal no quedó sin administración**.\n\nActualmente, la estructura federal contempla:\n\n- **La Suprema Corte de Justicia Nacional (SCJN)** como máxima autoridad del Poder Judicial y organismo que ejerce, mediante su Pleno, las funciones administrativas y de gobierno del propio Poder Judicial.\n- **La Presidencia de la SCJN**, que tiene responsabilidades de representación, coordinación y ejecución administrativa, conforme a la ley orgánica.\n- **El Tribunal Superior de Justicia Nacional**, como órgano intermedio con organización administrativa propia.\n- **El Consejo Nacional de Judicatura**, que sustituyó al anterior Consejo de la Judicatura. Sin embargo, ahora es principalmente un órgano técnico, de disciplina y deación del judiciary; **ya no es el administrador general del Poder Judicial**.\n\nEn términos sencillos: **la administración federal del Poder Judicial corresponde a la SCJN y a su Pleno, con apoyo de la Presidencia y de los órganosGanancia Presupuesto y Administración previstos en la legislación; no al antiguo Consejo de la Judicatura**.\n\nSi te refieres a **quién ocupa actualmente la Presidencia de la SCJN o a quién le corresponde concreta**, dime si quieres la información institucional general o los nombres de los titulares actuales, porque eso puede cambiar conforme a las asignaciones yOPDILLER de los magistrados.",
+   "leyes": [
+    "Decreto por el que se reforman y adicionan diversas disposiciones de la Constitu",
+    "Decreto por el que se reforman y adicionan diversas disposiciones de la Constitu",
+    "Decreto por el que se reforman y adicionan diversas disposiciones de la Constitu"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 56.5,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: [ÓO]rgano de Administraci[oó]n Judicial"
+   ],
+   "avisos": []
+  },
+  {
+   "id": "B5",
+   "q": "¿Existe ya el reglamento de la Ley de Infraestructura de la Calidad?",
+   "texto": "Sí, **ya existe el Reglamento de la Ley de Infraestructura de la Calidad (LIC)**. Es el ordenamiento que desarrolla la ley y regula, entre otras cosas:\n\n- La organización y funcionamiento de la **Dirección General de Infraestructura de la Seguridad y Protección Physica**.\n- Los **estándares, especificaciones y requisitos** aplicables a la infraestructura de la calidad.\n- Los procedimientos de **verificación, certificación y vigilancia** de la infraestructura.\n- Las atribuciones de las autoridades y los mecanismos para imponer medidas correctivas.\n\nNo tengo a la mano la fecha exacta de su publicación en el **Diario Oficial de la Federación**, por lo que no quiero darte una fecha sin confirmarla. Para saber si ya te aplica en un caso concreto —por ejemplo, una sanción, una auditoría o un requisito de una entidad— necesitaría saber **qué trámite o actuación estás viviendo y qué te respondieron**.",
+   "leyes": [
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 65.7,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "B6",
+   "q": "¿Qué cambió en materia de derecho de autor en septiembre?",
+   "texto": "Para decirte **qué cambió en septiembre en materia de derecho de autor**, necesito precisar dos datos:\n\n- **¿En qué año?** Por ejemplo, septiembre de 2024, 2025 o 2026.\n- **¿Te refieres al derecho de autor en México?**\n\nCon esa información te resumo **las reformas, publicaciones y entradas en vigor**, identificando qué te afecta y qué pasos debes seguir.",
+   "leyes": [
+    "Decreto por el que se adicionan diversas disposiciones al Reglamento de la Ley F",
+    "Decreto por el que se adicionan diversas disposiciones al Reglamento de la Ley F",
+    "Decreto por el que se adicionan diversas disposiciones al Reglamento de la Ley F"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 37.6,
+   "ok": true,
+   "fallas": [],
+   "avisos": [
+    "panel de leyes sin «derecho de autor»"
+   ]
+  },
+  {
+   "id": "C1",
+   "q": "¿Qué regula el artículo 135 Bis de la Constitución?",
+   "texto": "Si te refieres a la **Constitución Política de los Estados Unidos Mexicanos**, el **artículo 135 Bis** regula la **protección constitucional de los derechos de propiedad industrial y de autor**, tomando en cuenta los tratados y acuerdos internacionales en la materia.\n\nEn términos prácticos, señala que el Estado mexicano debe respetar y proteger estos derechos; **no es la ley que fija directamente los requisitos, la vigencia ni los procedimientos para obtener una patente o registrar una obra**, pues eso corresponde principalmente a la **Ley Federal de la Protección Industrial** y a la **Ley Federal del Derecho de Autor**. La reforma asociada al artículo 135 Bis fue publicada en el **Diario Oficial de la Federación del 29 de diciembre de 2016**.",
+   "leyes": [
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones de la",
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones de la",
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones de la"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 43.3,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: no (tengo|encuentro|consta|existe)|no tengo certeza|no existe"
+   ],
+   "avisos": []
+  },
+  {
+   "id": "C2",
+   "q": "Explícame la Ley General de Economía Colaborativa",
+   "texto": "Claro. La **“Ley General de Economía Colaborativa”** suele referirse a una **iniciativa legislativa para regular las plataformas digitales queholz intermedian servicios entre particulares**, como ride-sharing, hospedaje, delivery, transporte de carga, or lending. **Hasta donde tengo conocimiento, no es una ley federal vigente**; por eso, sus reglas no pueden invocarse como un derecho aplicable. Today these activities operate under different laws depending on the activity.\n\n## ¿Qué busca regular?\n\nEl proyecto propone un marco específico para llamadas **plataformas de economía colaborativa**, reconociendo que:\n\n- Connect personas que-BAÑ offer a service with people who need it.\n- Facilitate the exchange of goods or services, including peer-to-peer.\n- Use digital tools and algorithms.\n- Generate income or savings for participants.\n- Present risks involving consumers, competition, privacy, and account suspension.\n\nIts central objective is to establish rules for the **operation of platforms**, not to prohibit private individuals from providing services. It also tries to preserve collaborative and non-commercial activities.\n\n## Which laws currently apply?\n\nUntil a general law is enacted, the rules depend on the activity:\n\n### 1. Consumer protection\n\nThe **Ley Federal de Protección al Consumidor** applies when a platform offers goods or services for payment. Users may have rights to:\n\n- Clear and truthful information about prices, commissions, and terms.\n- Vouchers or refunds when the service is not provided as promised.\n- Redress for damage caused by the platform or provider.\n- Access to complaint procedures and, where applicable, PROFECO.\n\nThe key issue is determining who is responsible: the platform, the provider, or both.\n\n### 2. Competition\n\nThe platform’s practices may be reviewed under the **Ley Federal de Competencia Económica**, especially if there are:\n\n- Exclusivity or exclusivity-like clauses.\n- Unfair restrictions between providers.\n- Tied sales.\n- Discriminatory treatment of users.\n- Copying of data or manipulation of rankings that impede competition.\n\nSelf-preferencing and exclusivity clauses are not automatically illegal; their legality depends on the specific effects on competition.\n\n### 3. Personal data\n\nPlatforms that collect names, phone numbers, addresses, geolocation, payment data or identity documents are subject to the **Ley Federal de Protección de Datos Personales en Posesión de los Particulares**. Among other things, they must provide an privacy notice, use the data for the purposes stated, and implement security measures.\n\n### 4. Employment and tax\n\nIf the platform controls the service in a way that creates an employer-worker relationship, labor and social security obligations may arise. The fact that parties connect through an app does not automatically eliminate those obligations.\n\nParticipants may also have tax and withholding obligations depending on the activity, their income and whether they operate as independent businesses or through a legal entity.\n\n## Main risks for a user\n\nThe most common problems are:\n\n- Deletion of an account without clear reasons.\n- Change of rates, commissions or penalties.\n- Lack of support when the provider does not show.\n- Use of ratings to distribute consequences outside the platform’s rules.\n- Loss of deposits or lack of refund.\n- Exposure of personal information.\n- Misclassification of the person providing the service as an independent provider or employee.\n\n## What to do if you have a problem\n\n1. **Keep evidence:** screenshots, contracts, receipts, messages, trip records and platform terms.\n2. **File a complaint inside the platform** and request an explanation or refund.\n3. If there is a consumer violation, use the platform’s complaint mechanism and, when applicable, **PROFECO**.\n4. For possible data protection violations, the **Instituto Nacional de Transparencia y Acceso a la Información** can receive a complaint.\n5. For anticompetitive conduct, the **Federal Economic Competition Commission** may receive a report.\n6. Review whether the relationship could be labor-related and seek individualized advice.\n\nIn short: **the proposed “Ley General de Economía Colaborativa” would create a unified regulatory framework, but currently it is better understood as a legislative initiative; your rights depend mainly on consumer protection, competition, data protection, labor and tax law.**\n\n¿Se trata del proyecto legislative para conocer sus ,\\ or do you have a problem concreto con una plataforma como Uber, Didi, Rappi, Airbnb or similar?",
+   "leyes": [
+    "Decreto por el que se expide la Ley General para el Fortalecimiento y Armonizaci",
+    "Decreto por el que se expide el Reglamento Interior de la Secretar&iacute;a de I",
+    "Decreto por el que se expide el Reglamento Interior de la Secretaría de Infraest"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 11.5,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: no me consta|no existe|no hay una ley|no tengo"
+   ],
+   "avisos": []
+  }
+ ]
+}

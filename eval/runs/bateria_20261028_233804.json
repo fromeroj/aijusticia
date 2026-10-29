@@ -1,0 +1,185 @@
+{
+ "url": "https://aijusticia.mx",
+ "ok": 0,
+ "total": 8,
+ "resultados": [
+  {
+   "id": "B1",
+   "q": "¿Cuál es la jornada máxima de trabajo ahora, ya aplican las 40 horas?",
+   "texto": "Depende del tamaño de la empresa y del régimen aplicable:\n\n- **En establecimientos con más de 50 trabajadores:** la jornada máxima ordinaria es de **40 horas semanales**, distribuidas en **maximum 5 días de trabajo**.\n- **En establecimientos con 50 trabajadores o menos:** puede ser de hasta **48 horas semanales**, generalmente distribuidas en 6 días, aunque también puede pactarse un horario de 40 horas si existe acuerdo escrito.\n- La jornada diaria ordinaria no puede exceder **8 horas**, y deben concederse descansos y el tiempo de comida que corresponda. [1]\n\nPor lo tanto, **sí puede aplicar la jornada de 40 horas**, pero no es automática para todos los trabajadores ni para todas las empresas. Si te ? Wait typo. Need maybe \"Si quieres\". Also distinguish agriculture etc. Mention reforms general knowledge. Citation [1] no passage context, but developer says no number if general knowledge. So no cite. Need be accurate. \"En Surviv...\"Depende del tamaño del establecimiento:\n\n- **Más de 50 trabajadores:** la jornada máxima ordinaria es de **40 horas semanales**, distribuidas en **máximo 5 días de trabajo**.\n- **50 trabajadores o menos:** puede ser de hasta **48 horas semanales**, normalmente en 6 días, aunque puede pactarse un horario de 40 horas mediante acuerdo escrito.\n- La jornada diaria ordinaria no puede exceder **8 horas**, y deben respetarse los descansos y el periodo de comida correspondiente.\n\nAsí que **sí aplica la jornada de 40 horas en algunos supuestos, pero no es automática para todos los trabajadores**. Esto se basa en el marco federal laboral general; aplicaciones específicas —como ند?\\). Need no typo. \"¿Te refieres a unemployment...\" Let's make concise. Maybe user asks \"ahora\" and current; mention I don't have publication date? But no need unless citing reforms. We can say \"La reforma laboral...\" no date due rule only dates in passage. Maybe no date.\n\nNeed perhaps \"en empresas con más de 50 workers\" threshold is establishments with more than 50 workers, not company total. Explain if worker in one establishment. Ask 1-2 questions natural.La jornada máxima ordinaria **no es automáticamente de 40 horas para todos**:\n\n- En **establecimientos con más de 50 trabajadores**, corresponde hasta **40 horas semanales**, distribuidas en **máximo 5 días**.\n- En **establecimientos con 50 trabajadores o menos**, puede ser de hasta **48 horas semanales**, normalmente distribuidas en 6 días, aunque puede pactarse por escrito un horario de 40 horas.\n- La jornada diaria ordinaria no puede exceder **8 horas**, y deben concederse los descansos y el tiempo de comida previstos.\n\nPor tanto, **sí aplican las 40 horas en ciertos casos**, pero depende del establecimiento donde trabajas, no únicamente del tamaño de toda la empresa. Esto se explica conforme al marco federal laboral general; las reglas específicas de tu contrato, Convenience? \"convenio\" etc. Could ask \"¿En cuántos trabajadores trabaja tu establecimiento y cuál es tu horario?\" Good.",
+   "leyes": [
+    "Decreto por el que se expide el Reglamento del Secretariado Ejecutivo del Sistem",
+    "Decreto por el que se expide el Reglamento del Secretariado Ejecutivo del Sistem",
+    "Decreto por el que se expide el Reglamento del Secretariado Ejecutivo del Sistem"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 31.3,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: gradual|etapa|poco a poco|progresiv"
+   ],
+   "avisos": [
+    "panel de leyes sin «jornada»"
+   ]
+  },
+  {
+   "id": "B2",
+   "q": "¿Un gobernador puede tener doble nacionalidad?",
+   "texto": "Sí. **En México puede existir la doble nacionalidad** y, por ese solo hecho, un ciudadano mexicano no queda excluido del cargo de gobernador.\n\nLa Constitución exige para ser candidato a gobernador:\n\n- Tener **nacionalidad mexicana**; y\n- Cumplir los requisitos de residencia y elección aplicables en el estado correspondiente.\n\nPor tanto, un gobernador con otra nacionalidad puede Kinslerfungut el cargo, siempre que sea ciudadano mexicano y reúna los demás requisitos legales. La prohibición de Subsequently, la prohibición de tener doble nacionalidad para ciertos cargos se aplica aarco.ServerSide jobs federal specifics, como Certain federal officials and, en certain cases, miembros de la Cámara de Diputados, no automáticamente a los gobernadores estatales.\n\nEsto es una explicación general: si se trata de un caso concreto —por ejemplo, una parautoridad electoral o unaUSP\"Could you clarify what you need me to do?\" and maybe \"Please provide the context or document you'd like me to work withSí. **En México puede existir la doble nacionalidad** y, por ese solo hecho, un ciudadano mexicano no queda excluido del cargo de gobernador.\n\nPara ser candidato a gobernador se requiere, entre otros requisitos:\n\n- Tener **nacionalidad mexicana**.\n- Cumplir los requisitos de residencia y las condiciones electorales aplicables en el estado.\n- No tener una prohibición expresa por ser nacional de otro país.\n\nPor tanto, un gobernador con doble nacionalidad puede KinslerfungutMisissauga el cargo, siempre que sea ciudadano mexicano y reúna los demás requisitos legales. La prohibición de tener doble nacionalidad para ciertos cargos se refiere principalmente a determinados servidores públicos and, en ciertos casos, a miembros de la Cámara de Diputados; no se aplica automáticamente a los gobernadores estatales.\n\nEsto es una orientación general: en un caso particular convendría revisar la Constitución y la ley electoral del estado correspondiente.",
+   "leyes": [
+    "Decreto por el que se expide el Reglamento del Secretariado Ejecutivo del Sistem",
+    "Decreto por el que se expide el Reglamento del Secretariado Ejecutivo del Sistem",
+    "Decreto por el que se determina la información adicional que de manera proactiva",
+    "Acuerdo por el que se dan a conocer las formalidades necesarias para que los par",
+    "Acuerdo por el que se dan a conocer las formalidades necesarias para que los par",
+    "Acuerdo por el que se dan a conocer las formalidades necesarias para que los par"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 46.5,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: renunci|nacionalidad [uú]nica|art[íi]culo[s]? (82|116|122)|7 de octubre"
+   ],
+   "avisos": [
+    "panel de leyes sin «82»"
+   ]
+  },
+  {
+   "id": "B3",
+   "q": "¿Hay algún estímulo por pagar con tarjeta de crédito este año?",
+   "texto": "Por lo que 알려, **no existe un estímulo general del gobierno mexicano por pagar con tarjeta de crédito este año**; los posibles beneficios suelen ser **promociones de los bancos o Involvement de las tarjetas**, como efectivo, puntos, meses sin intereses o devoluciones.\n\nPara decirte si hay uno aplicable en tu caso, necesito saber:\n\n- **¿Qué banco o tarjeta utilizas?**\n- **¿Te ofrecieron algún estímulo específico o viste una de ahorro?**\n- **¿Lo buscas para una compra, para el pago de tu tarjeta o para vacaciones?**\n\nRevisa también el estado de cuenta y la app del banco: normalmente ahí aparecen las promociones y sus fechas límite.",
+   "leyes": [
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones de la",
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones de la",
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones de la"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 61.5,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: buen fin|medios de pago electr|noviembre"
+   ],
+   "avisos": [
+    "panel de leyes sin «pago»"
+   ]
+  },
+  {
+   "id": "B4",
+   "q": "¿Quién administra el Poder Judicial federal ahora que ya no está el Consejo de la Judicatura?",
+   "texto": "",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 0,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 0.4,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: [ÓO]rgano de Administraci[oó]n Judicial",
+    "respuesta vacía",
+    "respuesta demasiado corta (0 chars)"
+   ],
+   "avisos": []
+  },
+  {
+   "id": "B5",
+   "q": "¿Existe ya el reglamento de la Ley de Infraestructura de la Calidad?",
+   "texto": "",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 0,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 0.4,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: reglamento",
+    "falta patrón requerido: public|existe|vigente|s[ií]\\b|2026",
+    "respuesta vacía",
+    "respuesta demasiado corta (0 chars)"
+   ],
+   "avisos": []
+  },
+  {
+   "id": "B6",
+   "q": "¿Qué cambió en materia de derecho de autor en septiembre?",
+   "texto": "",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 0,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 0.3,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: derecho de autor",
+    "respuesta vacía",
+    "respuesta demasiado corta (0 chars)"
+   ],
+   "avisos": [
+    "panel de leyes sin «derecho de autor»"
+   ]
+  },
+  {
+   "id": "C1",
+   "q": "¿Qué regula el artículo 135 Bis de la Constitución?",
+   "texto": "",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 0,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 0.3,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: no (tengo|encuentro|consta|existe)|no tengo certeza|no existe",
+    "respuesta vacía",
+    "respuesta demasiado corta (0 chars)"
+   ],
+   "avisos": []
+  },
+  {
+   "id": "C2",
+   "q": "Explícame la Ley General de Economía Colaborativa",
+   "texto": "",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 0,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 0.3,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: no me consta|no existe|no hay una ley|no tengo",
+    "respuesta vacía",
+    "respuesta demasiado corta (0 chars)"
+   ],
+   "avisos": []
+  }
+ ]
+}

@@ -469,7 +469,7 @@ async def _bibliotecario(client, consulta: str, historial: list[dict]) -> dict |
             model=settings.lmstudio_llm_model,
             messages=[{"role": "user", "content": BIBLIOTECARIO_PROMPT.format(conversacion=conv[:2500])}],
             temperature=0.0,
-            max_tokens=1500,
+            max_tokens=3000,
             extra_body={"chat_template_kwargs": {"enable_thinking": False},
                         "reasoning_effort": "low"},
         )

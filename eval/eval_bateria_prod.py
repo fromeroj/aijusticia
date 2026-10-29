@@ -143,7 +143,8 @@ def correr_q(url: str, pregunta: str, timeout: float = 150.0) -> dict:
                     print(f"    [error-sse] {data[:120]}", flush=True)
     except Exception as e:
         return {"texto": "", "leyes": [], "eventos": eventos,
-                "error": str(e)[:150], "segundos": round(time.time() - t0, 1)}
+                "error": str(e)[:150], "segundos": round(time.time() - t0, 1),
+                "agotado": "timeout" in str(e).lower()}
     return {"texto": "".join(tokens), "leyes": leyes, "eventos": eventos,
             "segundos": round(time.time() - t0, 1)}
 
@@ -183,6 +184,13 @@ def main():
     print(f"== Batería contra {args.url} — {len(casos)} casos ==\n", flush=True)
     for caso in casos:
         res = correr_q(args.url, caso["q"])
+        # reintento ante blip de red (respuesta vacía o error de conexión)
+        if (not res.get("texto", "").strip() or res.get("error")) \
+                and not res.get("agotado"):
+            time.sleep(5)
+            res2 = correr_q(args.url, caso["q"])
+            if len(res2.get("texto", "")) > len(res.get("texto", "")):
+                res = res2
         ver = calificar(caso, res)
         ok_n += ver["ok"]
         marca = "PASS" if ver["ok"] else "FAIL"

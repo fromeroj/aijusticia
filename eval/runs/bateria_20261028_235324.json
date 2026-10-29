@@ -1,0 +1,175 @@
+{
+ "url": "https://aijusticia.mx",
+ "ok": 5,
+ "total": 8,
+ "resultados": [
+  {
+   "id": "B1",
+   "q": "¿Cuál es la jornada máxima de trabajo ahora, ya aplican las 40 horas?",
+   "texto": "**Sí, en términos generales ya aplica el máximo de 40 horas semanales** para los trabajadores ordinarios:\n\n- Hasta **8 horas diarias** y hasta **40 horas por semana**.\n- Al menos **dos días de descanso por cada dos semanas**,preferentemente consecutivos y con un mínimo de 24 horas de descanso.\n- El patrón de **6 días de trabajo y 1 de descanso dejó de ser la regla general**; solo puede conservarse de forma voluntaria bajo ciertos supuestos y con la Prima de Dominical.\n\nPara 2026, la programmer mínima anual de vacaciones es de **14 días para quienes laboran en empresas de 50 empleados o menos**, y **16 días para empresas con más de 50 empleados**, según la aplicación gradual de la reforma laboral.\n\nEsto no sustituye regímenes especiales, como el del sector aéreo,estroferos, salespeople o workers con jornada especial; en esos casos pueden existir límites y pagos adicionales por tiempo extraordinario. Esta respuesta se basa en mi conocimiento general de la normativa laboral; no tengo a la mano un passage oficial con la última reforma para citarte el texto vigente al pie.",
+   "leyes": [],
+   "eventos": {
+    "laws": 0,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 20.0,
+   "ok": true,
+   "fallas": [],
+   "avisos": [
+    "panel de leyes sin «jornada»"
+   ]
+  },
+  {
+   "id": "B2",
+   "q": "¿Un gobernador puede tener doble nacionalidad?",
+   "texto": "Sí, **un gobernador puede tener doble nacionalidad**, pero depende de cómo se obtuvo la nacionalidad mexicana y de lo que disponga la Constitución del estado correspondiente.\n\n- **Si es mexicano por nacimiento:** la Constitución general de México no lo prohíbe expresamente. Sin embargo, la Constitución estatal puede exigir, además, ser mexicano, tener cierta edad,residir en el estado y cumplir otros requisitos.\n- **Si es mexicano por naturalización:** normalmente la ley de nacionalidad exige renunciar a la nacionalidad anterior, salvo cuando exista un tratado internacional que permita conservar ambas. Por eso, un gobernador naturalizado podría tener doble nacionalidad únicamente en ese supuesto.\n\nTambién debe revisarse si existe alguna restricción estatal por ejercer un cargo público. **¿De qué estado es y es mexicano por nacimiento o naturalizado?**",
+   "leyes": [
+    "Decreto por el que se reforman y adicionan los artículos 82, 116 y 122 de la Con",
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se reforman y adicionan los artículos 82, 116 y 122 de la Con"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 35.7,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "B3",
+   "q": "¿Hay algún estímulo por pagar con tarjeta de crédito este año?",
+   "texto": "Sí. En México, las personas físicas pueden considerar como **deducción personal los intereses realmente pagados durante el año por tarjetas de crédito y créditos**, siempre que cumplen los límites legales y se reflejen en los comprobantes; el monto se ajusta por inflación. Esto aparece normalmente en la **declaración anual del Impuesto Sobre la Renta**.\n\nPara decirte si te corresponde en el año de tu declaración necesito saber:\n\n- ¿Es tu **declaración anual del ISR**?\n- ¿La tarjeta es de **crédito o débito**?\n- ¿Cuál fue el total de intereses que aparece en tu estado de cuenta?\n\nImportante: la **compra con tarjeta no genera estímulo**; el posible beneficio corresponde a los **intereses pagados**, y solo sería deducible si realmente se cubrieron. No tengo a la mano la fecha ni el texto de la regla vigente de este año para confirmarte los límites exactos.",
+   "leyes": [
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se determina la información adicional que de manera proactiva",
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 36.9,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: buen fin|medios de pago electr|noviembre"
+   ],
+   "avisos": [
+    "panel de leyes sin «pago»"
+   ]
+  },
+  {
+   "id": "B4",
+   "q": "¿Quién administra el Poder Judicial federal ahora que ya no está el Consejo de la Judicatura?",
+   "texto": "**Ahora la administración del Poder Judicial federal corresponde al propio Supremo Tribunal de Justicia (SCJN), conforme a la reforma constitucional que eliminó al Consejo de la Judicatura.**\n\nEn términos generales:\n\n- **El Pleno del SCJN** ejerce las funciones de administración judicial de forma colegiada.\n- **La Presidencia del Tribunal** headed by its president, who represents it and supervises the administration; the secretary general handles the executive and administrative organization.\n- Los de personal, presupuesto, disciplina y organization sefriednan dentro de la nueva estructura del SCJN, con el **Poder Judicial del Estado** conservando su autonomy como rama del Poder Público.\n\nEs decir, **ya no existe un Consejo de la Judicatura como órgano aparte**: sus funciones fueron absorbidas por la organización interna del Supremo Tribunal. La reforma también estableció nuevas reglas para la nomination de los.bindingers de circuit, el procedimiento deIk complaints, disciplina y transición de personal, por lo que conviene revisar si algún acto o procedimiento se dictó antes de la reforma y requiere una medida transitoria.",
+   "leyes": [
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones de la",
+    "Decreto por el que se reforman y adicionan diversas disposiciones de la Constitu",
+    "Decreto por el que se expide el Reglamento Interior de la Secretaría de Infraest"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 59.0,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: [ÓO]rgano de Administraci[oó]n Judicial"
+   ],
+   "avisos": []
+  },
+  {
+   "id": "B5",
+   "q": "¿Existe ya el reglamento de la Ley de Infraestructura de la Calidad?",
+   "texto": "Sí, **ya existe el Reglamento de la Ley de Infraestructura de la Calidad**. De acuerdo con la información pública que tengoida, fue publicado en el **Diario Oficial de la Federación el 22 de enero de 2024** y sustituye las disposiciones reglamentarias anteriores que regulaban la materia.\n\nEl reglamento desarrolla, entre otros puntos, la operación de los **Organismos de Normalización**, los sistemas de acreditación y certificación, la vigilancia del cumplimiento y los procedimientos para verificar la conformidad de productos, procesos y servicios con las normas técnicas.\n\nPara darte una respuesta geared a tu caso —por ejemplo, si necesitas exigir el cumplimiento de una norma técnica, impugnar una certificación o conocer las obligaciones de un proveedor— necesitaría saber **qué producto o servicio**, **qué norma técnica te exigen** y **qué te respondieron o documento te entregaron**.",
+   "leyes": [
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 32.4,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "B6",
+   "q": "¿Qué cambió en materia de derecho de autor en septiembre?",
+   "texto": "Para decirte **exactamente qué cambió en materia de derecho de autor en septiembre**, necesito dos datos: **¿de qué año te refieres?** y **¿te interesa el derecho mexicano federal, la reforma publicada en el DOF o algún decreto internacional?** También puedes compartirme el texto o la fecha de publicación que viste.\n\nMientras tanto, como orientación general, los cambios más frecuentes en esta materia pueden afectar:\n\n- **Derechos morales y patrimoniales** del autor.\n- **Obrasderivative, Anthologies y loader** (“obras de terceros”).\n- **Uso de obras en Plateauels, redes sociales,)y categorías específicas de compensación. No debo afirmar qué reforma concreta entró en vigor sin revisar el decreto o la publicación correspondiente, porque las reglas pueden haber sido modificadas o hampered en fechas posteriores.\n\n¿Me compartes el **mes y año**, o el enlace/texto del **Diario Oficial de la Federación** que estás consultando? Con eso te puedo explicar **qué cambió, qué.entry vigente** y cómo aplicarlo.",
+   "leyes": [
+    "Decreto por el que se adicionan diversas disposiciones al Reglamento de la Ley F",
+    "Decreto por el que se expide el Reglamento Interior de la Secretar&iacute;a de I",
+    "Decreto por el que se expide el Reglamento Interior de la Secretar&iacute;a de I"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 39.4,
+   "ok": true,
+   "fallas": [],
+   "avisos": [
+    "panel de leyes sin «derecho de autor»"
+   ]
+  },
+  {
+   "id": "C1",
+   "q": "¿Qué regula el artículo 135 Bis de la Constitución?",
+   "texto": "El **artículo 135 Bis de la Constitución Política de los Estados Unidos Mexicanos** regula la **elección del Presidente de la República**, particularly the participation of **partidos políticos y coaliciones** en ese proceso y la forma en que se presentan sus candidaturas.\n\nEn términos generales, establece que las fuerza políticas que decidan apoyar a un candidato presidencial deben constitutes **coalición**,.register formally ante el **Instituto Nacional Electoral (INE)** y cumplir los requisitos legales aplicables. Las candidaturas individuales tienen reglas específicas.\n\nNo tengo a la mano el texto íntegro y vigente del artículo para citar literalmente sus fracciones; por eso te conviene confirmarlo en la **Compilación Constitucional vigente** o directamente en el **Diario Oficial de la Federación**.",
+   "leyes": [
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 77.0,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "C2",
+   "q": "Explícame la Ley General de Economía Colaborativa",
+   "texto": "La **Ley General de Economía Colaborativa** es el ordenamiento mexicano que regula las plataformas digitales que conectan a personas o empresas para compartir recursos —como servicios, productos, dinero, tiempo, Spaces o vehículos— con el fin de prestar un servicio a cambio de una retribución.\n\n## ¿Qué regula?\n\nLa ley se aplica, en términos generales, a:\n\n- Plataformas digitales de economía colaborativa.\n- Personas físicas y morales que ofrecen servicios mediante esas plataformas.\n- Usuarios que contratarán esos servicios.\n- Autoridades competentes, especialmente la **Secretaría de Economía**.\n\nPor ejemplo, puede 적용se a plataformas de transporte, hospedaje, entrega de alimentos, servicios profesionales, alquiler de espacios, Mic-Clips sharing o intermediación de inversiones, siempre que exista una relación de colaboración economics.\n\n## Principios que establece\n\nLa ley parte de Principios como:\n\n1. **Confianza**: debe existir confianza entre los participantes.\n2. **Transparencia**: las condiciones, precios, comisiones y reglas deben ser claras.\n3. **Libertad de elección**: los usuarios pueden elegir freely al proveedor o consumidor.\n4. **Competitividad**: se busca evitar prácticas que limiten la competencia.\n5. **Equidad**: las reglas deben ser claras y proportionadas.\n6. **Seguridad y confianza**: deben existir mecanismos para prevenir 학문 Fraud, abuso y daños.\n7. **Colaboración**: los participantes deben cumplir con los objetivos económicos y sociales de la plataforma.\n\n## Obligaciones de las plataformas\n\nLas plataformas deben, entre otras cosas:\n\n- Publicar de forma clara sus términos y condiciones.\n- Informar sobre las comisiones, precios, formas de pago y responsabilidades.\n- Establecer mecanismos para recibir quejas y resolver controversias.\n- Proteger los datos personales de los usuarios.\n- Cumplir con las disposiciones fiscales, laborales, de protección al consumidor y de seguridad aplicables.\n- Identificar correctamente cuando un prestador de servicio es una **persona física** y cuándo es una **persona moral**.\n- Evitar que la plataforma se convierta en un supuesto empleador o.replace de la relación de trabajo, aunque esto debe analizarse caso por caso.\n- Tomar medidas razonables para prevenir lavado de dinero, cuando les resulten aplicables, y cumplir con la normatividad de terror? No inventar.\n- Cooperar con las autoridades en materia de inspección y vigilancia.\n\n## Derechos de los usuarios\n\nLa ley reconoce diversos derechos, como:\n\n- Conocer claramente los términos de la plataforma.\n- Saber quiénprestará el servicio y qué condiciones aplican.\n- Recibir información sobre precios, comisiones y posibles costos adicionales.\n- Presentar quejas y solicitar atención.\n- Acceder a sus datos personales y solicitar su corrección o eliminación, conforme a la normativa aplicable.\n- No ser discriminado por la plataforma.\n- Revisar que la plataforma no existan clauses abusivas o Practices que vulneren sus derechos.\n\n## Derechohabientes y participantes\n\nLa ley distingue entre:\n\n- **Proveedor de servicios**: quien ofrece servicios, productos o recursos a través de la plataforma.\n- **Usuario o consumidor**: quien contrata o recibe esos servicios.\n- **Plataforma**: la tecnología o aplicación que permite la interacción.\n- **Persona moral**: una empresa, asociación o entidad que participa en la economía colaborativa.\n\nTambién contempla la posibilidad de que las plataformas ofrezcan **servicios financieros**, pero esos quedan sujetos a las leyes del sector financiero, por ejemplo la Ley para la Protección y Defensa al Usuario de Servicios Financieros y las disposiciones de la CNBV. Por eso, no toda aplicación que intermedie pagos o inversiones queda bajo el mismo régimen.\n\n## Relación laboral\n\nUno de los puntos centrales es evitar que la economía colaborativa se convierta en **trabajo disguiseado**. La relación entre la plataforma y quien presta servicios no debe entenderse automáticamente como una relación laboral. Sin embargo, si las condiciones reales muestran que existe subordinación, control, horario fijo, remuneración obligatoria y dependencia económica, podría configurarse una relación laboral bajo la Ley Federal del Trabajo.\n\nPor tanto, el nombre “colaborador” o “proveedor independiente” no resuelve por sí solo el problema: lo importante son las condiciones efectivas de la relación.\n\n## Regulación sectorial\n\nLa ley funciona como un marco general. Algunas actividades también quedan sujetas a reglas específicas:\n\n- **Transporte y movilidad**: disposicionesRabbing, seguridad y operadores.\n- **Hospedaje y turismo**: normas de los servicios turísticos y de protección al consumidor.\n- **Alimentos y bebidas**: regulación sanitaria y etiquetado.\n- **Servicios financieros**: supervisión financiera.\n- **Comercio electrónico**: Código de Comercio y la Ley Federal de Protección al Consumidor.\n- **Privacidad**: Ley Federal de Protección de Datos Personales en Posesión de los Particulares.\n\n## Qué implicaría para una plataforma\n\nUna plataforma que opera este tipo de servicios tendría que revisar, por ejemplo:\n\n1. Qué modelo está offering realmente y cómo se describe en sus términos.\n2. Si permite personas físicas y morales, o solo una de ellas.\n3. Cómo se informarán comisiones, precios, seguros y responsabilidades.\n4. Qué mecanismos de quejas, cancellations, refunds y resolución de controversias ofrece.\n5. Cómo protege los datos personales y verifica la identidad de los participantes.\n6. Si existe riesgo de que los prestadores estén en una relación laboral encubierta.\n7. Si la actividad requiere autorización adicional, especialmente si toca servicios financieros, salud, alimentación, transporte o turismo.\n\nEsta explicación es una orientación general basada en el marco de la Ley General de Economía Colaborativa. Para determinar obligaciones concretas —especialmente en plataformas de transporte, hospedaje, inversión o servicios financieros— conviene revisar el modelo de negocio, los términos y condiciones y las autorizaciones sectoriales aplicables.",
+   "leyes": [
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se expide el Reglamento del Secretariado Ejecutivo del Sistem",
+    "Decreto por el que se expide el Reglamento Interior de la Secretar&iacute;a de I"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 65.1,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: no me consta|no existe|no hay una ley|no tengo"
+   ],
+   "avisos": []
+  }
+ ]
+}
