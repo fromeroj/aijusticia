@@ -9,10 +9,12 @@
 - Backup: `backup_db.sh` diario 04:00 (cron en 162).
 - ⚠️ Difiere del schema de 182 (ver abajo) — `limpieza_profunda.py` detecta y adapta.
 
-## DB ARCHIVO / ENTRENAMIENTO — 182.255.84.124
-- 411,495 docs. Recibe el harvest de OJ (66.154) y las ingesta del flujo histórico.
-- Chunks **con** `id` bigserial; `texto_search` GENERATED; `articulo_num` backfilled (875K).
-- Destino del export CPT: ❌ CORREGIDO — el export de Tlamatini debe salir de **162** (más completa y limpia). 182 queda como respaldo histórico del pipeline viejo.
+## DB ARCHIVO — 182.255.84.124: ❌ MUERTA (suspendida ~15-oct-2026)
+- Perdió ~1,184 leyes OOXML recuperadas que se habían subido ahí (los archivos
+  fuente sobreviven en 66; re-recovery en curso hacia 162).
+- **Una sola DB canónica desde el 29-oct**: producción (162). El harvest de 66
+  escribe DIRECTO a 162 (postgres expuesto solo a 66.154.100.25 con scram;
+  password rotada). El .env de la Mac debe usar túnel SSH a 162 (pendiente).
 
 ## Storage server — 161.129.70.21 (⚠️ CAÍDO)
 - Servía `/srv/corpus` por NFS a 162 (`/opt/aijusticia/corpus_downloads`, mount `hard`).

@@ -135,6 +135,16 @@ def c_carga_162():
     return ("warn" if load1 <= 14 else "fail"), f"load {load1} (¿mantenimiento de día?)"
 
 
+def c_backup_offsite():
+    out = ssh(SSH_PROD, "stat -c %Y $(ls -t /mnt/backups_offsite/aijusticia_*.sql.gz 2>/dev/null | head -1) 2>/dev/null")
+    if not out.strip().isdigit():
+        return "warn", "off-site vacío (NFS caído o copia rota)"
+    edad_d = (time.time() - int(out.strip())) / 86400
+    if edad_d <= 2:
+        return "ok", f"off-site hace {edad_d:.0f}d"
+    return "fail", f"off-site con {edad_d:.0f}d de retraso"
+
+
 def c_backup():
     out = ssh(SSH_PROD, "stat -c %Y $(ls -t /opt/aijusticia/backups/aijusticia_*.sql.gz 2>/dev/null | head -1) 2>/dev/null")
     if not out.strip().isdigit():
@@ -188,7 +198,8 @@ def main():
         check("servicios systemd 162", c_servicios_162)
         check("disco 162", c_disco_162, critico=False)
         check("carga 162", c_carga_162, critico=False)
-        check("backup DB", c_backup, critico=False)
+        check("backup DB local", c_backup, critico=False)
+        check("backup off-site (storage)", c_backup_offsite, critico=True)
         check("harvest auxiliar 66", c_harvest_aux, critico=False)
         check("batería reciente", c_bateria_reciente, critico=False)
     if args.full:
