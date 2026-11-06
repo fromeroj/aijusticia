@@ -36,8 +36,6 @@ services:
       POSTGRES_USER: nextcloud
       POSTGRES_PASSWORD: nc_oficina_2026
       REDIS_HOST: redis
-      NEXTCLOUD_ADMIN_USER: admin
-      NEXTCLOUD_ADMIN_PASSWORD: tlamatini2026
       NEXTCLOUD_TRUSTED_DOMAINS: 162.35.113.166 oficina.aijusticia.mx
     volumes:
       - /opt/aijusticia/oficina/html:/var/www/html

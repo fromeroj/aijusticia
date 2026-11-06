@@ -14,8 +14,21 @@
 4. Verificado: `status.php` installed/maintenance-false, login 200, archivos de
    usuario (admin/, demo/) presentes.
 5. Contenedores del Mac APAGADOS (volúmenes intactos como rollback).
-6. Pendiente: subdominio `oficina.aijusticia.mx` en Caddy → 162:8080; NFS del
-   storage server (161.129.70.21, caído) para el datadir cuando reviva.
+6. Pendiente: subdominio `oficina.aijusticia.mx` en Caddy → 162:8080.
+
+## 6-nov-2026: datadir de VUELTA a disco local (lección NFS)
+
+El datadir vivía en NFS del storage (148) — ese server (1 vCPU, 933MB RAM)
+se ahoga sirviendo NFS (especialmente con la lectura del JSONL de UNAM encima)
+→ `nfs: server not responding` en dmesg → workers de Apache **segfault** en
+cadena → el office dejó de responder y el monitor externo se puso rojo ~30
+corridas seguidas.
+
+Arquitectura final: **app-data crítica en disco local de 162** (161GB libres,
+los archivos del piloto son 95MB — no hay razón para NFS); NFS del storage
+solo para **bulk tolerante**: backups off-site (escritura 04:00, falla
+graceful) y corpus de lectura para CPT. El JSONL de UNAM se copió a disco
+local y el ingester lee de ahí.
 
 ## Reglas
 - La bóveda cifrada del cliente (WebCrypto, fase C del spec) no depende de este stack.

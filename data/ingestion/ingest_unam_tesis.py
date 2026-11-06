@@ -15,7 +15,7 @@ sys.path.insert(0, "/opt/aijusticia/engine")
 from ai_justicia.corpus.models import Documento, Fuente, Jerarquia
 from ai_justicia.corpus.store import batch_upsert_documentos, count_documentos
 
-ENTRADA = Path("/mnt/corpus_storage/unam_tesis/unam_tesis_texto.jsonl")
+ENTRADA = Path("/opt/aijusticia/corpus_downloads/unam_tesis_texto.jsonl")
 MIN_CHARS = 500
 
 total = saltos_cortos = dup = nuevos = 0
