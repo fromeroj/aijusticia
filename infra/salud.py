@@ -65,7 +65,7 @@ def c_web():
 
 
 def c_engine_health():
-    r = requests.get(f"{PROD}/health", timeout=20)
+    r = requests.get(f"{PROD}/health", timeout=45)
     d = r.json()
     llm = d.get("lmstudio", {}).get("ok", d.get("llm", False))
     return ("ok", f"status ok, llm={llm}") if r.status_code == 200 and llm else \
