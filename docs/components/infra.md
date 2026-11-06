@@ -25,5 +25,7 @@
 - Pkill no mata procesos D-state — hay que resolver el IO primero.
 
 ## Monitoreo
-Pendiente: UptimeRobot (o similar) sobre `https://aijusticia.mx/health`.
+CI monitor cada 30 min (salud externa, sin SSH — falla solo en críticos).
+`make salud` para el chequeo integral con SSH (incluye off-site vía SSH al
+storage — la llave de CI está autorizada en los 4 servers).
 Checklist manual en `DEPLOYMENT.md` §Verificar salud.
