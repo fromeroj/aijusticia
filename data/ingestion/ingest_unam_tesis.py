@@ -31,7 +31,9 @@ for line in open(ENTRADA, encoding="utf-8", errors="replace"):
         d = json.loads(line)
     except Exception:
         continue
-    texto = (d.get("texto") or "").strip()
+    texto = (d.get("texto") or "").replace("\x00", "").strip()
+    # el JSONL de UNAM trae NUL bytes que postgres rechaza — sanear SIEMPRE
+    titulo = (d.get("titulo") or "").replace("\x00", "")
     if len(texto) < MIN_CHARS:
         saltos_cortos += 1
         continue
@@ -40,7 +42,7 @@ for line in open(ENTRADA, encoding="utf-8", errors="replace"):
         dup += 1
         continue
     vistos.add(h)
-    titulo = (d.get("titulo") or "Tesis UNAM").strip()[:300]
+    titulo = (titulo or "Tesis UNAM").strip()[:300]
     lote.append(Documento(
         fuente=Fuente.UNAM_TESIS,
         titulo=titulo,
