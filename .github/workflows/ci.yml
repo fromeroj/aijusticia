@@ -74,7 +74,8 @@ jobs:
           chmod 600 ~/.ssh/ci_ed25519
           ssh-keyscan -H 162.35.113.166 >> ~/.ssh/known_hosts 2>/dev/null
           ssh-keyscan -H 66.154.100.25 >> ~/.ssh/known_hosts 2>/dev/null
-          printf "Host 162.35.113.166 66.154.100.25\n  User root\n  IdentityFile ~/.ssh/ci_ed25519\n" > ~/.ssh/config
+          ssh-keyscan -H 148.135.106.227 >> ~/.ssh/known_hosts 2>/dev/null
+          printf "Host 162.35.113.166 66.154.100.25 148.135.106.227\n  User root\n  IdentityFile ~/.ssh/ci_ed25519\n" > ~/.ssh/config
       - name: Deploy API + web
         run: bash infra/deploy.sh all
       - name: Gate de salud post-deploy
