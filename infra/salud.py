@@ -136,9 +136,13 @@ def c_carga_162():
 
 
 def c_backup_offsite():
-    out = ssh(SSH_PROD, "stat -c %Y $(ls -t /mnt/backups_offsite/aijusticia_*.sql.gz 2>/dev/null | head -1) 2>/dev/null")
+    # vía SSH al storage directamente (el NFS puede estar colgado aunque
+    # el backup por SSH esté sano)
+    out = ssh("root@148.135.106.227",
+              "stat -c %Y $(ls -t /srv/backups/aijusticia_*.sql.gz 2>/dev/null | head -1) 2>/dev/null",
+              timeout=30)
     if not out.strip().isdigit():
-        return "warn", "off-site vacío (NFS caído o copia rota)"
+        return "fail", "storage sin dumps (copia off-site rota)"
     edad_d = (time.time() - int(out.strip())) / 86400
     if edad_d <= 2:
         return "ok", f"off-site hace {edad_d:.0f}d"

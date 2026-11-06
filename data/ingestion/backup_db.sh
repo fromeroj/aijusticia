@@ -19,10 +19,11 @@ else
   exit 1
 fi
 
-# copia off-site al storage server (148.135.106.227) — best-effort
-if mountpoint -q /mnt/backups_offsite; then
-  cp -f "$DEST/aijusticia_$FECHA.sql.gz" /mnt/backups_offsite/ || echo "aviso: copia off-site falló" >&2
-fi
+# copia off-site al storage server (148.135.106.227) por SSH — sin NFS,
+# que se ahoga y dejó 9 días sin réplica. Best-effort con timeout.
+timeout 900 rsync -az --timeout=120 "$DEST/aijusticia_$FECHA.sql.gz" \
+  root@148.135.106.227:/srv/backups/ \
+  || echo "aviso: copia off-site falló (revisar /srv/backups en el storage)" >&2
 
 # retención 14 días
 ls -t "$DEST"/aijusticia_*.sql.gz | tail -n +15 | xargs -r rm --
