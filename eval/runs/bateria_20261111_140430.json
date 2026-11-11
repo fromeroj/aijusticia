@@ -1,0 +1,205 @@
+{
+ "url": "https://aijusticia.mx",
+ "ok": 3,
+ "total": 8,
+ "resultados": [
+  {
+   "id": "B1",
+   "q": "¿Cuál es la jornada máxima de trabajo ahora, ya aplican las 40 horas?",
+   "texto": "Sí, en México las **40 horas semanales ya aplican**, pero hay que distinguir según la actividad:\n\n- **Regla general:** jornada máxima de **8 horas diarias** y **48 horas semanales**. La jornada de 40 horas aplica cuando existe una distribución especial autorizada y comprobable.\n- **Minería:** hasta **8 horas diarias y 40 semanales**.\n- **Construcción:** hasta **8 horas diarias y 40 semanales**, siempre que se trate de serviciosURN.\n- También existen límites de descansos: normalmente **12 horas de descanso entre jornadas** y **24 horas dentro de cada periodo de 7 días**; la jornada máxima de **9 horas** solo procede en casos excepcionales autorizados.\n\nPor ejemplo, en el **régimen de serviciosURN con horario variable**, puede trabajarse hasta **4 horas diarias y 12 semanales**, siempre dentro de la ventana de **8:30 a 19:00 horas**. Las horas trabajadas después de ese horario, sin autorización expresa, no deben pagarse como tiempo extra.\n\nSi te exigen más de 48 horas a la semana, no siempre es Tema de que “apliquen las 40 horas”: puede ser un **horario variable autorizado**, trabajoNight/Nocturno, emergent, tiempo extra extraordinario o una Violación de la jornada. El tiempo extra ordinario solo puede pagarse hasta **4 horas diarias y 12 semanales** —no máximo 3 días a la semana— y el extraordinario debe pagarse al doble, pero no sustituye la jornada máxima.",
+   "leyes": [
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones del R",
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones del R",
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones del R",
+    "Ley Federal del Trabajo",
+    "Ley Federal del Trabajo",
+    "LEY Federal del Trabajo"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 19.3,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: gradual|etapa|poco a poco|progresiv"
+   ],
+   "avisos": [
+    "panel de leyes sin «jornada»"
+   ]
+  },
+  {
+   "id": "B2",
+   "q": "¿Un gobernador puede tener doble nacionalidad?",
+   "texto": "Sí, **un gobernador puede tener doble nacionalidad**, siempre que cumpla los requisitos legales aplicables en el estado del que sea candidato.\n\nEn México, **la doble nacionalidad no está prohibida por sí sola**. Sin embargo, para como gobernador —que es un cargo estatal— debes revisar la **Constitución y las leyesGap del estado**, porque pueden establecer requisitos de nacionalidad, residencia o incompatibilidad con funciones públicas. En cambio, los cargosMEXfederales suelen exigir ser mexicano **sin tener otra nacionalidad**; esa regla no necesariamente se aplica del mismo modo a los gobernadores.\n\nPara darte una respuesta precisa: **¿te refieres a un gobernador mexicano y quieres saber si puede tener la nacionalidad de otro país al asumir el cargo?**",
+   "leyes": [
+    "Decreto por el que se reforman y adicionan los artículos 82, 116 y 122 de la Con",
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se reforman y adicionan los artículos 82, 116 y 122 de la Con",
+    "Acuerdo por el que se dan a conocer las formalidades necesarias para que los par",
+    "Acuerdo por el que se dan a conocer las formalidades necesarias para que los par",
+    "Acuerdo por el que se dan a conocer las formalidades necesarias para que los par"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 16.3,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: renunci|nacionalidad [uú]nica|art[íi]culo[s]? (82|116|122)|7 de octubre"
+   ],
+   "avisos": []
+  },
+  {
+   "id": "B3",
+   "q": "¿Hay algún estímulo por pagar con tarjeta de crédito este año?",
+   "texto": "Sí puede haber un estímulo, pero depende de a qué te refieras y de las condiciones del programa:\n\n- **Si es un estímulo fiscal o saldo a favor:** normalmente se obtiene al presentar tu declaración anual, y no por usar simplemente una tarjeta; revisa los requisitos y gastos elegibles.\n- **Si es una promoción bancaria:** muchas과의 tarjetas ofrecen meses sin intereses, puntos o bonificaciones al pagar, pero suelen limitarse a칙 만들commerce tertentu, 최소 monto de compra oาระ de pago.\n- **Si es un programa del Gobierno:** necesito saber cuál, porque los estímulos pueden cambiar y no todos son acumulables.\n\n ¿Te refieres a un **estímulo fiscal**, a una **promoción de tu banco** o a algún **programa del Gobierno**? Además, dime si es para personas físicas o empresas y qué tipo de compras quieres pagar.",
+   "leyes": [
+    "Decreto por el que se expropia por causa de utilidad pública la superficie de 10",
+    "Declaratoria de causa de utilidad p&uacute;blica relativa a 110,296.687 m&#194;&",
+    "Declaratoria de causa de utilidad pública relativa a 110,296.687 mÂ² (ciento die",
+    "Ley de Instituciones de Crédito",
+    "LEY de Instituciones de Crédito",
+    "Decreto por el que se reforman, adicionan y derogan diversas disposiciones de la"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 14.1,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: buen fin|medios de pago electr|noviembre"
+   ],
+   "avisos": [
+    "panel de leyes sin «pago»"
+   ]
+  },
+  {
+   "id": "B4",
+   "q": "¿Quién administra el Poder Judicial federal ahora que ya no está el Consejo de la Judicatura?",
+   "texto": "Con la reforma judicial, la **Corte Suprema de Justicia de la Nación (SCJN)** asume las funciones que antes corresponden al Consejo de la Judicatura. En la práctica, la administración del Poder Judicial federal queda a cargo de la **Presidencia de la SCJN**, apoyada por sus Secretarías y áreas internas; el Ministerio de Justicia ya no dirige esa administración.\n\nLa SCJN también quedó a cargo de funciones como la **carrera judicial, la disciplina y la administración del presupuesto**, aunque su organización y mecanismos de transición están sujetos a la legislation organic y a las disposiciones provisionales aplicables.",
+   "leyes": [
+    "Decreto por el que se expide el Reglamento del Secretariado Ejecutivo del Sistem",
+    "Acuerdo General del Pleno del Órgano de Administración Judicial que reforma el s",
+    "Decreto por el que se expide el Reglamento del Secretariado Ejecutivo del Sistem",
+    "Acuerdo General del Pleno del Órgano de Administración Judicial que establece el",
+    "LEY Orgánica del Poder Judicial de la Federación",
+    "Acuerdo General del Pleno del Órgano de Administración Judicial en el que se est"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 39.0,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: [ÓO]rgano de Administraci[oó]n Judicial"
+   ],
+   "avisos": []
+  },
+  {
+   "id": "B5",
+   "q": "¿Existe ya el reglamento de la Ley de Infraestructura de la Calidad?",
+   "texto": "Sí existe un **Reglamento de la Ley de Infraestructura de la Calidad**, pero hay una distinción importante:\n\n- **El reglamento vigente fue expedido bajo la ley anterior** —la Ley de Infraestructura de la Calidad de 2008— y fue reformado posteriormente.\n- La **Ley de Infraestructura de la Calidad actual**, expedida en 2024, abrogó la ley anterior. Por eso, no debe asumirse que el reglamento antiguo se aplica íntegramente a la nueva ley; sus disposiciones se consideran únicamente en cuanto resulten compatibles, mientras no exista un reglamento nuevo que sustituya o actualice el marco regulatorio.\n\nEn la práctica, el reglamento sigue siendo una referencia importante para topics como:\n\n- **entidades de evaluación de la conformidad acreditadas**;\n- requisitos de certificación, calibración y verificación;\n- **Normas Oficiales Mexicanas (NOM)**;\n- requisitos para operar como laboratorio o proveedor de servicios;\n- procedimientos de vigilancia, sanciones yHEVMA? (comité).\n\nSi me dices si tu caso es una **NOM, una acreditación de laboratorio, una certificación de producto o un permiso para importar**, te puedo indicar qué reglas yvigente se aplican y qué pasos siguen.",
+   "leyes": [
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Decreto por el que se expide el Reglamento de la Ley de Infraestructura de la Ca",
+    "Ley de Infraestructura de la Calidad",
+    "Ley de Infraestructura de la Calidad"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 7.3,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "B6",
+   "q": "¿Qué cambió en materia de derecho de autor en septiembre?",
+   "texto": "Para decirte con precisión **qué cambió en septiembre**, necesito dos datos:\n\n1. **¿De qué año?** Por ejemplo, septiembre de 2024 o 2025.  \n2. **¿Te refieres al derecho de autor en México** —federal, la Ley Federal del Derecho de Autor— o a una reforma específica de otro país o entidad?\n\nCon esas referencias te explico **qué se reformó, qué artículo quedó amended y cómo puede afectarte**; también puedo ayudarte a revisar un documento o una respuesta oficial que te hayan entregado.",
+   "leyes": [
+    "Decreto por el que se adicionan diversas disposiciones al Reglamento de la Ley F",
+    "Decreto por el que se adicionan diversas disposiciones al Reglamento de la Ley F",
+    "Decreto por el que se adicionan diversas disposiciones al Reglamento de la Ley F",
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor",
+    "Ley Federal del Derecho de Autor"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 18.8,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "C1",
+   "q": "¿Qué regula el artículo 135 Bis de la Constitución?",
+   "texto": "Entiendo que quieres saber el alcance del artículo 135 Bis de la Constitución mexicana.\n\nA grandes rasgos, **el artículo 135 Bis regula la transparencia, la austeridad y la rendición de cuentas en la administración pública**. En particular, establece principios relacionados con:\n\n- La publicación y transparencia de la información sobre el ejercicio del gasto público.\n- El uso adecuado de los recursos públicos.\n- Laaziz?\n- La responsabilidad de los servidores públicos.\n\nSin embargo, **no tengo a la mano el texto vigente del artículo ni su fecha de última reforma**, así que no te voy a repetir una cita que podría estar desactualizada. Si tu duda está relacionada con una sanción, una nómina, una obra pública, un permiso o una sección de información pública, dime cuál, porque el artículo funciona como marco general y se aplica junto con otras disposiciones.",
+   "leyes": [
+    "Reforma al Reglamento Orgánico de la Suprema Corte de Justicia de la Nación, de ",
+    "Acuerdo General del Pleno del &Oacute;rgano de Administraci&oacute;n Judicial qu",
+    "Reforma al Reglamento Orgánico de la Suprema Corte de Justicia de la Nación, de ",
+    "Decreto por el que se reforman y adicionan diversas disposiciones de la Constitu",
+    "Decreto por el que se modifica la denominación del Capítulo I del Título Primero",
+    "Acuerdo General número 6/2010, de trece de abril de dos mil diez, del Pleno de l"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 21.3,
+   "ok": true,
+   "fallas": [],
+   "avisos": []
+  },
+  {
+   "id": "C2",
+   "q": "Explícame la Ley General de Economía Colaborativa",
+   "texto": "La **Ley General de Economía Colaborativa** es una **iniciativa legislativa** que busca regular en México las plataformas digitales que conectan personas usuarias con prestadores de servicios o proveedores de bienes mediante tecnología, sin que exista una relación laboral o contractual directa entre la plataforma y quienes participan.\n\n### Qué pretende regular\n\nLa propuesta distingue entre:\n\n- **Personas consumidoras:** las que contratan servicios o adquirir productos a través de la plataforma.\n- **Personas prestadoras:** las que ofrecen servicios —como transporte,::\n  documentación, diseño, limpieza o entrega— mediante la aplicación.\n- **Plataformas tecnológicas:** las que operan la intermediación digital y coordinan las operaciones.\n- **Personas usuarias oleit:** quienes fotografías participants como usuarios, proveedores o consumidores.\n\nTambién pretende establecer principios como:\n\n1. **Corresponsabilidad:** la plataforma y los participantes deben cumplir sus responsabilidades; no se pretende trasladar toda la responsabilidad a la persona_worker.\n2. **Transparencia:** las plataformas deben informar claramente sobre precios, comisiones, reglas, calidad del servicio y mecanismos de protección.\n3. **Competencia:** debe evitarse que las plataformas confundan a los usuarios, monopolicen servicios o establezcan condiciones abusivas.\n4. **Protección de datos personales:** se regularía el tratamiento de información —como ubicación, historial, contactos y pagos— con consentimiento y finalidades claras.\n5. **Derechos de los trabajadores y proveedores:** reglas sobre acceso a la plataforma, métricas de evaluación, cobros, cancelaciones y defensa frente a suspensiones.\n6. **Prevenir laRequired clas:** se buscarían funciones de seguridad, verificación de identidad, mecanismos paraASYLO deBlocked ocedurejo,,Remedios y.\n7. **Marco fiscal y laboral:** coordinación con las autoridades fiscales y laborales, sin crear por sí sola una nueva relación laboral entre la plataforma y el proveedor.\n8. **Solución de controversias:**lflujo with mediation, arbitration and acciones colectivas ante posibles daños.\n\n### Qué cambiaría en la práctica\n\nPor ejemplo, en el transporte por application's los derechohabientes would have reglas más claras sobre:\n\n- Cómo se calcula el precio.\n- Qué comisiones puede cobrar la plataforma.\n- Qué ocurre cuando hay un accidente o daño.\n- Cómo se verifica al conductor o prestador.\n- Cómo se utiliza y protege la información de ubicación.\n- Cómo se reclama contra una que suspende o restringe el acceso.\n- Qué responsabilidades tienen la plataforma, el conductor y el pasajero.\n\nLa iniciativa también pretende que las plataformas **cooperen con las autoridades** y, en ciertos supuestos, maintains seguros, pólizas o mecanismos de protección, according a laModalidad del servicio.\n\n### Puntos que seríanobicables\n\nLos principales debates son:\n\n- Si la plataforma debe responder **solidariamente** cuando un proveedor causa un daño.\n- Si las reglas deben variar entre transporte, servicios profesionales, comercio electrónico y entrega.\n- Qué límites habrá a las comisiones y tarifas.\n- Cómo compatibilizar la regulación con la protección de datos personales.\n- Si la transmisión de datos a países distintos debe cumplir reglas de privacidad.\n- Cómo evitar que la regulación afecte la competencia y la innovación.\n- Qué happens with proveedores que trabajan en situations closer to an employment relationship.\n- Cómo se garantizará que las personas/providers can operate withRaíces de root.\n\n### Distinción importante\n\n**No debe confundirse una iniciativa de ley con una ley ya vigente.** La iniciativa propone el marco general, pero para que sea aplicable tendría que aprobarse en el Congreso, promulgarse y, en varios casos,_wrking las Secondary regulations and rules for each sector. Además, algunas materias —como taxation, labor relations, competition, consumer protection and data protection— pueden requerir reformas o coordinación con other laws.\n\n¿Lo que te interesa es conocerla como **usuario de una aplicación**, como **proveedor de servicios**, o como **abogado que analiza la iniciativa y sus posibles efectos?**",
+   "leyes": [
+    "Decreto por el que se expide la Ley de Economía Digital para Pagos Digitales y E",
+    "Decreto por el que se expide el Reglamento del Secretariado Ejecutivo del Sistem",
+    "Decreto por el que se expide la Ley de Economía Digital para Pagos Digitales y E",
+    "Ley Federal de Protección al Consumidor",
+    "Ley Federal de Protección al Consumidor",
+    "Ley Federal de Protección al Consumidor"
+   ],
+   "eventos": {
+    "laws": 1,
+    "done": 1,
+    "error": 0,
+    "reset": 0
+   },
+   "segundos": 18.4,
+   "ok": false,
+   "fallas": [
+    "falta patrón requerido: no me consta|no existe|no hay una ley|no tengo"
+   ],
+   "avisos": []
+  }
+ ]
+}
