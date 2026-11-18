@@ -6,6 +6,7 @@
 
 | Doc | Qué contiene | Estado |
 |---|---|---|
+| [`ARQUITECTURA-SISTEMA.md`](ARQUITECTURA-SISTEMA.md) | **Arquitectura completa**: 12 subsistemas, módulos archivo-por-archivo, server map, puertos y credenciales, flujos de datos | ✅ al día (18-nov) |
 | [`VISION.md`](VISION.md) | **El intento y la colaboración**: misión, principios, los 12 subsistemas, reglas de dependencia, ciclo de valor diario, hitos | ✅ al día (14-oct) |
 | [`components/`](components/) | Una página por subsistema (12): qué es, dónde vive, contrato, reglas, pendientes | ✅ al día (14-oct) |
 | [`DEPLOYMENT.md`](../DEPLOYMENT.md) | **Operación de producción**: topología real (162 es producción, DB local 473K docs), deploys, cron DOF diario, crons, diagnóstico rápido, scripts de corpus | ✅ al día (14-oct) |

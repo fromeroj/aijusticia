@@ -1,3 +1,10 @@
+> ⚠️ **DOCUMENTO DE SEPT-2026** — revaloración del backend que originó la
+> refactorización a routers + RLS + auth (hoy ejecutada en producción). La
+> arquitectura **vigente** del sistema completo vive en
+> [`ARQUITECTURA-SISTEMA.md`](ARQUITECTURA-SISTEMA.md). Se conserva porque su
+> §3 (estructura de routers) y §5 (cola de jobs) siguen siendo la hoja de ruta
+> de lo que falta (websockets, RBAC fino).
+
 # AI Justicia — Arquitectura del Backend
 ## Revaloración 2026-09 y plan de evolución al sistema de bufetes
 

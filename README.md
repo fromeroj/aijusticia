@@ -7,8 +7,8 @@ corpus oficial de 473K documentos (DOF diario, SJF, leyes consolidadas de los
 
 ## Empezar aquí
 
-1. [`DEPLOYMENT.md`](DEPLOYMENT.md) — producción: topología real, operación, diagnóstico
-2. [`docs/arquitectura-corpus-rag.md`](docs/arquitectura-corpus-rag.md) — corpus y retrieval (§8 = estado actual)
+1. [`docs/ARQUITECTURA-SISTEMA.md`](docs/ARQUITECTURA-SISTEMA.md) — **arquitectura completa**: subsistemas, módulos, servers, puertos
+2. [`DEPLOYMENT.md`](DEPLOYMENT.md) — producción: operación, diagnóstico, crons
 3. [`docs/INDEX.md`](docs/INDEX.md) — índice completo de documentación con estado por documento
 
 ## Layout (por subsistema — reordenado 14-oct)
