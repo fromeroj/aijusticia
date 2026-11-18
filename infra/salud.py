@@ -88,6 +88,10 @@ def c_frescura_dof():
             dias = f["dias_sin_nuevos"]
             if dias <= 2:
                 return "ok", f"último DOF hace {dias}d ({f['ultimo_doc']})"
+            if dias <= 6:
+                # puentes oficiales largos (Revolución con puente vie-tue, Semana Santa):
+                # el DOF deja de publicar hasta 6 días — warn visible, no página al dueño
+                return "warn", f"sin DOF hace {dias}d (¿puente oficial?) — {f['ultimo_doc']}"
             return "fail", f"DOF con {dias}d sin nuevos (cron roto?) — {f['ultimo_doc']}"
     return "fail", "fuente DOF ausente"
 
