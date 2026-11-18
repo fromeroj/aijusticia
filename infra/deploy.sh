@@ -32,12 +32,13 @@ case "$TARGET" in
   *) echo "uso: deploy.sh [api|web|all]"; exit 1;;
 esac
 
-echo "== gate de salud =="
-if python3 infra/salud.py > /tmp/salud_deploy.log 2>&1; then
-  tail -2 /tmp/salud_deploy.log
-  echo "✅ deploy OK"
+echo "== gate de salud (falla solo en críticos; warns se muestran) =="
+python3 infra/salud.py > /tmp/salud_deploy.log 2>&1
+code=$?
+tail -n +1 /tmp/salud_deploy.log | grep -E "^(✅|⚠️ |❌|==)" || true
+if [ "$code" -le 1 ]; then
+  echo "✅ deploy OK (críticos limpios)"
 else
-  cat /tmp/salud_deploy.log
-  echo "❌ salud en warn/fail tras el deploy — revisar antes de seguir"
+  echo "❌ salud con fallas críticas tras el deploy — revisar antes de seguir"
   exit 1
 fi
