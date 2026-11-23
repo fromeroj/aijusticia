@@ -21,8 +21,14 @@ fi
 ls -t "$DEST"/aijusticia_*.sql.gz | tail -n +4 | xargs -r rm --
 echo "$(date -u +%FT%TZ) dump OK ($(du -h "$DUMP" | cut -f1))"
 
-# réplica off-site por SSH — desatachada (9GB tarda horas; no bloquear el cron)
-setsid nohup rsync -az --timeout=600 --partial \
-  "$DUMP" root@148.135.106.227:/srv/backups/ \
-  >> /var/log/aijusticia_offsite.log 2>&1 < /dev/null &
-echo "$(date -u +%FT%TZ) off-site rsync lanzado"
+# réplica off-site por SSH — desatachada y reanudable (--partial --append-verify:
+# un dump de 9GB a 0.5MB/s tarda horas; timeout de pared lo mataba a los 15 min)
+if pgrep -f "rsync -az.*aijusticia_.*148.135.106.227" > /dev/null || \
+   ssh root@148.135.106.227 "pgrep -f 'rsync --server.*aijusticia'" > /dev/null 2>&1; then
+  echo "$(date -u +%FT%TZ) réplica previa aún corriendo — no lanzo otra"
+else
+  setsid nohup rsync -az --partial --append-verify --timeout=600 --bwlimit=0 \
+    "$DUMP" root@148.135.106.227:/srv/backups/ \
+    >> /var/log/aijusticia_offsite.log 2>&1 < /dev/null &
+  echo "$(date -u +%FT%TZ) off-site rsync lanzado (detached)"
+fi
