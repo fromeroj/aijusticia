@@ -9,6 +9,8 @@ memoria de lo ya alertado y decide el exit code así:
   - hay fallos, es el mismo conjunto y pasaron 12h del aviso   → exit 1 (recordatorio)
   - hay fallos, es el mismo conjunto y aún no pasan 12h        → exit 0 (el fallo
     queda impreso en el log; no se repite el correo)
+  - si TODOS los fallos son de evento puntual (un kill por OOM ya ocurrido),
+    nunca hay recordatorio: se avisó una vez y ya
   - sin fallos → exit 0 y se limpia la memoria
 
 El conjunto de fallos incluye el detalle: un kill por OOM a una hora nueva es
@@ -34,14 +36,23 @@ import salud  # noqa: E402
 RECORDAR_CADA_H = 12
 
 
-def decidir(fallos: list[str], previo: dict, ahora: float) -> tuple[dict, int, str]:
-    """Devuelve (estado nuevo, exit code, motivo)."""
+def decidir(fallos: list[str], previo: dict, ahora: float, recordables: bool = True) -> tuple[dict, int, str]:
+    """Devuelve (estado nuevo, exit code, motivo).
+
+    `recordables`: si hay algún fallo de condición persistente. Los chequeos de
+    evento puntual (salud.check(..., recordar=False)) no generan recordatorios:
+    ya ocurrieron y ya pasaron; repetir el correo cada 12h mientras sigan
+    visibles es ruido.
+    """
     if not fallos:
         return {}, 0, "sin fallos" + (" — se limpia la memoria de alertas" if previo else "")
     mismo = previo.get("fallos") == fallos
     if not mismo:
         return ({"fallos": fallos, "desde": ahora, "notificado": ahora}, 1,
                 "conjunto de fallos NUEVO: se alerta")
+    if not recordables:
+        return dict(previo), 0, (f"evento puntual ya alertado; sigue visible "
+                                 f"(sin recordatorios)")
     if ahora - previo.get("notificado", 0) >= RECORDAR_CADA_H * 3600:
         estado = dict(previo, notificado=ahora)
         return estado, 1, f"persiste desde hace {(ahora - previo.get('desde', ahora)) / 3600:.1f}h: recordatorio"
@@ -58,6 +69,7 @@ def main() -> int:
 
     res = salud.correr(sin_ssh=args.sin_ssh or os.environ.get("SALUD_SIN_SSH") == "1")
     fallos = sorted(f"{r['check']}: {r['detalle']}" for r in res if r["estado"] == "fail")
+    recordables = any(r.get("recordar", True) for r in res if r["estado"] == "fail")
     try:
         previo = json.load(open(args.estado, encoding="utf-8"))
         if not isinstance(previo, dict):
@@ -65,7 +77,7 @@ def main() -> int:
     except (OSError, ValueError):
         previo = {}
 
-    estado, codigo, motivo = decidir(fallos, previo, time.time())
+    estado, codigo, motivo = decidir(fallos, previo, time.time(), recordables)
     with open(args.estado, "w", encoding="utf-8") as f:
         json.dump(estado, f, ensure_ascii=False)
     print(f"\n[alertas] {motivo}" + (f" · exit {codigo}" if codigo else ""), flush=True)

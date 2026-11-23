@@ -42,8 +42,12 @@ SSH_TIMEOUT = 25
 RESULTADOS: list[dict] = []
 
 
-def check(nombre: str, fn, critico: bool = True):
-    """Ejecuta un chequeo. Si devuelve None se omite (no aplica en este entorno)."""
+def check(nombre: str, fn, critico: bool = True, recordar: bool = True):
+    """Ejecuta un chequeo. Si devuelve None se omite (no aplica en este entorno).
+
+    recordar=False marca un chequeo de EVENTO puntual (ya ocurrió y ya pasó):
+    su fallo se alerta una vez y no se repite cada 12h mientras siga visible.
+    """
     t0 = time.time()
     try:
         r = fn()
@@ -55,7 +59,7 @@ def check(nombre: str, fn, critico: bool = True):
     dt = round(time.time() - t0, 1)
     icono = {"ok": "✅", "warn": "⚠️ ", "fail": "❌"}[estado]
     RESULTADOS.append({"check": nombre, "estado": estado, "detalle": detalle,
-                       "segundos": dt, "critico": critico})
+                       "segundos": dt, "critico": critico, "recordar": recordar})
     print(f"{icono} {nombre:34s} {detalle[:90]}  ({dt}s)", flush=True)
 
 
@@ -171,13 +175,19 @@ def c_carga_162():
     return ("ok" if load1 <= 8 else "warn" if load1 <= 14 else "fail"), f"load {out}"
 
 
+# Cuánto tiempo sigue visible un kill por OOM en el reporte. Es un EVENTO
+# puntual, no una condición persistente: se alerta una vez (recordar=False) y
+# un kill nuevo alerta de inmediato porque cambia el detalle del chequeo.
+OOM_HORAS = 30
+
+
 def c_oom_recientes():
-    """Procesos que el kernel mató por falta de memoria en las últimas 30h."""
+    """Procesos que el kernel mató por falta de memoria en las últimas OOM_HORAS."""
     lineas = ssh(SSH_PROD,
-                 "journalctl -k --since '-30 hours' --no-pager -o short-iso 2>/dev/null "
+                 f"journalctl -k --since '-{OOM_HORAS} hours' --no-pager -o short-iso 2>/dev/null "
                  "| grep 'Out of memory: Killed process'").splitlines()
     if not lineas:
-        return "ok", "sin kills por OOM en 30h"
+        return "ok", f"sin kills por OOM en {OOM_HORAS}h"
     det = []
     for linea in lineas:
         m = re.search(r"Killed process \d+ \(([^)]+)\).*?anon-rss:(\d+)kB", linea)
@@ -273,7 +283,14 @@ def c_bateria_reciente():
     if not runs:
         return None, None   # sólo aplica donde se corre la batería (la Mac)
     d = json.load(open(runs[-1]))
-    edad_h = (time.time() - os.path.getmtime(runs[-1])) / 3600
+    # la fecha sale del NOMBRE del archivo (bateria_YYYYmmdd_HHMMSS.json), no del
+    # mtime: en CI el checkout es nuevo y el mtime diría "hace 0h" de una
+    # corrida de hace semanas.
+    m = re.search(r"bateria_(\d{4})(\d{2})(\d{2})_(\d{2})(\d{2})(\d{2})", runs[-1])
+    if not m:
+        return None, None
+    from datetime import datetime as _dt
+    edad_h = (time.time() - _dt(*map(int, m.groups())).timestamp()) / 3600
     nota = f"{d.get('ok')}/{d.get('total')} hace {edad_h:.0f}h"
     return ("ok" if edad_h <= 72 else "warn"), f"batería {nota}"
 
@@ -291,7 +308,7 @@ def correr(sin_ssh: bool = False, full: bool = False) -> list[dict]:
     check("office Nextcloud :8080", c_office, critico=False)
     if not sin_ssh:
         check("servicios 162 (engine/web/pg)", c_servicios_162)
-        check("OOM recientes (30h)", c_oom_recientes)
+        check(f"OOM recientes ({OOM_HORAS}h)", c_oom_recientes, recordar=False)
         check("mantenimiento nocturno", c_mantenimiento)
         check("disco 162", c_disco_162)
         check("carga 162", c_carga_162)
