@@ -14,7 +14,8 @@
   `importar_jsonl_documentos.py` (trae filas de otra DB sin pisar nada),
   `refrescar_leyesbiblio.py`, `backup_db.sh`, `cron_diferencial.sh` (histórico).
 - `quality/` — `limpieza_profunda.py` (incremental por defecto; `--completo`
-  reanudable; memoria acotada), `fix_titulos_oj.py`.
+  reanudable; memoria acotada), `rellenar_articulo_num.py` (número de artículo de
+  los chunks de leyes; incremental + `--completo`), `fix_titulos_oj.py`.
 - `prep/` — `prep_cpt_completo.py`, `build_harness_mx.py` (export para Tlamatini).
 
 ## Qué corre solo (crons de 162 — ver `infra/cron/`)
@@ -22,7 +23,7 @@
 | Job | Cuándo | Qué hace |
 |---|---|---|
 | `dof_diario.sh` | 17:30 UTC | DOF de ayer y hoy (con watermark) |
-| `mantenimiento_nocturno.sh` | 08:30 UTC | limpieza incremental (barrido completo los domingos) + SJF del día |
+| `mantenimiento_nocturno.sh` | 08:30 UTC | limpieza incremental (barrido completo los domingos) + SJF del día + número de artículo de leyes nuevas |
 | `backup_cron.sh` | 04:00 UTC | dump verificado + réplica off-site |
 
 Todo paso nocturno corre con tope de memoria (1.5GB), plazo y nice 19.
@@ -71,6 +72,19 @@ corre `refrescar_leyesbiblio.py` a mano.
 - Trabajos pesados: ventana nocturna de 162, 66 o la Mac.
 
 ## Pendientes
+- **Las leyes estatales están mal troceadas.** Medición 23-nov (muestra de 1 de
+  cada 97 leyes de OrdenJuridico): sólo el **5%** tiene ≥80% de sus chunks
+  abriendo artículo; el **~75%** tiene menos del 30%. Causa: `chunk_documento`
+  (`corpus/store.py`) sólo parte por `^Artículo\s+\d+` distinguiendo
+  mayúsculas, y muchas leyes van en MAYÚSCULAS ("ARTÍCULO 1o.-") o con acentos
+  rotos por la extracción ("ART�CULO"). Esas leyes se parten en ventanas de
+  1,200 caracteres con artículos cortados entre chunks. Arreglo: patrón
+  tolerante (`(?i)`, ordinales `1o/°/º`) en el troceador y re-trocear ~29K
+  leyes (~2M chunks) en la ventana nocturna. Mientras tanto
+  `rellenar_articulo_num.py` numera lo que sí abre con artículo.
+- `articulo_num`: hasta el 23-nov era NULL en TODO documento con id ≥ 3,140,351
+  (9.2M de chunks: ninguna ley estatal lo tenía). Barrido completo agendado
+  para la noche del 23→24-nov.
 - Instalar/reescribir el scheduler de gacetas en producción (ver arriba).
 - Refresco semanal automático de leyes federales.
 - Coahuila: la API lista pero el PDF da 403 (bloqueado de su lado).

@@ -7,7 +7,7 @@ cuelga muere solo; la producción no se entera. (Lección del 10-23 nov 2026.)
 | UTC | CDMX | Script en 162 | Qué hace |
 |---|---|---|---|
 | 04:00 | 22:00 | `/opt/aijusticia/backup_cron.sh` → `backup_db.sh` | pg_dump verificado + retención local de 3 dumps + réplica off-site desatachada al storage |
-| 08:30 | 02:30 | `/opt/aijusticia/mantenimiento_nocturno.sh` | limpieza incremental del corpus (barrido completo los domingos) + SJF del día |
+| 08:30 | 02:30 | `/opt/aijusticia/mantenimiento_nocturno.sh` | limpieza incremental del corpus (barrido completo los domingos) + SJF del día + número de artículo de leyes nuevas |
 | 17:30 | 11:30 | `/opt/aijusticia/dof_diario.sh` | ingesta del DOF de ayer y hoy |
 
 Las fuentes de este directorio se copian tal cual a `/opt/aijusticia/`.

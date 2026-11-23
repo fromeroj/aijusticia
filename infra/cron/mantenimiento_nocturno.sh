@@ -27,11 +27,14 @@ CAP=(systemd-run --scope --quiet -p MemoryMax=1500M -p MemorySwapMax=0 nice -n 1
 run() {  # run <minutos máx> <log> <comando...>
   local mins="$1" log="$2"; shift 2
   echo "$(date -u +%FT%TZ) inicio (máx ${mins} min): $*" >> "$log"
-  if timeout "${mins}m" "${CAP[@]}" "$@" >> "$log" 2>&1; then
+  local rc=0
+  timeout "${mins}m" "${CAP[@]}" "$@" >> "$log" 2>&1 || rc=$?
+  if [ "$rc" -eq 0 ]; then
     echo "$(date -u +%FT%TZ) ok: $*" >> "$log"
   else
-    echo "$(date -u +%FT%TZ) FALLO rc=$?: $*" >> "$log"
+    echo "$(date -u +%FT%TZ) FALLO rc=$rc: $*" >> "$log"
   fi
+  return "$rc"
 }
 
 echo "$(date -u +%FT%TZ) ===== mantenimiento nocturno =====" >> "$LOG"
@@ -46,5 +49,19 @@ fi
 
 # 2) SJF del día (con watermark: segundos si no hay nada nuevo)
 run 30 /var/log/aijusticia_sjf.log $PY scripts/ingestion/ingest_all.py --fuentes SJF
+
+# 3) Número de artículo de los chunks de leyes nuevas (lo usa el localizador
+#    "artículo N" de la recuperación). Incremental, segundos.
+run 30 "$LOG" $PY scripts/quality/rellenar_articulo_num.py
+
+# 4) Barrido completo de UNA VEZ sobre todas las leyes, si existe la marca.
+#    Reanudable: si no alcanza a terminar, sigue la noche siguiente.
+MARCA=/opt/aijusticia/.estado_limpieza/articulos_full_pendiente
+if [ -e "$MARCA" ]; then
+  if run 150 "$LOG" $PY scripts/quality/rellenar_articulo_num.py --completo; then
+    rm -f "$MARCA"
+    echo "$(date -u +%FT%TZ) barrido completo de articulo_num terminado" >> "$LOG"
+  fi
+fi
 
 echo "$(date -u +%FT%TZ) ===== fin del mantenimiento =====" >> "$LOG"
