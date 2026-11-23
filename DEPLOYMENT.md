@@ -173,6 +173,12 @@ make deploy-data  # sincroniza data/ a 162 y 66
 ```
 
 ⚠ No borrar el `.env` del engine en el VPS (el rsync lo excluye).
+
+**Nada a mano en los servidores.** Si algo se edita directamente en un server
+(sin pasar por el repo), hay que traerlo al repo en el mismo cambio: el 23-nov
+dos sesiones trabajaron a la vez sobre los mismos servidores y una dejó
+`backup_db.sh` y la retención del storage fuera del repo. Comparar con:
+`md5sum /opt/aijusticia/data/ingestion/backup_db.sh` contra `git show HEAD:data/ingestion/backup_db.sh | md5sum`.
 Para exigir aprobación antes de deployar: GitHub → Environments → production →
 required reviewers (la llave de CI vive en el secret `CI_SSH_KEY`).
 
@@ -264,10 +270,11 @@ Ver `tohil/` (Makefile, configs Soup, eval_bateria.py) y `docs/`.
   (`PasswordAuthentication no`, `PermitRootLogin prohibit-password`).
   **Rollback:** borrar ese archivo y `systemctl reload ssh`.
   Llaves en uso: la del dueño (Mac) y `ci@aijusticia` (162, 66, storage).
-- ⚠️ **Un VPS que no está en este runbook entra a 182 por SSH**: llave
+- Un VPS que no está en este runbook entra a 182 por SSH: llave
   `root@vps3610288.trouble-free.net`, desde 162.35.184.145 (Interserver), una
-  sesión cada ~9 segundos. Está autorizada en el `authorized_keys` de 182.
-  Identificar qué es antes de cancelar 182.
+  sesión cada ~9 segundos. Está autorizado en el `authorized_keys` de 182 y
+  **el dueño lo confirmó como propio (23-nov-2026)**. Si se cancela 182, ese
+  trabajo empezará a fallar: revisarlo antes.
 - El :6234 del VPS es HTTP plano — solo aceptable porque viaja entre
   servidores propios; si se expone a internet directo, poner TLS o restricción
   por IP en nginx (`allow 192.227.167.147; deny all;`)
@@ -282,12 +289,12 @@ Ver `tohil/` (Makefile, configs Soup, eval_bateria.py) y `docs/`.
 ---
 
 ## 8. Pendientes conocidos
-- [ ] **Decidir retención del storage** (`tlamatini:/srv/backups`): 80% usado,
-  9.7GB por dump, sin política. `backup_db.sh` deja de replicar con <20GB libres.
+- [x] ~~Decidir retención del storage~~ — 10 dumps (23-nov-2026).
+      `/usr/local/bin/backups_retention.sh` + `/etc/cron.d/backups-retention`
+      en el storage; copias en `infra/storage/`.
 - [ ] **Cosecha de gacetas estatales en producción**: instalar/reescribir el
   scheduler de fuentes (`aijusticia-ingest.timer` sólo existió en 182).
 - [ ] **Refresco automático de leyes federales** (LeyesBiblio): hoy es manual.
-- [ ] Identificar el VPS `vps3610288.trouble-free.net` que entra a 182 (ver §7).
 - [ ] Cancelar el VPS de 182 (su contenido útil ya está en producción).
 - [ ] DNS aijusticia.com.mx → 192.227.167.147 (Caddy ya listo)
 - [ ] Google OAuth: crear proyecto Google Cloud + secrets

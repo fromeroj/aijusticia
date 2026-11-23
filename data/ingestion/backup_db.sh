@@ -77,12 +77,17 @@ replicar() {  # replicar <dump>
   fi
   setsid nohup bash -c '
     f="$1"; dst="$2"; dir="$3"
+    start_epoch=$(date +%s); max_seg=21600
     for i in 1 2 3 4 5 6; do
-      if rsync -a --partial --append-verify --timeout=600 "$f" "$dst:$dir/"; then
+      if rsync -a --partial --append-verify --timeout=600 -e "ssh -o ConnectTimeout=30 -o ServerAliveInterval=30 -o ServerAliveCountMax=20" "$f" "$dst:$dir/"; then
         echo "$(date -u +%FT%TZ) off-site OK $(basename "$f") (intento $i)"; exit 0
       fi
       rc=$?
       echo "$(date -u +%FT%TZ) off-site reintento $i rc=$rc $(basename "$f")"
+      if [ $(( $(date +%s) - start_epoch )) -ge $max_seg ]; then
+        echo "$(date -u +%FT%TZ) off-site ABANDON (6h limit) $(basename "$f")"
+        break
+      fi
       sleep 120
     done
     echo "$(date -u +%FT%TZ) off-site FALLO definitivo $(basename "$f")"

@@ -50,9 +50,11 @@
 - `/srv/backups` (dumps off-site, llegan por rsync sobre SSH), `/srv/archive`,
   `/srv/corpus`. 1 vCPU / 933MB: sólo para volumen tolerante, nunca para datos de
   una aplicación (ver `office.md`).
-- ⚠️ **80% usado (23-nov) y sin política de retención**: cada dump pesa 9.7GB.
-  `backup_db.sh` deja de lanzar réplicas si quedan menos de 20GB libres, para no
-  llenar el disco (así murió 182).
+- Retención: **los 10 dumps completos más recientes** (decisión del dueño,
+  23-nov-2026), a cargo de `backups_retention.sh` en el propio storage
+  (`infra/storage/`). Cada dump pesa ~9.7GB. `backup_db.sh` además deja de
+  lanzar réplicas si quedan menos de 20GB libres, para no llenar el disco (así
+  murió 182). Con 10 dumps el disco queda cerca del 80%.
 - 161.129.70.21: storage VIEJO, caído desde agosto; desmontado de 162.
 
 ## Reglas

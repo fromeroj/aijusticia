@@ -6,7 +6,7 @@
 | **162.35.113.166** | PRODUCCIÓN: web + API + **postgres local (canónico)** + office (Nextcloud :8080) + crons | 197GB (98 libres), 11GB RAM, 3 vCPU |
 | 192.227.167.147 | RackNerd: Caddy TLS (contenedor `caddy`) | 9GB (80%), 729MB RAM, swap casi lleno — no meter nada |
 | 66.154.100.25 | auxiliar: cosechas pesadas → escriben directo a 162 | 30GB (7 libres), 2GB RAM |
-| **148.135.106.227** | STORAGE `tlamatini`: `/srv/backups` (por rsync/SSH), `/srv/archive`, `/srv/corpus` | 197GB (**80% usado, sin retención**), 1 vCPU, 933MB |
+| **148.135.106.227** | STORAGE `tlamatini`: `/srv/backups` (por rsync/SSH), `/srv/archive`, `/srv/corpus` | 197GB (55% usado; retención de 10 dumps), 1 vCPU, 933MB |
 | 182.255.84.124 | server viejo (`aijusticia.mx`): congelado, contenido útil ya importado | 59GB (3.5 libres) |
 | 161.129.70.21 | storage viejo | caído desde agosto |
 | Mac Studio | cosechas con navegador, entrenamiento, `make bateria` | — |
@@ -57,8 +57,8 @@ con `timeout` y nice 19: si se desborda o se cuelga, muere solo.
 - No reescribir un script de bash mientras se ejecuta (lo lee por offset).
 
 ## Pendientes
-- **Retención en el storage** (decisión del dueño): sin ella deja de replicar en
-  cuanto queden menos de 20GB libres (`backup_db.sh`).
+- La retención del storage (10 dumps, `infra/storage/`) no verifica que lo que
+  conserva esté completo; lo cubre el chequeo "réplica off-site" de `salud.py`.
 - Caddy/RackNerd al 80% de disco y con swap casi lleno.
 - Túnel autossh viejo de la Mac (`com.aijusticia.tunnel` → 66.154): vestigial.
 - NFS sin cifrar entre 162 y el storage (propuesta: WireGuard).

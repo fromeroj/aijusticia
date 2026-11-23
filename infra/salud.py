@@ -250,11 +250,12 @@ def c_backup_offsite():
     n_vuelo = ssh(SSH_PROD, "pgrep -fc '[r]sync -a --partial --append-verify'").strip()
     en_vuelo = n_vuelo.isdigit() and int(n_vuelo) > 0
     pct = f"{int(remoto) / tam * 100:.0f}%" if remoto.strip().isdigit() else "0%"
-    fallo = ssh(SSH_PROD, "grep -E 'off-site FALLO definitivo' /var/log/aijusticia_offsite.log 2>/dev/null | tail -1")
-
-    if f"FALLO definitivo {nombre}" in fallo:
+    # "FALLO definitivo" = 6 intentos agotados; "ABANDON (6h limit)" = tope global
+    # de la réplica. Ambos dejan ese dump sin copia completa.
+    fallo = ssh(SSH_PROD, "grep -E 'off-site (FALLO definitivo|ABANDON)' /var/log/aijusticia_offsite.log 2>/dev/null | tail -1")
+    if f" {nombre}" in fallo:
         return ("fail" if edad_d > 2 else "warn"), \
-            f"réplica de {nombre} falló · último completo hace {edad_d:.0f}d"
+            f"réplica de {nombre} abandonada · último completo hace {edad_d:.0f}d"
     if edad_d <= 2:
         detalle = f"último completo hace {edad_d:.0f}d · {nombre} "
         return "ok", detalle + (f"replicando ({pct})" if en_vuelo else "aún sin replicar")
