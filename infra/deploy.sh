@@ -1,9 +1,25 @@
 #!/bin/bash
 # Deploy a producción con gate de salud. Uso: bash infra/deploy.sh [api|web|all]
+#
+# El gate corre DESPUÉS de desplegar y usa infra/salud_ci.py: un fallo ya
+# alertado (por el monitor cada 30 min) no vuelve a fallar el deploy. Sólo
+# fallan los fallos nuevos, o los que persisten 12h tras el último aviso.
+# La memoria de alertas es $SALUD_ESTADO (CI la guarda en la cache de Actions).
 set -euo pipefail
 cd "$(dirname "$0")/.."
 TARGET="${1:-all}"
 PROD=root@162.35.113.166
+SALUD_ESTADO="${SALUD_ESTADO:-/tmp/aij-salud-alerta.json}"
+
+gate_de_salud() {
+  echo "== gate de salud (falla sólo con fallos nuevos o persistentes) =="
+  if python3 infra/salud_ci.py --estado "$SALUD_ESTADO"; then
+    echo "✅ deploy OK"
+  else
+    echo "❌ gate de salud: hay fallos nuevos o que persisten — ver arriba"
+    exit 1
+  fi
+}
 
 echo "== deploy $TARGET → 162 =="
 case "$TARGET" in
@@ -25,20 +41,13 @@ case "$TARGET" in
     sleep 4
     ;;
   all)
-    bash "$0" api
-    bash "$0" web
-    exit 0
+    # un solo gate, al final: los pasos individuales no gatean por separado
+    SIN_GATE=1 bash "$0" api
+    SIN_GATE=1 bash "$0" web
     ;;
   *) echo "uso: deploy.sh [api|web|all]"; exit 1;;
 esac
 
-echo "== gate de salud (falla solo en críticos; warns se muestran) =="
-python3 infra/salud.py > /tmp/salud_deploy.log 2>&1
-code=$?
-tail -n +1 /tmp/salud_deploy.log | grep -E "^(✅|⚠️ |❌|==)" || true
-if [ "$code" -le 1 ]; then
-  echo "✅ deploy OK (críticos limpios)"
-else
-  echo "❌ salud con fallas críticas tras el deploy — revisar antes de seguir"
-  exit 1
+if [ "${SIN_GATE:-0}" != "1" ]; then
+  gate_de_salud
 fi

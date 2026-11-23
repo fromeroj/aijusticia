@@ -5,8 +5,16 @@ on:
     branches: [main]
   pull_request:
   schedule:
-    - cron: "*/30 * * * *"   # monitoreo externo cada 30 min
+    - cron: "*/30 * * * *"   # monitoreo cada 30 min
   workflow_dispatch:
+
+# Tres jobs:
+#   checks  — push/PR: compila, build de Next.js y salud HTTP de producción
+#   monitor — cada 30 min: salud INTEGRAL (HTTP + servidores, por SSH). Alerta
+#             una sola vez por conjunto de fallos (infra/salud_ci.py): un fallo
+#             que dura horas no genera decenas de correos.
+#   deploy  — push a main: despliega y pasa el mismo gate, compartiendo la
+#             memoria de alertas del monitor.
 
 jobs:
   checks:
@@ -22,10 +30,10 @@ jobs:
         run: python -m compileall -q engine/ai_justicia data/ eval/ infra/
       - name: Sintaxis de scripts shell
         run: |
-          for f in infra/*.sh data/ingestion/*.sh data/harvesters/*.sh; do
+          for f in infra/*.sh data/ingestion/*.sh data/harvesters/*.sh infra/cron/*.sh; do
             [ -f "$f" ] && bash -n "$f"
           done
-      - name: Salud de producción (pre-merge — falla solo en críticos)
+      - name: Salud de producción (HTTP — falla si hay un fallo)
         run: |
           python3 infra/salud.py || code=$?
           [ "${code:-0}" -le 1 ] && exit 0 || exit 1
@@ -51,12 +59,33 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r infra/requirements.txt
-      - name: Salud externa (falla solo en críticos)
+      - name: Setup SSH
         run: |
-          python3 infra/salud.py || code=$?
-          [ "${code:-0}" -le 1 ] && exit 0 || exit 1
-        env:
-          SALUD_SIN_SSH: "1"
+          mkdir -p ~/.ssh
+          echo "${{ secrets.CI_SSH_KEY }}" > ~/.ssh/ci_ed25519
+          chmod 600 ~/.ssh/ci_ed25519
+          for h in 162.35.113.166 66.154.100.25 148.135.106.227; do
+            ssh-keyscan -H "$h" >> ~/.ssh/known_hosts 2>/dev/null
+          done
+          printf "Host 162.35.113.166 66.154.100.25 148.135.106.227\n  User root\n  IdentityFile ~/.ssh/ci_ed25519\n" > ~/.ssh/config
+      - name: Restaurar memoria de alertas
+        uses: actions/cache/restore@v4
+        with:
+          path: .salud-alerta.json
+          # la key es nueva en cada corrida (nunca existe como tal): sirve para
+          # traer por prefijo la memoria más reciente guardada
+          key: salud-alertas-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            salud-alertas-
+      - name: Salud integral (HTTP + servidores)
+        run: python3 infra/salud_ci.py --estado .salud-alerta.json
+      - name: Guardar memoria de alertas
+        if: always()
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: .salud-alerta.json
+          key: salud-alertas-${{ github.run_id }}-${{ github.run_attempt }}
 
   deploy:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -74,11 +103,25 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.CI_SSH_KEY }}" > ~/.ssh/ci_ed25519
           chmod 600 ~/.ssh/ci_ed25519
-          ssh-keyscan -H 162.35.113.166 >> ~/.ssh/known_hosts 2>/dev/null
-          ssh-keyscan -H 66.154.100.25 >> ~/.ssh/known_hosts 2>/dev/null
-          ssh-keyscan -H 148.135.106.227 >> ~/.ssh/known_hosts 2>/dev/null
+          for h in 162.35.113.166 66.154.100.25 148.135.106.227; do
+            ssh-keyscan -H "$h" >> ~/.ssh/known_hosts 2>/dev/null
+          done
           printf "Host 162.35.113.166 66.154.100.25 148.135.106.227\n  User root\n  IdentityFile ~/.ssh/ci_ed25519\n" > ~/.ssh/config
-      - name: Deploy API + web
+      - name: Restaurar memoria de alertas (la misma que usa el monitor)
+        uses: actions/cache/restore@v4
+        with:
+          path: .salud-alerta.json
+          key: salud-alertas-deploy-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            salud-alertas-
+      - name: Deploy API + web (con gate de salud al final)
         run: bash infra/deploy.sh all
-      - name: Gate de salud post-deploy
-        run: python3 infra/salud.py
+        env:
+          SALUD_ESTADO: .salud-alerta.json
+      - name: Guardar memoria de alertas
+        if: always()
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: .salud-alerta.json
+          key: salud-alertas-deploy-${{ github.run_id }}-${{ github.run_attempt }}

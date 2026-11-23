@@ -176,17 +176,15 @@ make deploy-data  # sincroniza data/ a 162 y 66
 Para exigir aprobación antes de deployar: GitHub → Environments → production →
 required reviewers (la llave de CI vive en el secret `CI_SSH_KEY`).
 
-### Verificar salud ( checklist)
+### Verificar salud
 ```bash
-# Producción
-curl -s https://aijusticia.mx/health
-curl -s https://aijusticia.mx/corpus/status | head -c 200
-# Servicios + ingesta diaria en 162
-ssh root@162.35.113.166 "systemctl is-active aijusticia-engine aijusticia-web; \
-  tail -2 /var/log/aijusticia_dof.log; crontab -l | tail -2"
-# Harvest auxiliar (66.154 → DB archivo 182)
-ssh root@66.154.100.25 "tail -1 /opt/aijusticia/ordenjuridico_full.log"
+make salud          # chequeo integral (~30s): HTTP + servidores, por SSH
+make salud-full     # + un smoke real del chat
 ```
+Lo mismo corre solo cada 30 min en CI (job `monitor`) y alerta una sola vez
+por conjunto de fallos (`infra/salud_ci.py`): repite a las 12h si persiste.
+Incluye lo que antes pasaba inadvertido: kills por OOM, resultado del
+mantenimiento nocturno, réplica off-site y disco del storage.
 
 ### Diagnóstico rápido
 | Síntoma | Causa probable | Fix |
@@ -195,32 +193,43 @@ ssh root@66.154.100.25 "tail -1 /opt/aijusticia/ordenjuridico_full.log"
 | `/health` ok pero sin respuesta | MiniMax cloud caído / API key | revisar `LMSTUDIO_BASE_URL` en el .env del VPS |
 | Chat sin eventos `laws` | buscar_en_ley falla (col falta) | revisar `journalctl -u aijusticia-engine \| grep buscar_en_ley` |
 | DB connection refused/fatal | postgres local de 162 caído | `ssh root@162.35.113.166 "pg_isready -h 127.0.0.1"` |
+| Correo "OOM recientes" | un proceso nocturno se desbordó | `journalctl -k --since "-30 hours" | grep "Out of memory"`; todo paso nocturno debe correr bajo `systemd-run --scope -p MemoryMax=1500M` |
+| Correo "réplica off-site … sin réplica en curso" | la réplica al storage no se lanzó | `tail /var/log/aijusticia_offsite.log`; espacio en el storage (`backup_db.sh` no lanza con <20GB libres) |
+| `/corpus/status` lento | no debería: recalcula en segundo plano | `journalctl -u aijusticia-engine | grep corpus_status` |
 
 ---
 
-## 5. Corpus — estado y scripts (12 oct 2026)
+## 5. Corpus — estado y scripts (23 nov 2026)
 
-| Fuente | Docs | Nota |
-|--------|------|------|
-| DOF | 161,577 | vivo (diario) |
-| SJF | 149,995 | tesis + ejecutorias |
-| SentenciasEdomex/CDMX/Qro | 66,726 | harvests por estado |
-| GacetaEstatal | 15,123 | 31 entidades (gacetas oficiales) |
-| GacetaCDMX | 2,193 | |
-| LeyesBiblio / LexMX / Justia | 1,195 | leyes federales/estatales |
-| **OrdenJuridico** | creciendo | **32 estados — leyes consolidadas; harvest en curso (script `harvest_ordenjuridico.py`, resume con estado.json, borra archivos tras extraer)** |
+Fuente de verdad: `https://aijusticia.mx/corpus/status` y
+`docs/components/data-consumer.md`.
 
-### Limpieza de corpus (el texto estaba sucio)
+| Fuente | Docs | Último ingreso | Estado |
+|--------|------|----------------|--------|
+| DOF | 161,975 | diario | ✅ cron 17:30 UTC |
+| SJF | 150,509 | diario | ✅ cron nocturno con watermark |
+| SentenciasEdomex | 63,211 | — | completa de su manifiesto ingestado |
+| SentenciasCDMX | 42,947 | — | completa |
+| UNAM-Tesis | 17,616 | 11-nov | completa |
+| OrdenJuridico (32 estados) | 29,261 | 23-nov | +1,409 recuperadas de 182 |
+| GacetaEstatal | 21,056 | **7-nov** | ❌ **sin cosecha en producción** (scheduler no instalado en 162) |
+| GacetaCDMX | 4,397 | — | |
+| LeyesBiblio | 18 canónicas | **15-oct** | ❌ sin refresco automático (a mano) |
+| LexMX | 317 | agosto | manual |
+| **Total** | **500,868** | | ~19.5M chunks |
+
+### Mantenimiento del corpus (cada paso con tope de memoria y plazo)
 ```bash
-# en el VPS, tras un harvest grande:
 cd /opt/aijusticia/engine
-.venv/bin/python scripts/limpieza_profunda.py   # idempotente, solo filas sucias
-.venv/bin/python scripts/fix_titulos_oj.py      # títulos mojibake de ordenjuridico
-.venv/bin/python scripts/migrar_articulo_num.py # (solo si falta la columna)
+# incremental (lo que corre cada noche):
+systemd-run --scope -p MemoryMax=1500M -p MemorySwapMax=0 nice -n 19 \
+  timeout 180m .venv/bin/python scripts/quality/limpieza_profunda.py
+# barrido completo reanudable (domingos):  ... --completo
+# traer documentos de otra DB sin pisar nada:
+  ... scripts/ingestion/importar_jsonl_documentos.py <export.jsonl.gz>
 ```
-`limpieza_profunda` arregla: guiones partidos, saltos/espacios, números de
-página, controles/form-feeds, mojibake, "Artículo N" en minúsculas, títulos.
-FTS se reindexa solo (columnas GENERATED). Embeddings no cambian.
+Nunca re-ingerir una fuente completa con los ingesters: reescriben todos sus
+chunks y pisan texto limpio con texto crudo (Nov 2026: 4.6M de filas por noche).
 
 ---
 
@@ -245,12 +254,24 @@ Ver `tohil/` (Makefile, configs Soup, eval_bateria.py) y `docs/`.
 
 ---
 
-## 6. Seguridad
+## 7. Seguridad
 
-- SSH solo con llave en los servidores (162.35, 66.154, 192.227, 182.255)
+- **SSH sólo con llave en los cinco servidores** (aplicado 23-nov-2026). Hasta
+  ese día los cinco tenían `PasswordAuthentication yes` + `PermitRootLogin yes`
+  — este documento ya decía "sólo con llave" y era falso — y la producción
+  estaba bajo fuerza bruta como root (5,500 intentos fallidos en 3 horas). Ninguna
+  contraseña llegó a aceptarse. Drop-in `/etc/ssh/sshd_config.d/00-solo-llave.conf`
+  (`PasswordAuthentication no`, `PermitRootLogin prohibit-password`).
+  **Rollback:** borrar ese archivo y `systemctl reload ssh`.
+  Llaves en uso: la del dueño (Mac) y `ci@aijusticia` (162, 66, storage).
+- ⚠️ **Un VPS que no está en este runbook entra a 182 por SSH**: llave
+  `root@vps3610288.trouble-free.net`, desde 162.35.184.145 (Interserver), una
+  sesión cada ~9 segundos. Está autorizada en el `authorized_keys` de 182.
+  Identificar qué es antes de cancelar 182.
 - El :6234 del VPS es HTTP plano — solo aceptable porque viaja entre
   servidores propios; si se expone a internet directo, poner TLS o restricción
   por IP en nginx (`allow 192.227.167.147; deny all;`)
+- PostgreSQL de producción: localhost + 66.154.100.25 únicamente (scram).
 - La frase de recuperación NUNCA sale del navegador del usuario (solo hash Argon2/PBKDF2 en DB)
 - Bóveda de archivos: cifrada en cliente (fase C)
 - Tokens de dispositivo: SHA-256 hasheados en `actores.token_dispositivo_hash`
@@ -260,14 +281,20 @@ Ver `tohil/` (Makefile, configs Soup, eval_bateria.py) y `docs/`.
 
 ---
 
-## 7. Pendientes conocidos
+## 8. Pendientes conocidos
+- [ ] **Decidir retención del storage** (`tlamatini:/srv/backups`): 80% usado,
+  9.7GB por dump, sin política. `backup_db.sh` deja de replicar con <20GB libres.
+- [ ] **Cosecha de gacetas estatales en producción**: instalar/reescribir el
+  scheduler de fuentes (`aijusticia-ingest.timer` sólo existió en 182).
+- [ ] **Refresco automático de leyes federales** (LeyesBiblio): hoy es manual.
+- [ ] Identificar el VPS `vps3610288.trouble-free.net` que entra a 182 (ver §7).
+- [ ] Cancelar el VPS de 182 (su contenido útil ya está en producción).
 - [ ] DNS aijusticia.com.mx → 192.227.167.147 (Caddy ya listo)
 - [ ] Google OAuth: crear proyecto Google Cloud + secrets
 - [ ] Fase C: bóveda cifrada de documentos (UI + WebCrypto)
 - [ ] Fase D: compartir dossiers con abogados + audit log + directorio
-- [x] ~~DOF backfill~~ — DOF vivo vía scheduler (161K docs, al día)
-- [ ] Monitoreo externo (UptimeRobot o similar sobre /health)
-- [ ] Respaldos de la DB de producción (397K docs en 182.255 — pg_dump semanal)
-- [ ] CPT Tlamatini v1: reexportar corpus con `prep_cpt_completo.py` DESPUÉS
-      de que `limpieza_profunda` + harvest OrdenJuridico terminen (12-oct)
+- [x] ~~Monitoreo externo~~ — CI monitor cada 30 min, integral, con alertas deduplicadas
+- [x] ~~Respaldos de la DB~~ — diario, verificado, con réplica off-site
+- [ ] CPT Tlamatini v1: exportar el corpus desde 162 (`prep_cpt_completo.py`)
 - [ ] Voz (TTS/STT) en el chat — sesión 3 del plan de rediseño
+- [ ] RackNerd (Caddy): disco al 80% y swap casi lleno

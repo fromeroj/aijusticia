@@ -169,6 +169,31 @@ def count_documentos() -> int:
             return cur.fetchone()[0]
 
 
+def estimados() -> tuple[int, int]:
+    """(documentos, chunks) según el estimado del planificador — instantáneo.
+
+    COUNT(*) exacto sobre ~18M chunks tarda de 10 a 45s cuando el visibility map
+    está viejo (tras ingestas grandes). /health lo usaba: tardaba, y tiraba los
+    monitores por timeout. Para una señal de salud sobra el estimado de
+    pg_class (error < 1%); el exacto sigue en /corpus/status.
+    """
+    with get_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT relname, reltuples::bigint FROM pg_class
+                WHERE relnamespace = 'public'::regnamespace AND relkind = 'r'
+                  AND relname IN ('documentos', 'documentos_chunks')
+                """)
+            vals = dict(cur.fetchall())
+    docs = max(vals.get("documentos", -1), 0)
+    chunks = max(vals.get("documentos_chunks", -1), 0)
+    if not vals or vals.get("documentos", -1) < 0 or vals.get("documentos_chunks", -1) < 0:
+        # nunca analizado: no hay estimado, se cuenta
+        return count_documentos(), count_chunks()
+    return docs, chunks
+
+
 def count_chunks() -> int:
     with get_conn() as conn:
         with conn.cursor() as cur:

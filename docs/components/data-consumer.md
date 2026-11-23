@@ -2,47 +2,78 @@
 
 **Qué es**: todo lo que llena y mantiene limpias las bases de datos.
 **Vive en**: repo `data/` (harvesters/, ingestion/, quality/, prep/).
-**Corre en**: 162 (DOF diario, ventana nocturna de mantenimiento), 66.154 (harvest pesado OJ→182), Mac (cosechas que requieren navegador).
+**Corre en**: 162 (DOF diario y ventana nocturna, por cron), 66.154 (cosechas pesadas, a mano), Mac (cosechas con navegador).
 
 ## Piezas
-- `harvesters/` — uno por fuente: `harvest_ordenjuridico.py` (32 estados, resume por `estado.json`, borra archivos tras extraer), `_edomex`, `_bc`, `_chiapas`, `_coahuila` (API PJECZ), `_sivepj` (CDMX), `_nl` (Playwright en Mac), `_lexmx`, `_ejecutorias` (Imperva + proxy), `browser/` (extension-jalisco).
-- `ingestion/` — `ingest_all.py` (adapters DOF/SJF/LeyesBiblio/…), `ingest_sentencias.py` (JSONL→corpus, dedup por md5 del texto), `ingest_universal.py`, `migrar_*.py`, `cron_diferencial.sh` (⚠️ legacy, funcionalmente duplicado por `dof_diario.sh` — limpiar).
-- `quality/` — `limpieza_profunda.py` (idempotente, portable a ambos schemas, solo toca filas sucias), `fix_titulos_oj.py`.
+- `harvesters/` — uno por fuente: `harvest_ordenjuridico.py` (32 estados),
+  `recupera_oj.py` / `redescarga_oj.py` (recuperación de rechazos y de leyes
+  perdidas), `_edomex`, `_bc`, `_chiapas`, `_coahuila`, `_sivepj`, `_nl`,
+  `_lexmx`, `_ejecutorias`, `browser/`.
+- `ingestion/` — `ingest_all.py` (adapters DOF/SJF/LeyesBiblio, con watermark),
+  `ingest_sentencias.py`, `ingest_unam_tesis.py`,
+  `importar_jsonl_documentos.py` (trae filas de otra DB sin pisar nada),
+  `refrescar_leyesbiblio.py`, `backup_db.sh`, `cron_diferencial.sh` (histórico).
+- `quality/` — `limpieza_profunda.py` (incremental por defecto; `--completo`
+  reanudable; memoria acotada), `fix_titulos_oj.py`.
 - `prep/` — `prep_cpt_completo.py`, `build_harness_mx.py` (export para Tlamatini).
 
-## Cómo corre
-| Job | Dónde | Cuándo |
+## Qué corre solo (crons de 162 — ver `infra/cron/`)
+
+| Job | Cuándo | Qué hace |
 |---|---|---|
-| DOF diario | 162 cron 11:30 CDMX (`dof_diario.sh`) | diario |
-| Mantenimiento (limpieza + re-ingestas) | 162 cron 02:30 CDMX (`mantenimiento_nocturno.sh`, nice 19) | diario |
-| Harvest OJ 32 estados | 66.154 (`/opt/aijusticia/run_oj.sh`, setsid) | continuo hasta terminar |
-| Cosechas con navegador | Mac, manual | por proyecto |
+| `dof_diario.sh` | 17:30 UTC | DOF de ayer y hoy (con watermark) |
+| `mantenimiento_nocturno.sh` | 08:30 UTC | limpieza incremental (barrido completo los domingos) + SJF del día |
+| `backup_cron.sh` | 04:00 UTC | dump verificado + réplica off-site |
 
-## Reglas
-- Escribe SOLO vía `batch_upsert_documentos` (dedup por `(fuente, dedup_key)`).
-- Nunca importa de `services/`; la DB de destino es un parámetro del entorno.
-- Cosechas con WAF: curl_cffi impersonate=chrome; con reCAPTCHA: CDP/extension.
-- Trabajos pesados: SOLO en ventana nocturna de 162 o en 66 (lección 14-oct: load 20 = sitio degradado).
+Todo paso nocturno corre con tope de memoria (1.5GB), plazo y nice 19.
 
-## Estado / pendientes (15-oct)
-- SIVEPJ 30,526 sentencias CDMX: en cola nocturna (mantenimiento 02:30).
-- Harvest OJ: COMPLETO — 24,022 directos + recuperación en curso de 2,789
-  rechazos que eran OOXML mal-extensionados (`recupera_oj.py`, extrae y sube a 182).
-- ❌ **Coahuila BLOQUEADO**: la API lista autoridades y sentencias, pero el
-  acceso a PDF está roto por su lado — URL firmada de GCS devuelve 403 y
-  `?descargar=true` devuelve `url` vacía. Evidencia en 15-oct. Requiere
-  contacto con PJECZ o descubrir el nuevo flujo de descarga.
-- NL: metadatos sin texto — re-corrida Playwright en Mac.
-- 7 códigos de `LEYES_CLAVE` siguen 404 (lnsijp, lm, la, lamp, lcp, cft, cpcf —
-  abreviaturas oficiales desconocidas; 4 ya corregidos: lgpdppso/lopjf/cnpcf/lgsm).
-- Morelos: ordenjuridico.gob.mx lista solo 5 ordenamientos para el estado —
-  no es un bug nuestro.
-- Storage: 148.135.106.227 (hostname `tlamatini`) reemplaza al caído
-  161.129.70.21 — NFS `/srv/office`, `/srv/backups` y `/srv/corpus` (ro) montados en 162.
-- **UNAM-Tesis** (15-oct): 4.5GB / ~43K tesis del Repositorio UNAM con texto
-  extraído (estaban sin procesar en el storage). Ingesta continua con nice —
-  fuente `UNAM-Tesis`, jerarquía DOCTRINA (70), no vinculante, excluida de
-  citación de ley por diseño. Tarda ~2-3 días (chunks+FTS); queda consultable
-  incrementalmente y entra al export CPT.
-- El server de storage guarda además: dump RAG viejo (9GB, redundante),
-  PDFs fuente de Edomex/Qro (ya procesados) — espacio de sobra (159GB).
+## Qué NO corre solo — y por qué (estado al 23-nov-2026)
+
+| Fuente | Documentos | Último ingreso | Situación |
+|---|---|---|---|
+| DOF | 161,975 | diario | ✅ al día (no publica en puentes oficiales) |
+| SJF | 150,509 | diario | ✅ al día con su feed |
+| UNAM-Tesis | 17,616 | 11-nov | ✅ completa (el archivo tenía 17,619 con texto; no ~43K) |
+| SentenciasCDMX | 42,947 | — | ✅ completa (SIVEPJ era duplicado puro) |
+| OrdenJuridico (32 estados) | 29,261 | 23-nov | ✅ + 1,409 recuperadas de 182; quedan ~1,657 escaneadas sin texto (requieren OCR) |
+| **GacetaEstatal (31 estados)** | 21,056 | **7-nov** | ❌ **sin cosecha en producción.** Lo que hay del 27-oct al 7-nov llegó por 182 |
+| **LeyesBiblio** | 18 leyes canónicas | **15-oct** | ❌ **sin refresco automático** — se corre a mano |
+| LexMX | 317 | agosto | ⚠️ manual |
+
+**Gacetas.** El scheduler de fuentes —systemd `aijusticia-ingest.timer` que corre
+`python -m ai_justicia.ingestion.scheduler` sobre las filas de `source_health`
+(adaptadores `generico` / `playwright` por entidad)— **sólo existía en el server
+viejo (182) y nunca se instaló en 162**. Además, 21 de las 31 fuentes de gaceta
+llevan `degraded`/`unknown` desde el 27-ago (nunca funcionaron); sólo Baja
+California y Durango terminaban limpias, y Chiapas, Chihuahua y Colima con 3
+fallos seguidos. Restaurar la cosecha es un trabajo pendiente, no un switch.
+
+**Leyes federales.** El `cron_diferencial.sh` viejo refrescaba a diario ~19 leyes
+clave de diputados.gob.mx. Se quitó de 162 el 14-oct por considerarlo duplicado
+del DOF; su parte DOF/SJF sí estaba cubierta, **el refresco de leyes no**. Desde
+entonces la LFT y demás textos consolidados sólo se actualizan cuando alguien
+corre `refrescar_leyesbiblio.py` a mano.
+
+## Reglas (cada una salió de una falla real)
+- Escribe sólo por upsert idempotente (`(fuente, dedup_key)`).
+- **Nunca re-ingerir una fuente completa con los ingesters actuales**: deduplican
+  sólo en memoria y reescriben todos los chunks (Nov 2026: ~4.6 millones de filas
+  borradas y reinsertadas cada noche, pisando texto limpio con texto crudo).
+- **Nunca `fetchall()` de textos largos**: un documento a la vez (las tesis UNAM
+  miden 261K caracteres en promedio y hasta 3MB).
+- Un trabajo nocturno sin tope de memoria acaba corriendo en horario laboral.
+- Bytes NUL en JSONL de origen: sanear `\x00` antes de insertar.
+- `pgrep`/`pkill -f` por SSH: el patrón siempre con corchetes (`[r]sync`), o se
+  matchea a sí mismo y da un falso positivo.
+- Exportar filas a JSONL: `COPY … TO STDOUT WITH (FORMAT csv, QUOTE E'\x01',
+  DELIMITER E'\x02')`; el formato texto duplica las barras invertidas y rompe el JSON.
+- Cosechas con WAF: curl_cffi `impersonate="chrome"`; con reCAPTCHA: CDP/extensión.
+- Trabajos pesados: ventana nocturna de 162, 66 o la Mac.
+
+## Pendientes
+- Instalar/reescribir el scheduler de gacetas en producción (ver arriba).
+- Refresco semanal automático de leyes federales.
+- Coahuila: la API lista pero el PDF da 403 (bloqueado de su lado).
+- Nuevo León y Jalisco: sentencias a medias, requieren navegador.
+- 7 códigos de `LEYES_CLAVE` dan 404 en diputados.gob.mx.
+- OCR de ~1,657 leyes estatales escaneadas.

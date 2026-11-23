@@ -1,9 +1,10 @@
 """Estado público del corpus: stats por fuente, por entidad y totales.
 
-GET /corpus/status — sin auth, cacheado 5 min (los números son agregados).
+GET /corpus/status — sin auth; cacheado 15 min, se recalcula sin bloquear la petición.
 """
 from __future__ import annotations
 
+import threading
 import time
 from datetime import datetime, timezone
 
@@ -16,7 +17,30 @@ router = APIRouter(tags=["corpus"])
 
 _CACHE: dict | None = None
 _CACHE_AT = 0.0
-CACHE_TTL = 300  # segundos
+CACHE_TTL = 900  # segundos: son agregados de un corpus de ~500K documentos
+_REFRESCANDO = False
+_lock = threading.Lock()
+
+
+def _refrescar() -> None:
+    """Recalcula las estadísticas (10-30s) y las publica."""
+    global _CACHE, _CACHE_AT
+    try:
+        datos = _consultar()
+    except Exception as e:
+        logger.error("corpus_status: %s", str(e)[:200])
+        return
+    with _lock:
+        _CACHE, _CACHE_AT = datos, time.time()
+
+
+def _refrescar_en_segundo_plano() -> None:
+    global _REFRESCANDO
+    try:
+        _refrescar()
+    finally:
+        with _lock:
+            _REFRESCANDO = False
 
 # cadencia esperada de cada fuente (días) para el semáforo de frescura
 _CADENCIA = {
@@ -126,13 +150,25 @@ def _consultar() -> dict:
 
 @router.get("/corpus/status")
 def corpus_status():
-    global _CACHE, _CACHE_AT
-    if _CACHE is None or time.time() - _CACHE_AT > CACHE_TTL:
-        try:
-            _CACHE = _consultar()
-            _CACHE_AT = time.time()
-        except Exception as e:
-            logger.error("corpus_status: %s", str(e)[:200])
-            if _CACHE is None:
-                return {"error": "estadísticas no disponibles"}
-    return _CACHE
+    """Estadísticas del corpus.
+
+    stale-while-revalidate: se entrega siempre la última versión calculada y, si
+    venció, se recalcula en un hilo aparte. Recalcular cuesta 10-30s (un COUNT(*)
+    sobre 18M chunks); con la petición bloqueada, dos corridas de CI solapadas
+    bastaban para que /corpus/status tardara más que el timeout del monitor.
+    El campo `generado` dice cuándo se calcularon los números entregados.
+    """
+    global _REFRESCANDO
+    with _lock:
+        cache, vencido = _CACHE, time.time() - _CACHE_AT > CACHE_TTL
+        lanzar = vencido and not _REFRESCANDO
+        if lanzar:
+            _REFRESCANDO = True
+    if cache is None:
+        # primera llamada tras arrancar: no hay nada que entregar, sí se espera
+        _refrescar()
+        with _lock:
+            return _CACHE if _CACHE is not None else {"error": "estadísticas no disponibles"}
+    if lanzar:
+        threading.Thread(target=_refrescar_en_segundo_plano, daemon=True).start()
+    return cache

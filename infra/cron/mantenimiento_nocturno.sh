@@ -1,11 +1,50 @@
 #!/bin/bash
-# Ventana muerta 02:30 CDMX. Idempotente.
+# Mantenimiento nocturno de PRODUCCIÓN (162) — 02:30 CDMX / 08:30 UTC, vía cron.
+#
+# Cada paso corre con TOPE DE MEMORIA y TIEMPO LÍMITE: si un paso se desborda o
+# se cuelga, muere solo y la producción no se entera.
+#
+# Lecciones que dan forma a este archivo (nov 2026 — todo salió de fallas reales):
+#  - La fase "documentos" de la limpieza cargaba de golpe un rango de tesis UNAM
+#    y llegaba a 10.5GB: el kernel mató procesos con la máquina asfixiada.
+#  - Los pasos "reanudar SIVEPJ/UNAM" volvían a ingerir fuentes ya completas:
+#    ~4.6 millones de chunks borrados y reinsertados CADA noche, además de
+#    pisar el texto ya limpio con texto crudo. NADA de re-ingestas de fuentes
+#    completas: se corren a mano si la fuente cambia.
+#  - Lo que corre de noche sin tope ni plazo acaba corriendo a las 11:00 UTC.
+#
+# Si una fuente TERMINADA recibe datos nuevos, se re-ingiere a mano y acotada:
+#   systemd-run --scope -p MemoryMax=1500M -p MemorySwapMax=0 nice -n 19 \
+#     timeout 120m .venv/bin/python scripts/ingestion/<ingester> ...
+set -u
 cd /opt/aijusticia/engine
-nice -n 19 .venv/bin/python scripts/quality/limpieza_profunda.py >> /var/log/aijusticia_mantenimiento.log 2>&1
-nice -n 19 .venv/bin/python scripts/ingestion/ingest_sentencias.py SentenciasCDMX "/opt/aijusticia/corpus_downloads/sivepj/sivepj_sentencias_*.jsonl" >> /var/log/aijusticia_mantenimiento.log 2>&1
-# SJF diario (tesis nuevas — sin esto se congela, lección nov-2026)
-nice -n 19 .venv/bin/python scripts/ingestion/ingest_all.py --fuentes SJF >> /var/log/aijusticia_sjf.log 2>&1
-# UNAM-Tesis: retoma donde se quedó (dedup por hash — barato si ya terminó)
-if ! pgrep -f ingest_unam_tesis > /dev/null; then
-  nice -n 19 .venv/bin/python scripts/ingestion/ingest_unam_tesis.py >> /var/log/aijusticia_unam.log 2>&1
+PY=.venv/bin/python
+LOG=/var/log/aijusticia_mantenimiento.log
+
+# Tope por paso: 1.5GB de RAM, sin swap, baja prioridad.
+CAP=(systemd-run --scope --quiet -p MemoryMax=1500M -p MemorySwapMax=0 nice -n 19)
+
+run() {  # run <minutos máx> <log> <comando...>
+  local mins="$1" log="$2"; shift 2
+  echo "$(date -u +%FT%TZ) inicio (máx ${mins} min): $*" >> "$log"
+  if timeout "${mins}m" "${CAP[@]}" "$@" >> "$log" 2>&1; then
+    echo "$(date -u +%FT%TZ) ok: $*" >> "$log"
+  else
+    echo "$(date -u +%FT%TZ) FALLO rc=$?: $*" >> "$log"
+  fi
+}
+
+echo "$(date -u +%FT%TZ) ===== mantenimiento nocturno =====" >> "$LOG"
+
+# 1) Limpieza del corpus. Cada noche: incremental (sólo lo actualizado en 48h).
+#    Los domingos: barrido completo reanudable de toda la tabla.
+if [ "$(date +%u)" = "7" ]; then
+  run 360 "$LOG" $PY scripts/quality/limpieza_profunda.py --completo
+else
+  run 180 "$LOG" $PY scripts/quality/limpieza_profunda.py
 fi
+
+# 2) SJF del día (con watermark: segundos si no hay nada nuevo)
+run 30 /var/log/aijusticia_sjf.log $PY scripts/ingestion/ingest_all.py --fuentes SJF
+
+echo "$(date -u +%FT%TZ) ===== fin del mantenimiento =====" >> "$LOG"

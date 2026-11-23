@@ -2,15 +2,29 @@
 """Salud integral del sistema AI Justicia — un comando, todo el sistema.
 
 Uso:
-  python3 infra/salud.py               # chequeo estándar (~15s)
+  python3 infra/salud.py               # chequeo estándar (~30s)
   python3 infra/salud.py --full        # + smoke del chat (1 pregunta real)
   python3 infra/salud.py --json        # salida JSON (para CI)
-Exit codes: 0 = todo OK · 1 = advertencias · 2 = fallo crítico
+  SALUD_SIN_SSH=1 python3 infra/salud.py   # sólo lo que se ve por HTTP
+Exit codes: 0 = todo OK · 1 = avisos · 2 = al menos un fallo
+
+Qué aprendió este script (cada chequeo nació de una falla real que nadie vio):
+  - frescura DOF        → el DOF deja de publicar en puentes oficiales: hasta 6
+                          días es aviso, no fallo.
+  - backup off-site     → la réplica estuvo 5 días parada (19-23 nov 2026) y el
+                          monitor no la miraba. Atraso sin réplica en vuelo = fallo.
+  - OOM recientes       → el mantenimiento nocturno asfixió la máquina tres veces
+                          (10, 22, 23 nov 2026) sin que ningún chequeo lo viera.
+  - mantenimiento       → un paso nocturno que falla debe verse al día siguiente.
+  - sin pgrep remotos sin corchetes: el patrón se matchea a sí mismo por SSH y
+    da un "ok" falso (el viejo chequeo del harvest llevaba semanas en falso verde).
 """
 from __future__ import annotations
 
 import argparse
 import json
+import os
+import re
 import subprocess
 import sys
 import time
@@ -22,22 +36,27 @@ PROD = "https://aijusticia.mx"
 OFFICE = "http://162.35.113.166:8080"
 SSH_PROD = "root@162.35.113.166"
 SSH_AUX = "root@66.154.100.25"
+SSH_STORAGE = "root@148.135.106.227"
 SSH_TIMEOUT = 25
 
 RESULTADOS: list[dict] = []
 
 
 def check(nombre: str, fn, critico: bool = True):
+    """Ejecuta un chequeo. Si devuelve None se omite (no aplica en este entorno)."""
     t0 = time.time()
     try:
-        estado, detalle = fn()
+        r = fn()
     except Exception as e:
-        estado, detalle = "fail", f"excepción: {str(e)[:120]}"
+        r = ("fail", f"excepción: {str(e)[:120]}")
+    if r is None or r[0] is None:
+        return
+    estado, detalle = r
     dt = round(time.time() - t0, 1)
     icono = {"ok": "✅", "warn": "⚠️ ", "fail": "❌"}[estado]
     RESULTADOS.append({"check": nombre, "estado": estado, "detalle": detalle,
                        "segundos": dt, "critico": critico})
-    print(f"{icono} {nombre:38s} {detalle[:80]}  ({dt}s)", flush=True)
+    print(f"{icono} {nombre:34s} {detalle[:90]}  ({dt}s)", flush=True)
 
 
 def http(url: str, expect: int = 200, timeout: int = 20) -> tuple[str, str]:
@@ -47,18 +66,16 @@ def http(url: str, expect: int = 200, timeout: int = 20) -> tuple[str, str]:
 
 
 def ssh(host: str, cmd: str, timeout: int = SSH_TIMEOUT) -> str:
-    r = subprocess.run(["ssh", "-o", "ConnectTimeout=15", "-o",
-                        "StrictHostKeyChecking=accept-new", host, cmd],
-                       capture_output=True, text=True, timeout=timeout)
+    try:
+        r = subprocess.run(["ssh", "-o", "ConnectTimeout=15", "-o", "BatchMode=yes", "-o",
+                            "StrictHostKeyChecking=accept-new", host, cmd],
+                           capture_output=True, text=True, timeout=timeout)
+    except subprocess.TimeoutExpired:
+        return ""
     return r.stdout.strip()
 
 
-def dias_desde(iso: str) -> float:
-    then = datetime.fromisoformat(iso.replace("Z", "+00:00"))
-    return (datetime.now(timezone.utc) - then).total_seconds() / 86400
-
-
-# ---- checks ---------------------------------------------------------------
+# ---- lo que se ve por HTTP --------------------------------------------------
 
 def c_web():
     return http(f"{PROD}/")
@@ -72,28 +89,37 @@ def c_engine_health():
         ("fail", f"status={r.status_code} llm={llm}")
 
 
+_CORPUS: dict = {"t": 0.0, "datos": None}
+
+
+def corpus_status() -> dict:
+    """/corpus/status UNA vez por corrida: lo usan dos chequeos."""
+    if _CORPUS["datos"] is None or time.time() - _CORPUS["t"] > 120:
+        r = requests.get(f"{PROD}/corpus/status", timeout=60)
+        r.raise_for_status()
+        _CORPUS.update(t=time.time(), datos=r.json())
+    return _CORPUS["datos"]
+
+
 def c_corpus():
-    r = requests.get(f"{PROD}/corpus/status", timeout=30)
-    t = r.json()["totales"]
+    t = corpus_status()["totales"]
     docs, chunks = t["documentos"], t["chunks"]
     if docs < 400_000:
-        return "warn", f"{docs:,} docs (bajó?)"
+        return "warn", f"{docs:,} docs (¿bajó?)"
     return "ok", f"{docs:,} docs · {chunks/1e6:.1f}M chunks"
 
 
 def c_frescura_dof():
-    r = requests.get(f"{PROD}/corpus/status", timeout=30)
-    for f in r.json()["fuentes"]:
-        if f["fuente"] == "DOF":
-            dias = f["dias_sin_nuevos"]
-            if dias <= 2:
-                return "ok", f"último DOF hace {dias}d ({f['ultimo_doc']})"
-            if dias <= 6:
-                # puentes oficiales largos (Revolución con puente vie-tue, Semana Santa):
-                # el DOF deja de publicar hasta 6 días — warn visible, no página al dueño
-                return "warn", f"sin DOF hace {dias}d (¿puente oficial?) — {f['ultimo_doc']}"
-            return "fail", f"DOF con {dias}d sin nuevos (cron roto?) — {f['ultimo_doc']}"
-    return "fail", "fuente DOF ausente"
+    f = next((x for x in corpus_status().get("fuentes", []) if x["fuente"] == "DOF"), None)
+    if not f:
+        return "fail", "fuente DOF ausente"
+    dias = f["dias_sin_nuevos"]
+    if dias <= 2:
+        return "ok", f"último DOF hace {dias}d ({f['ultimo_doc']})"
+    if dias <= 6:
+        # puentes oficiales largos: el DOF deja de publicar hasta 6 días
+        return "warn", f"sin DOF hace {dias}d (¿puente oficial?) — {f['ultimo_doc']}"
+    return "fail", f"DOF con {dias}d sin nuevos (¿cron roto?) — {f['ultimo_doc']}"
 
 
 def c_chat_stream():
@@ -109,93 +135,154 @@ def c_chat_stream():
     faltan = {"token", "done"} - eventos
     if faltan:
         return "fail", f"sin eventos {faltan}"
-    return "ok", f"streaming ok ({'laws' in eventos and 'con leyes' or 'sin leyes'})"
+    return "ok", f"streaming ok ({'con leyes' if 'laws' in eventos else 'sin leyes'})"
 
 
 def c_office():
     return http(f"{OFFICE}/status.php", timeout=15)
 
 
+# ---- lo que requiere SSH -----------------------------------------------------
+
 def c_servicios_162():
-    out = ssh(SSH_PROD, "systemctl is-active aijusticia-engine aijusticia-web docker | tr '\\n' ' '")
-    if "active" in out and "inactive" not in out and "failed" not in out:
-        return "ok", out
+    out = ssh(SSH_PROD, "systemctl is-active aijusticia-engine aijusticia-web docker postgresql cron | tr '\\n' ' '")
+    estados = out.split()
+    if len(estados) == 5 and all(e == "active" for e in estados):
+        return "ok", " ".join(estados)
     return "fail", out or "sin respuesta ssh"
 
 
 def c_disco_162():
-    out = ssh(SSH_PROD, "df -h / | awk 'NR==2{print $5}'")
-    pct = int(out.rstrip("%") or 0)
-    if pct < 85:
-        return "ok", f"disco {pct}%"
-    return ("warn" if pct < 92 else "fail"), f"disco {pct}%"
+    out = ssh(SSH_PROD, "df -P / | awk 'NR==2{print $5, $4}'")
+    try:
+        pct, libre_gb = int(out.split()[0].rstrip("%")), int(out.split()[1]) // 1048576
+    except (ValueError, IndexError):
+        return "fail", f"sin lectura de disco ({out[:40]!r})"
+    # 182 murió de un disco al 100%: nunca dejar que 162 se acerque
+    return ("ok" if pct < 80 else "warn" if pct < 90 else "fail"), f"disco {pct}% · {libre_gb}GB libres"
 
 
 def c_carga_162():
-    out = ssh(SSH_PROD, "uptime | awk -F'average:' '{print $2}'")
-    load1 = float(out.split(",")[0].strip() or 0)
-    if load1 <= 8:
-        return "ok", f"load {load1}"
-    return ("warn" if load1 <= 14 else "fail"), f"load {load1} (¿mantenimiento de día?)"
+    out = ssh(SSH_PROD, "cat /proc/loadavg | cut -d' ' -f1-3")
+    try:
+        load1 = float(out.split()[0])
+    except (ValueError, IndexError):
+        return "fail", "sin lectura de carga"
+    return ("ok" if load1 <= 8 else "warn" if load1 <= 14 else "fail"), f"load {out}"
 
 
-def c_backup_offsite():
-    # vía SSH al storage directamente (el NFS puede estar colgado aunque
-    # el backup por SSH esté sano)
-    out = ssh("root@148.135.106.227",
-              "stat -c %Y $(ls -t /srv/backups/aijusticia_*.sql.gz 2>/dev/null | head -1) 2>/dev/null",
-              timeout=30)
-    if not out.strip().isdigit():
-        return "fail", "storage sin dumps (copia off-site rota)"
-    edad_d = (time.time() - int(out.strip())) / 86400
-    if edad_d <= 2:
-        return "ok", f"off-site hace {edad_d:.0f}d"
-    return "fail", f"off-site con {edad_d:.0f}d de retraso"
+def c_oom_recientes():
+    """Procesos que el kernel mató por falta de memoria en las últimas 30h."""
+    lineas = ssh(SSH_PROD,
+                 "journalctl -k --since '-30 hours' --no-pager -o short-iso 2>/dev/null "
+                 "| grep 'Out of memory: Killed process'").splitlines()
+    if not lineas:
+        return "ok", "sin kills por OOM en 30h"
+    det = []
+    for linea in lineas:
+        m = re.search(r"Killed process \d+ \(([^)]+)\).*?anon-rss:(\d+)kB", linea)
+        det.append(f"{linea[11:16]}Z {m.group(1)} {int(m.group(2))/1048576:.1f}GB" if m else linea[11:16])
+    return "fail", f"{len(lineas)} kill(s) por OOM: " + ", ".join(det[-3:])
+
+
+def c_mantenimiento():
+    """Resultado de la última corrida del mantenimiento nocturno."""
+    out = ssh(SSH_PROD,
+              "awk '/===== mantenimiento nocturno =====/{n=0} {l[n++]=$0} "
+              "END{for(i=0;i<n;i++) print l[i]}' /var/log/aijusticia_mantenimiento.log 2>/dev/null")
+    if not out:
+        return None, None   # todavía no corre con el formato nuevo
+    lineas = out.splitlines()
+    fallos = [re.sub(r".*FALLO rc=\S+: ", "", l) for l in lineas if "FALLO rc=" in l]
+    if fallos:
+        return "warn", "falló: " + "; ".join(f[:48] for f in fallos[-2:])
+    if not any("fin del mantenimiento" in l for l in lineas):
+        return "warn", "en curso o interrumpido"
+    return "ok", "noche sin fallos"
 
 
 def c_backup():
     out = ssh(SSH_PROD, "stat -c %Y $(ls -t /opt/aijusticia/backups/aijusticia_*.sql.gz 2>/dev/null | head -1) 2>/dev/null")
     if not out.strip().isdigit():
-        return "fail", "sin backups (cron de backup roto)"
+        return "fail", "sin dumps locales (¿cron de backup roto?)"
     edad_h = (time.time() - int(out.strip())) / 3600
-    if edad_h < 30:
-        return "ok", f"último backup hace {edad_h:.0f}h"
-    return "warn", f"backup viejo: {edad_h:.0f}h"
+    return ("ok" if edad_h < 30 else "warn"), f"último dump hace {edad_h:.0f}h"
 
 
-def c_harvest_aux():
-    out = ssh(SSH_AUX, "pgrep -f harvest_ordenjuridico >/dev/null && echo vivo || echo muerto; "
-                       "tail -1 /opt/aijusticia/ordenjuridico_full.log 2>/dev/null")
-    lineas = out.splitlines()
-    vivo = "vivo" in (lineas[0] if lineas else "")
-    progreso = lineas[1][:60] if len(lineas) > 1 else "?"
-    if vivo:
-        return "ok", f"harvest vivo — {progreso}"
-    return "warn", f"harvest detenido — {progreso}"
+def c_backup_offsite():
+    """Debe haber un dump COMPLETO y reciente en el storage.
+
+    Completo = mismo nombre y mismo tamaño (rsync --partial deja un archivo
+    incompleto con el nombre final: el nombre solo no prueba nada).
+    La criticidad es si existe copia completa reciente, no si ya terminó la
+    transferencia del día (que puede tardar horas con el enlace lento).
+    Atrasado y SIN réplica en curso = fallo: así estuvo 5 días (19-23 nov 2026).
+    """
+    local = ssh(SSH_PROD, "f=$(ls -t /opt/aijusticia/backups/aijusticia_*.sql.gz 2>/dev/null | head -1); "
+                          "[ -n \"$f\" ] && basename \"$f\" && stat -c %s \"$f\"")
+    nombre, _, tam = local.partition("\n")
+    if not nombre.startswith("aijusticia_") or not tam.strip().isdigit():
+        return "fail", "sin dumps locales que comparar"
+    tam = int(tam)
+
+    remoto = ssh(SSH_STORAGE, f"stat -c %s /srv/backups/{nombre} 2>/dev/null", timeout=30)
+    if remoto.strip().isdigit() and int(remoto) == tam:
+        return "ok", f"al día ({nombre})"
+
+    # el más nuevo no está completo allá: ¿cuál es el último completo y de cuándo?
+    anterior = ssh(SSH_STORAGE,
+                   f"f=$(ls -t /srv/backups/aijusticia_*.sql.gz 2>/dev/null | grep -v '{nombre}' | head -1); "
+                   "[ -n \"$f\" ] && stat -c '%Y' \"$f\"", timeout=30)
+    try:
+        edad_d = (time.time() - int(anterior.split()[0])) / 86400
+    except (ValueError, IndexError):
+        edad_d = 99.0
+    n_vuelo = ssh(SSH_PROD, "pgrep -fc '[r]sync -a --partial --append-verify'").strip()
+    en_vuelo = n_vuelo.isdigit() and int(n_vuelo) > 0
+    pct = f"{int(remoto) / tam * 100:.0f}%" if remoto.strip().isdigit() else "0%"
+    fallo = ssh(SSH_PROD, "grep -E 'off-site FALLO definitivo' /var/log/aijusticia_offsite.log 2>/dev/null | tail -1")
+
+    if f"FALLO definitivo {nombre}" in fallo:
+        return ("fail" if edad_d > 2 else "warn"), \
+            f"réplica de {nombre} falló · último completo hace {edad_d:.0f}d"
+    if edad_d <= 2:
+        detalle = f"último completo hace {edad_d:.0f}d · {nombre} "
+        return "ok", detalle + (f"replicando ({pct})" if en_vuelo else "aún sin replicar")
+    if en_vuelo:
+        return "warn", f"alcanzando: {pct} de {nombre} · último completo hace {edad_d:.0f}d"
+    return "fail", f"off-site con {edad_d:.0f}d de retraso y sin réplica en curso"
+
+
+def c_disco_storage():
+    out = ssh(SSH_STORAGE, "df -Pm /srv | awk 'NR==2{print $5, $4}'", timeout=30)
+    try:
+        pct, libre_gb = int(out.split()[0].rstrip("%")), int(out.split()[1]) // 1024
+    except (ValueError, IndexError):
+        return "fail", "sin lectura del storage"
+    return ("ok" if pct < 80 else "warn" if pct < 90 else "fail"), f"disco storage {pct}% · {libre_gb}GB libres"
+
+
+def c_host_aux():
+    out = ssh(SSH_AUX, "uptime -p")
+    return ("ok", f"66 alcanzable ({out})") if out else ("warn", "66 no responde (auxiliar)")
 
 
 def c_bateria_reciente():
     import glob as g
-    runs = sorted(g.glob("eval/runs/bateria_*.json"))
+    runs = sorted(g.glob(os.path.join(os.path.dirname(__file__), "..", "eval", "runs", "bateria_*.json")))
     if not runs:
-        return "warn", "sin corridas de batería"
-    import os
-    edad_h = (time.time() - os.path.getmtime(runs[-1])) / 3600
+        return None, None   # sólo aplica donde se corre la batería (la Mac)
     d = json.load(open(runs[-1]))
-    if edad_h > 72:
-        return "warn", f"última batería hace {edad_h:.0f}h ({d.get('ok')}/{d.get('total')})"
-    return "ok", f"hace {edad_h:.0f}h: {d.get('ok')}/{d.get('total')}"
+    edad_h = (time.time() - os.path.getmtime(runs[-1])) / 3600
+    nota = f"{d.get('ok')}/{d.get('total')} hace {edad_h:.0f}h"
+    return ("ok" if edad_h <= 72 else "warn"), f"batería {nota}"
 
 
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--full", action="store_true", help="+ smoke del chat (consume tokens)")
-    ap.add_argument("--json", action="store_true")
-    args = ap.parse_args()
+# ---- main --------------------------------------------------------------------
 
-    import os
-    sin_ssh = os.environ.get("SALUD_SIN_SSH") == "1"
-
+def correr(sin_ssh: bool = False, full: bool = False) -> list[dict]:
+    """Ejecuta todos los chequeos, imprime el reporte y devuelve los resultados."""
+    RESULTADOS.clear()
     print("== SALUD AI JUSTICIA ==", datetime.now().strftime("%Y-%m-%d %H:%M %Z"), flush=True)
     check("web aijusticia.mx", c_web)
     check("engine /health + LLM", c_engine_health)
@@ -203,21 +290,35 @@ def main():
     check("frescura DOF (cron diario)", c_frescura_dof)
     check("office Nextcloud :8080", c_office, critico=False)
     if not sin_ssh:
-        check("servicios systemd 162", c_servicios_162)
-        check("disco 162", c_disco_162, critico=False)
-        check("carga 162", c_carga_162, critico=False)
-        check("backup DB local", c_backup, critico=False)
-        check("backup off-site (storage)", c_backup_offsite, critico=True)
-        check("harvest auxiliar 66", c_harvest_aux, critico=False)
-        check("batería reciente", c_bateria_reciente, critico=False)
-    if args.full:
+        check("servicios 162 (engine/web/pg)", c_servicios_162)
+        check("OOM recientes (30h)", c_oom_recientes)
+        check("mantenimiento nocturno", c_mantenimiento)
+        check("disco 162", c_disco_162)
+        check("carga 162", c_carga_162)
+        check("dump local", c_backup)
+        check("réplica off-site", c_backup_offsite)
+        check("disco storage", c_disco_storage)
+        check("host auxiliar 66", c_host_aux, critico=False)
+        check("batería de evaluación", c_bateria_reciente, critico=False)
+    if full:
         check("smoke chat /chat/stream", c_chat_stream)
-
     fails = [r for r in RESULTADOS if r["estado"] == "fail"]
     warns = [r for r in RESULTADOS if r["estado"] == "warn"]
     print(f"\n== {len(RESULTADOS) - len(fails) - len(warns)} ok · {len(warns)} warn · {len(fails)} FAIL ==")
+    return list(RESULTADOS)
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
+    ap.add_argument("--full", action="store_true", help="+ smoke del chat (consume tokens)")
+    ap.add_argument("--json", action="store_true")
+    args = ap.parse_args()
+
+    res = correr(sin_ssh=os.environ.get("SALUD_SIN_SSH") == "1", full=args.full)
+    fails = [r for r in res if r["estado"] == "fail"]
+    warns = [r for r in res if r["estado"] == "warn"]
     if args.json:
-        print(json.dumps(RESULTADOS, ensure_ascii=False, indent=1))
+        print(json.dumps(res, ensure_ascii=False, indent=1))
     sys.exit(2 if fails else (1 if warns else 0))
 
 

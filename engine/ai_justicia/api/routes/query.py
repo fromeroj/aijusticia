@@ -9,7 +9,7 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field, field_validator
 
 from ai_justicia.config import settings
-from ai_justicia.corpus.store import count_chunks, count_documentos
+from ai_justicia.corpus.store import estimados
 from ai_justicia.jobs.store import obtener_job
 from ai_justicia.llm.client import check_connection
 from ai_justicia.pipeline.orchestrator import RespuestaPipeline, ejecutar_consulta
@@ -112,18 +112,19 @@ _HEALTH_CACHE = {"t": 0.0, "docs": -1, "chunks": -1}
 def health() -> dict:
     """Estado del servidor de inferencia y la base de datos.
 
-    Los conteos del corpus van cacheados 5 min: contar 14M chunks en cada
-    /health tardaba >10s y tiraba los monitores externos por timeout.
+    El tamaño del corpus es el ESTIMADO del planificador (instantáneo), cacheado
+    5 min. Un COUNT(*) exacto sobre ~18M chunks tarda 10-45s con el visibility
+    map viejo: /health se pasaba del timeout de los monitores. El conteo exacto
+    vive en /corpus/status.
     """
     import time
     conn = check_connection()
     ahora = time.time()
     if ahora - _HEALTH_CACHE["t"] > 300:
         try:
-            n_docs = count_documentos()
-            n_chunks = count_chunks()
+            n_docs, n_chunks = estimados()
         except Exception:  # noqa: BLE001
-            logger.exception("Fallo contando corpus para /health")
+            logger.exception("Fallo estimando el corpus para /health")
             n_docs, n_chunks = -1, -1
         _HEALTH_CACHE.update(t=ahora, docs=n_docs, chunks=n_chunks)
     n_docs, n_chunks = _HEALTH_CACHE["docs"], _HEALTH_CACHE["chunks"]
